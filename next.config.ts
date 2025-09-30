@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Hybrid configuration for Netlify with Edge Functions
-  // output removed to allow SSR and API routes
+  output: 'standalone', // Reduces deployment size significantly
   
   // Trailing slash disabled for API compatibility
   trailingSlash: false,
@@ -28,9 +28,39 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true  // MVP: Skip ESLint warnings to get live faster
   },
   
+  // Server external packages (moved from experimental)
+  serverExternalPackages: [
+    'cheerio',
+    'docx', 
+    'jspdf',
+    '@supabase/supabase-js'
+  ],
+  
   // Experimental features
   experimental: {
     esmExternals: true
+  },
+  
+  // Webpack configuration to reduce bundle size
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Externalize large dependencies for server
+      config.externals = config.externals || [];
+      config.externals.push({
+        'canvas': 'canvas',
+        'bufferutil': 'bufferutil',
+        'utf-8-validate': 'utf-8-validate',
+      });
+    }
+    
+    // Tree shaking optimization
+    config.optimization = {
+      ...config.optimization,
+      usedExports: true,
+      sideEffects: false
+    };
+    
+    return config;
   }
 };
 
