@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Auth Debug</title>
+</head>
+<body>
+    <h1>Supabase Auth Debug</h1>
+    <div id="status"></div>
+    <div id="session-info"></div>
+    <div id="url-info"></div>
+    
+    <script type="module">
+        import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js'
+        
+        const supabaseUrl = 'https://molcqjsqtjbfclasynpg.supabase.co'
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vbGNxanNxdGpiZmNsYXN5bnBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4ODk1NDcsImV4cCI6MjA3MTQ2NTU0N30.IEP7E2VM2uV1vltbSw1CwYpYw1qw6MvI-JB5SD0tUKI'
+        
+        const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+            auth: {
+                autoRefreshToken: true,
+                persistSession: true,
+                detectSessionInUrl: true,
+                debug: true
+            }
+        })
+        
+        const statusDiv = document.getElementById('status')
+        const sessionDiv = document.getElementById('session-info')
+        const urlDiv = document.getElementById('url-info')
+        
+        // Show current URL and hash
+        urlDiv.innerHTML = `
+            <h3>URL Info:</h3>
+            <p>URL: ${window.location.href}</p>
+            <p>Hash: ${window.location.hash}</p>
+            <p>Search: ${window.location.search}</p>
+        `
+        
+        async function checkAuth() {
+            statusDiv.innerHTML = '<p>Checking authentication...</p>'
+            
+            try {
+                // Check for session
+                const { data: { session }, error } = await supabase.auth.getSession()
+                
+                if (error) {
+                    statusDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`
+                    return
+                }
+                
+                if (session) {
+                    statusDiv.innerHTML = '<p style="color: green;">✅ Session found!</p>'
+                    sessionDiv.innerHTML = `
+                        <h3>Session Info:</h3>
+                        <pre>${JSON.stringify(session, null, 2)}</pre>
+                    `
+                } else {
+                    statusDiv.innerHTML = '<p style="color: orange;">❌ No session found</p>'
+                    sessionDiv.innerHTML = '<p>No session data</p>'
+                }
+                
+            } catch (err) {
+                statusDiv.innerHTML = `<p style="color: red;">Exception: ${err.message}</p>`
+            }
+        }
+        
+        // Check auth on load
+        checkAuth()
+        
+        // Listen for auth changes
+        supabase.auth.onAuthStateChange((event, session) => {
+            console.log('Auth state change:', event, session)
+            statusDiv.innerHTML += `<p>Auth event: ${event}</p>`
+            if (session) {
+                sessionDiv.innerHTML = `
+                    <h3>Session from event:</h3>
+                    <pre>${JSON.stringify(session, null, 2)}</pre>
+                `
+            }
+        })
+    </script>
+</body>
+</html>

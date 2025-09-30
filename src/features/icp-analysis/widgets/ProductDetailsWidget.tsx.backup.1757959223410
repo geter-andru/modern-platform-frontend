@@ -1,0 +1,300 @@
+import React, { useState } from 'react'
+import { motion } from 'framer-motion'
+import { 
+  Package, 
+  Edit, 
+  Save, 
+  RefreshCw, 
+  Target, 
+  TrendingUp, 
+  Users, 
+  DollarSign, 
+  CheckCircle, 
+  AlertTriangle,
+  Star,
+  Award,
+  BarChart3,
+  Building2,
+  MapPin,
+  Calendar,
+  Zap,
+  Brain
+} from 'lucide-react'
+
+interface ProductDetails {
+  name: string
+  description: string
+  category: string
+  targetMarket: string
+  keyFeatures: string[]
+  pricing: string
+  competitiveAdvantage: string
+  lastUpdated: string
+}
+
+interface ProductDetailsWidgetProps {
+  className?: string
+}
+
+export default function ProductDetailsWidget({ 
+  className = '' 
+}: ProductDetailsWidgetProps) {
+  const [productDetails, setProductDetails] = useState<ProductDetails>({
+    name: 'Revenue Intelligence Platform',
+    description: 'AI-powered platform for technical founders to scale revenue systematically',
+    category: 'SaaS',
+    targetMarket: 'B2B Technical Companies',
+    keyFeatures: ['ICP Analysis', 'Cost Calculator', 'Business Case Builder', 'Competitive Analysis'],
+    pricing: 'Subscription-based',
+    competitiveAdvantage: 'Technical founder focus with systematic scaling approach',
+    lastUpdated: '2024-01-15'
+  })
+  const [isEditing, setIsEditing] = useState(false)
+
+  const handleEdit = () => {
+    setIsEditing(true)
+  }
+
+  const handleSave = () => {
+    setIsEditing(false)
+    console.log('Product details saved')
+  }
+
+  const handleRefresh = () => {
+    console.log('Refreshing product details...')
+  }
+
+  return (
+    <div className={`bg-background-secondary border border-border-standard rounded-xl overflow-hidden ${className}`}>
+      <div className="px-6 py-4 border-b" style={{ 
+        backgroundColor: 'var(--color-background-tertiary)', 
+        borderColor: 'var(--border-standard)' 
+      }}>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Package className="w-6 h-6" style={{ color: 'var(--color-brand-primary)' }} />
+            <div>
+              <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>My Product Details</h2>
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Define your product to generate accurate ICP analysis</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {saved && (
+              <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--color-accent-success)' }}>
+                <CheckCircle className="w-4 h-4" />
+                Saved
+              </div>
+            )}
+            <button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
+              style={{ 
+                backgroundColor: 'var(--color-surface)',
+                color: 'var(--text-primary)'
+              }}
+              onMouseEnter={(e) => !isSaving && (e.target.style.backgroundColor = 'var(--color-surface-hover)')}
+              onMouseLeave={(e) => !isSaving && (e.target.style.backgroundColor = 'var(--color-surface)')}
+            >
+              <Save className="w-4 h-4" />
+              {isSaving ? 'Saving...' : 'Save'}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex">
+        
+        <div className="flex-1 p-6">
+          <div className="max-w-2xl">
+            <div className="space-y-6">
+              
+              <div>
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+                  Product Name *
+                </label>
+                <input
+                  type="text"
+                  value={formData.productName}
+                  onChange={(e) => handleInputChange('productName', e.target.value)}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2"
+                  style={{
+                    backgroundColor: 'var(--color-surface)',
+                    borderColor: errors.productName ? 'var(--color-accent-danger)' : 'var(--border-standard)',
+                    color: 'var(--text-primary)',
+                    '--tw-ring-color': 'var(--color-brand-primary)'
+                  }}
+                  placeholder="Enter your product name"
+                />
+                {errors.productName && (
+                  <p className="text-sm mt-1" style={{ color: 'var(--color-accent-danger)' }}>{errors.productName}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+                  Product Description *
+                </label>
+                <textarea
+                  value={formData.productDescription}
+                  onChange={(e) => handleInputChange('productDescription', e.target.value)}
+                  rows={4}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2"
+                  style={{
+                    backgroundColor: 'var(--color-surface)',
+                    borderColor: errors.productDescription ? 'var(--color-accent-danger)' : 'var(--border-standard)',
+                    color: 'var(--text-primary)',
+                    '--tw-ring-color': 'var(--color-brand-primary)'
+                  }}
+                  placeholder="Describe what your product does and its main value proposition"
+                />
+                {errors.productDescription && (
+                  <p className="text-sm mt-1" style={{ color: 'var(--color-accent-danger)' }}>{errors.productDescription}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+                  Distinguishing Feature *
+                </label>
+                <textarea
+                  value={formData.distinguishingFeature}
+                  onChange={(e) => handleInputChange('distinguishingFeature', e.target.value)}
+                  rows={3}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2"
+                  style={{
+                    backgroundColor: 'var(--color-surface)',
+                    borderColor: errors.distinguishingFeature ? 'var(--color-accent-danger)' : 'var(--border-standard)',
+                    color: 'var(--text-primary)',
+                    '--tw-ring-color': 'var(--color-brand-primary)'
+                  }}
+                  placeholder="What makes your product unique or different from competitors?"
+                />
+                {errors.distinguishingFeature && (
+                  <p className="text-sm mt-1" style={{ color: 'var(--color-accent-danger)' }}>{errors.distinguishingFeature}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+                  Business Model *
+                </label>
+                <select
+                  value={formData.businessModel}
+                  onChange={(e) => handleInputChange('businessModel', e.target.value)}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2"
+                  style={{
+                    backgroundColor: 'var(--color-surface)',
+                    borderColor: errors.businessModel ? 'var(--color-accent-danger)' : 'var(--border-standard)',
+                    color: 'var(--text-primary)',
+                    '--tw-ring-color': 'var(--color-brand-primary)'
+                  }}
+                >
+                  <option value="">Select business model</option>
+                  <option value="b2b-subscription">B2B Subscription</option>
+                  <option value="b2b-one-time">B2B One-time Purchase</option>
+                </select>
+                {errors.businessModel && (
+                  <p className="text-sm mt-1" style={{ color: 'var(--color-accent-danger)' }}>{errors.businessModel}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-8 pt-6 border-t" style={{ borderColor: 'var(--border-standard)' }}>
+              {errors.general && (
+                <div className="mb-4 p-3 rounded-lg" style={{ 
+                  backgroundColor: 'rgba(239, 68, 68, 0.1)', 
+                  border: '1px solid rgba(239, 68, 68, 0.3)' 
+                }}>
+                  <p className="text-sm" style={{ color: 'var(--color-accent-danger)' }}>{errors.general}</p>
+                </div>
+              )}
+              <motion.button
+                onClick={handleGenerateICP}
+                disabled={isGenerating}
+                whileHover={{ scale: isGenerating ? 1 : 1.02 }}
+                whileTap={{ scale: isGenerating ? 1 : 0.98 }}
+                className="flex items-center gap-3 px-6 py-3 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ 
+                  backgroundColor: 'var(--color-brand-primary)',
+                  color: 'var(--text-primary)'
+                }}
+                onMouseEnter={(e) => !isGenerating && (e.target.style.backgroundColor = 'var(--color-brand-primary-dark)')}
+                onMouseLeave={(e) => !isGenerating && (e.target.style.backgroundColor = 'var(--color-brand-primary)')}
+              >
+                {isGenerating ? (
+                  <>
+                    <RefreshCw className="w-5 h-5 animate-spin" />
+                    Generating ICP Analysis...
+                  </>
+                ) : (
+                  <>
+                    <Target className="w-5 h-5" />
+                    Generate ICP Analysis
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </motion.button>
+            </div>
+          </div>
+        </div>
+
+        <div className="w-80 border-l p-6" style={{ 
+          backgroundColor: 'var(--color-background-tertiary)', 
+          borderColor: 'var(--border-standard)' 
+        }}>
+          <div className="flex items-center gap-2 mb-4">
+            <Package className="w-5 h-5" style={{ color: 'var(--color-brand-primary)' }} />
+            <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>Product History</h3>
+          </div>
+          
+          {productHistory.length === 0 ? (
+            <div className="text-center py-8">
+              <Package className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} />
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>No saved products yet</p>
+              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Save your first product to see it here</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {productHistory.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="rounded-lg p-4 cursor-pointer transition-colors"
+                  style={{ backgroundColor: 'var(--color-surface)' }}
+                  onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--color-surface-hover)'}
+                  onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--color-surface)'}
+                  onClick={() => loadProductFromHistory(product)}
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <h4 className="font-medium text-sm truncate" style={{ color: 'var(--text-primary)' }}>{product.productName}</h4>
+                    <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                      {new Date(product.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <p className="text-xs mb-2 line-clamp-2" style={{ color: 'var(--text-secondary)' }}>
+                    {product.productDescription}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-1 rounded text-xs font-medium" style={{
+                      backgroundColor: product.businessModel === 'b2b-subscription' 
+                        ? 'rgba(59, 130, 246, 0.2)' 
+                        : 'rgba(16, 185, 129, 0.2)',
+                      color: product.businessModel === 'b2b-subscription' 
+                        ? 'var(--color-brand-primary)' 
+                        : 'var(--color-brand-secondary)'
+                    }}>
+                      {product.businessModel === 'b2b-subscription' ? 'Subscription' : 'One-time'}
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
