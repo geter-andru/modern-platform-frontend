@@ -95,6 +95,12 @@ export function ExportCenter({ customerId, onExport }: ExportCenterProps) {
       // Simulate file download
       const format = exportFormats.find(f => f.id === formatId);
       if (format) {
+        // Check if running in browser environment
+        if (typeof window === 'undefined' || !window.Blob || !window.URL) {
+          console.warn('Export not available in server environment');
+          return;
+        }
+
         const blob = new Blob(['Export content'], { type: 'application/octet-stream' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');

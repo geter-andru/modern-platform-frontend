@@ -124,6 +124,12 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   // Create file preview
   const createPreview = (file: File): Promise<string> => {
     return new Promise((resolve) => {
+      // Check if running in browser environment
+      if (typeof window === 'undefined' || !window.FileReader) {
+        resolve('');
+        return;
+      }
+      
       if (file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = (e) => resolve(e.target?.result as string);
