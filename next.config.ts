@@ -1,13 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Development configuration - no static export
-  // output: 'export', // Disabled for development to allow middleware
+  // Hybrid configuration for Netlify with Edge Functions
+  // output removed to allow SSR and API routes
   
-  // Trailing slash disabled for development (APIs don't use trailing slashes)
+  // Trailing slash disabled for API compatibility
   trailingSlash: false,
   
-  // Image optimization enabled for development
+  // Image optimization enabled for hybrid mode
   images: {
     unoptimized: false
   },

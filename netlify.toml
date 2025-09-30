@@ -3,38 +3,40 @@
 
 [build]
   base = "."
-  publish = "out"
+  publish = ".next"
   command = "npm run build"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
 
-# Next.js App Router - handle client-side routing
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Enable Next.js plugin for Edge Functions
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
-# Cache static assets
+# Next.js ISR (Incremental Static Regeneration) support
+[functions]
+  included_files = [".next/**"]
+
+# Cache static assets (Next.js specific paths)
 [[headers]]
-  for = "/static/*"
+  for = "/_next/static/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/*.js"
+  for = "/_next/image/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/*.css"
+  for = "/fonts/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/index.html"
+  for = "/images/*"
   [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
+    Cache-Control = "public, max-age=604800"
 
 # Security headers
 [[headers]]
