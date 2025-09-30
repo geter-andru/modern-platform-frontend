@@ -1,4 +1,3 @@
-import axios, { AxiosInstance, AxiosError, AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
 
@@ -8,84 +7,100 @@ const TOKEN_COOKIE_NAME = 'hs_access_token';
 const REFRESH_TOKEN_COOKIE_NAME = 'hs_refresh_token';
 const CUSTOMER_ID_COOKIE_NAME = 'hs_customer_id';
 
-// Create axios instance
-const apiClient: AxiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 30000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+// Fetch wrapper with auth and error handling
+async function apiRequest(url: string, options: RequestInit = {}): Promise<any> {
+  const token = Cookies.get(TOKEN_COOKIE_NAME);
+  
+  const config: RequestInit = {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` }),
+      ...options.headers,
+    },
+  };
 
-// Request interceptor to add auth token
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = Cookies.get(TOKEN_COOKIE_NAME);
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+  const fullUrl = url.startsWith('/') ? `${API_BASE_URL}${url}` : url;
 
-// Response interceptor for error handling and token refresh
-apiClient.interceptors.response.use(
-  (response) => response,
-  async (error: AxiosError) => {
-    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
-
+  try {
+    const response = await fetch(fullUrl, config);
+    
     // Handle 401 errors (token expired)
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      
+    if (response.status === 401) {
       try {
         const refreshToken = Cookies.get(REFRESH_TOKEN_COOKIE_NAME);
         if (refreshToken) {
-          const response = await axios.post(`${API_BASE_URL}/api/auth/refresh`, {
-            refreshToken,
+          const refreshResponse = await fetch(`${API_BASE_URL}/api/auth/refresh`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refreshToken }),
           });
 
-          const { accessToken } = response.data.data;
-          Cookies.set(TOKEN_COOKIE_NAME, accessToken, { expires: 1 }); // 1 day expiry
-          
-          // Retry original request with new token
-          if (originalRequest.headers) {
-            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+          if (refreshResponse.ok) {
+            const refreshData = await refreshResponse.json();
+            const { accessToken } = refreshData.data;
+            Cookies.set(TOKEN_COOKIE_NAME, accessToken, { expires: 1 });
+            
+            // Retry original request with new token
+            const retryResponse = await fetch(fullUrl, {
+              ...config,
+              headers: {
+                ...config.headers,
+                Authorization: `Bearer ${accessToken}`,
+              },
+            });
+            
+            if (retryResponse.ok) {
+              return retryResponse.json();
+            }
           }
-          return apiClient(originalRequest);
         }
       } catch (refreshError) {
-        // Refresh failed, redirect to login
-        Cookies.remove(TOKEN_COOKIE_NAME);
-        Cookies.remove(REFRESH_TOKEN_COOKIE_NAME);
-        Cookies.remove(CUSTOMER_ID_COOKIE_NAME);
-        window.location.href = '/login';
-        return Promise.reject(refreshError);
+        console.error('Token refresh failed:', refreshError);
       }
+      
+      // Refresh failed, redirect to login
+      Cookies.remove(TOKEN_COOKIE_NAME);
+      Cookies.remove(REFRESH_TOKEN_COOKIE_NAME);
+      Cookies.remove(CUSTOMER_ID_COOKIE_NAME);
+      window.location.href = '/login';
+      throw new Error('Authentication failed');
     }
 
-    // Handle other errors
-    if (error.response?.status === 429) {
-      toast.error('Rate limit exceeded. Please wait before trying again.');
-    } else if (error.response?.status === 500) {
-      toast.error('Server error. Please try again later.');
-    } else if (error.response?.status === 403) {
-      toast.error('Access denied. You do not have permission to perform this action.');
+    // Handle other HTTP errors
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      
+      if (response.status === 429) {
+        toast.error('Rate limit exceeded. Please wait before trying again.');
+      } else if (response.status === 500) {
+        toast.error('Server error. Please try again later.');
+      } else if (response.status === 403) {
+        toast.error('Access denied. You do not have permission to perform this action.');
+      }
+      
+      throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
     }
 
-    return Promise.reject(error);
+    return response.json();
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('Network request failed');
   }
-);
+}
 
 // Auth functions
 export const auth = {
   async login(customerId: string): Promise<{ success: boolean; data?: any; error?: string }> {
     try {
-      const response = await apiClient.post('/api/auth/token', { customerId });
-      const { accessToken, refreshToken, customer } = response.data.data;
+      const response = await apiRequest('/api/auth/token', {
+        method: 'POST',
+        body: JSON.stringify({ customerId }),
+      });
+      
+      const { accessToken, refreshToken, customer } = response.data;
       
       // Store tokens in cookies
       Cookies.set(TOKEN_COOKIE_NAME, accessToken, { expires: 1 });
@@ -96,7 +111,7 @@ export const auth = {
     } catch (error: any) {
       return { 
         success: false, 
-        error: error.response?.data?.error || 'Login failed' 
+        error: error.message || 'Login failed' 
       };
     }
   },
@@ -120,169 +135,185 @@ export const auth = {
 // Customer API functions
 export const customerAPI = {
   async getCustomer(customerId: string) {
-    const response = await apiClient.get(`/api/customer/${customerId}`);
-    return response.data;
+    return apiRequest(`/api/customer/${customerId}`);
   },
 
   async getICP(customerId: string) {
-    const response = await apiClient.get(`/api/customer/${customerId}/icp`);
-    return response.data;
+    return apiRequest(`/api/customer/${customerId}/icp`);
   },
 
   async generateAIICP(customerId: string, data: any) {
-    const response = await apiClient.post(`/api/customer/${customerId}/generate-icp`, data);
-    return response.data;
+    return apiRequest(`/api/customer/${customerId}/generate-icp`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 
   async updateCustomer(customerId: string, data: any) {
-    const response = await apiClient.put(`/api/customer/${customerId}`, data);
-    return response.data;
+    return apiRequest(`/api/customer/${customerId}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
   },
 };
 
 // Cost Calculator API functions
 export const costCalculatorAPI = {
   async calculate(data: any) {
-    const response = await apiClient.post('/api/cost-calculator/calculate', data);
-    return response.data;
+    return apiRequest('/api/cost-calculator/calculate', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 
   async calculateWithAI(data: any) {
-    const response = await apiClient.post('/api/cost-calculator/calculate-ai', data);
-    return response.data;
+    return apiRequest('/api/cost-calculator/calculate-ai', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 
   async save(data: any) {
-    const response = await apiClient.post('/api/cost-calculator/save', data);
-    return response.data;
+    return apiRequest('/api/cost-calculator/save', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 
   async getHistory(customerId: string) {
-    const response = await apiClient.get(`/api/cost-calculator/history/${customerId}`);
-    return response.data;
+    return apiRequest(`/api/cost-calculator/history/${customerId}`);
   },
 
   async compare(data: any) {
-    const response = await apiClient.post('/api/cost-calculator/compare', data);
-    return response.data;
+    return apiRequest('/api/cost-calculator/compare', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 };
 
 // Business Case API functions
 export const businessCaseAPI = {
   async generate(data: any) {
-    const response = await apiClient.post('/api/business-case/generate', data);
-    return response.data;
+    return apiRequest('/api/business-case/generate', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 
   async customize(data: any) {
-    const response = await apiClient.post('/api/business-case/customize', data);
-    return response.data;
+    return apiRequest('/api/business-case/customize', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 
   async save(data: any) {
-    const response = await apiClient.post('/api/business-case/save', data);
-    return response.data;
+    return apiRequest('/api/business-case/save', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 
   async export(data: any) {
-    const response = await apiClient.post('/api/business-case/export', data);
-    return response.data;
+    return apiRequest('/api/business-case/export', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 
   async getTemplates() {
-    const response = await apiClient.get('/api/business-case/templates');
-    return response.data;
+    return apiRequest('/api/business-case/templates');
   },
 
   async getHistory(customerId: string) {
-    const response = await apiClient.get(`/api/business-case/${customerId}/history`);
-    return response.data;
+    return apiRequest(`/api/business-case/${customerId}/history`);
   },
 };
 
 // Progress API functions
 export const progressAPI = {
   async getProgress(customerId: string) {
-    const response = await apiClient.get(`/api/progress/${customerId}`);
-    return response.data;
+    return apiRequest(`/api/progress/${customerId}`);
   },
 
   async trackAction(customerId: string, action: string, metadata?: any) {
-    const response = await apiClient.post(`/api/progress/${customerId}/track`, {
-      action,
-      metadata,
+    return apiRequest(`/api/progress/${customerId}/track`, {
+      method: 'POST',
+      body: JSON.stringify({ action, metadata }),
     });
-    return response.data;
   },
 
   async getMilestones(customerId: string) {
-    const response = await apiClient.get(`/api/progress/${customerId}/milestones`);
-    return response.data;
+    return apiRequest(`/api/progress/${customerId}/milestones`);
   },
 
   async getInsights(customerId: string) {
-    const response = await apiClient.get(`/api/progress/${customerId}/insights`);
-    return response.data;
+    return apiRequest(`/api/progress/${customerId}/insights`);
   },
 
   async completeMilestone(customerId: string, milestoneId: string, metadata?: any) {
-    const response = await apiClient.post(
+    return apiRequest(
       `/api/progress/${customerId}/milestones/${milestoneId}/complete`,
-      { metadata }
+      {
+        method: 'POST',
+        body: JSON.stringify({ metadata }),
+      }
     );
-    return response.data;
   },
 };
 
 // Export API functions
 export const exportAPI = {
   async exportICP(data: any) {
-    const response = await apiClient.post('/api/export/icp', data);
-    return response.data;
+    return apiRequest('/api/export/icp', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 
   async exportCostCalculator(data: any) {
-    const response = await apiClient.post('/api/export/cost-calculator', data);
-    return response.data;
+    return apiRequest('/api/export/cost-calculator', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 
   async exportBusinessCase(data: any) {
-    const response = await apiClient.post('/api/export/business-case', data);
-    return response.data;
+    return apiRequest('/api/export/business-case', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 
   async exportComprehensive(data: any) {
-    const response = await apiClient.post('/api/export/comprehensive', data);
-    return response.data;
+    return apiRequest('/api/export/comprehensive', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 
   async getExportStatus(exportId: string) {
-    const response = await apiClient.get(`/api/export/status/${exportId}`);
-    return response.data;
+    return apiRequest(`/api/export/status/${exportId}`);
   },
 
   async getExportHistory(customerId: string) {
-    const response = await apiClient.get(`/api/export/history/${customerId}`);
-    return response.data;
+    return apiRequest(`/api/export/history/${customerId}`);
   },
 };
 
 // Webhook API functions
 export const webhookAPI = {
   async triggerAutomation(customerId: string, automationType: string, data?: any) {
-    const response = await apiClient.post('/api/webhooks/trigger', {
-      customerId,
-      automationType,
-      data,
+    return apiRequest('/api/webhooks/trigger', {
+      method: 'POST',
+      body: JSON.stringify({ customerId, automationType, data }),
     });
-    return response.data;
   },
 
   async getAutomationStatus() {
-    const response = await apiClient.get('/api/webhooks/status');
-    return response.data;
+    return apiRequest('/api/webhooks/status');
   },
 };
 
-export default apiClient;
+export default { auth, customerAPI, costCalculatorAPI, businessCaseAPI, progressAPI, exportAPI, webhookAPI };
