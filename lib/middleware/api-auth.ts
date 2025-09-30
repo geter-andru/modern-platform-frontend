@@ -85,7 +85,7 @@ export async function authenticatedFetch(
   // Make sure we're calling the Express backend on port 3001
   const baseUrl = process.env.NODE_ENV === 'development' 
     ? 'http://localhost:3001' 
-    : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    : process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
   
   const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : url;
 

@@ -92,7 +92,7 @@ export default function RateCompanyWidget({
       
       // Step 1: Get company research data
       console.log('📊 Fetching company research data...')
-      const researchResponse = await fetch('/api/company-research', {
+      const researchResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/company-research`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

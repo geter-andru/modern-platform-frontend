@@ -67,7 +67,7 @@ export default function ProfilePage() {
   const fetchProfile = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/users/profile');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/profile`);
       const data = await response.json();
 
       if (response.ok) {
@@ -89,7 +89,7 @@ export default function ProfilePage() {
       setError('');
       setMessage('');
 
-      const response = await fetch('/api/users/profile', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
