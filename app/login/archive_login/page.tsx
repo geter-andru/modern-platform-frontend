@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLogin } from '@/lib/hooks/useAPI';
 import { motion } from 'framer-motion';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { ArrowRight as ArrowRightIcon } from 'lucide-react';
 
 export default function LoginPage() {
   const [customerId, setCustomerId] = useState('');

@@ -3,15 +3,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  DocumentArrowDownIcon,
-  DocumentTextIcon,
-  TableCellsIcon,
-  PresentationChartBarIcon,
-  CloudArrowDownIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  ClockIcon,
-} from '@heroicons/react/24/outline';
+  Download as DocumentArrowDownIcon,
+  FileText as DocumentTextIcon,
+  Table2 as TableCellsIcon,
+  Monitor as PresentationChartBarIcon,
+  CloudDownload as CloudArrowDownIcon,
+  CheckCircle as CheckCircleIcon,
+  AlertTriangle as ExclamationTriangleIcon,
+  Clock as ClockIcon,
+} from 'lucide-react';
 
 interface ExportFormat {
   id: string;

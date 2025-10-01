@@ -3,14 +3,14 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  ClockIcon,
-  EyeIcon,
-  ArrowDownTrayIcon,
-  TrashIcon,
-  ChartBarIcon,
-  CurrencyDollarIcon,
-  ArrowTrendingUpIcon,
-} from '@heroicons/react/24/outline';
+  Clock as ClockIcon,
+  Eye as EyeIcon,
+  Download as ArrowDownTrayIcon,
+  Trash2 as TrashIcon,
+  BarChart3 as ChartBarIcon,
+  DollarSign as CurrencyDollarIcon,
+  TrendingUp as ArrowTrendingUpIcon,
+} from 'lucide-react';
 
 interface CostHistoryItem {
   id: string;

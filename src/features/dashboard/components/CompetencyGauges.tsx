@@ -18,11 +18,11 @@ interface CompetencyGaugesProps {
   className?: string
 }
 import { 
-  ChartPieIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
-  MinusIcon
-} from '@heroicons/react/24/outline'
+  PieChart as ChartPieIcon,
+  ArrowUp as ArrowUpIcon,
+  ArrowDown as ArrowDownIcon,
+  Minus as MinusIcon
+} from 'lucide-react'
 
 interface GaugeProps {
   value: number

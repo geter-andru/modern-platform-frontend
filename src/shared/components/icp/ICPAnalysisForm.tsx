@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import {
-  BuildingOfficeIcon,
-  CurrencyDollarIcon,
-  UserGroupIcon,
-  GlobeAltIcon,
-  SparklesIcon,
-} from '@heroicons/react/24/outline';
+  Building2 as BuildingOfficeIcon,
+  DollarSign as CurrencyDollarIcon,
+  Users as UserGroupIcon,
+  Globe as GlobeAltIcon,
+  Sparkles as SparklesIcon,
+} from 'lucide-react';
 import { useGenerateAIICP, useTrackAction } from '@/lib/hooks/useAPI';
 
 interface ICPFormData {

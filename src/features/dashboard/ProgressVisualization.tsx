@@ -3,13 +3,13 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ChartBarIcon,
-  TrophyIcon,
-  ClockIcon,
-  ArrowTrendingUpIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-} from '@heroicons/react/24/outline';
+  BarChart3 as ChartBarIcon,
+  Trophy as TrophyIcon,
+  Clock as ClockIcon,
+  TrendingUp as ArrowTrendingUpIcon,
+  CheckCircle as CheckCircleIcon,
+  AlertTriangle as ExclamationTriangleIcon,
+} from 'lucide-react';
 
 interface ProgressData {
   completionPercentage: number;

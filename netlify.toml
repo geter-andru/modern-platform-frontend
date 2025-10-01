@@ -15,7 +15,14 @@
 
 # Next.js ISR (Incremental Static Regeneration) support
 [functions]
-  included_files = [".next/**"]
+  included_files = [
+    ".next/server/**",
+    ".next/static/**", 
+    ".next/*.json",
+    ".next/BUILD_ID",
+    ".next/package.json",
+    "!.next/cache/**"
+  ]
 
 # Cache static assets (Next.js specific paths)
 [[headers]]

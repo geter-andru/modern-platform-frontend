@@ -2,14 +2,14 @@
 
 import { motion } from 'framer-motion';
 import {
-  CurrencyDollarIcon,
-  ArrowTrendingDownIcon,
-  ArrowTrendingUpIcon,
-  ArrowDownTrayIcon,
-  ChartBarIcon,
-  ExclamationTriangleIcon,
-  LightBulbIcon,
-} from '@heroicons/react/24/outline';
+  DollarSign as CurrencyDollarIcon,
+  TrendingDown as ArrowTrendingDownIcon,
+  TrendingUp as ArrowTrendingUpIcon,
+  Download as ArrowDownTrayIcon,
+  BarChart3 as ChartBarIcon,
+  AlertTriangle as ExclamationTriangleIcon,
+  Lightbulb as LightBulbIcon,
+} from 'lucide-react';
 import { useExportData } from '@/lib/hooks/useAPI';
 
 interface CostCategory {

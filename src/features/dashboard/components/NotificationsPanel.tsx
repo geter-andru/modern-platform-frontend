@@ -4,14 +4,14 @@
 
 import React from 'react'
 import { 
-  BellIcon,
-  XMarkIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  InformationCircleIcon,
-  TrophyIcon,
-  SparklesIcon
-} from '@heroicons/react/24/outline'
+  Bell as BellIcon,
+  X as XMarkIcon,
+  CheckCircle as CheckCircleIcon,
+  AlertTriangle as ExclamationTriangleIcon,
+  Info as InformationCircleIcon,
+  Trophy as TrophyIcon,
+  Sparkles as SparklesIcon
+} from 'lucide-react'
 
 interface Notification {
   id: string

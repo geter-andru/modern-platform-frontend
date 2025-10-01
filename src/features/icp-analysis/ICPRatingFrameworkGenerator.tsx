@@ -4,13 +4,13 @@ import React, { useState, useEffect } from 'react';
 import claudeAIService from '@/app/lib/services/claudeAIService';
 import { motion } from 'framer-motion';
 import { 
-  SparklesIcon, 
-  DocumentTextIcon,
-  ChartBarIcon,
-  CheckCircleIcon,
-  ArrowRightIcon,
-  LightBulbIcon
-} from '@heroicons/react/24/outline';
+  Sparkles as SparklesIcon, 
+  FileText as DocumentTextIcon,
+  BarChart3 as ChartBarIcon,
+  CheckCircle as CheckCircleIcon,
+  ArrowRight as ArrowRightIcon,
+  Lightbulb as LightBulbIcon
+} from 'lucide-react';
 
 interface ICPRatingFrameworkGeneratorProps {
   onFrameworkGenerated?: (framework: any) => void;

@@ -2,13 +2,13 @@
 
 import { motion } from 'framer-motion';
 import {
-  ClockIcon,
-  UserGroupIcon,
-  CalculatorIcon,
-  DocumentChartBarIcon,
-  ArrowDownTrayIcon,
-  ChartBarIcon,
-} from '@heroicons/react/24/outline';
+  Clock as ClockIcon,
+  Users as UserGroupIcon,
+  Calculator as CalculatorIcon,
+  FileBarChart as DocumentChartBarIcon,
+  Download as ArrowDownTrayIcon,
+  BarChart3 as ChartBarIcon,
+} from 'lucide-react';
 
 interface Activity {
   id: string;

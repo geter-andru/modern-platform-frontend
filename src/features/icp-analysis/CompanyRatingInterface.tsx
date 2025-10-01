@@ -3,25 +3,25 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  BuildingOfficeIcon,
-  ChartBarIcon,
-  MagnifyingGlassIcon,
-  DocumentTextIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  InformationCircleIcon,
-  ArrowPathIcon,
-  BookOpenIcon,
-  CalculatorIcon,
-  UserGroupIcon,
-  CogIcon,
-  BoltIcon,
-  LightBulbIcon,
-  FireIcon,
-  SparklesIcon,
-  ChevronRightIcon,
-  ChevronDownIcon
-} from '@heroicons/react/24/outline';
+  Building2 as BuildingOfficeIcon,
+  BarChart3 as ChartBarIcon,
+  Search as MagnifyingGlassIcon,
+  FileText as DocumentTextIcon,
+  CheckCircle as CheckCircleIcon,
+  XCircle as XCircleIcon,
+  Info as InformationCircleIcon,
+  RotateCcw as ArrowPathIcon,
+  BookOpen as BookOpenIcon,
+  Calculator as CalculatorIcon,
+  Users as UserGroupIcon,
+  Settings as CogIcon,
+  Zap as BoltIcon,
+  Lightbulb as LightBulbIcon,
+  Flame as FireIcon,
+  Sparkles as SparklesIcon,
+  ChevronRight as ChevronRightIcon,
+  ChevronDown as ChevronDownIcon
+} from 'lucide-react';
 
 interface CompanyRatingInterfaceProps {
   framework?: any;

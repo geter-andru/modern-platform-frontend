@@ -5,14 +5,14 @@
 import React, { useState } from 'react'
 import { CompetencyData } from '../types/competency'
 import { 
-  QuestionMarkCircleIcon,
-  LightBulbIcon,
-  BookOpenIcon,
-  PlayIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  InformationCircleIcon
-} from '@heroicons/react/24/outline'
+  HelpCircle as QuestionMarkCircleIcon,
+  Lightbulb as LightBulbIcon,
+  BookOpen as BookOpenIcon,
+  Play as PlayIcon,
+  CheckCircle as CheckCircleIcon,
+  AlertTriangle as ExclamationTriangleIcon,
+  Info as InformationCircleIcon
+} from 'lucide-react'
 
 interface ContextualHelpProps {
   currentPage: string
@@ -342,4 +342,4 @@ export function ContextualHelp({ currentPage, competencyData }: ContextualHelpPr
 }
 
 // Import TrophyIcon for QuickActions
-import { TrophyIcon } from '@heroicons/react/24/outline'
+import { Trophy as TrophyIcon } from 'lucide-react'

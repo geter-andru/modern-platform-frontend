@@ -2,11 +2,11 @@
 
 import { motion } from 'framer-motion';
 import {
-  LightBulbIcon,
-  ArrowTrendingUpIcon,
-  ExclamationTriangleIcon,
-  CheckCircleIcon,
-} from '@heroicons/react/24/outline';
+  Lightbulb as LightBulbIcon,
+  TrendingUp as ArrowTrendingUpIcon,
+  AlertTriangle as ExclamationTriangleIcon,
+  CheckCircle as CheckCircleIcon,
+} from 'lucide-react';
 
 interface Insight {
   id: string;

@@ -30,10 +30,8 @@ const nextConfig: NextConfig = {
   
   // Server external packages (moved from experimental)
   serverExternalPackages: [
-    'cheerio',
-    'docx', 
-    'jspdf',
-    '@supabase/supabase-js'
+    '@supabase/supabase-js',
+    '@supabase/ssr'
   ],
   
   // Experimental features

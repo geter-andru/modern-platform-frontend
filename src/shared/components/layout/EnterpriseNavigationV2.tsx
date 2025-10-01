@@ -5,25 +5,25 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
-  MagnifyingGlassIcon,
-  PlusIcon,
-  ChartBarIcon,
-  CalculatorIcon,
-  ArrowTrendingUpIcon,
-  ArrowDownTrayIcon,
-  UserGroupIcon,
-  ClockIcon,
-  BoltIcon,
-  BellIcon,
-  Cog6ToothIcon,
-  UserCircleIcon,
-  ChevronRightIcon,
-  HomeIcon,
-  DocumentTextIcon,
-  ChartPieIcon,
-  SunIcon,
-  MoonIcon,
-} from '@heroicons/react/24/outline';
+  Search as MagnifyingGlassIcon,
+  Plus as PlusIcon,
+  BarChart3 as ChartBarIcon,
+  Calculator as CalculatorIcon,
+  TrendingUp as ArrowTrendingUpIcon,
+  Download as ArrowDownTrayIcon,
+  Users as UserGroupIcon,
+  Clock as ClockIcon,
+  Zap as BoltIcon,
+  Bell as BellIcon,
+  Settings as Cog6ToothIcon,
+  UserCircle as UserCircleIcon,
+  ChevronRight as ChevronRightIcon,
+  Home as HomeIcon,
+  FileText as DocumentTextIcon,
+  PieChart as ChartPieIcon,
+  Sun as SunIcon,
+  Moon as MoonIcon,
+} from 'lucide-react';
 import { useLogout } from '@/lib/hooks/useAPI';
 import { useTheme } from '@/src/shared/components/theme/ThemeProvider';
 

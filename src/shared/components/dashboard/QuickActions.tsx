@@ -3,13 +3,13 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
-  UserGroupIcon,
-  CalculatorIcon,
-  DocumentChartBarIcon,
-  ArrowDownTrayIcon,
-  PlayIcon,
-  ChartBarIcon,
-} from '@heroicons/react/24/outline';
+  Users as UserGroupIcon,
+  Calculator as CalculatorIcon,
+  FileBarChart as DocumentChartBarIcon,
+  Download as ArrowDownTrayIcon,
+  Play as PlayIcon,
+  BarChart3 as ChartBarIcon,
+} from 'lucide-react';
 
 interface QuickActionsProps {
   customerId: string;

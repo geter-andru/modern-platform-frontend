@@ -5,16 +5,16 @@
 import React from 'react'
 import { CompetencyData } from '../types/competency'
 import { 
-  LockClosedIcon,
-  LockOpenIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  ChartBarIcon,
-  CalculatorIcon,
-  DocumentTextIcon,
-  FolderIcon,
-  ArrowDownTrayIcon
-} from '@heroicons/react/24/outline'
+  Lock as LockClosedIcon,
+  Unlock as LockOpenIcon,
+  CheckCircle as CheckCircleIcon,
+  AlertTriangle as ExclamationTriangleIcon,
+  BarChart3 as ChartBarIcon,
+  Calculator as CalculatorIcon,
+  FileText as DocumentTextIcon,
+  Folder as FolderIcon,
+  Download as ArrowDownTrayIcon
+} from 'lucide-react'
 
 interface ToolUnlockStatusProps {
   competencyData: CompetencyData | null
