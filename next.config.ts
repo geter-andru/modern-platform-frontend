@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Hybrid configuration for Netlify with Edge Functions
-  output: 'standalone', // Reduces deployment size significantly
+  // Configuration optimized for Netlify deployment
+  // No explicit output mode - let Netlify handle the deployment type
   
   // Trailing slash disabled for API compatibility
   trailingSlash: false,

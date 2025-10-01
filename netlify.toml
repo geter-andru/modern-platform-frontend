@@ -4,38 +4,16 @@
 [build]
   base = "."
   publish = ".next"
-  command = "npm run build && echo '{\"type\": \"commonjs\"}' > .next/package.json"
+  command = "npm run build"
 
 [build.environment]
   NODE_VERSION = "20"
 
-# Enable Next.js plugin for Edge Functions
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+# Next.js auto-detection - Netlify will automatically detect and configure Next.js
+# No explicit plugin needed for Next.js 15+
 
 # Next.js ISR (Incremental Static Regeneration) support
-[functions]
-  included_files = [
-    ".next/server/**",
-    ".next/static/**", 
-    ".next/*.json",
-    ".next/BUILD_ID",
-    ".next/package.json",
-    ".next/standalone/**",
-    "!.next/cache/**"
-  ]
-
-# Specific configuration for Next.js functions
-[functions."___netlify-server-handler"]
-  included_files = [
-    ".next/server/**",
-    ".next/static/**", 
-    ".next/*.json",
-    ".next/BUILD_ID",
-    ".next/package.json",
-    ".next/standalone/**",
-    "!.next/cache/**"
-  ]
+# Functions configuration removed - Netlify auto-detection handles this
 
 # Cache static assets (Next.js specific paths)
 [[headers]]
