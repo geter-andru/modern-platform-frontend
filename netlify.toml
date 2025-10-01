@@ -9,6 +9,8 @@
 [build.environment]
   NODE_VERSION = "20"
   NEXT_PUBLIC_BACKEND_URL = "https://hs-andru-test.onrender.com"
+  NEXT_PUBLIC_SUPABASE_URL = "https://ipoynqojwxgmhbpxfkfp.supabase.co"
+  NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlwb3lucW9qd3hnbWhicHhma2ZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU3NjMyNzAsImV4cCI6MjA1MTMzOTI3MH0.PdmYk5VmOYyaUohmR52OI9Zb8y3RJdELGfM-U5w7dOQ"
 
 # Next.js auto-detection - Netlify will automatically detect and configure Next.js
 # No explicit plugin needed for Next.js 15+

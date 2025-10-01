@@ -1,15 +1,19 @@
-import Cookies from 'js-cookie';
+import { createBrowserClient } from '@supabase/ssr';
 import toast from 'react-hot-toast';
 
 // API Configuration
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-const TOKEN_COOKIE_NAME = 'hs_access_token';
-const REFRESH_TOKEN_COOKIE_NAME = 'hs_refresh_token';
-const CUSTOMER_ID_COOKIE_NAME = 'hs_customer_id';
 
-// Fetch wrapper with auth and error handling
+// Supabase client
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+// Fetch wrapper with Supabase auth
 async function apiRequest(url: string, options: RequestInit = {}): Promise<any> {
-  const token = Cookies.get(TOKEN_COOKIE_NAME);
+  const { data: { session } } = await supabase.auth.getSession();
+  const token = session?.access_token;
   
   const config: RequestInit = {
     ...options,
@@ -27,44 +31,32 @@ async function apiRequest(url: string, options: RequestInit = {}): Promise<any> 
     
     // Handle 401 errors (token expired)
     if (response.status === 401) {
-      try {
-        const refreshToken = Cookies.get(REFRESH_TOKEN_COOKIE_NAME);
-        if (refreshToken) {
-          const refreshResponse = await fetch(`${API_BASE_URL}/api/auth/refresh`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ refreshToken }),
-          });
-
-          if (refreshResponse.ok) {
-            const refreshData = await refreshResponse.json();
-            const { accessToken } = refreshData.data;
-            Cookies.set(TOKEN_COOKIE_NAME, accessToken, { expires: 1 });
-            
-            // Retry original request with new token
-            const retryResponse = await fetch(fullUrl, {
-              ...config,
-              headers: {
-                ...config.headers,
-                Authorization: `Bearer ${accessToken}`,
-              },
-            });
-            
-            if (retryResponse.ok) {
-              return retryResponse.json();
-            }
-          }
-        }
-      } catch (refreshError) {
-        console.error('Token refresh failed:', refreshError);
+      // Try to refresh Supabase session
+      const { error } = await supabase.auth.refreshSession();
+      if (error) {
+        // Refresh failed, redirect to login
+        await supabase.auth.signOut();
+        window.location.href = '/login';
+        throw new Error('Authentication failed');
       }
       
-      // Refresh failed, redirect to login
-      Cookies.remove(TOKEN_COOKIE_NAME);
-      Cookies.remove(REFRESH_TOKEN_COOKIE_NAME);
-      Cookies.remove(CUSTOMER_ID_COOKIE_NAME);
-      window.location.href = '/login';
-      throw new Error('Authentication failed');
+      // Retry with new token
+      const { data: { session: newSession } } = await supabase.auth.getSession();
+      const newToken = newSession?.access_token;
+      
+      if (newToken) {
+        const retryResponse = await fetch(fullUrl, {
+          ...config,
+          headers: {
+            ...config.headers,
+            Authorization: `Bearer ${newToken}`,
+          },
+        });
+        
+        if (retryResponse.ok) {
+          return retryResponse.json();
+        }
+      }
     }
 
     // Handle other HTTP errors
@@ -91,44 +83,26 @@ async function apiRequest(url: string, options: RequestInit = {}): Promise<any> 
   }
 }
 
-// Auth functions
+// Auth functions using Supabase
 export const auth = {
-  async login(customerId: string): Promise<{ success: boolean; data?: any; error?: string }> {
-    try {
-      const response = await apiRequest('/api/auth/token', {
-        method: 'POST',
-        body: JSON.stringify({ customerId }),
-      });
-      
-      const { accessToken, refreshToken, customer } = response.data;
-      
-      // Store tokens in cookies
-      Cookies.set(TOKEN_COOKIE_NAME, accessToken, { expires: 1 });
-      Cookies.set(REFRESH_TOKEN_COOKIE_NAME, refreshToken, { expires: 7 });
-      Cookies.set(CUSTOMER_ID_COOKIE_NAME, customerId, { expires: 7 });
-      
-      return { success: true, data: customer };
-    } catch (error: any) {
-      return { 
-        success: false, 
-        error: error.message || 'Login failed' 
-      };
-    }
-  },
-
-  logout() {
-    Cookies.remove(TOKEN_COOKIE_NAME);
-    Cookies.remove(REFRESH_TOKEN_COOKIE_NAME);
-    Cookies.remove(CUSTOMER_ID_COOKIE_NAME);
+  async signOut() {
+    await supabase.auth.signOut();
     window.location.href = '/login';
   },
 
-  getCustomerId(): string | undefined {
-    return Cookies.get(CUSTOMER_ID_COOKIE_NAME);
+  async getUser() {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user;
   },
 
-  isAuthenticated(): boolean {
-    return !!Cookies.get(TOKEN_COOKIE_NAME);
+  async getSession() {
+    const { data: { session } } = await supabase.auth.getSession();
+    return session;
+  },
+
+  async isAuthenticated(): Promise<boolean> {
+    const session = await this.getSession();
+    return !!session;
   },
 };
 
