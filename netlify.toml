@@ -21,6 +21,19 @@
     ".next/*.json",
     ".next/BUILD_ID",
     ".next/package.json",
+    ".next/standalone/**",
+    "!.next/cache/**"
+  ]
+
+# Specific configuration for Next.js functions
+[functions."___netlify-server-handler"]
+  included_files = [
+    ".next/server/**",
+    ".next/static/**", 
+    ".next/*.json",
+    ".next/BUILD_ID",
+    ".next/package.json",
+    ".next/standalone/**",
     "!.next/cache/**"
   ]
 
