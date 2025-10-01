@@ -8,6 +8,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  NEXT_PUBLIC_BACKEND_URL = "https://hs-andru-test.onrender.com"
 
 # Next.js auto-detection - Netlify will automatically detect and configure Next.js
 # No explicit plugin needed for Next.js 15+
