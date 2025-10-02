@@ -56,8 +56,11 @@ export async function GET(request: NextRequest) {
         accessToken: accessToken.substring(0, 20) + '...'
       });
       
-      // Redirect to the full-featured modern-platform customer dashboard
-      return NextResponse.redirect(`${origin}/customer/${customerId}/simplified/dashboard?token=${accessToken}`)
+      // Get the 'next' parameter from the callback URL
+      const next = searchParams.get('next') || '/dashboard'
+      
+      // Redirect to the requested page after successful auth
+      return NextResponse.redirect(`${origin}${next}`)
     }
   }
 
