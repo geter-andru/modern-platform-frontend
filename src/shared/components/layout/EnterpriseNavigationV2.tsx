@@ -33,16 +33,16 @@ interface EnterpriseNavigationV2Props {
 
 const navigationItems = [
   {
-    id: 'icp',
-    label: 'ICP',
-    icon: UserGroupIcon,
-    href: '/icp'
-  },
-  {
     id: 'dashboard',
     label: 'Dashboard',
     icon: HomeIcon,
     href: '/dashboard'
+  },
+  {
+    id: 'icp',
+    label: 'ICP Analysis',
+    icon: UserGroupIcon,
+    href: '/icp'
   },
   {
     id: 'resources',
@@ -51,10 +51,16 @@ const navigationItems = [
     href: '/resources'
   },
   {
+    id: 'business-case',
+    label: 'Business Case',
+    icon: ChartPieIcon,
+    href: '/business-case'
+  },
+  {
     id: 'cost-calculator',
     label: 'Cost Calculator',
     icon: CalculatorIcon,
-    href: '/cost'
+    href: '/cost-calculator'
   },
   {
     id: 'assessment',
