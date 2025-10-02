@@ -1,1 +1,0 @@
-self.__SSG_MANIFEST=new Set(["\u002Fcustomer\u002F[customerId]","\u002Fcustomer\u002F[customerId]\u002Fcost-calculator","\u002Fcustomer\u002F[customerId]\u002Fdashboard","\u002Fcustomer\u002F[customerId]\u002Fdashboard-premium","\u002Fcustomer\u002F[customerId]\u002Ficp"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()

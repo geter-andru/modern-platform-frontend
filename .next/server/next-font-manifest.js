@@ -1,1 +1,0 @@
-self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/Users/geter/andru/hs-andru-test/modern-platform/app/layout\":[\"static/media/bb3ef058b751a6ad-s.p.woff2\",\"static/media/140d7ede024f369d-s.p.woff2\"]},\"appUsingSizeAdjust\":true,\"pagesUsingSizeAdjust\":false}"
