@@ -9,6 +9,8 @@
     "build": "next build",
     "build:secure": "npm run validate && npm run build && npm run validate:build",
     "start": "next start",
+    "types:supabase": "./scripts/generate-supabase-types.sh",
+    "types:check": "tsc --noEmit",
     "validate:config": "node scripts/validate-dev-config.js",
     "lint": "next lint",
     "test": "jest",
