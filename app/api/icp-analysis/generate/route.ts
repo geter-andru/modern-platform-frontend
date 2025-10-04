@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { icpAnalysisService } from '@/app/lib/services/icpAnalysisService';
+import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: NextRequest) {
   try {
@@ -38,6 +39,27 @@ export async function POST(request: NextRequest) {
         { success: false, error: result.error || 'ICP generation failed' },
         { status: 500 }
       );
+    }
+
+    // Save ICP to Supabase customer_assets table
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
+    const { error: saveError } = await supabase
+      .from('customer_assets')
+      .upsert({
+        customer_id: customerId,
+        icp_content: result.data,
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'customer_id'
+      });
+
+    if (saveError) {
+      console.error('❌ Failed to save ICP to database:', saveError);
+      // Don't fail the request, just log the error
     }
 
     return NextResponse.json({
