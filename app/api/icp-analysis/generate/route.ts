@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { icpAnalysisService } from '../../../../lib/services/icpAnalysisService';
+import { icpAnalysisService } from '@/app/lib/services/icpAnalysisService';
 
 export async function POST(request: NextRequest) {
   try {
