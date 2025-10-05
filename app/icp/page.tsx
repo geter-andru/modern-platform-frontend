@@ -87,7 +87,7 @@ export default function ICPPage() {
   
   useEffect(() => {
     if (authLoading) return; // Wait for auth to load
-    
+
     if (!user) {
       router.push('/login');
       return;
@@ -99,7 +99,7 @@ export default function ICPPage() {
       action: 'page_view',
       metadata: { page: 'icp_analysis' }
     });
-  }, [user, authLoading, router, trackAction]);
+  }, [user, authLoading, router]); // trackAction is stable, doesn't need to be in deps
 
   // Handle URL parameters for widget selection
   useEffect(() => {

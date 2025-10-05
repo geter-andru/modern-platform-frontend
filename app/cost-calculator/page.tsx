@@ -20,7 +20,7 @@ export default function CostCalculatorPage() {
   
   useEffect(() => {
     if (authLoading) return; // Wait for auth to load
-    
+
     if (!user) {
       router.push('/login');
       return;
@@ -32,7 +32,7 @@ export default function CostCalculatorPage() {
       action: 'page_view',
       metadata: { page: 'cost_calculator' }
     });
-  }, [user, authLoading, router, trackAction]);
+  }, [user, authLoading, router]); // trackAction is stable, doesn't need to be in deps
 
   if (authLoading) {
     return (
