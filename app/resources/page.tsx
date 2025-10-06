@@ -118,9 +118,21 @@ const MOCK_RESOURCES: Resource[] = [
     dependencies: ['product-details', 'icp-analysis', 'buyer-personas'],
     exportFormats: ['PDF', 'DOCX']
   },
-  // Advanced Tier Resources
   {
     id: '4',
+    title: 'Product Potential Assessment',
+    description: 'Evaluate product-market fit and revenue opportunity based on ICP analysis',
+    tier: 1,
+    category: 'frameworks',
+    status: 'available',
+    lastUpdated: '2025-10-06',
+    accessCount: 0,
+    dependencies: ['product-details', 'icp-analysis'],
+    exportFormats: ['PDF', 'DOCX', 'JSON']
+  },
+  // Advanced Tier Resources
+  {
+    id: '5',
     title: 'Advanced Sales Methodologies',
     description: 'Systematic prospecting and qualification frameworks',
     tier: 2,
@@ -133,7 +145,7 @@ const MOCK_RESOURCES: Resource[] = [
   },
   // Strategic Tier Resources
   {
-    id: '5',
+    id: '6',
     title: 'Strategic Market Positioning',
     description: 'Enterprise-level market analysis and positioning strategies',
     tier: 3,

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Package, 
-  Edit, 
-  Save, 
-  RefreshCw, 
-  Target, 
-  TrendingUp, 
-  Users, 
-  DollarSign, 
-  CheckCircle, 
+import {
+  Package,
+  Edit,
+  Save,
+  RefreshCw,
+  Target,
+  TrendingUp,
+  Users,
+  DollarSign,
+  CheckCircle,
   AlertTriangle,
   Star,
   Award,
@@ -21,6 +21,8 @@ import {
   Brain,
   ArrowRight
 } from 'lucide-react'
+import { useSupabaseAuth } from '../../../shared/hooks/useSupabaseAuth'
+import { createClient } from '@supabase/supabase-js'
 
 interface ProductDetails {
   name: string
@@ -61,9 +63,10 @@ interface ProductHistoryItem {
   createdAt: string
 }
 
-export default function ProductDetailsWidget({ 
-  className = '' 
+export default function ProductDetailsWidget({
+  className = ''
 }: ProductDetailsWidgetProps) {
+  const { user, loading: authLoading } = useSupabaseAuth()
   const [productDetails, setProductDetails] = useState<ProductDetails | null>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -88,6 +91,11 @@ export default function ProductDetailsWidget({
       return
     }
 
+    if (!user) {
+      setErrors({ general: 'User not authenticated' })
+      return
+    }
+
     setIsSaving(true)
     try {
       // Save product details to user's profile
@@ -96,14 +104,14 @@ export default function ProductDetailsWidget({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           productData: formData,
-          customerId: 'current-user' // TODO: Get from auth context
+          customerId: user.id
         })
       })
-      
+
       if (!response.ok) {
         throw new Error('Failed to save product details')
       }
-      
+
       setIsEditing(false)
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
@@ -118,10 +126,12 @@ export default function ProductDetailsWidget({
   }
 
   const handleRefresh = async () => {
+    if (!user) return
+
     try {
       // Load user's saved products
-      const response = await fetch('/api/products/history?customerId=current-user')
-      
+      const response = await fetch(`/api/products/history?customerId=${user.id}`)
+
       if (response.ok) {
         const history = await response.json()
         setProductHistory(history)
@@ -148,7 +158,7 @@ export default function ProductDetailsWidget({
   const handleGenerateICP = async () => {
     setIsGenerating(true)
     setErrors({})
-    
+
     try {
       // Validate form
       const newErrors: FormErrors = {}
@@ -156,41 +166,64 @@ export default function ProductDetailsWidget({
       if (!formData.productDescription.trim()) newErrors.productDescription = 'Product description is required'
       if (!formData.distinguishingFeature.trim()) newErrors.distinguishingFeature = 'Distinguishing feature is required'
       if (!formData.businessModel) newErrors.businessModel = 'Business model is required'
-      
+
       if (Object.keys(newErrors).length > 0) {
         setErrors(newErrors)
         return
       }
 
+      if (!user) {
+        setErrors({ general: 'User not authenticated' })
+        return
+      }
+
       console.log('🚀 Starting real ICP generation for:', formData.productName)
-      
-      // Call the real ICP generation API
-      const response = await fetch('/api/icp-analysis/generate', {
+
+      // Get Supabase session for authorization
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      )
+      const { data: { session } } = await supabase.auth.getSession()
+
+      if (!session) {
+        throw new Error('No active session')
+      }
+
+      // Call the backend Express API for real AI-powered ICP generation
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'
+      const response = await fetch(`${backendUrl}/api/customer/${user.id}/generate-icp`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
         body: JSON.stringify({
-          productData: {
-            productName: formData.productName.trim(),
-            productDescription: formData.productDescription.trim(),
+          industry: 'Technology', // TODO: Get from form or user profile
+          companySize: 'medium',
+          currentChallenges: ['scalability', 'efficiency'],
+          goals: ['increase revenue', 'improve operations'],
+          productInfo: {
+            name: formData.productName.trim(),
+            description: formData.productDescription.trim(),
             distinguishingFeature: formData.distinguishingFeature.trim(),
             businessModel: formData.businessModel
-          },
-          customerId: 'current-user' // TODO: Get from auth context
+          }
         })
       })
-      
+
       if (!response.ok) {
         const errorData = await response.json()
         throw new Error(errorData.error || 'Failed to generate ICP analysis')
       }
-      
+
       const result = await response.json()
-      
+
       if (!result.success) {
         throw new Error(result.error || 'ICP generation failed')
       }
-      
-      console.log('✅ ICP Analysis generated successfully:', result.data)
+
+      console.log('✅ ICP Analysis generated successfully with real AI:', result.data)
       
       // Update product details with generated data
       const generatedProductDetails: ProductDetails = {
