@@ -50,3 +50,5 @@ export async function isAuthenticated(): Promise<boolean> {
   const token = await getAuthToken();
   return token.length > 0;
 }
+
+
