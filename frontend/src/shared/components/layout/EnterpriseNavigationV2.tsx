@@ -5,27 +5,28 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
-  MagnifyingGlassIcon,
-  PlusIcon,
-  ChartBarIcon,
-  CalculatorIcon,
-  ArrowTrendingUpIcon,
-  ArrowDownTrayIcon,
-  UserGroupIcon,
-  ClockIcon,
-  BoltIcon,
-  BellIcon,
-  Cog6ToothIcon,
-  UserCircleIcon,
-  ChevronRightIcon,
-  HomeIcon,
-  DocumentTextIcon,
-  ChartPieIcon,
-  SunIcon,
-  MoonIcon,
-} from '@heroicons/react/24/outline';
+  Search as MagnifyingGlassIcon,
+  Plus as PlusIcon,
+  BarChart3 as ChartBarIcon,
+  Calculator as CalculatorIcon,
+  TrendingUp as ArrowTrendingUpIcon,
+  Download as ArrowDownTrayIcon,
+  Users as UserGroupIcon,
+  Clock as ClockIcon,
+  Zap as BoltIcon,
+  Bell as BellIcon,
+  Settings as Cog6ToothIcon,
+  UserCircle as UserCircleIcon,
+  ChevronRight as ChevronRightIcon,
+  Home as HomeIcon,
+  FileText as DocumentTextIcon,
+  PieChart as ChartPieIcon,
+  Sun as SunIcon,
+  Moon as MoonIcon,
+} from 'lucide-react';
 import { useLogout } from '@/lib/hooks/useAPI';
 import { useTheme } from '@/src/shared/components/theme/ThemeProvider';
+import { useSupabaseAuth } from '@/src/shared/hooks/useSupabaseAuth';
 
 interface EnterpriseNavigationV2Props {
   children: React.ReactNode;
@@ -33,16 +34,16 @@ interface EnterpriseNavigationV2Props {
 
 const navigationItems = [
   {
-    id: 'icp',
-    label: 'ICP',
-    icon: UserGroupIcon,
-    href: '/icp'
-  },
-  {
     id: 'dashboard',
     label: 'Dashboard',
     icon: HomeIcon,
     href: '/dashboard'
+  },
+  {
+    id: 'icp',
+    label: 'ICP Analysis',
+    icon: UserGroupIcon,
+    href: '/icp'
   },
   {
     id: 'resources',
@@ -51,10 +52,16 @@ const navigationItems = [
     href: '/resources'
   },
   {
+    id: 'business-case',
+    label: 'Business Case',
+    icon: ChartPieIcon,
+    href: '/business-case'
+  },
+  {
     id: 'cost-calculator',
     label: 'Cost Calculator',
     icon: CalculatorIcon,
-    href: '/cost'
+    href: '/cost-calculator'
   },
   {
     id: 'assessment',
@@ -120,6 +127,7 @@ export function EnterpriseNavigationV2({ children }: EnterpriseNavigationV2Props
   const router = useRouter();
   const pathname = usePathname();
   const logout = useLogout();
+  const { user } = useSupabaseAuth();
   const [activeItem, setActiveItem] = useState('dashboard');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -209,7 +217,7 @@ export function EnterpriseNavigationV2({ children }: EnterpriseNavigationV2Props
             <div className="absolute inset-0 bg-gradient-to-r from-brand-accent/5 to-brand-primary/5"></div>
             <div className="relative">
             <div className="flex items-center justify-between text-xs text-text-muted mb-3">
-              <span>Customer ID: CUST_2</span>
+              <span>Customer ID: {user?.id ? user.id.slice(0, 8) + '...' : 'Loading...'}</span>
               <div className="flex items-center">
                 <div className="w-2 h-2 bg-accent-success rounded-full mr-1"></div>
                 <span className="text-text-primary">Live</span>

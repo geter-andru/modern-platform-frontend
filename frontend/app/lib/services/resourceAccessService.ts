@@ -291,10 +291,19 @@ class ResourceAccessService implements IResourceAccessService {
 
   private async updateResourceAccessCount(resourceId: string): Promise<void> {
     const supabase = await this.getSupabaseClient();
+
+    // First get current access_count
+    const { data: resource } = await supabase
+      .from('resources')
+      .select('access_count')
+      .eq('id', resourceId)
+      .single();
+
+    // Then increment it
     const { error } = await supabase
       .from('resources')
       .update({
-        access_count: supabase.raw('access_count + 1'),
+        access_count: (resource?.access_count || 0) + 1,
         last_accessed: new Date().toISOString()
       })
       .eq('id', resourceId);

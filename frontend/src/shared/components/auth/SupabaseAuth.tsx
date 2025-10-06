@@ -50,7 +50,7 @@ const SupabaseAuth: React.FC<SupabaseAuthProps> = ({ redirectTo = '/icp' }) => {
       const { data, error } = await supabaseClient.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}${redirectTo}`
+          redirectTo: `${window.location.origin}/auth/callback?next=${redirectTo}`
         }
       });
       

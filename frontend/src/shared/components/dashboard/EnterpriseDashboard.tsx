@@ -2,17 +2,17 @@
 
 import React from 'react';
 import {
-  ChartBarIcon,
-  ClockIcon,
-  BoltIcon,
-  ArrowTrendingUpIcon,
-  ChartPieIcon,
-  UserGroupIcon,
-  DocumentTextIcon,
-  CalculatorIcon,
-  CheckCircleIcon,
-  LockClosedIcon,
-} from '@heroicons/react/24/outline';
+  BarChart3 as ChartBarIcon,
+  Clock as ClockIcon,
+  Zap as BoltIcon,
+  TrendingUp as ArrowTrendingUpIcon,
+  PieChart as ChartPieIcon,
+  Users as UserGroupIcon,
+  FileText as DocumentTextIcon,
+  Calculator as CalculatorIcon,
+  CheckCircle as CheckCircleIcon,
+  Lock as LockClosedIcon,
+} from 'lucide-react';
 
 const CircularProgress = ({ percentage }: { percentage: number }) => {
   const radius = 45;

@@ -1,251 +1,185 @@
-# H&S Revenue Intelligence Platform
+# H&S Platform - Development Tools
 
-AI-powered revenue optimization and business intelligence platform for technical founders and revenue teams.
+This directory contains development utilities and protocols for the H&S Platform.
 
-## Overview
+## 🧹 Server Cleanup Protocol
 
-The H&S Platform is a comprehensive revenue intelligence solution that combines:
-- **ICP Analysis**: AI-powered ideal customer profiling and segmentation
-- **Cost Calculator**: Financial impact analysis of delayed decision-making
-- **Business Case Builder**: Automated proposal and ROI documentation
-- **Progress Tracking**: Real-time milestone and achievement monitoring
-- **Export Capabilities**: Professional reports and presentations
+### Overview
+The cleanup protocol ensures all background processes and servers are killed completely before starting new deployment processes. This prevents port conflicts and ensures a clean environment.
 
-## Tech Stack
+### Files
+- **`cleanup-servers.js`** - Node.js version with advanced features
+- **`cleanup-servers.sh`** - Shell script version for quick execution
 
-### Frontend
-- **Next.js 15**: React framework with App Router
-- **TypeScript**: Type-safe development
-- **Tailwind CSS**: Utility-first styling
-- **Framer Motion**: Smooth animations
-- **React Query**: State management and caching
-- **React Hook Form**: Form handling and validation
+### Usage
 
-### Backend API
-- **Node.js**: Runtime environment
-- **Express**: Web framework
-- **Airtable SDK**: Database integration
-- **JWT**: Authentication
-- **Make.com**: Automation workflows
-- **Claude API**: AI-powered insights
-
-## Getting Started
-
-### Prerequisites
-- Node.js 18+ and npm
-- Airtable account and API key
-- Claude API key (optional, for AI features)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/geter-andru/hs-andru-v1.git
-   cd hs-andru-v1
-   ```
-
-2. **Install frontend dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Install backend dependencies**
-   ```bash
-   cd ../hs-platform-api
-   npm install
-   ```
-
-4. **Environment Setup**
-   ```bash
-   # Frontend (.env.local)
-   NEXT_PUBLIC_API_URL=http://localhost:3001
-   
-   # Backend (.env)
-   AIRTABLE_API_KEY=your_airtable_api_key
-   AIRTABLE_BASE_ID=your_base_id
-   JWT_SECRET=your_jwt_secret
-   CLAUDE_API_KEY=your_claude_api_key (optional)
-   MAKE_API_TOKEN=your_make_token (optional)
-   ```
-
-### Development
-
-1. **Start the backend server**
-   ```bash
-   cd hs-platform-api
-   npm start
-   # Server runs on http://localhost:3001
-   ```
-
-2. **Start the frontend development server**
-   ```bash
-   npm run dev
-   # Frontend runs on http://localhost:3000
-   ```
-
-3. **Access the application**
-   - Frontend: http://localhost:3000
-   - API Documentation: http://localhost:3001/api/docs
-   - Health Check: http://localhost:3001/health
-
-### Demo Credentials
-- Customer ID: `CUST_2`
-
-## Features
-
-### 🎯 ICP Analysis
-- Multi-step customer profiling form
-- AI-enhanced segment scoring
-- Visual results with recommendations
-- Historical analysis tracking
-
-### 💰 Cost Calculator
-- Revenue impact assessment
-- Operational efficiency analysis
-- Competitive disadvantage modeling
-- Scenario-based projections
-
-### 📊 Dashboard
-- Real-time progress overview
-- Milestone tracking
-- AI-powered insights
-- Quick action navigation
-
-### 🚀 Progress Tracking
-- Automated milestone detection
-- Achievement notifications
-- Performance analytics
-- Goal setting and monitoring
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/token` - Generate access token
-- `POST /api/auth/refresh` - Refresh token
-
-### Customer Management
-- `GET /api/customer/:id` - Get customer details
-- `GET /api/customer/:id/icp` - Get ICP analysis
-- `POST /api/customer/:id/generate-icp` - Generate AI ICP
-
-### Cost Calculator
-- `POST /api/cost-calculator/calculate` - Basic calculation
-- `POST /api/cost-calculator/calculate-ai` - AI-enhanced calculation
-- `GET /api/cost-calculator/history/:id` - Calculation history
-
-### Business Case
-- `POST /api/business-case/generate` - Generate business case
-- `GET /api/business-case/templates` - Get templates
-- `GET /api/business-case/:id/history` - Case history
-
-### Progress Tracking
-- `GET /api/progress/:id` - Get progress data
-- `POST /api/progress/:id/track` - Track action
-- `GET /api/progress/:id/milestones` - Get milestones
-
-### Export
-- `POST /api/export/icp` - Export ICP analysis
-- `POST /api/export/cost-calculator` - Export calculations
-- `POST /api/export/comprehensive` - Export full report
-
-## Validation System
-
-The platform includes a comprehensive validation pipeline to ensure code quality, security, and compatibility.
-
-### Validation Pipeline
-
-Run the complete validation suite:
+#### Node.js Version (Recommended)
 ```bash
-npm run validate
+# Full cleanup
+node dev/cleanup-servers.js
+
+# Show help
+node dev/cleanup-servers.js --help
+
+# Show system status only
+node dev/cleanup-servers.js --status
+
+# Clean specific components
+node dev/cleanup-servers.js --ports
+node dev/cleanup-servers.js --processes
+node dev/cleanup-servers.js --files
 ```
 
-### Validation Components
-
-#### 🔒 Security Validation
-- **Secret Detection**: Scans for exposed API keys and sensitive data
-- **Next.js Security**: Validates security best practices
-- **Environment Variables**: Ensures proper configuration
-
-#### 🔧 Compatibility Validation
-- **Next.js 15**: Framework compatibility checks
-- **React 19**: Component structure validation
-- **TypeScript**: Type safety verification
-- **App Router**: Routing structure validation
-
-#### 🌐 Deployment Validation
-- **Netlify**: Deployment configuration checks
-- **Environment**: Production environment validation
-- **Build Artifacts**: Build output verification
-
-#### 🌪️ Chaos Testing
-- **Load Testing**: 75 concurrent user simulation
-- **Memory Leaks**: Resource usage monitoring
-- **Error Handling**: Stress testing and graceful degradation
-- **Performance**: Response time and throughput analysis
-
-### Validation Agents
-
-The system includes specialized validation agents:
-
-- **Security Scanner** (`lib/validation/agents/security/`)
-- **Build Validator** (`lib/validation/agents/build/`)
-- **Compatibility Checker** (`lib/validation/agents/compatibility/`)
-- **Netlify Deployer** (`lib/validation/agents/netlify/`)
-
-### Validation Context
-
-The platform maintains a validation context file (`H_S_VALIDATION_CONTEXT.json`) that tracks:
-- Current validation status
-- Feature implementation state
-- Integration points
-- Deployment readiness
-
-## Deployment
-
-### Production Build
+#### Shell Version
 ```bash
-# Frontend
-npm run build
-npm start
+# Full cleanup
+./dev/cleanup-servers.sh
 
-# Backend
-npm run build (if applicable)
-npm start
+# Show help
+./dev/cleanup-servers.sh --help
+
+# Show system status only
+./dev/cleanup-servers.sh --status
+
+# Clean specific components
+./dev/cleanup-servers.sh --ports
+./dev/cleanup-servers.sh --processes
+./dev/cleanup-servers.sh --files
 ```
 
-### Pre-Deployment Validation
-```bash
-# Run full validation before deployment
-npm run validate
+### What It Cleans Up
 
-# Check specific components
-npm run validate:security
-npm run validate:compatibility
-npm run validate:netlify
+#### 🔌 Ports
+- 3000, 3001, 3002, 3003, 3004 (Development servers)
+- 5000, 5001 (API servers)
+- 8000, 8080, 9000 (Additional services)
+
+#### ⚙️ Processes
+- `node` - Node.js processes
+- `npm` - NPM processes
+- `yarn` - Yarn processes
+- `pnpm` - PNPM processes
+- `next` - Next.js development servers
+- `nodemon` - Nodemon processes
+
+#### 🗑️ Temporary Files
+- `.next` - Next.js build cache
+- `out` - Static export output
+- `build` - Build directories
+- `dist` - Distribution directories
+- `logs` - Log directories
+- `*.log` - Log files
+- `*.pid` - Process ID files
+- `.env.local` - Local environment files
+- `.env.production` - Production environment files
+
+#### 🔓 Lock Files
+- `package-lock.json` - NPM lock files
+- `yarn.lock` - Yarn lock files
+- `pnpm-lock.yaml` - PNPM lock files
+- `.next/cache` - Next.js cache
+
+### Integration with Deployment
+
+#### Before Deployment
+```bash
+# Clean up before starting deployment
+node dev/cleanup-servers.js
+
+# Then proceed with deployment
+npm run deploy
 ```
 
-### Environment Variables
-Ensure all production environment variables are configured:
-- Database credentials
-- API keys
-- JWT secrets
-- External service tokens
+#### In CI/CD Pipeline
+```bash
+# Add to deployment scripts
+./dev/cleanup-servers.sh --ports --processes
+```
 
-## Contributing
+#### Manual Cleanup
+```bash
+# When you have port conflicts or stuck processes
+node dev/cleanup-servers.js
+```
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Safety Features
 
-## License
+- **Non-destructive**: Only kills development processes, not system processes
+- **Port-specific**: Only targets known development ports
+- **Process-specific**: Only targets known development processes
+- **File-safe**: Only removes temporary and cache files
+- **Error handling**: Continues even if some operations fail
+- **Status reporting**: Shows what was cleaned up
 
-This project is proprietary software. All rights reserved.
+### Troubleshooting
 
-## Support
+#### Port Still Occupied
+```bash
+# Check what's using the port
+lsof -i:3000
 
-For support and questions:
-- Documentation: See inline code comments
-- Issues: GitHub Issues tab
-- Contact: [Your contact information]
+# Force kill if needed
+kill -9 $(lsof -ti:3000)
+```
+
+#### Process Won't Die
+```bash
+# Check process details
+ps aux | grep node
+
+# Force kill if needed
+kill -9 <PID>
+```
+
+#### Permission Issues
+```bash
+# Make script executable
+chmod +x dev/cleanup-servers.sh
+
+# Run with sudo if needed (be careful!)
+sudo ./dev/cleanup-servers.sh
+```
+
+### Best Practices
+
+1. **Always run cleanup before deployment**
+2. **Use the Node.js version for better error handling**
+3. **Check status after cleanup to verify success**
+4. **Run cleanup when switching between projects**
+5. **Use specific flags for targeted cleanup**
+
+### Integration Examples
+
+#### Package.json Scripts
+```json
+{
+  "scripts": {
+    "cleanup": "node dev/cleanup-servers.js",
+    "deploy": "npm run cleanup && npm run build && npm run deploy:netlify",
+    "dev:clean": "npm run cleanup && npm run dev"
+  }
+}
+```
+
+#### Pre-deployment Hook
+```bash
+#!/bin/bash
+# pre-deploy.sh
+echo "🧹 Cleaning up before deployment..."
+node dev/cleanup-servers.js
+echo "✅ Cleanup complete, starting deployment..."
+```
+
+### Support
+
+If you encounter issues with the cleanup protocol:
+
+1. Check the console output for specific error messages
+2. Verify you have the necessary permissions
+3. Try running with `--status` to see current system state
+4. Use specific flags to isolate the problem
+5. Check the troubleshooting section above
+
+---
+
+**Note**: This cleanup protocol is designed for development environments. Use caution in production environments and always test in development first.

@@ -2,13 +2,13 @@
 
 import { motion } from 'framer-motion';
 import {
-  ChartBarIcon,
-  TrophyIcon,
-  ExclamationTriangleIcon,
-  ArrowDownTrayIcon,
-  SparklesIcon,
-  PresentationChartLineIcon,
-} from '@heroicons/react/24/outline';
+  BarChart3 as ChartBarIcon,
+  Trophy as TrophyIcon,
+  AlertTriangle as ExclamationTriangleIcon,
+  Download as ArrowDownTrayIcon,
+  Sparkles as SparklesIcon,
+  PresentationChart as PresentationChartLineIcon,
+} from 'lucide-react';
 import { useExportData } from '@/lib/hooks/useAPI';
 
 interface ICPSegment {

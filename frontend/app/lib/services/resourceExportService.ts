@@ -259,7 +259,8 @@ class ResourceExportService implements IResourceExportService {
     resourceId: string,
     format: ExportFormat
   ): Promise<ResourceExport> {
-    const { data: exportRecord, error } = await this.supabase
+    const supabase = await this.getSupabaseClient();
+    const { data: exportRecord, error } = await supabase
       .from('resource_exports')
       .insert({
         customer_id: customerId,
@@ -278,7 +279,8 @@ class ResourceExportService implements IResourceExportService {
     exportId: string,
     updates: Partial<ResourceExport>
   ): Promise<ResourceExport> {
-    const { data: exportRecord, error } = await this.supabase
+    const supabase = await this.getSupabaseClient();
+    const { data: exportRecord, error } = await supabase
       .from('resource_exports')
       .update(updates)
       .eq('id', exportId)

@@ -194,6 +194,12 @@ export function DataTable<T extends Record<string, any>>({
       )
     ].join('\n');
 
+    // Check if running in browser environment
+    if (typeof window === 'undefined' || !window.Blob || !window.URL) {
+      console.warn('CSV export not available in server environment');
+      return;
+    }
+
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');

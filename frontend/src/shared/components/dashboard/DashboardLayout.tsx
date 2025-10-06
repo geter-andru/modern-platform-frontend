@@ -5,17 +5,17 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
-  HomeIcon,
-  UserGroupIcon,
-  CalculatorIcon,
-  DocumentChartBarIcon,
-  ChartBarIcon,
-  ArrowDownTrayIcon,
-  Cog6ToothIcon,
-  ArrowLeftOnRectangleIcon,
-  Bars3Icon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline';
+  Home as HomeIcon,
+  Users as UserGroupIcon,
+  Calculator as CalculatorIcon,
+  FileBarChart as DocumentChartBarIcon,
+  BarChart3 as ChartBarIcon,
+  Download as ArrowDownTrayIcon,
+  Settings as Cog6ToothIcon,
+  LogOut as ArrowLeftOnRectangleIcon,
+  Menu as Bars3Icon,
+  X as XMarkIcon,
+} from 'lucide-react';
 import { useLogout } from '@/lib/hooks/useAPI';
 
 interface DashboardLayoutProps {

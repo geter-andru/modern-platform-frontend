@@ -5,9 +5,11 @@
  */
 
 // Core services
-export { resourceGenerationService } from '../resourceGenerationService';
-export { resourceExportService } from '../resourceExportService';
-export { resourceAccessService } from '../resourceAccessService';
+import { resourceGenerationService } from '../resourceGenerationService';
+import { resourceExportService } from '../resourceExportService';
+import { resourceAccessService } from '../resourceAccessService';
+
+export { resourceGenerationService, resourceExportService, resourceAccessService };
 
 // Re-export types for convenience
 export type {

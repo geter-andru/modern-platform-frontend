@@ -8,16 +8,16 @@ import { ContextualHelp } from './ContextualHelp'
 import { NotificationsPanel } from './NotificationsPanel'
 import { ToolUnlockStatus } from './ToolUnlockStatus'
 import { 
-  Bars3Icon, 
-  XMarkIcon,
-  BellIcon,
-  QuestionMarkCircleIcon,
-  ChartBarIcon,
-  TrophyIcon,
-  StarIcon,
-  CogIcon,
-  UserGroupIcon
-} from '@heroicons/react/24/outline'
+  Menu as Bars3Icon, 
+  X as XMarkIcon,
+  Bell as BellIcon,
+  HelpCircle as QuestionMarkCircleIcon,
+  BarChart3 as ChartBarIcon,
+  Trophy as TrophyIcon,
+  Star as StarIcon,
+  Settings as CogIcon,
+  Users as UserGroupIcon
+} from 'lucide-react'
 
 interface EnhancedDashboardLayoutProps {
   children: React.ReactNode

@@ -6,13 +6,13 @@ import React from 'react'
 import { CompetencyAnalytics } from '../types/competency'
 
 import { 
-  ChartBarIcon,
-  ArrowTrendingUpIcon as TrendingUpIcon,
-  ArrowTrendingDownIcon as TrendingDownIcon,
-  MinusIcon,
-  TrophyIcon,
-  StarIcon
-} from '@heroicons/react/24/outline'
+  BarChart3 as ChartBarIcon,
+  TrendingUp as TrendingUpIcon,
+  TrendingDown as TrendingDownIcon,
+  Minus as MinusIcon,
+  Trophy as TrophyIcon,
+  Star as StarIcon
+} from 'lucide-react'
 
 interface ProgressTrackingProps {
   progressSummary: {

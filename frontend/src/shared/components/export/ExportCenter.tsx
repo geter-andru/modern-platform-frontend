@@ -3,15 +3,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  DocumentArrowDownIcon,
-  DocumentTextIcon,
-  TableCellsIcon,
-  PresentationChartBarIcon,
-  CloudArrowDownIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  ClockIcon,
-} from '@heroicons/react/24/outline';
+  Download as DocumentArrowDownIcon,
+  FileText as DocumentTextIcon,
+  Table2 as TableCellsIcon,
+  Monitor as PresentationChartBarIcon,
+  CloudDownload as CloudArrowDownIcon,
+  CheckCircle as CheckCircleIcon,
+  AlertTriangle as ExclamationTriangleIcon,
+  Clock as ClockIcon,
+} from 'lucide-react';
 
 interface ExportFormat {
   id: string;
@@ -95,6 +95,12 @@ export function ExportCenter({ customerId, onExport }: ExportCenterProps) {
       // Simulate file download
       const format = exportFormats.find(f => f.id === formatId);
       if (format) {
+        // Check if running in browser environment
+        if (typeof window === 'undefined' || !window.Blob || !window.URL) {
+          console.warn('Export not available in server environment');
+          return;
+        }
+
         const blob = new Blob(['Export content'], { type: 'application/octet-stream' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');

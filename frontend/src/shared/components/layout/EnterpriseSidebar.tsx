@@ -5,23 +5,23 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  HomeIcon,
-  UserGroupIcon,
-  CalculatorIcon,
-  ChartBarIcon,
-  ArrowDownTrayIcon,
-  Cog6ToothIcon,
-  ArrowLeftOnRectangleIcon,
-  XMarkIcon,
-  PlusIcon,
-  MagnifyingGlassIcon,
-  ClockIcon,
-  TrophyIcon,
-  SparklesIcon,
-  BellIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from '@heroicons/react/24/outline';
+  Home as HomeIcon,
+  Users as UserGroupIcon,
+  Calculator as CalculatorIcon,
+  BarChart3 as ChartBarIcon,
+  Download as ArrowDownTrayIcon,
+  Settings as Cog6ToothIcon,
+  LogOut as ArrowLeftOnRectangleIcon,
+  X as XMarkIcon,
+  Plus as PlusIcon,
+  Search as MagnifyingGlassIcon,
+  Clock as ClockIcon,
+  Trophy as TrophyIcon,
+  Sparkles as SparklesIcon,
+  Bell as BellIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+} from 'lucide-react';
 import { useLogout } from '@/lib/hooks/useAPI';
 
 interface EnterpriseSidebarProps {

@@ -23,7 +23,7 @@ exports.handler = async (event, context) => {
 
   // Airtable configuration
   const AIRTABLE_BASE_ID = 'app0jJkgTCqn46vp9';
-  const AIRTABLE_API_KEY = 'pat5kFmJsBxfL5Yqr.f44840b8b82995ec43ac998191c43f19d0471c9550d0fea9e0327cc4f4aa4815';
+  const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY || '';
   const AIRTABLE_TABLE = 'tblQl6DpGJNKKeQHu';
   
   // Build the Airtable API URL

@@ -1,13 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Development configuration - no static export
-  // output: 'export', // Disabled for development to allow middleware
+  // Configuration optimized for Netlify deployment
+  // No explicit output mode - let Netlify handle the deployment type
   
-  // Trailing slash disabled for development (APIs don't use trailing slashes)
+  // Trailing slash disabled for API compatibility
   trailingSlash: false,
   
-  // Image optimization enabled for development
+  // Image optimization enabled for hybrid mode
   images: {
     unoptimized: false
   },
@@ -28,9 +28,37 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true  // MVP: Skip ESLint warnings to get live faster
   },
   
+  // Server external packages (moved from experimental)
+  serverExternalPackages: [
+    '@supabase/supabase-js',
+    '@supabase/ssr'
+  ],
+  
   // Experimental features
   experimental: {
     esmExternals: true
+  },
+  
+  // Webpack configuration to reduce bundle size
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Externalize large dependencies for server
+      config.externals = config.externals || [];
+      config.externals.push({
+        'canvas': 'canvas',
+        'bufferutil': 'bufferutil',
+        'utf-8-validate': 'utf-8-validate',
+      });
+    }
+    
+    // Tree shaking optimization
+    config.optimization = {
+      ...config.optimization,
+      usedExports: true,
+      sideEffects: false
+    };
+    
+    return config;
   }
 };
 

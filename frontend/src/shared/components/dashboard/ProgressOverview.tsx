@@ -2,11 +2,11 @@
 
 import { motion } from 'framer-motion';
 import {
-  ChartBarIcon,
-  TrophyIcon,
-  ClockIcon,
-  FireIcon,
-} from '@heroicons/react/24/outline';
+  BarChart3 as ChartBarIcon,
+  Trophy as TrophyIcon,
+  Clock as ClockIcon,
+  Flame as FireIcon,
+} from 'lucide-react';
 
 interface ProgressData {
   overallScore: number;

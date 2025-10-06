@@ -86,7 +86,7 @@ class BusinessCaseService {
   private apiKey: string;
 
   constructor() {
-    this.baseUrl = process.env.BACKEND_API_URL || 'http://localhost:3001';
+    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
     this.apiKey = process.env.BACKEND_API_KEY || '';
   }
 

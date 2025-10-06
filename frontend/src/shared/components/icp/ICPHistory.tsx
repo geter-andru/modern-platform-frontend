@@ -3,12 +3,12 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  ClockIcon,
-  EyeIcon,
-  ArrowDownTrayIcon,
-  TrashIcon,
-  ChartBarIcon,
-} from '@heroicons/react/24/outline';
+  Clock as ClockIcon,
+  Eye as EyeIcon,
+  Download as ArrowDownTrayIcon,
+  Trash2 as TrashIcon,
+  BarChart3 as ChartBarIcon,
+} from 'lucide-react';
 
 interface ICPHistoryItem {
   id: string;

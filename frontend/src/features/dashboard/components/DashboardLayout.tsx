@@ -10,12 +10,12 @@ import { ContextualHelp } from './ContextualHelp'
 import { NotificationsPanel } from './NotificationsPanel'
 import { ToolUnlockStatus } from './ToolUnlockStatus'
 import { 
-  Bars3Icon, 
-  XMarkIcon,
-  BellIcon,
-  QuestionMarkCircleIcon,
-  ChartBarIcon
-} from '@heroicons/react/24/outline'
+  Menu as Bars3Icon, 
+  X as XMarkIcon,
+  Bell as BellIcon,
+  HelpCircle as QuestionMarkCircleIcon,
+  BarChart3 as ChartBarIcon
+} from 'lucide-react'
 
 interface DashboardLayoutProps {
   children: React.ReactNode

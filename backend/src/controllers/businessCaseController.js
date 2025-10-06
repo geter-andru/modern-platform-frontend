@@ -1,4 +1,5 @@
-import airtableService from '../services/airtableService.js';
+import supabaseDataService from '../services/supabaseDataService.js';
+import airtableService from '../services/airtableService.js'; // Keep as fallback
 import logger from '../utils/logger.js';
 
 const businessCaseController = {
@@ -19,7 +20,7 @@ const businessCaseController = {
       logger.info(`Generating ${caseType} business case for customer ${customerId}`);
 
       // Get existing customer data for context
-      const customer = await airtableService.getCustomerById(customerId);
+      const customer = await supabaseDataService.getCustomerById(customerId);
       if (!customer) {
         return res.status(404).json({
           success: false,
@@ -143,14 +144,14 @@ const businessCaseController = {
       };
 
       // Save business case to customer record
-      await airtableService.updateCustomer(customerId, {
+      await supabaseDataService.updateCustomer(customerId, {
         'Business Case Content': JSON.stringify(businessCase),
         'Content Status': 'Ready',
         'Last Accessed': new Date().toISOString()
       });
 
       // Create user progress record
-      await airtableService.createUserProgress(customerId, 'Business Case Builder', {
+      await supabaseDataService.updateUserProgress(customerId, 'business_case', {
         caseType,
         industry,
         companySize,
@@ -177,8 +178,8 @@ const businessCaseController = {
       const { customerId } = req.params;
       
       logger.info(`Fetching business case for customer ${customerId}`);
-      
-      const customer = await airtableService.getCustomerById(customerId);
+
+      const customer = await supabaseDataService.getCustomerById(customerId);
       
       if (!customer) {
         return res.status(404).json({
@@ -217,8 +218,8 @@ const businessCaseController = {
   async customizeBusinessCase(req, res) {
     try {
       const { customerId, businessCaseId, customizations } = req.body;
-      
-      const customer = await airtableService.getCustomerById(customerId);
+
+      const customer = await supabaseDataService.getCustomerById(customerId);
       if (!customer) {
         return res.status(404).json({
           success: false,
@@ -254,8 +255,8 @@ const businessCaseController = {
       });
 
       businessCases[businessCaseId] = businessCase;
-      
-      await airtableService.updateCustomer(customerId, {
+
+      await supabaseDataService.updateCustomer(customerId, {
         'Business Case Content': JSON.stringify(businessCases)
       });
 
@@ -279,8 +280,8 @@ const businessCaseController = {
   async saveBusinessCase(req, res) {
     try {
       const { customerId, businessCase } = req.body;
-      
-      const customer = await airtableService.getCustomerById(customerId);
+
+      const customer = await supabaseDataService.getCustomerById(customerId);
       if (!customer) {
         return res.status(404).json({
           success: false,
@@ -305,7 +306,7 @@ const businessCaseController = {
         createdAt: new Date().toISOString()
       };
 
-      await airtableService.updateCustomer(customerId, {
+      await supabaseDataService.updateCustomer(customerId, {
         'Business Case Content': JSON.stringify(businessCases)
       });
 
@@ -327,8 +328,8 @@ const businessCaseController = {
   async exportBusinessCase(req, res) {
     try {
       const { customerId, businessCaseId, format } = req.body;
-      
-      const customer = await airtableService.getCustomerById(customerId);
+
+      const customer = await supabaseDataService.getCustomerById(customerId);
       if (!customer) {
         return res.status(404).json({
           success: false,
@@ -426,8 +427,8 @@ const businessCaseController = {
   async getBusinessCaseHistory(req, res) {
     try {
       const { customerId } = req.params;
-      
-      const customer = await airtableService.getCustomerById(customerId);
+
+      const customer = await supabaseDataService.getCustomerById(customerId);
       if (!customer) {
         return res.status(404).json({
           success: false,
@@ -458,6 +459,137 @@ const businessCaseController = {
     } catch (error) {
       logger.error(`Error fetching business case history:`, error);
       throw error;
+    }
+  },
+
+  // Generate simplified one-page business case for MVP
+  async generateSimplifiedBusinessCase(req, res) {
+    try {
+      const { costAnalysis, icpData, productData } = req.body;
+
+      // Validate required data
+      if (!costAnalysis || !costAnalysis.totalCost) {
+        return res.status(400).json({
+          success: false,
+          error: 'Cost analysis data required'
+        });
+      }
+
+      logger.info('Generating simplified one-page business case');
+
+      const onePager = {
+        title: 'Revenue Intelligence Investment Case',
+        generatedAt: new Date().toISOString(),
+
+        // Executive summary with top 3 findings
+        executiveSummary: {
+          totalCostOfDelay: costAnalysis.totalCost,
+          totalCostFormatted: `$${(costAnalysis.totalCost / 1000000).toFixed(1)}M`,
+          topFindings: [
+            `$${(costAnalysis.lostRevenue / 1000000).toFixed(1)}M in lost revenue opportunity`,
+            `${costAnalysis.delayMonths} months average sales cycle delay`,
+            `${costAnalysis.potentialDeals} qualified opportunities at risk`
+          ]
+        },
+
+        // Key metrics
+        metrics: {
+          inefficientProspecting: {
+            label: 'Inefficient Prospecting Cost',
+            value: costAnalysis.inefficientProspecting,
+            formatted: `$${(costAnalysis.inefficientProspecting / 1000).toFixed(0)}K`,
+            impact: 'Sales team wasting time on poor-fit prospects'
+          },
+          poorMessaging: {
+            label: 'Poor Messaging Cost',
+            value: costAnalysis.poorMessaging,
+            formatted: `$${(costAnalysis.poorMessaging / 1000).toFixed(0)}K`,
+            impact: 'Messages failing to resonate with buyers'
+          },
+          lostRevenue: {
+            label: 'Lost Revenue',
+            value: costAnalysis.lostRevenue,
+            formatted: `$${(costAnalysis.lostRevenue / 1000000).toFixed(1)}M`,
+            impact: 'Deals lost or delayed due to poor targeting'
+          }
+        },
+
+        // Primary recommendation
+        recommendation: {
+          title: 'Implement ICP-Driven Revenue Intelligence',
+          description: 'Deploy systematic buyer intelligence framework to reduce qualification time and improve conversion rates',
+          expectedImpact: [
+            'Reduce sales cycle by 30-40%',
+            'Improve qualification accuracy by 50%+',
+            'Increase win rates through better targeting'
+          ]
+        },
+
+        // Immediate next steps (max 5)
+        nextSteps: [
+          {
+            step: 1,
+            title: 'Review ICP Analysis',
+            description: 'Validate ideal customer profile findings with sales team',
+            owner: 'Sales Leadership',
+            timeline: 'Week 1'
+          },
+          {
+            step: 2,
+            title: 'Align on Buyer Personas',
+            description: 'Ensure all revenue team members understand target personas',
+            owner: 'Revenue Operations',
+            timeline: 'Week 1-2'
+          },
+          {
+            step: 3,
+            title: 'Implement Qualification Framework',
+            description: 'Deploy ICP-based lead scoring and qualification criteria',
+            owner: 'Sales Operations',
+            timeline: 'Week 2-3'
+          },
+          {
+            step: 4,
+            title: 'Update Messaging & Content',
+            description: 'Align sales materials with ICP pain points and language',
+            owner: 'Marketing',
+            timeline: 'Week 3-4'
+          },
+          {
+            step: 5,
+            title: 'Measure & Iterate',
+            description: 'Track conversion metrics and refine ICP based on results',
+            owner: 'Revenue Operations',
+            timeline: 'Ongoing'
+          }
+        ],
+
+        // Supporting context from ICP if available
+        icpContext: icpData ? {
+          targetSegment: icpData.targetMarket || 'Not specified',
+          keyPainPoints: icpData.painPoints?.slice(0, 3) || [],
+          buyingTriggers: icpData.buyingTriggers?.slice(0, 3) || []
+        } : null,
+
+        // Product context if available
+        productContext: productData ? {
+          name: productData.productName || 'Not specified',
+          businessModel: productData.businessModel || 'Not specified'
+        } : null
+      };
+
+      res.status(200).json({
+        success: true,
+        data: onePager
+      });
+
+    } catch (error) {
+      logger.error('Error generating simplified business case:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to generate business case',
+        details: error.message
+      });
     }
   }
 };

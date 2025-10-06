@@ -4,13 +4,13 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import {
-  CurrencyDollarIcon,
-  ArrowTrendingUpIcon,
-  UserGroupIcon,
-  ClockIcon,
-  SparklesIcon,
-  ChartBarIcon,
-} from '@heroicons/react/24/outline';
+  DollarSign as CurrencyDollarIcon,
+  TrendingUp as ArrowTrendingUpIcon,
+  Users as UserGroupIcon,
+  Clock as ClockIcon,
+  Sparkles as SparklesIcon,
+  BarChart3 as ChartBarIcon,
+} from 'lucide-react';
 import { useCostCalculation, useAICostCalculation, useTrackAction } from '@/lib/hooks/useAPI';
 
 interface CostFormData {

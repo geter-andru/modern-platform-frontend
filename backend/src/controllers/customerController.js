@@ -1,4 +1,5 @@
-import airtableService from '../services/airtableService.js';
+import supabaseDataService from '../services/supabaseDataService.js';
+import airtableService from '../services/airtableService.js'; // Keep as fallback during migration
 import aiService from '../services/aiService.js';
 import makeService from '../services/makeService.js';
 import logger from '../utils/logger.js';
@@ -8,11 +9,11 @@ const customerController = {
   async getCustomer(req, res) {
     try {
       const { customerId } = req.params;
-      
+
       logger.info(`Fetching customer data for ${customerId}`);
-      
-      const customer = await airtableService.getCustomerById(customerId);
-      
+
+      const customer = await supabaseDataService.getCustomerById(customerId);
+
       if (!customer) {
         return res.status(404).json({
           success: false,
@@ -22,7 +23,7 @@ const customerController = {
       }
 
       // Update last accessed timestamp
-      await airtableService.updateCustomer(customerId, {
+      await supabaseDataService.updateCustomer(customerId, {
         'Last Accessed': new Date().toISOString()
       });
 
@@ -40,11 +41,11 @@ const customerController = {
   async getCustomerICP(req, res) {
     try {
       const { customerId } = req.params;
-      
+
       logger.info(`Fetching ICP data for customer ${customerId}`);
-      
-      const customer = await airtableService.getCustomerById(customerId);
-      
+
+      const customer = await supabaseDataService.getCustomerById(customerId);
+
       if (!customer) {
         return res.status(404).json({
           success: false,
@@ -57,7 +58,10 @@ const customerController = {
       let icpData = null;
       if (customer.icpContent) {
         try {
-          icpData = JSON.parse(customer.icpContent);
+          // Supabase stores JSON directly, but handle string case for migration
+          icpData = typeof customer.icpContent === 'string'
+            ? JSON.parse(customer.icpContent)
+            : customer.icpContent;
         } catch (parseError) {
           logger.warn(`Failed to parse ICP content for customer ${customerId}:`, parseError);
           icpData = { rawContent: customer.icpContent };
@@ -84,11 +88,11 @@ const customerController = {
     try {
       const { customerId } = req.params;
       const updateData = req.body;
-      
+
       logger.info(`Updating customer ${customerId} with data:`, updateData);
-      
+
       // Ensure customer exists first
-      const existingCustomer = await airtableService.getCustomerById(customerId);
+      const existingCustomer = await supabaseDataService.getCustomerById(customerId);
       if (!existingCustomer) {
         return res.status(404).json({
           success: false,
@@ -99,9 +103,9 @@ const customerController = {
 
       // Add timestamp for last updated
       updateData['Last Accessed'] = new Date().toISOString();
-      
-      const updatedRecord = await airtableService.updateCustomer(customerId, updateData);
-      
+
+      const updatedRecord = await supabaseDataService.updateCustomer(customerId, updateData);
+
       res.status(200).json({
         success: true,
         data: {
@@ -120,11 +124,11 @@ const customerController = {
   async getAllCustomers(req, res) {
     try {
       const limit = parseInt(req.query.limit) || 100;
-      
+
       logger.info(`Fetching all customers with limit ${limit}`);
-      
-      const customers = await airtableService.getAllCustomers(limit);
-      
+
+      const customers = await supabaseDataService.getAllCustomers(limit);
+
       res.status(200).json({
         success: true,
         data: {
@@ -148,7 +152,7 @@ const customerController = {
       logger.info(`Generating AI-powered ICP for customer ${customerId}`);
 
       // Get customer data
-      const customer = await airtableService.getCustomerById(customerId);
+      const customer = await supabaseDataService.getCustomerById(customerId);
       if (!customer) {
         return res.status(404).json({
           success: false,
@@ -184,7 +188,7 @@ const customerController = {
         source: 'ai_generated'
       };
 
-      await airtableService.updateCustomer(customerId, {
+      await supabaseDataService.updateCustomer(customerId, {
         'ICP Content': JSON.stringify(icpContent),
         'Content Status': 'Ready',
         'Last Accessed': new Date().toISOString()
@@ -212,6 +216,156 @@ const customerController = {
       res.status(500).json({
         success: false,
         error: 'ICP generation failed',
+        details: error.message
+      });
+    }
+  },
+
+  // Save product details
+  async saveProduct(req, res) {
+    try {
+      const { productData, customerId } = req.body;
+
+      if (!customerId) {
+        return res.status(400).json({
+          success: false,
+          error: 'customerId is required'
+        });
+      }
+
+      if (!productData) {
+        return res.status(400).json({
+          success: false,
+          error: 'productData is required'
+        });
+      }
+
+      logger.info(`Saving product details for customer ${customerId}`);
+
+      await supabaseDataService.updateCustomer(customerId, {
+        'Product Details': JSON.stringify(productData),
+        'Content Status': 'Product Saved'
+      });
+
+      res.status(200).json({
+        success: true,
+        data: productData
+      });
+    } catch (error) {
+      logger.error('Error saving product:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to save product',
+        details: error.message
+      });
+    }
+  },
+
+  // Get product history
+  async getProductHistory(req, res) {
+    try {
+      const { customerId } = req.query;
+
+      if (!customerId) {
+        return res.status(400).json({
+          success: false,
+          error: 'customerId is required'
+        });
+      }
+
+      logger.info(`Fetching product history for customer ${customerId}`);
+
+      const customer = await supabaseDataService.getCustomerById(customerId);
+
+      if (!customer) {
+        return res.status(404).json({
+          success: false,
+          error: 'Customer not found'
+        });
+      }
+
+      const productDetails = customer.productDetails || null;
+      let history = [];
+
+      if (productDetails) {
+        try {
+          const parsed = typeof productDetails === 'string'
+            ? JSON.parse(productDetails)
+            : productDetails;
+
+          // Return as array with single item (MVP simplification)
+          history = [{
+            id: customer.customerId,
+            productName: parsed.productName || '',
+            productDescription: parsed.productDescription || '',
+            distinguishingFeature: parsed.distinguishingFeature || '',
+            businessModel: parsed.businessModel || '',
+            createdAt: customer.updatedAt || customer.createdAt
+          }];
+        } catch (parseError) {
+          logger.warn(`Failed to parse product details for customer ${customerId}:`, parseError);
+        }
+      }
+
+      res.status(200).json({
+        success: true,
+        data: history
+      });
+    } catch (error) {
+      logger.error('Error getting product history:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to get product history',
+        details: error.message
+      });
+    }
+  },
+
+  // Get current user's product
+  async getCurrentProduct(req, res) {
+    try {
+      const customerId = req.user?.id || req.user?.customerId;
+
+      if (!customerId) {
+        return res.status(401).json({
+          success: false,
+          error: 'User not authenticated'
+        });
+      }
+
+      logger.info(`Fetching current product for customer ${customerId}`);
+
+      const customer = await supabaseDataService.getCustomerById(customerId);
+
+      if (!customer) {
+        return res.status(404).json({
+          success: false,
+          error: 'Customer not found'
+        });
+      }
+
+      const productDetails = customer.productDetails || null;
+      let product = null;
+
+      if (productDetails) {
+        try {
+          product = typeof productDetails === 'string'
+            ? JSON.parse(productDetails)
+            : productDetails;
+        } catch (parseError) {
+          logger.warn(`Failed to parse product details for customer ${customerId}:`, parseError);
+        }
+      }
+
+      res.status(200).json({
+        success: true,
+        data: product
+      });
+    } catch (error) {
+      logger.error('Error getting current product:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to get current product',
         details: error.message
       });
     }

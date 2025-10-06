@@ -5,14 +5,14 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
-  MagnifyingGlassIcon,
-  BellIcon,
-  ChevronRightIcon,
-  Bars3Icon,
-  PlusIcon,
-  UserCircleIcon,
-  Cog6ToothIcon,
-} from '@heroicons/react/24/outline';
+  Search as MagnifyingGlassIcon,
+  Bell as BellIcon,
+  ChevronRight as ChevronRightIcon,
+  Menu as Bars3Icon,
+  Plus as PlusIcon,
+  UserCircle as UserCircleIcon,
+  Settings as Cog6ToothIcon,
+} from 'lucide-react';
 
 interface EnterpriseHeaderProps {
   onMenuClick: () => void;
