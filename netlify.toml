@@ -2,8 +2,8 @@
 # This deploys the Next.js modern-platform (production-ready)
 
 [build]
-  base = "."
-  publish = ".next"
+  base = "frontend"
+  publish = "frontend/.next"
   command = "npm run build"
 
 [build.environment]
