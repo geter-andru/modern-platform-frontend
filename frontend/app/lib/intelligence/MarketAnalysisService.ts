@@ -146,14 +146,14 @@ class MarketAnalysisService {
 
     // Use web research service for market intelligence
     const researchData = await webResearchService.conductProductResearch({
-      productName: `${industry} market`,
       businessType: industry,
-      productDescription: `${industry} industry analysis for ${targetMarket}`
-    }, 'deep');
+      productDescription: `${industry} industry analysis for ${targetMarket}`,
+      industry: industry
+    }, 'comprehensive');
 
     // Extract industry context from research
-    const marketSize = researchData.data?.market_size?.marketValue || 'Market size data unavailable';
-    const growthRate = researchData.data?.market_size?.growthRate || 'Growth rate unavailable';
+    const marketSize = researchData.data?.market_size?.size || 'Market size data unavailable';
+    const growthRate = researchData.data?.market_size?.growth || 'Growth rate unavailable';
 
     return {
       industry,
@@ -174,9 +174,9 @@ class MarketAnalysisService {
     try {
       // Research current market conditions
       const conditionsResearch = await webResearchService.conductProductResearch({
-        productName: `${industry} market conditions 2024`,
         businessType: industry,
-        productDescription: 'current market conditions economic trends funding'
+        productDescription: 'current market conditions economic trends funding',
+        industry: industry
       }, 'medium');
 
       // Detect economic uncertainty
@@ -228,9 +228,9 @@ class MarketAnalysisService {
 
     try {
       const trendsResearch = await webResearchService.conductProductResearch({
-        productName: `${industry} trends 2024`,
         businessType: industry,
-        productDescription: `emerging trends in ${industry} for ${targetMarket}`
+        productDescription: `emerging trends in ${industry} for ${targetMarket}`,
+        industry: industry
       }, 'medium');
 
       const trends: IndustryTrend[] = [];
@@ -278,10 +278,10 @@ class MarketAnalysisService {
 
     try {
       const competitorResearch = await webResearchService.conductProductResearch({
-        productName: `${productName} competitors`,
         businessType: industry,
-        productDescription: `competitive analysis ${industry} market leaders`
-      }, 'deep');
+        productDescription: `competitive analysis ${industry} market leaders for ${productName}`,
+        industry: industry
+      }, 'comprehensive');
 
       // Extract competitor information
       const competitors: CompetitorIntelligence[] = [];

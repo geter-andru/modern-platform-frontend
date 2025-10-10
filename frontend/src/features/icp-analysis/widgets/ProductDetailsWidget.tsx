@@ -22,7 +22,8 @@ import {
   ArrowRight
 } from 'lucide-react'
 import { useSupabaseAuth } from '../../../shared/hooks/useSupabaseAuth'
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from '@/lib/supabase/client-rewrite'
+import { buildICPRequestData, validateProductData } from '../utils/icp-prompt-builder'
 
 interface ProductDetails {
   name: string
@@ -43,7 +44,7 @@ interface FormData {
   productName: string
   productDescription: string
   distinguishingFeature: string
-  businessModel: string
+  businessModel: 'b2b-subscription' | 'b2b-one-time'
 }
 
 interface FormErrors {
@@ -59,7 +60,7 @@ interface ProductHistoryItem {
   productName: string
   productDescription: string
   distinguishingFeature?: string
-  businessModel: string
+  businessModel: 'b2b-subscription' | 'b2b-one-time'
   createdAt: string
 }
 
@@ -76,7 +77,7 @@ export default function ProductDetailsWidget({
     productName: '',
     productDescription: '',
     distinguishingFeature: '',
-    businessModel: ''
+    businessModel: 'b2b-subscription'
   })
   const [errors, setErrors] = useState<FormErrors>({})
   const [productHistory, setProductHistory] = useState<ProductHistoryItem[]>([])
@@ -160,14 +161,16 @@ export default function ProductDetailsWidget({
     setErrors({})
 
     try {
-      // Validate form
-      const newErrors: FormErrors = {}
-      if (!formData.productName.trim()) newErrors.productName = 'Product name is required'
-      if (!formData.productDescription.trim()) newErrors.productDescription = 'Product description is required'
-      if (!formData.distinguishingFeature.trim()) newErrors.distinguishingFeature = 'Distinguishing feature is required'
-      if (!formData.businessModel) newErrors.businessModel = 'Business model is required'
-
-      if (Object.keys(newErrors).length > 0) {
+      // Validate form using the prompt builder
+      const validation = validateProductData(formData)
+      if (!validation.isValid) {
+        const newErrors: FormErrors = {}
+        validation.errors.forEach(error => {
+          if (error.includes('Product name')) newErrors.productName = error
+          else if (error.includes('Product description')) newErrors.productDescription = error
+          else if (error.includes('Distinguishing feature')) newErrors.distinguishingFeature = error
+          else if (error.includes('Business model')) newErrors.businessModel = error
+        })
         setErrors(newErrors)
         return
       }
@@ -180,15 +183,21 @@ export default function ProductDetailsWidget({
       console.log('🚀 Starting real ICP generation for:', formData.productName)
 
       // Get Supabase session for authorization
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      )
       const { data: { session } } = await supabase.auth.getSession()
 
       if (!session) {
         throw new Error('No active session')
       }
+
+      // Build structured request data using the prompt builder
+      const requestData = buildICPRequestData(formData, {
+        industry: 'Technology', // TODO: Get from form or user profile
+        companySize: 'medium',
+        challenges: ['scalability', 'efficiency'],
+        goals: ['increase revenue', 'improve operations']
+      })
+
+      console.log('📋 Request data prepared:', requestData)
 
       // Call the backend Express API for real AI-powered ICP generation
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'
@@ -198,18 +207,7 @@ export default function ProductDetailsWidget({
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session.access_token}`
         },
-        body: JSON.stringify({
-          industry: 'Technology', // TODO: Get from form or user profile
-          companySize: 'medium',
-          currentChallenges: ['scalability', 'efficiency'],
-          goals: ['increase revenue', 'improve operations'],
-          productInfo: {
-            name: formData.productName.trim(),
-            description: formData.productDescription.trim(),
-            distinguishingFeature: formData.distinguishingFeature.trim(),
-            businessModel: formData.businessModel
-          }
-        })
+        body: JSON.stringify(requestData)
       })
 
       if (!response.ok) {

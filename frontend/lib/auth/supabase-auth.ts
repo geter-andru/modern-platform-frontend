@@ -63,7 +63,9 @@ class SupabaseAuthService {
       case 'SIGNED_IN':
         console.log('✅ User signed in:', this.currentUser?.email);
         // Ensure user profile exists
-        await this.ensureUserProfile(session.user);
+        if (session) {
+          await this.ensureUserProfile(session.user);
+        }
         break;
       case 'SIGNED_OUT':
         console.log('👋 User signed out');

@@ -90,7 +90,7 @@ export default function ResourcesClient({ customerId, token }: ResourcesClientPr
   }
 
   return (
-    <SystematicScalingProvider customerId={customerId}>
+    <SystematicScalingProvider founderId={customerId}>
       <ModernSidebarLayout customerId={customerId} activeRoute="resources">
         <ResourceLibrary customerId={customerId} customerData={customerData} />
       </ModernSidebarLayout>

@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useCallback } from 'react';
-import { BehavioralIntelligenceService } from '@/lib/services/BehavioralIntelligenceService';
+import { BehavioralIntelligenceService } from '@/app/lib/services/behavioralIntelligenceService';
 
 // TypeScript interfaces for behavioral tracking
 export interface InteractionData {

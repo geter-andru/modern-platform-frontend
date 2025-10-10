@@ -1,16 +1,15 @@
 
 
-import { createClient, RealtimeChannel } from '@supabase/supabase-js'
-import { 
-  CompetencyData, 
-  CompetencyUpdate, 
+import { RealtimeChannel } from '@supabase/supabase-js'
+import { supabase } from '@/lib/supabase/client'
+import {
+  CompetencyData,
+  CompetencyUpdate,
   ProgressUpdate,
-  MilestoneAchievement 
+  MilestoneAchievement
 } from '../types/competency'
 
 export interface SupabaseRealtimeConfig {
-  url: string
-  anonKey: string
   userId: string
 }
 
@@ -19,13 +18,14 @@ export interface RealtimeEventHandler {
 }
 
 export class SupabaseRealtimeService {
-  private supabase: ReturnType<typeof createClient>
+  private supabase: typeof supabase
   private userId: string
   private channels: Map<string, RealtimeChannel> = new Map()
   private eventHandlers: Map<string, RealtimeEventHandler[]> = new Map()
 
   constructor(config: SupabaseRealtimeConfig) {
-    this.supabase = createClient(config.url, config.anonKey)
+    // Use canonical shared Supabase client (singleton)
+    this.supabase = supabase
     this.userId = config.userId
   }
 
@@ -426,8 +426,6 @@ export class SupabaseRealtimeService {
 export function useSupabaseRealtime(userId: string) {
   const [realtimeService] = useState(() => {
     const config = {
-      url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       userId
     }
     return new SupabaseRealtimeService(config)

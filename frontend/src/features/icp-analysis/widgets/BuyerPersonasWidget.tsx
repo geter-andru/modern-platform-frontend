@@ -62,11 +62,13 @@ interface BuyerPersona {
 interface BuyerPersonasWidgetProps {
   onExport?: (personas: BuyerPersona[]) => void
   className?: string
+  userId?: string
 }
 
 export default function BuyerPersonasWidget({ 
   onExport, 
-  className = '' 
+  className = '',
+  userId
 }: BuyerPersonasWidgetProps) {
   const [personas, setPersonas] = useState<BuyerPersona[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
@@ -77,6 +79,11 @@ export default function BuyerPersonasWidget({
     setIsGenerating(true)
     setError(null)
     try {
+      // Validate userId is available
+      if (!userId) {
+        throw new Error('User not authenticated - userId is required')
+      }
+
       console.log('👥 Starting buyer persona generation...')
       
       // First, get ICP data to use for persona generation
@@ -126,7 +133,7 @@ export default function BuyerPersonasWidget({
             description: 'A solution for your target market',
             features: ['Feature 1', 'Feature 2', 'Feature 3']
           },
-          customerId: 'current-user'
+          customerId: userId
         })
       })
 

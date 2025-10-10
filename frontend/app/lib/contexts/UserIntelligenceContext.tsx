@@ -2,6 +2,50 @@
 
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 
+// Type definitions
+interface Assessment {
+  performance: { level: string; score: number };
+  revenue: { opportunity: number };
+  strategy: { focusArea: string };
+  challenges: { critical: number; highPriority: number; manageable: number };
+  competencyScores: {
+    customerAnalysis: number;
+    valueCommunication: number;
+    executiveReadiness: number;
+  };
+}
+
+interface BusinessContext {
+  industry: string;
+  productType: string;
+  targetMarket: string;
+  fundingStage: string;
+  currentARR: number;
+  targetARR: number;
+  teamSize: number;
+  customerCount: number;
+}
+
+interface IcpAnalysis {
+  targetIndustries: string[];
+  buyerPersonas: any[];
+  painPoints: any[];
+  valuePropositions: any[];
+  competitiveAdvantages: any[];
+}
+
+interface Milestone {
+  tier: string;
+  context: string;
+  targets: { customerAnalysis: number; valueCommunication: number; executiveReadiness: number };
+}
+
+interface Usage {
+  totalSessions: number;
+  toolsUsed: string[];
+  lastActive: string;
+}
+
 // Create context
 const UserIntelligenceContext = createContext<any>(null);
 
@@ -62,13 +106,13 @@ export const useUserIntelligence = () => {
 
 // Provider component
 export const UserIntelligenceProvider = ({ children }: { children: React.ReactNode }) => {
-  const [assessment, setAssessment] = useState(null);
-  const [businessContext, setBusinessContext] = useState(null);
-  const [icpAnalysis, setIcpAnalysis] = useState(null);
-  const [milestone, setMilestone] = useState(null);
-  const [usage, setUsage] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [assessment, setAssessment] = useState<Assessment | null>(null);
+  const [businessContext, setBusinessContext] = useState<BusinessContext | null>(null);
+  const [icpAnalysis, setIcpAnalysis] = useState<IcpAnalysis | null>(null);
+  const [milestone, setMilestone] = useState<Milestone | null>(null);
+  const [usage, setUsage] = useState<Usage | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<any>(null);
 
   // Mock data for development
   useEffect(() => {

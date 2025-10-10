@@ -4,7 +4,7 @@
 [build]
   base = "."
   publish = ".next"
-  command = "npm run build"
+  command = "npm run build:secure"
 
 [build.environment]
   NODE_VERSION = "20"

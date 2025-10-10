@@ -105,7 +105,7 @@ export default function ModernPlatformDashboard() {
 
   // Success - render the enhanced systematic scaling dashboard
   return (
-    <SystematicScalingProvider customerId={userData?.id || ''}>
+    <SystematicScalingProvider founderId={userData?.id || ''}>
       <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
         {/* Success notification for OAuth users */}
         {userData?.isSupabaseUser && (

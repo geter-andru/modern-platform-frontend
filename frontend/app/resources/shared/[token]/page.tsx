@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { supabase } from '../../../lib/services/supabaseClient';
+import { supabase } from '@/lib/supabase/client';
 import { type Resource } from '../../../lib/hooks/useResources';
 
 interface ShareData {
@@ -26,8 +26,8 @@ export default function SharedResourcePage() {
         setError(null);
 
         // Get share record from database
-        const { data: shareRecord, error: shareError } = await supabase
-          .from('resource_shares')
+        const { data: shareRecord, error: shareError } = await (supabase
+          .from('resource_shares') as any)
           .select('*')
           .eq('share_token', token)
           .single();
@@ -44,8 +44,8 @@ export default function SharedResourcePage() {
         }
 
         // Get the resource
-        const { data: resource, error: resourceError } = await supabase
-          .from('resources')
+        const { data: resource, error: resourceError } = await (supabase
+          .from('resources') as any)
           .select('*')
           .eq('id', shareRecord.resource_id)
           .single();

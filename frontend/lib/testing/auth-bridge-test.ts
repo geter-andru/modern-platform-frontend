@@ -11,7 +11,7 @@
  * - Production-ready test suite
  */
 
-import { authBridge } from '@/lib/services/auth-bridge';
+import { authBridge } from '@/app/lib/services/auth-bridge';
 import { modernApiClient } from '@/lib/api/modern-client';
 
 export interface TestResult {

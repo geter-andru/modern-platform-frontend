@@ -66,11 +66,13 @@ interface RatingResult {
 interface RateCompanyWidgetProps {
   className?: string
   onExport?: (rating: RatingResult) => void
+  userId?: string
 }
 
 export default function RateCompanyWidget({ 
   className = '',
-  onExport
+  onExport,
+  userId
 }: RateCompanyWidgetProps) {
   const [rating, setRating] = useState<RatingResult | null>(null)
   const [companyName, setCompanyName] = useState('')
@@ -189,7 +191,7 @@ export default function RateCompanyWidget({
           companyName: companyName.trim(),
           researchData: researchData,
           framework: defaultFramework,
-          customerId: 'current-user' // TODO: Get from auth context
+          customerId: userId
         })
       })
       

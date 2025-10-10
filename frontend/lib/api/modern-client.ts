@@ -11,7 +11,7 @@
  * - Production-ready API client
  */
 
-import { authBridge, BackendResponse } from '@/lib/services/auth-bridge';
+import { authBridge, BackendResponse } from '@/app/lib/services/auth-bridge';
 import toast from 'react-hot-toast';
 
 // Backend API configuration

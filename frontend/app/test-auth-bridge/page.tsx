@@ -15,7 +15,7 @@
 
 import { useState, useEffect } from 'react';
 import { runAuthBridgeTests, quickAuthTest, TestResult } from '@/lib/testing/auth-bridge-test';
-import { authBridge } from '@/lib/services/auth-bridge';
+import { authBridge } from '@/app/lib/services/auth-bridge';
 import { modernApiClient } from '@/lib/api/modern-client';
 
 export default function TestAuthBridgePage() {

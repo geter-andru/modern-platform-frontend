@@ -40,7 +40,7 @@ class ResourceExportService implements IResourceExportService {
     this.config = {
       maxFileSizeMB: 50,
       retentionDays: 30,
-      supportedFormats: ['pdf', 'docx', 'csv', 'json', 'html'],
+      supportedFormats: ['pdf', 'docx', 'csv', 'json', 'html'] as ExportFormat[],
       storagePath: 'exports/resources'
     };
   }

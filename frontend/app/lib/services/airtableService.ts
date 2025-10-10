@@ -5,6 +5,8 @@
  * Provides methods for storing assessment results, actions, and other data.
  */
 
+import { env } from '@/lib/config/environment';
+
 interface AirtableRecord {
   id?: string;
   fields: Record<string, any>;
@@ -41,9 +43,9 @@ class AirtableService {
   private baseId: string;
 
   constructor() {
-    this.baseUrl = process.env.AIRTABLE_API_URL || 'https://api.airtable.com/v0';
-    this.apiKey = process.env.AIRTABLE_API_KEY || '';
-    this.baseId = process.env.AIRTABLE_BASE_ID || '';
+    this.baseUrl = env.airtableApiUrl;
+    this.apiKey = env.airtableApiKey;
+    this.baseId = env.airtableBaseId;
   }
 
   /**

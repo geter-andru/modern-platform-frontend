@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { env } from '@/lib/config/environment';
 
 export async function GET(request: NextRequest) {
   try {
     // Check if Airtable is configured
-    const apiKey = process.env.NEXT_PUBLIC_AIRTABLE_API_KEY;
-    const baseId = process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID;
+    const apiKey = env.airtableApiKey;
+    const baseId = env.airtableBaseId;
     
     if (!apiKey || apiKey.includes('your_') || !baseId) {
       return NextResponse.json({

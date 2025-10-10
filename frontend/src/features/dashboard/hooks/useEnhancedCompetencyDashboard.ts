@@ -111,8 +111,6 @@ export function useEnhancedCompetencyDashboard(userId: string): UseEnhancedCompe
       
       // Initialize Supabase realtime service
       realtimeServiceRef.current = new SupabaseRealtimeService({
-        url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
         userId
       })
 

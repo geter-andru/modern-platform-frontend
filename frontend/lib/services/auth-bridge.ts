@@ -12,7 +12,6 @@
  * - Production-ready authentication bridge
  */
 
-import { createClient } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase/client';
 
 // Backend API configuration
@@ -40,7 +39,7 @@ export interface BackendResponse<T = any> {
 
 export class AuthBridgeService {
   private config: AuthBridgeConfig;
-  private supabaseClient: ReturnType<typeof createClient>;
+  private supabaseClient: typeof supabase;
 
   constructor(config?: Partial<AuthBridgeConfig>) {
     this.config = {

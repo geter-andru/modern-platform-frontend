@@ -22,9 +22,9 @@
 import { Job, JobProcessor } from './job-queue';
 import { createAPIError, ErrorType } from '@/lib/middleware/error-handler';
 import { cache } from '@/lib/cache/memory-cache';
-import { claudeAI } from '@/lib/services/claude-ai-service';
-import { emailService } from '@/lib/services/email-service';
-import { storageService } from '@/lib/services/storage-service';
+import { claudeAI } from '@/app/lib/services/claude-ai-service';
+import { emailService } from '@/app/lib/services/email-service';
+import { storageService } from '@/app/lib/services/storage-service';
 import axios from 'axios';
 import fs from 'fs/promises';
 import path from 'path';

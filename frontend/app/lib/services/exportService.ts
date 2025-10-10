@@ -5,6 +5,8 @@
  * Supports multiple formats including PDF, DOCX, PPTX, CSV, and JSON.
  */
 
+import { env } from '@/lib/config/environment';
+
 interface ExportFormat {
   format: string;
   name: string;
@@ -55,8 +57,8 @@ class ExportService {
   private apiKey: string;
 
   constructor() {
-    this.baseUrl = process.env.BACKEND_API_URL || 'http://localhost:3001';
-    this.apiKey = process.env.BACKEND_API_KEY || '';
+    this.baseUrl = env.backendUrl;
+    this.apiKey = env.backendApiKey;
   }
 
   /**

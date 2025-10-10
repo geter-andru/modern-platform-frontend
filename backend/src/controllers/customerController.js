@@ -1,5 +1,4 @@
 import supabaseDataService from '../services/supabaseDataService.js';
-import airtableService from '../services/airtableService.js'; // Keep as fallback during migration
 import aiService from '../services/aiService.js';
 import makeService from '../services/makeService.js';
 import logger from '../utils/logger.js';
@@ -147,9 +146,12 @@ const customerController = {
   async generateAIICP(req, res) {
     try {
       const { customerId } = req.params;
-      const { industry, companySize, currentChallenges, goals, triggerAutomation } = req.body;
+      const { industry, companySize, currentChallenges, goals, triggerAutomation, productInfo } = req.body;
 
-      logger.info(`Generating AI-powered ICP for customer ${customerId}`);
+      logger.info(`Generating AI-powered ICP for customer ${customerId}`, { 
+        hasProductInfo: !!productInfo,
+        productName: productInfo?.name || 'Not provided'
+      });
 
       // Get customer data
       const customer = await supabaseDataService.getCustomerById(customerId);
@@ -165,7 +167,8 @@ const customerController = {
         industry: industry || 'Technology',
         companySize: companySize || 'medium',
         currentChallenges: currentChallenges || ['scalability', 'efficiency'],
-        goals: goals || ['increase revenue', 'improve operations']
+        goals: goals || ['increase revenue', 'improve operations'],
+        productInfo: productInfo || null
       };
 
       // Generate ICP using AI
@@ -240,16 +243,14 @@ const customerController = {
         });
       }
 
-      logger.info(`Saving product details for customer ${customerId}`);
+      logger.info(`Saving product details for user ${customerId}`);
 
-      await supabaseDataService.updateCustomer(customerId, {
-        'Product Details': JSON.stringify(productData),
-        'Content Status': 'Product Saved'
-      });
+      // Upsert product to product_details table
+      const savedProduct = await supabaseDataService.upsertProductDetails(customerId, productData);
 
       res.status(200).json({
         success: true,
-        data: productData
+        data: savedProduct
       });
     } catch (error) {
       logger.error('Error saving product:', error);
@@ -273,39 +274,20 @@ const customerController = {
         });
       }
 
-      logger.info(`Fetching product history for customer ${customerId}`);
+      logger.info(`Fetching product history for user ${customerId}`);
 
-      const customer = await supabaseDataService.getCustomerById(customerId);
+      // Get all products from product_details table
+      const products = await supabaseDataService.getProductDetailsByUserId(customerId);
 
-      if (!customer) {
-        return res.status(404).json({
-          success: false,
-          error: 'Customer not found'
-        });
-      }
-
-      const productDetails = customer.productDetails || null;
-      let history = [];
-
-      if (productDetails) {
-        try {
-          const parsed = typeof productDetails === 'string'
-            ? JSON.parse(productDetails)
-            : productDetails;
-
-          // Return as array with single item (MVP simplification)
-          history = [{
-            id: customer.customerId,
-            productName: parsed.productName || '',
-            productDescription: parsed.productDescription || '',
-            distinguishingFeature: parsed.distinguishingFeature || '',
-            businessModel: parsed.businessModel || '',
-            createdAt: customer.updatedAt || customer.createdAt
-          }];
-        } catch (parseError) {
-          logger.warn(`Failed to parse product details for customer ${customerId}:`, parseError);
-        }
-      }
+      // Transform to match frontend expected format
+      const history = products.map(product => ({
+        id: product.id,
+        productName: product.product_name,
+        productDescription: product.product_description,
+        distinguishingFeature: product.distinguishing_feature,
+        businessModel: product.business_model,
+        createdAt: product.created_at
+      }));
 
       res.status(200).json({
         success: true,
@@ -333,33 +315,35 @@ const customerController = {
         });
       }
 
-      logger.info(`Fetching current product for customer ${customerId}`);
+      logger.info(`Fetching current product for user ${customerId}`);
 
-      const customer = await supabaseDataService.getCustomerById(customerId);
+      // Get primary product from product_details table
+      const product = await supabaseDataService.getPrimaryProductDetails(customerId);
 
-      if (!customer) {
-        return res.status(404).json({
-          success: false,
-          error: 'Customer not found'
+      if (!product) {
+        return res.status(200).json({
+          success: true,
+          data: null
         });
       }
 
-      const productDetails = customer.productDetails || null;
-      let product = null;
-
-      if (productDetails) {
-        try {
-          product = typeof productDetails === 'string'
-            ? JSON.parse(productDetails)
-            : productDetails;
-        } catch (parseError) {
-          logger.warn(`Failed to parse product details for customer ${customerId}:`, parseError);
-        }
-      }
+      // Transform to match frontend expected format
+      const productData = {
+        id: product.id,
+        productName: product.product_name,
+        productDescription: product.product_description,
+        distinguishingFeature: product.distinguishing_feature,
+        businessModel: product.business_model,
+        industry: product.industry,
+        targetMarket: product.target_market,
+        valueProposition: product.value_proposition,
+        isPrimary: product.is_primary,
+        createdAt: product.created_at
+      };
 
       res.status(200).json({
         success: true,
-        data: product
+        data: productData
       });
     } catch (error) {
       logger.error('Error getting current product:', error);

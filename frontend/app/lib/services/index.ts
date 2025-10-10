@@ -2,15 +2,15 @@
 // Core Backend Service
 export { backendService } from './backendService';
 
-// Authentication Service (Updated to use backend)
+// Authentication Service (Local)
 export { authService } from './authService';
 
-// Tool-Specific Services
+// Tool-Specific Services (Local)
 export { icpAnalysisService } from './icpAnalysisService';
 export { costCalculatorService } from './costCalculatorService';
 export { businessCaseService } from './businessCaseService';
 
-// Progress and Export Services
+// Progress and Export Services (Local)
 export { progressTrackingService } from './progressTrackingService';
 export { default as exportService } from './exportService';
 

@@ -4,6 +4,8 @@
  * Provides TypeScript interface for Next.js application
  */
 
+import { env } from '@/lib/config/environment';
+
 interface DocumentRequest {
   title: string;
   content: string;
@@ -58,7 +60,7 @@ class GoogleWorkspaceService {
 
   constructor() {
     // In production, this would be the actual Google Workspace MCP server endpoint
-    this.mcpServerUrl = process.env.GOOGLE_WORKSPACE_MCP_URL || 'http://localhost:8080';
+    this.mcpServerUrl = env.googleWorkspaceMcpUrl;
     this.initializeConnection();
   }
 

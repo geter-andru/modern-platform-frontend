@@ -6,55 +6,91 @@ export interface ProductData {
   businessModel: 'b2b-subscription' | 'b2b-one-time';
 }
 
-export function buildICPGenerationPrompt(productData: ProductData): string {
-  const { productName, productDescription, distinguishingFeature, businessModel } = productData;
-  
-  const businessModelText = businessModel === 'b2b-subscription' 
-    ? 'B2B subscription-based' 
-    : 'B2B one-time purchase';
-
-  return `You are an expert B2B market research analyst specializing in Ideal Customer Profile (ICP) development. 
-
-Generate a comprehensive ICP analysis for the following product:
-
-* Product Information:* - Product Name: ${productName}
-- Description: ${productDescription}
-- Distinguishing Feature: ${distinguishingFeature}
-- Business Model: ${businessModelText}
-
-* Required ICP Analysis Structure:* Please provide a detailed ICP analysis in the following JSON format:
-
-{
-  "id": "icp-[timestamp]",
-  "userId": "[user-id]",
-  "companyName": "[representative company name]",
-  "industry": "[primary industry]",
-  "generatedAt": "[ISO timestamp]",
-  "confidence": 85,
-  "lastUpdated": "[ISO timestamp]",
-  "sections": {
-    "firmographics": "Detailed company size, revenue, employee count, location, and organizational structure analysis",
-    "pain_points": "Specific business challenges and pain points this product addresses",
-    "value_proposition": "Clear value proposition and ROI for this customer segment",
-    "buying_process": "Decision-making process, stakeholders involved, and typical sales cycle",
-    "tech_stack": "Current technology stack and integration requirements",
-    "decision_criteria": "Key factors that influence purchase decisions"
-  }
+export interface UserContext {
+  industry?: string;
+  companySize?: string;
+  challenges?: string[];
+  goals?: string[];
 }
 
-* Analysis Guidelines:* 1. Focus on realistic, data-driven insights
-2. Consider the business model implications (subscription vs one-time)
-3. Identify specific pain points the product solves
-4. Include relevant firmographic details
-5. Consider the buying process complexity
-6. Suggest realistic decision criteria
+export interface ICPRequestData {
+  productInfo: {
+    name: string;
+    description: string;
+    distinguishingFeature: string;
+    businessModel: string;
+  };
+  businessContext: {
+    industry: string;
+    companySize: string;
+    currentChallenges: string[];
+    goals: string[];
+  };
+}
 
-* Output Requirements:* - Return ONLY valid JSON
-- Ensure all required fields are present
-- Use realistic but specific examples
-- Maintain professional tone
-- Focus on actionable insights
+/**
+ * Build structured request data for ICP generation
+ * Validates product data and prepares it for the backend API
+ */
+export function buildICPRequestData(productData: ProductData, userContext?: UserContext): ICPRequestData {
+  // Validate required fields
+  if (!productData.productName?.trim()) {
+    throw new Error('Product name is required');
+  }
+  
+  if (!productData.productDescription?.trim()) {
+    throw new Error('Product description is required');
+  }
 
-Generate the ICP analysis now:`;
+  if (!productData.distinguishingFeature?.trim()) {
+    throw new Error('Distinguishing feature is required');
+  }
+
+  if (!productData.businessModel) {
+    throw new Error('Business model is required');
+  }
+
+  return {
+    productInfo: {
+      name: productData.productName.trim(),
+      description: productData.productDescription.trim(),
+      distinguishingFeature: productData.distinguishingFeature.trim(),
+      businessModel: productData.businessModel
+    },
+    businessContext: {
+      industry: userContext?.industry || 'Technology',
+      companySize: userContext?.companySize || 'medium',
+      currentChallenges: userContext?.challenges || ['scalability', 'efficiency'],
+      goals: userContext?.goals || ['increase revenue', 'improve operations']
+    }
+  };
+}
+
+/**
+ * Validate product data before sending to backend
+ */
+export function validateProductData(productData: ProductData): { isValid: boolean; errors: string[] } {
+  const errors: string[] = [];
+
+  if (!productData.productName?.trim()) {
+    errors.push('Product name is required');
+  }
+
+  if (!productData.productDescription?.trim()) {
+    errors.push('Product description is required');
+  }
+
+  if (!productData.distinguishingFeature?.trim()) {
+    errors.push('Distinguishing feature is required');
+  }
+
+  if (!productData.businessModel) {
+    errors.push('Business model is required');
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
 }
 

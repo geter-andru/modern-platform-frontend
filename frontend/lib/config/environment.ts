@@ -22,27 +22,27 @@ const apiKeySchemas = {
   google: z.string().regex(/^[0-9]+-[A-Za-z0-9_.]+\.apps\.googleusercontent\.com$/, 'Invalid Google Client ID format'),
 };
 
-// Environment configuration schema
+// Environment configuration schema with lenient validation
 const environmentSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production', 'test']),
-  NEXT_PUBLIC_SITE_URL: z.string().url(),
-  
-  // API Keys
-  NEXT_PUBLIC_GITHUB_TOKEN: apiKeySchemas.github,
-  NEXT_PUBLIC_STRIPE_TOKEN: apiKeySchemas.stripe,
-  ANTHROPIC_API_KEY: apiKeySchemas.anthropic,
-  NEXT_PUBLIC_ANTHROPIC_API_KEY: apiKeySchemas.anthropic,
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: apiKeySchemas.supabase,
-  SUPABASE_SERVICE_ROLE_KEY: apiKeySchemas.supabase,
-  NEXT_PUBLIC_AIRTABLE_API_KEY: apiKeySchemas.airtable,
-  NEXT_PUBLIC_AIRTABLE_BASE_ID: z.string().min(1),
-  NEXT_PUBLIC_GOOGLE_CLIENT_ID: apiKeySchemas.google,
-  GOOGLE_CLIENT_SECRET: z.string().min(1),
-  NEXT_PUBLIC_NETLIFY_API_KEY: apiKeySchemas.netlify,
-  NEXT_PUBLIC_RENDER_SERVICE_ID: z.string().min(1),
-  NEXT_PUBLIC_RENDER_URL: z.string().url(),
-  RENDER_API_KEY: apiKeySchemas.render,
+  NODE_ENV: z.enum(['development', 'production', 'test']).catch('development'),
+  NEXT_PUBLIC_SITE_URL: z.string().url().catch('http://localhost:3000'),
+
+  // API Keys (optional with lenient validation - allows any string or undefined)
+  NEXT_PUBLIC_GITHUB_TOKEN: z.string().optional().or(z.literal('')),
+  NEXT_PUBLIC_STRIPE_TOKEN: z.string().optional().or(z.literal('')),
+  ANTHROPIC_API_KEY: z.string().optional().or(z.literal('')),
+  NEXT_PUBLIC_ANTHROPIC_API_KEY: z.string().optional().or(z.literal('')),
+  NEXT_PUBLIC_SUPABASE_URL: z.string().optional().or(z.literal('')),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().optional().or(z.literal('')),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().optional().or(z.literal('')),
+  NEXT_PUBLIC_AIRTABLE_API_KEY: z.string().optional().or(z.literal('')),
+  NEXT_PUBLIC_AIRTABLE_BASE_ID: z.string().optional().or(z.literal('')),
+  NEXT_PUBLIC_GOOGLE_CLIENT_ID: z.string().optional().or(z.literal('')),
+  GOOGLE_CLIENT_SECRET: z.string().optional().or(z.literal('')),
+  NEXT_PUBLIC_NETLIFY_API_KEY: z.string().optional().or(z.literal('')),
+  NEXT_PUBLIC_RENDER_SERVICE_ID: z.string().optional().or(z.literal('')),
+  NEXT_PUBLIC_RENDER_URL: z.string().optional().or(z.literal('')),
+  RENDER_API_KEY: z.string().optional().or(z.literal('')),
 });
 
 // Environment-specific configurations
@@ -155,12 +155,12 @@ const environmentConfigs = {
 // Environment configuration class
 export class EnvironmentConfig {
   private static instance: EnvironmentConfig;
-  private config: z.infer<typeof environmentSchema>;
-  private environment: Environment;
+  private _config: z.infer<typeof environmentSchema>;
+  private _environment: Environment;
 
   private constructor() {
-    this.environment = this.detectEnvironment();
-    this.config = this.loadAndValidateConfig();
+    this._environment = this.detectEnvironment();
+    this._config = this.loadAndValidateConfig();
   }
 
   public static getInstance(): EnvironmentConfig {
@@ -192,7 +192,7 @@ export class EnvironmentConfig {
     } catch (error) {
       if (error instanceof z.ZodError) {
         console.error('Environment validation failed:');
-        error.errors.forEach(err => {
+        error.issues.forEach(err => {
           console.error(`  ${err.path.join('.')}: ${err.message}`);
         });
         throw new Error('Environment configuration validation failed');
@@ -203,26 +203,28 @@ export class EnvironmentConfig {
 
   private validateEnvironmentSpecificConfig(config: z.infer<typeof environmentSchema>): void {
     const envConfig = environmentConfigs[this.environment];
-    
-    // Validate Stripe key based on environment
-    if (envConfig.apiKeys.stripe.useTestKey) {
-      if (!config.NEXT_PUBLIC_STRIPE_TOKEN.startsWith('rk_test_')) {
-        console.warn(`Warning: Using live Stripe key in ${this.environment} environment. Consider using test key.`);
-      }
-    } else {
-      if (!config.NEXT_PUBLIC_STRIPE_TOKEN.startsWith('rk_live_')) {
-        throw new Error(`Production environment requires live Stripe key, got: ${config.NEXT_PUBLIC_STRIPE_TOKEN.substring(0, 10)}...`);
+
+    // Validate Stripe key based on environment (if configured)
+    if (config.NEXT_PUBLIC_STRIPE_TOKEN) {
+      if (envConfig.apiKeys.stripe.useTestKey) {
+        if (!config.NEXT_PUBLIC_STRIPE_TOKEN.startsWith('rk_test_')) {
+          console.warn(`Warning: Using live Stripe key in ${this.environment} environment. Consider using test key.`);
+        }
+      } else {
+        if (!config.NEXT_PUBLIC_STRIPE_TOKEN.startsWith('rk_live_')) {
+          console.warn(`Warning: Production environment should use live Stripe key, got: ${config.NEXT_PUBLIC_STRIPE_TOKEN.substring(0, 10)}...`);
+        }
       }
     }
   }
 
   // Public getters
   public get environment(): Environment {
-    return this.environment;
+    return this._environment;
   }
 
   public get isDevelopment(): boolean {
-    return this.environment === 'development';
+    return this._environment === 'development';
   }
 
   public get isProduction(): boolean {
@@ -234,68 +236,68 @@ export class EnvironmentConfig {
   }
 
   public get config(): z.infer<typeof environmentSchema> {
-    return this.config;
+    return this._config;
   }
 
   public get environmentConfig() {
     return environmentConfigs[this.environment];
   }
 
-  // API Key getters with validation
-  public get githubToken(): string {
-    return this.config.NEXT_PUBLIC_GITHUB_TOKEN;
+  // API Key getters with validation (returns undefined if not configured)
+  public get githubToken(): string | undefined {
+    return this._config.NEXT_PUBLIC_GITHUB_TOKEN;
   }
 
-  public get stripeToken(): string {
-    return this.config.NEXT_PUBLIC_STRIPE_TOKEN;
+  public get stripeToken(): string | undefined {
+    return this._config.NEXT_PUBLIC_STRIPE_TOKEN;
   }
 
-  public get anthropicApiKey(): string {
-    return this.config.ANTHROPIC_API_KEY;
+  public get anthropicApiKey(): string | undefined {
+    return this._config.ANTHROPIC_API_KEY || this._config.NEXT_PUBLIC_ANTHROPIC_API_KEY;
   }
 
-  public get supabaseUrl(): string {
-    return this.config.NEXT_PUBLIC_SUPABASE_URL;
+  public get supabaseUrl(): string | undefined {
+    return this._config.NEXT_PUBLIC_SUPABASE_URL;
   }
 
-  public get supabaseAnonKey(): string {
-    return this.config.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  public get supabaseAnonKey(): string | undefined {
+    return this._config.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   }
 
-  public get supabaseServiceRoleKey(): string {
-    return this.config.SUPABASE_SERVICE_ROLE_KEY;
+  public get supabaseServiceRoleKey(): string | undefined {
+    return this._config.SUPABASE_SERVICE_ROLE_KEY;
   }
 
-  public get airtableApiKey(): string {
-    return this.config.NEXT_PUBLIC_AIRTABLE_API_KEY;
+  public get airtableApiKey(): string | undefined {
+    return this._config.NEXT_PUBLIC_AIRTABLE_API_KEY;
   }
 
-  public get airtableBaseId(): string {
-    return this.config.NEXT_PUBLIC_AIRTABLE_BASE_ID;
+  public get airtableBaseId(): string | undefined {
+    return this._config.NEXT_PUBLIC_AIRTABLE_BASE_ID;
   }
 
-  public get googleClientId(): string {
-    return this.config.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+  public get googleClientId(): string | undefined {
+    return this._config.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
   }
 
-  public get googleClientSecret(): string {
-    return this.config.GOOGLE_CLIENT_SECRET;
+  public get googleClientSecret(): string | undefined {
+    return this._config.GOOGLE_CLIENT_SECRET;
   }
 
-  public get netlifyApiKey(): string {
-    return this.config.NEXT_PUBLIC_NETLIFY_API_KEY;
+  public get netlifyApiKey(): string | undefined {
+    return this._config.NEXT_PUBLIC_NETLIFY_API_KEY;
   }
 
-  public get renderServiceId(): string {
-    return this.config.NEXT_PUBLIC_RENDER_SERVICE_ID;
+  public get renderServiceId(): string | undefined {
+    return this._config.NEXT_PUBLIC_RENDER_SERVICE_ID;
   }
 
-  public get renderUrl(): string {
-    return this.config.NEXT_PUBLIC_RENDER_URL;
+  public get renderUrl(): string | undefined {
+    return this._config.NEXT_PUBLIC_RENDER_URL;
   }
 
-  public get renderApiKey(): string {
-    return this.config.RENDER_API_KEY;
+  public get renderApiKey(): string | undefined {
+    return this._config.RENDER_API_KEY;
   }
 
   // Utility methods

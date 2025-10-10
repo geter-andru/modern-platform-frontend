@@ -1,15 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env['NEXT_PUBLIC_SUPABASE_URL']!;
-const supabaseAnonKey = process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY']!;
+import { createClient } from '@/lib/supabase/server';
 
 export async function POST(request: NextRequest) {
   try {
     const { action, email, password } = await request.json() as { action: string; email: string; password: string };
-    
-    // Create a new Supabase client for this request
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+    // Get Supabase client for this request
+    const supabase = await createClient();
 
     if (action === 'signup') {
       // Sign up a new user

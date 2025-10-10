@@ -108,21 +108,27 @@ export class ResourceGenerationEvents {
   /**
    * Emit MCP service available event
    */
-  static async emitMCPServiceAvailable(payload: Omit<MCPServiceStatusPayload, 'timestamp'>): Promise<void> {
+  static async emitMCPServiceAvailable(payload: Omit<MCPServiceStatusPayload, 'timestamp' | 'available'>): Promise<void> {
     await eventBus.emit('mcp_service_available', {
       ...payload,
-      available: true
-    });
+      metadata: {
+        ...payload.metadata,
+        available: true
+      }
+    } as any);
   }
 
   /**
    * Emit MCP service unavailable event
    */
-  static async emitMCPServiceUnavailable(payload: Omit<MCPServiceStatusPayload, 'timestamp'>): Promise<void> {
+  static async emitMCPServiceUnavailable(payload: Omit<MCPServiceStatusPayload, 'timestamp' | 'available'>): Promise<void> {
     await eventBus.emit('mcp_service_unavailable', {
       ...payload,
-      available: false
-    });
+      metadata: {
+        ...payload.metadata,
+        available: false
+      }
+    } as any);
   }
 
   /**

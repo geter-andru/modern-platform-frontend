@@ -169,7 +169,7 @@ class AgentOrchestrationService {
 
     return {
       orchestrationId: `orchestration_${Date.now()}_${founderId}`,
-      agentsSpawned,
+      agentsSpawned: spawnedAgents,
       systematicPlan
     };
   }
@@ -549,8 +549,8 @@ class AgentOrchestrationService {
         expectedResolution: '1 week for analysis, 4 weeks for optimization implementation'
       }
     };
-    
-    return strategies[criticalNeed] || strategies['growth_bottleneck'];
+
+    return strategies[criticalNeed as keyof typeof strategies] || strategies['growth_bottleneck'];
   }
 
   private async persistCoordination(founderId: string, coordination: SystematicCoordination): Promise<void> {

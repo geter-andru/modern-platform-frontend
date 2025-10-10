@@ -74,6 +74,10 @@ export default function ResourcePage({ params }: ResourcePageProps) {
             // TODO: Implement export functionality
             console.log('Exporting resource:', resource.id, 'format:', format);
           }}
+          onShare={() => {
+            // TODO: Implement share functionality
+            console.log('Sharing resource:', resource.id);
+          }}
         />
       </div>
     </EnterpriseNavigationV2>

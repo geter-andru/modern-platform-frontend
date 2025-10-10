@@ -5,6 +5,8 @@
  * Provides professional business case templates and AI-enhanced generation.
  */
 
+import { env } from '@/lib/config/environment';
+
 interface BusinessCaseInput {
   template: string;
   customerData: {
@@ -86,8 +88,8 @@ class BusinessCaseService {
   private apiKey: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-    this.apiKey = process.env.BACKEND_API_KEY || '';
+    this.baseUrl = env.backendUrl;
+    this.apiKey = env.backendApiKey;
   }
 
   /**

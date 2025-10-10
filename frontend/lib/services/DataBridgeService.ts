@@ -5,7 +5,8 @@
  * and modern-platform (Supabase-native) by providing seamless data synchronization.
  */
 
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase/client';
 import axios, { AxiosResponse } from 'axios';
 
 // TypeScript Interfaces
@@ -61,8 +62,6 @@ interface BridgeConfig {
   airtableBaseId: string;
   airtableTableName: string;
   airtableApiKey: string;
-  supabaseUrl: string;
-  supabaseAnonKey: string;
 }
 
 export class DataBridgeService {
@@ -72,10 +71,10 @@ export class DataBridgeService {
 
   constructor(config: BridgeConfig) {
     this.config = config;
-    
-    // Initialize Supabase client
-    this.supabase = createClient(config.supabaseUrl, config.supabaseAnonKey);
-    
+
+    // Use canonical shared Supabase client (singleton)
+    this.supabase = supabase;
+
     // Initialize Airtable client (using axios for direct API calls)
     this.airtableClient = axios.create({
       baseURL: `https://api.airtable.com/v0/${config.airtableBaseId}`,

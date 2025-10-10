@@ -247,10 +247,9 @@ export default function ResourcesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <EnterpriseNavigationV2 />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <EnterpriseNavigationV2>
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -296,7 +295,8 @@ export default function ResourcesPage() {
           onShare={handleResourceShare}
           isLoading={isGenerating}
         />
+        </div>
       </div>
-    </div>
+    </EnterpriseNavigationV2>
   );
 }

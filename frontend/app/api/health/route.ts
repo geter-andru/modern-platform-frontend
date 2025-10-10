@@ -23,7 +23,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { successResponse, withErrorHandling, getPerformanceStats } from '@/lib/middleware/error-handler';
 import { getRateLimitStats } from '@/lib/middleware/rate-limiter';
 import { cache } from '@/lib/cache/memory-cache';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase/client';
+import { env } from '@/lib/config/environment';
 
 // Health check levels
 type HealthLevel = 'basic' | 'detailed' | 'full';
@@ -50,15 +51,7 @@ const startTime = Date.now();
 async function checkSupabase(): Promise<{ status: 'pass' | 'fail'; responseTime?: number; message?: string }> {
   try {
     const start = Date.now();
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    
-    if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your_supabase_')) {
-      return { status: 'fail', message: 'Supabase not configured' };
-    }
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    
     // Simple connection test
     const { error } = await supabase.from('user_progress').select('count').limit(1);
     
@@ -81,8 +74,8 @@ async function checkExternalAPIs(): Promise<{ status: 'pass' | 'fail' | 'warn'; 
   const checks = [];
   
   // Check if API keys are configured
-  const claudeKey = process.env.ANTHROPIC_API_KEY;
-  const airtableKey = process.env.NEXT_PUBLIC_AIRTABLE_API_KEY;
+  const claudeKey = env.anthropicApiKey;
+  const airtableKey = env.airtableApiKey;
   
   if (!claudeKey || claudeKey.includes('your_')) {
     checks.push('Claude API key not configured');
@@ -216,8 +209,8 @@ async function performHealthCheck(level: HealthLevel = 'basic'): Promise<HealthS
     status: overallStatus,
     timestamp: new Date().toISOString(),
     uptime: Date.now() - startTime,
-    version: process.env.npm_package_version || '1.0.0',
-    environment: process.env.NODE_ENV || 'development',
+    version: env.packageVersion || '1.0.0',
+    environment: env.environment,
     checks
   };
 }

@@ -5,6 +5,7 @@
 
 import eventBus from './EventBus';
 import { ResourceGenerationEventHandlers } from './ResourceGenerationEvents';
+import { env } from '@/lib/config/environment';
 
 export interface EventManagerConfig {
   enableDefaultHandlers?: boolean;
@@ -26,7 +27,7 @@ class EventManager {
       enableDefaultHandlers: true,
       enablePerformanceMonitoring: true,
       eventHistoryLimit: 1000,
-      debugMode: process.env.NODE_ENV === 'development',
+      debugMode: env.isDevelopment,
       ...config
     };
     this.startTime = Date.now();

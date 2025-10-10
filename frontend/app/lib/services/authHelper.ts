@@ -1,22 +1,28 @@
 /**
  * Authentication Helper
- * 
+ *
  * Provides utilities for getting authentication tokens from Supabase
  * for use in API calls to the backend.
  */
 
 import { createBrowserClient } from '@supabase/ssr';
+import { env } from '@/lib/config/environment';
 
 /**
  * Get the current user's authentication token
  */
 export async function getAuthToken(): Promise<string> {
   try {
+    if (!env.supabaseUrl || !env.supabaseAnonKey) {
+      console.error('Supabase not configured');
+      return '';
+    }
+
     const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      env.supabaseUrl,
+      env.supabaseAnonKey
     );
-    
+
     const { data: { session } } = await supabase.auth.getSession();
     return session?.access_token || '';
   } catch (error) {
@@ -30,11 +36,16 @@ export async function getAuthToken(): Promise<string> {
  */
 export async function getCurrentUserId(): Promise<string | null> {
   try {
+    if (!env.supabaseUrl || !env.supabaseAnonKey) {
+      console.error('Supabase not configured');
+      return null;
+    }
+
     const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      env.supabaseUrl,
+      env.supabaseAnonKey
     );
-    
+
     const { data: { user } } = await supabase.auth.getUser();
     return user?.id || null;
   } catch (error) {

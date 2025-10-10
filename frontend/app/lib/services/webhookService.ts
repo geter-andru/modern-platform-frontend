@@ -701,9 +701,9 @@ class WebhookService {
     try {
       // Conduct real-time web research
       const researchData = await webResearchService.conductProductResearch({
-        productName,
         businessType,
-        productDescription: description
+        productDescription: description,
+        industry: businessType
       }, 'medium');
       
       // Generate enhanced resources with research data

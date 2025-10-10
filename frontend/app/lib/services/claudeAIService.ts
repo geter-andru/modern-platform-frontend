@@ -1,9 +1,11 @@
 /**
  * Claude AI Service
- * 
+ *
  * Handles integration with Claude AI for advanced analysis, insights, and content generation.
  * Provides methods for AI-enhanced assessments, analysis, and recommendations.
  */
+
+import { env } from '@/lib/config/environment';
 
 interface ClaudeAIRequest {
   prompt: string;
@@ -64,9 +66,9 @@ class ClaudeAIService {
   private defaultModel: string;
 
   constructor() {
-    this.apiKey = process.env.CLAUDE_API_KEY || '';
-    this.baseUrl = process.env.CLAUDE_API_URL || 'https://api.anthropic.com/v1';
-    this.defaultModel = process.env.CLAUDE_MODEL || 'claude-3-sonnet-20240229';
+    this.apiKey = env.anthropicApiKey || '';
+    this.baseUrl = 'https://api.anthropic.com/v1';
+    this.defaultModel = 'claude-3-sonnet-20240229';
   }
 
   /**

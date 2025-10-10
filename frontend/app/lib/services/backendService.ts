@@ -5,6 +5,8 @@
  * progress tracking, and data persistence.
  */
 
+import { env } from '@/lib/config/environment';
+
 interface BackendResponse<T = any> {
   success: boolean;
   data?: T;
@@ -72,8 +74,8 @@ class BackendService {
   private apiKey: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-    this.apiKey = process.env.BACKEND_API_KEY || '';
+    this.baseUrl = env.backendUrl;
+    this.apiKey = env.backendApiKey;
   }
 
   /**

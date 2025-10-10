@@ -3,6 +3,8 @@
  * Tracks key performance metrics for Series A founder experience optimization
  */
 
+import { env } from '@/app/lib/config/environment';
+
 interface PerformanceMetric {
   name: string;
   value: number;
@@ -86,8 +88,8 @@ class PerformanceMonitor {
       let clsValue = 0;
       const clsObserver = new PerformanceObserver((list) => {
         list.getEntries().forEach((entry) => {
-          if (!entry.hadRecentInput) {
-            clsValue += entry.value;
+          if (!(entry as any).hadRecentInput) {
+            clsValue += (entry as any).value;
             this.recordMetric({
               name: 'Cumulative Layout Shift',
               value: clsValue,
@@ -204,12 +206,12 @@ class PerformanceMonitor {
     }
 
     // Log performance issues in development
-    if (process.env.NODE_ENV === 'development' && metric.isGood === false) {
+    if (env.isDevelopment && metric.isGood === false) {
       console.warn(`Performance issue detected: ${metric.name} = ${metric.value}${metric.unit} (threshold: ${metric.threshold})`);
     }
 
     // Send to analytics in production
-    if (process.env.NODE_ENV === 'production') {
+    if (env.isProduction) {
       this.sendToAnalytics(metric);
     }
   }

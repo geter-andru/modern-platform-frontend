@@ -1,9 +1,11 @@
 /**
  * Progress Tracking Service
- * 
+ *
  * Handles customer progress tracking, milestone management, and analytics.
  * Integrates with backend APIs for comprehensive progress monitoring.
  */
+
+import { env } from '@/lib/config/environment';
 
 interface ProgressData {
   customerId: string;
@@ -73,8 +75,8 @@ class ProgressTrackingService {
   private apiKey: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-    this.apiKey = process.env.BACKEND_API_KEY || '';
+    this.baseUrl = env.backendUrl;
+    this.apiKey = env.backendApiKey || '';
   }
 
   /**

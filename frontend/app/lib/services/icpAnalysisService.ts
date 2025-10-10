@@ -5,6 +5,8 @@
  * Integrates with AI services and backend APIs for comprehensive ICP insights.
  */
 
+import { env } from '@/lib/config/environment';
+
 interface ICPAnalysisInput {
   productName: string;
   productDescription: string;
@@ -93,8 +95,8 @@ class ICPAnalysisService {
   private apiKey: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-    this.apiKey = process.env.BACKEND_API_KEY || '';
+    this.baseUrl = env.backendUrl;
+    this.apiKey = env.backendApiKey;
   }
 
   /**

@@ -85,13 +85,12 @@ export default function DashboardPremiumClient() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Competency Progress Cards */}
           {competencyData.map((competency) => (
-            <ModernCard key={competency.key} size="large" className="p-6">
+            <ModernCard key={competency.key} className="p-6">
               <div className="text-center space-y-4">
                 <h3 className="text-xl font-semibold text-white">{competency.label}</h3>
                 <ModernCircularProgress
                   percentage={competency.current}
                   size={120}
-                  className="mx-auto"
                 />
                 <div className="text-sm text-slate-400">
                   Target: {competency.target}% by {competency.targetDate}
@@ -102,7 +101,7 @@ export default function DashboardPremiumClient() {
         </div>
         
         {/* Revenue Opportunity Card */}
-        <ModernCard size="large" className="mt-6 p-8 text-center">
+        <ModernCard className="mt-6 p-8 text-center">
           <h2 className="text-2xl font-bold text-white mb-4">Revenue Opportunity</h2>
           <div className="text-4xl font-bold text-green-400">
             ${safeAssessment.revenue.opportunity.toLocaleString()}

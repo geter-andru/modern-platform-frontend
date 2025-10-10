@@ -184,7 +184,7 @@ export default function AssessmentPage() {
         </div>
 
         <AssessmentErrorBoundary>
-          <AssessmentResultsWidget assessmentData={assessmentData || {}} />
+          <AssessmentResultsWidget assessmentData={assessmentData || ({} as any)} />
         </AssessmentErrorBoundary>
       </div>
     </div>

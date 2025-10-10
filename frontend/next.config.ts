@@ -18,14 +18,14 @@ const nextConfig: NextConfig = {
   // Asset prefix
   assetPrefix: '',
   
-  // TypeScript checking - DISABLED for MVP to get live faster
+  // TypeScript checking enabled for development
   typescript: {
-    ignoreBuildErrors: true  // MVP: Skip TypeScript errors to get live faster
+    ignoreBuildErrors: false  // Enable TypeScript error checking for code quality
   },
   
-  // ESLint enabled for development - IGNORED during builds for MVP
+  // ESLint enabled for development
   eslint: {
-    ignoreDuringBuilds: true  // MVP: Skip ESLint warnings to get live faster
+    ignoreDuringBuilds: false  // Enable ESLint checking for code quality
   },
   
   // Server external packages (moved from experimental)
@@ -50,13 +50,6 @@ const nextConfig: NextConfig = {
         'utf-8-validate': 'utf-8-validate',
       });
     }
-    
-    // Tree shaking optimization
-    config.optimization = {
-      ...config.optimization,
-      usedExports: true,
-      sideEffects: false
-    };
     
     return config;
   }

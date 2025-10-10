@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '../services/supabaseClient';
+import { supabase } from '@/app/lib/supabase/client-rewrite';
 
 // Types matching the database schema
 export interface Resource {
@@ -95,8 +95,8 @@ export function useGenerateResource() {
     mutationFn: async (request: ResourceGenerationRequest) => {
       // This would typically call a backend API endpoint
       // For now, we'll create a placeholder resource
-      const { data, error } = await supabase
-        .from('resources')
+      const { data, error } = await (supabase
+        .from('resources') as any)
         .insert({
           customer_id: request.customer_id,
           tier: 1, // Default to tier 1
