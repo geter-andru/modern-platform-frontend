@@ -122,7 +122,7 @@ async function validateEnvironment(): Promise<boolean> {
 
     // Backend Configuration
     logSection('Backend Configuration');
-    logSuccess(`Backend URL: ${env.backendUrl}`);
+    logSuccess(`Backend URL: ${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}`);
     if (env.backendApiKey) {
       logSuccess(`Backend API Key: ${maskSecret(env.backendApiKey, 8)}`);
     } else {

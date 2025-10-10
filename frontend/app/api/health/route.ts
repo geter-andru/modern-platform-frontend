@@ -209,7 +209,7 @@ async function performHealthCheck(level: HealthLevel = 'basic'): Promise<HealthS
     status: overallStatus,
     timestamp: new Date().toISOString(),
     uptime: Date.now() - startTime,
-    version: env.packageVersion || '1.0.0',
+    version: '1.0.0',
     environment: env.environment,
     checks
   };

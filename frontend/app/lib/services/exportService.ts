@@ -57,7 +57,7 @@ class ExportService {
   private apiKey: string;
 
   constructor() {
-    this.baseUrl = env.backendUrl;
+    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
     this.apiKey = env.backendApiKey;
   }
 

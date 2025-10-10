@@ -119,10 +119,11 @@ export async function POST(request: NextRequest) {
   } catch (error: unknown) {
     console.error('❌ PDF preparation error:', error);
     
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
       { 
         error: 'PDF preparation failed',
-        message: error.message,
+        message: errorMessage,
         real: true
       },
       { status: 500 }

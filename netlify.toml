@@ -3,7 +3,7 @@
 
 [build]
   base = "frontend"
-  publish = "frontend/.next"
+  publish = ".next"
   command = "npm run build"
 
 [build.environment]
