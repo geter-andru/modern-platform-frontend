@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { env } from '@/app/lib/config/environment';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Check if Airtable is configured
     const apiKey = env.airtableApiKey;

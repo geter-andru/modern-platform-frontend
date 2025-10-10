@@ -40,7 +40,7 @@ interface HealthStatus {
       status: 'pass' | 'fail' | 'warn';
       responseTime?: number;
       message?: string;
-      details?: any;
+      details?: unknown;
     };
   };
 }
@@ -94,7 +94,7 @@ async function checkExternalAPIs(): Promise<{ status: 'pass' | 'fail' | 'warn'; 
   }
 }
 
-function checkMemory(): { status: 'pass' | 'warn' | 'fail'; details: any } {
+function checkMemory(): { status: 'pass' | 'warn' | 'fail'; details: unknown } {
   if (typeof process !== 'undefined' && process.memoryUsage) {
     const usage = process.memoryUsage();
     const usedMB = Math.round(usage.heapUsed / 1024 / 1024);
@@ -140,7 +140,7 @@ async function performHealthCheck(level: HealthLevel = 'basic'): Promise<HealthS
         hitRate: `${Math.round(cacheStats.api.hitRate)}%`
       }
     };
-  } catch (error) {
+  } catch {
     checks.cache = {
       status: 'fail',
       message: 'Cache system error'

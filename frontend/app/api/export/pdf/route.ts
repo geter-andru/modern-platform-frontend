@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
       real: true
     });
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ PDF preparation error:', error);
     
     return NextResponse.json(

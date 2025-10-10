@@ -1,5 +1,5 @@
 // Authentication bridge for Express backend API calls
-import { supabase, getSession } from '../supabase/client';
+import { supabase } from '../supabase/client';
 
 export interface AuthHeaders {
   'Authorization'?: string;
@@ -14,7 +14,7 @@ export interface AuthHeaders {
 export async function getAuthHeaders(customerId?: string): Promise<AuthHeaders> {
   try {
     // First, try to get Supabase session
-    const session = await getSession();
+    const { data: { session } } = await supabase.auth.getSession();
     
     if (session?.access_token) {
       // Use Supabase access token as JWT Bearer token

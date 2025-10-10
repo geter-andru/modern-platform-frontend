@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSupabaseAuth } from '../../src/shared/hooks/useSupabaseAuth';
 import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
