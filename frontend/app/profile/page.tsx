@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/lib/hooks/useAuth';
+import { useAuth } from '@/app/lib/hooks/useAuth';
 import { motion } from 'framer-motion';
 import { 
   User, 

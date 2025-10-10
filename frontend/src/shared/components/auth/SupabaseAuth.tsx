@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
-import { supabase } from '../../../lib/supabase/client';
+import { supabase } from '@/app/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
 interface SupabaseAuthProps {

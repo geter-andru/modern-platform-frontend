@@ -22,7 +22,7 @@
 import { Job, JobProcessor } from './job-queue';
 import { createAPIError, ErrorType } from '@/app/lib/middleware/error-handler';
 import { cache } from '@/app/lib/cache/memory-cache';
-import { claudeAI } from '@/app/lib/services/claude-ai-service';
+import { claudeAI } from '@/app/lib/services/claudeAIService';
 import { emailService } from '@/app/lib/services/email-service';
 import { storageService } from '@/app/lib/services/storage-service';
 import axios from 'axios';

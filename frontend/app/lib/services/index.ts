@@ -18,6 +18,9 @@ export { default as exportService } from './exportService';
 export { airtableService } from './airtableService';
 export { default as claudeAIService } from './claudeAIService';
 
+// AI and Resource Services
+export { default as resourceGenerationService } from './resourceGenerationService';
+
 // Service Types and Interfaces
 // Note: Backend service types are not currently exported
 
@@ -31,6 +34,7 @@ import { progressTrackingService } from './progressTrackingService';
 import exportService from './exportService';
 import { airtableService } from './airtableService';
 import claudeAIService from './claudeAIService';
+import resourceGenerationService from './resourceGenerationService';
 
 export default {
   backendService,
@@ -41,5 +45,6 @@ export default {
   progressTrackingService,
   exportService,
   airtableService,
-  claudeAIService
+  claudeAIService,
+  resourceGenerationService
 };

@@ -22,7 +22,7 @@ export type {
   ResourceGenerationService,
   ResourceExportService,
   ResourceAccessService
-} from '@/lib/types/resourcesLibrary';
+} from '@/app/lib/types/resourcesLibrary';
 
 // Re-export schemas for validation
 export {
@@ -36,7 +36,7 @@ export {
   ExportResourceRequestSchema,
   ExportResourceResponseSchema,
   TrackAccessRequestSchema
-} from '@/lib/validation/schemas/resourcesLibrarySchemas';
+} from '@/app/lib/validation/schemas/resourcesLibrarySchemas';
 
 // Service factory function
 export const createResourcesLibraryServices = () => ({

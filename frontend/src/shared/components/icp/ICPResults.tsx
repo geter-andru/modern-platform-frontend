@@ -9,7 +9,7 @@ import {
   Sparkles as SparklesIcon,
   PresentationChart as PresentationChartLineIcon,
 } from 'lucide-react';
-import { useExportData } from '@/lib/hooks/useAPI';
+import { useExportData } from '@/app/lib/hooks/useAPI';
 
 interface ICPSegment {
   name: string;

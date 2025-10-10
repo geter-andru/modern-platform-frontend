@@ -16,7 +16,7 @@ import {
   Menu as Bars3Icon,
   X as XMarkIcon,
 } from 'lucide-react';
-import { useLogout } from '@/lib/hooks/useAPI';
+import { useLogout } from '@/app/lib/hooks/useAPI';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;

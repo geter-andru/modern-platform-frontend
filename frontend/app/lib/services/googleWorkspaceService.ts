@@ -4,7 +4,7 @@
  * Provides TypeScript interface for Next.js application
  */
 
-import { env } from '@/lib/config/environment';
+import { env } from '@/app/lib/config/environment';
 
 interface DocumentRequest {
   title: string;

@@ -11,7 +11,7 @@ import {
   Sparkles as SparklesIcon,
   BarChart3 as ChartBarIcon,
 } from 'lucide-react';
-import { useCostCalculation, useAICostCalculation, useTrackAction } from '@/lib/hooks/useAPI';
+import { useCostCalculation, useAICostCalculation, useTrackAction } from '@/app/lib/hooks/useAPI';
 
 interface CostFormData {
   // Revenue Impact

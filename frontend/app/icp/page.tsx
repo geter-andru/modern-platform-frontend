@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, RefreshCw, Download, FileDown } from 'lucide-react';
 import { Brain, Target, Users, FileText, Zap, BarChart3 } from 'lucide-react';
 import { useSupabaseAuth } from '../../src/shared/hooks/useSupabaseAuth';
-import { useCustomerICP, useTrackAction } from '../../lib/hooks/useAPI';
+import { useCustomerICP, useTrackAction } from '@/app/lib/hooks/useAPI';
 import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
 
 // Import widget components

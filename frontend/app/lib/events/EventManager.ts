@@ -5,7 +5,7 @@
 
 import eventBus from './EventBus';
 import { ResourceGenerationEventHandlers } from './ResourceGenerationEvents';
-import { env } from '@/lib/config/environment';
+import { env } from '@/app/lib/config/environment';
 
 export interface EventManagerConfig {
   enableDefaultHandlers?: boolean;

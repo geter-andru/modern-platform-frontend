@@ -10,7 +10,7 @@ import {
   GlobeAltIcon,
   SparklesIcon,
 } from '@heroicons/react/24/outline';
-import { useGenerateAIICP, useTrackAction } from '@/lib/hooks/useAPI';
+import { useGenerateAIICP, useTrackAction } from '@/app/lib/hooks/useAPI';
 
 interface ICPFormData {
   companySize: string;

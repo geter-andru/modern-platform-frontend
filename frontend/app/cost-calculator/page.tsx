@@ -7,7 +7,7 @@ import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/Enter
 import { CostCalculatorForm } from '../../src/shared/components/cost-calculator/CostCalculatorForm';
 import { CostResults } from '../../src/shared/components/cost-calculator/CostResults';
 import { CostHistory } from '../../src/shared/components/cost-calculator/CostHistory';
-import { useCostHistory, useTrackAction } from '../../lib/hooks/useAPI';
+import { useCostHistory, useTrackAction } from '@/app/lib/hooks/useAPI';
 
 export default function CostCalculatorPage() {
   const router = useRouter();

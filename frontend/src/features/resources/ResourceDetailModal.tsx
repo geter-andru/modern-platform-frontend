@@ -28,7 +28,7 @@ import {
   ResourceCategory, 
   GenerationStatus,
   ExportFormat
-} from '@/lib/validation/schemas/resourcesLibrarySchemas';
+} from '@/app/lib/validation/schemas/resourcesLibrarySchemas';
 
 // Types
 interface Resource {

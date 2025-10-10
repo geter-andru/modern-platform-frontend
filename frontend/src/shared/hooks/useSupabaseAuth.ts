@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
-// import { supabase } from '@/lib/supabase/client';
+// import { supabase } from '@/app/lib/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
 
 interface UseSupabaseAuthReturn {

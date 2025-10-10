@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { unifiedAuth } from '@/lib/auth/unified-auth';
+import { unifiedAuth } from '@/app/lib/auth/unified-auth';
 import { SimplifiedBusinessCaseBuilder } from '@/src/features/cost-business-case';
 
 export default function BusinessCasePage() {

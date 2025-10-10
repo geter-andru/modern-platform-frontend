@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { configManager } from '@/lib/config';
+import { configManager } from '@/app/lib/config';
 
 // Error types and categories
 export enum ErrorType {

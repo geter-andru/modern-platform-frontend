@@ -10,7 +10,7 @@ import {
   AlertTriangle as ExclamationTriangleIcon,
   Lightbulb as LightBulbIcon,
 } from 'lucide-react';
-import { useExportData } from '@/lib/hooks/useAPI';
+import { useExportData } from '@/app/lib/hooks/useAPI';
 
 interface CostCategory {
   name: string;

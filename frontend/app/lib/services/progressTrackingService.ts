@@ -5,7 +5,7 @@
  * Integrates with backend APIs for comprehensive progress monitoring.
  */
 
-import { env } from '@/lib/config/environment';
+import { env } from '@/app/lib/config/environment';
 
 interface ProgressData {
   customerId: string;

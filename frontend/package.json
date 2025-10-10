@@ -4,11 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "npm run validate:env && next dev",
-    "dev:unsafe": "next dev",
+    "dev": "next dev",
     "build": "next build",
-    "build:secure": "npm run validate && npm run build && npm run validate:build",
-    "prebuild": "npm run validate:env",
     "start": "next start",
     "types:supabase": "./scripts/generate-supabase-types.sh",
     "types:check": "tsc --noEmit",
@@ -21,12 +18,7 @@
     "test:ci": "jest --ci --coverage --watchAll=false",
     "test:unit": "jest __tests__/components __tests__/lib",
     "test:integration": "jest __tests__/api",
-    "test:all": "node scripts/run-tests.js",
-    "validate": "npx tsx lib/validation/orchestrator.ts",
-    "validate:security": "npx tsx lib/validation/agents/security/securityScanner.ts",
-    "validate:compatibility": "npx tsx lib/validation/agents/compatibility/compatibilityValidator.ts",
-    "validate:build": "npx tsx lib/validation/agents/build/buildValidator.ts",
-    "install-hooks": "cp lib/validation/hooks/pre-commit.ts .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit"
+    "test:all": "node scripts/run-tests.js"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",

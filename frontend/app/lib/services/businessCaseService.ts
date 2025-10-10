@@ -5,7 +5,7 @@
  * Provides professional business case templates and AI-enhanced generation.
  */
 
-import { env } from '@/lib/config/environment';
+import { env } from '@/app/lib/config/environment';
 
 interface BusinessCaseInput {
   template: string;

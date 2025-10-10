@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { UserIntelligenceProvider } from '../../../lib/contexts/UserIntelligenceContext';
+import { UserIntelligenceProvider } from '@/app/lib/contexts/UserIntelligenceContext';
 import DashboardPremiumClient from './DashboardPremiumClient';
 
 // Generate static params for known customer IDs

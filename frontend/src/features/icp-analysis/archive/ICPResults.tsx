@@ -9,7 +9,7 @@ import {
   ArrowDownTrayIcon,
   SparklesIcon,
 } from '@heroicons/react/24/outline';
-import { useExportData } from '@/lib/hooks/useAPI';
+import { useExportData } from '@/app/lib/hooks/useAPI';
 
 interface ICPSegment {
   name: string;

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { env } from '@/lib/config/environment';
+import { env } from '@/app/lib/config/environment';
 
 export async function GET(request: NextRequest) {
   try {

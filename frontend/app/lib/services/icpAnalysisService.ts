@@ -5,7 +5,7 @@
  * Integrates with AI services and backend APIs for comprehensive ICP insights.
  */
 
-import { env } from '@/lib/config/environment';
+import { env } from '@/app/lib/config/environment';
 
 interface ICPAnalysisInput {
   productName: string;

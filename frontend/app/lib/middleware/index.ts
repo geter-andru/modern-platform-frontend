@@ -9,7 +9,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { validationMiddleware } from './validation';
 import { apiVersioning } from './api-versioning';
 import { errorHandler } from './error-handling';
-import { configManager } from '@/lib/config';
+import { configManager } from '@/app/lib/config';
 
 // Middleware configuration interface
 export interface MiddlewareConfig {

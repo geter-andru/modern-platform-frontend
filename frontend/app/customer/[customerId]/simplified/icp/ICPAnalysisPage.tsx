@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase/client'
+import { supabase } from '@/app/lib/supabase/client'
 import { IntegratedICPTool } from '@/src/features/icp-analysis'
 
 export default function ICPAnalysisPage() {

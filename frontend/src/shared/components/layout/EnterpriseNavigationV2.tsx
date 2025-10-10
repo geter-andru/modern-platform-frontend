@@ -24,7 +24,7 @@ import {
   Sun as SunIcon,
   Moon as MoonIcon,
 } from 'lucide-react';
-import { useLogout } from '@/lib/hooks/useAPI';
+import { useLogout } from '@/app/lib/hooks/useAPI';
 import { useTheme } from '@/src/shared/components/theme/ThemeProvider';
 import { useSupabaseAuth } from '@/src/shared/hooks/useSupabaseAuth';
 

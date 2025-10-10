@@ -1,7 +1,7 @@
 
 
 import { RealtimeChannel } from '@supabase/supabase-js'
-import { supabase } from '@/lib/supabase/client'
+import { supabase } from '@/app/lib/supabase/client'
 import {
   CompetencyData,
   CompetencyUpdate,

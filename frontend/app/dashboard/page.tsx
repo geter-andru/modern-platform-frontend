@@ -10,7 +10,7 @@ import { QuickActions } from '../../src/shared/components/dashboard/QuickActions
 import { RecentActivity } from '../../src/shared/components/dashboard/RecentActivity';
 import { InsightsPanel } from '../../src/shared/components/dashboard/InsightsPanel';
 import { EnterpriseDashboard } from '../../src/shared/components/dashboard/EnterpriseDashboard';
-import { useCustomer, useProgress, useMilestones, useProgressInsights } from '../../lib/hooks/useAPI';
+import { useCustomer, useProgress, useMilestones, useProgressInsights } from '@/app/lib/hooks/useAPI';
 
 export default function DashboardPage() {
   const router = useRouter();

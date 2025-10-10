@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { icpAnalysisService } from '@/app/lib/services/icpAnalysisService';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/app/lib/supabase/server';
 
 export async function POST(request: NextRequest) {
   try {

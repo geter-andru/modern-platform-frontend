@@ -5,7 +5,7 @@
  * progress tracking, and data persistence.
  */
 
-import { env } from '@/lib/config/environment';
+import { env } from '@/app/lib/config/environment';
 
 interface BackendResponse<T = any> {
   success: boolean;

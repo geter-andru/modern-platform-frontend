@@ -20,11 +20,11 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { successResponse, withErrorHandling, getPerformanceStats } from '@/lib/middleware/error-handler';
-import { getRateLimitStats } from '@/lib/middleware/rate-limiter';
-import { cache } from '@/lib/cache/memory-cache';
-import { supabase } from '@/lib/supabase/client';
-import { env } from '@/lib/config/environment';
+import { successResponse, withErrorHandling, getPerformanceStats } from '@/app/lib/middleware/error-handler';
+import { getRateLimitStats } from '@/app/lib/middleware/rate-limiter';
+import { cache } from '@/app/lib/cache/memory-cache';
+import { supabase } from '@/app/lib/supabase/client';
+import { env } from '@/app/lib/config/environment';
 
 // Health check levels
 type HealthLevel = 'basic' | 'detailed' | 'full';

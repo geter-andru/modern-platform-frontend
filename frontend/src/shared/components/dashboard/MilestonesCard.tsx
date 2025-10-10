@@ -8,7 +8,7 @@ import {
   Trophy as TrophyIcon,
   CheckCircle as CheckCircleIconSolid,
 } from 'lucide-react';
-import { useCompleteMilestone } from '@/lib/hooks/useAPI';
+import { useCompleteMilestone } from '@/app/lib/hooks/useAPI';
 
 interface Milestone {
   id: string;

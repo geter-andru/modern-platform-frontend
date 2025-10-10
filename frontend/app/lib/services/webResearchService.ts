@@ -1,6 +1,7 @@
 // webResearchService.ts - Web research service for ICP analysis and market intelligence
 
 export interface ResearchRequest {
+  productName?: string;
   businessType: string;
   productDescription: string;
   industry?: string;

@@ -14,9 +14,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { runAuthBridgeTests, quickAuthTest, TestResult } from '@/lib/testing/auth-bridge-test';
+import { runAuthBridgeTests, quickAuthTest, TestResult } from '@/app/lib/testing/auth-bridge-test';
 import { authBridge } from '@/app/lib/services/auth-bridge';
-import { modernApiClient } from '@/lib/api/modern-client';
+import { modernApiClient } from '@/app/lib/api/modern-client';
 
 export default function TestAuthBridgePage() {
   const [isRunning, setIsRunning] = useState(false);

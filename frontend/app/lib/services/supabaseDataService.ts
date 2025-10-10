@@ -1,4 +1,4 @@
-import { supabase, Database } from '@/lib/supabase/client';
+import { supabase, Database } from '@/app/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
 
 // Type definitions

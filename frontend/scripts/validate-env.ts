@@ -8,7 +8,7 @@
  * exits with appropriate status codes.
  */
 
-import { env } from '../lib/config/environment';
+import { env } from '@/app/lib/config/environment';
 
 // ANSI color codes for terminal output
 const colors = {

@@ -22,7 +22,7 @@ import {
   ArrowRight
 } from 'lucide-react'
 import { useSupabaseAuth } from '../../../shared/hooks/useSupabaseAuth'
-import { supabase } from '@/lib/supabase/client-rewrite'
+import { supabase } from '@/app/lib/supabase/client-rewrite'
 import { buildICPRequestData, validateProductData } from '../utils/icp-prompt-builder'
 
 interface ProductDetails {

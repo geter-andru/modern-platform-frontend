@@ -89,7 +89,7 @@ const IntegratedICPTool: React.FC<IntegratedICPToolProps> = ({ customerId }) => 
         productName: productData.productName,
         businessType: productData.businessType,
         productDescription: productData.productDescription
-      }, 'deep');
+      }, 'comprehensive');
 
       setGenerationProgress(40);
       setGenerationStep('Processing research data with Claude AI...');
@@ -109,7 +109,7 @@ const IntegratedICPTool: React.FC<IntegratedICPToolProps> = ({ customerId }) => 
 
     } catch (error) {
       console.error('Real resource generation failed:', error);
-      setGenerationStep(`Failed to generate resources: ${error.message}`);
+      setGenerationStep(`Failed to generate resources: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsGeneratingReal(false);
     }

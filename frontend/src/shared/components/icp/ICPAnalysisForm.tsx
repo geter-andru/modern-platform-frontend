@@ -10,7 +10,7 @@ import {
   Globe as GlobeAltIcon,
   Sparkles as SparklesIcon,
 } from 'lucide-react';
-import { useGenerateAIICP, useTrackAction } from '@/lib/hooks/useAPI';
+import { useGenerateAIICP, useTrackAction } from '@/app/lib/hooks/useAPI';
 
 interface ICPFormData {
   companySize: string;

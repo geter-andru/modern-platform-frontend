@@ -27,6 +27,13 @@ const ICPRatingFrameworkGenerator: React.FC<ICPRatingFrameworkGeneratorProps> = 
   const [generatedFramework, setGeneratedFramework] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'input' | 'framework' | 'implementation'>('framework');
   const [hasExistingData, setHasExistingData] = useState(false);
+  const [productDescription, setProductDescription] = useState('');
+  const [icpDescription, setIcpDescription] = useState('');
+  
+  // Sample data for demonstration
+  const sampleProduct = `Our AI-powered sales automation platform helps B2B companies streamline their sales processes, improve lead qualification, and increase conversion rates through intelligent automation and data-driven insights.`;
+  
+  const sampleICP = `Our ideal customer is a mid-market B2B SaaS company with 50-500 employees, $10M-$100M annual revenue, selling complex products with 3-6 month sales cycles. They struggle with manual sales processes, poor lead qualification, and lack of sales visibility.`;
 
   // Check for existing data on mount and auto-generate
   useEffect(() => {
@@ -314,6 +321,82 @@ const ICPRatingFrameworkGenerator: React.FC<ICPRatingFrameworkGeneratorProps> = 
     setActiveTab('framework');
     setIsGenerating(false);
     
+      if (onFrameworkGenerated) {
+        onFrameworkGenerated(framework);
+      }
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const generateFramework = async () => {
+    setIsGenerating(true);
+    
+    try {
+      // Use Claude AI to generate framework from product and ICP descriptions
+      const frameworkData = await claudeAIService.generateRatingFrameworkFromICP(
+        productDescription,
+        icpDescription
+      );
+      
+      const framework = frameworkData;
+      
+      setGeneratedFramework(framework);
+      localStorage.setItem('icpRatingFramework', JSON.stringify(framework));
+      
+      if (onFrameworkGenerated) {
+        onFrameworkGenerated(framework);
+      }
+      
+    } catch (error) {
+      console.error('Claude AI framework generation failed:', error);
+      // Fallback to template-based generation
+      const framework = {
+        content: {
+          methodology: generateMethodology(),
+          reasoning: generateReasoning(),
+          categories: generateCategories(),
+          implementation: generateImplementation(),
+          calibration: generateCalibration()
+        },
+        interactive: {
+          rating_system: {
+            categories: [
+              {
+                id: "company_size",
+                name: "Company Size & Growth",
+                type: "firmographic",
+                weight: 0.20,
+                description: "Employee count and ARR within ICP sweet spot",
+                scoring: {
+                  "4": {
+                    criteria: ["50-500 employees", "$5M-$50M ARR", "30%+ YoY growth"],
+                    examples: ["Series B SaaS with 200 employees, $20M ARR"],
+                    data_sources: ["LinkedIn", "Crunchbase", "Company website"]
+                  },
+                  "3": {
+                    criteria: ["30-600 employees", "$3M-$75M ARR", "20%+ growth"],
+                    examples: ["Late Series A or Series C companies"]
+                  },
+                  "2": {
+                    criteria: ["20-1000 employees", "$1M-$100M ARR", "10%+ growth"],
+                    examples: ["Companies outside sweet spot but still viable"]
+                  },
+                  "1": {
+                    criteria: ["<20 or >1000 employees", "<$1M or >$100M ARR"],
+                    examples: ["Too small or enterprise-level"]
+                  }
+                }
+              }
+            ],
+            formula: "sum(category_score * category_weight)"
+          }
+        }
+      };
+      
+      setGeneratedFramework(framework);
+      localStorage.setItem('icpRatingFramework', JSON.stringify(framework));
+      
       if (onFrameworkGenerated) {
         onFrameworkGenerated(framework);
       }

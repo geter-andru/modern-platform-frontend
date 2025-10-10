@@ -5,7 +5,7 @@
  * Supports multiple formats including PDF, DOCX, PPTX, CSV, and JSON.
  */
 
-import { env } from '@/lib/config/environment';
+import { env } from '@/app/lib/config/environment';
 
 interface ExportFormat {
   format: string;

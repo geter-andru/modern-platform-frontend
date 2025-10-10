@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { useUserIntelligence } from '../../../lib/contexts/UserIntelligenceContext';
-import ModernCard from '../../../lib/components/ModernCard';
-import ModernCircularProgress from '../../../lib/components/ModernCircularProgress';
+import { useUserIntelligence } from '@/app/lib/contexts/UserIntelligenceContext';
+import ModernCard from '@/app/lib/components/ModernCard';
+import ModernCircularProgress from '@/app/lib/components/ModernCircularProgress';
 
 export default function DashboardPremiumClient() {
   const params = useParams();

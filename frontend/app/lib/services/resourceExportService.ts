@@ -5,17 +5,17 @@
  * Manages file generation, storage, and download URLs with expiration.
  */
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/app/lib/supabase/server';
 import { 
   Resource, 
   ResourceExport, 
   ExportFormat,
   ResourceExportService as IResourceExportService
-} from '@/lib/types/resourcesLibrary';
+} from '@/app/lib/types/resourcesLibrary';
 import {
   ExportResourceRequest,
   ExportResourceResponse
-} from '@/lib/validation/schemas/resourcesLibrarySchemas';
+} from '@/app/lib/validation/schemas/resourcesLibrarySchemas';
 
 interface ExportConfig {
   maxFileSizeMB: number;

@@ -17,7 +17,7 @@ import {
   ResourceCategory, 
   GenerateResourceRequest,
   CumulativeIntelligenceContext
-} from '@/lib/validation/schemas/resourcesLibrarySchemas';
+} from '@/app/lib/validation/schemas/resourcesLibrarySchemas';
 
 // Types
 interface ResourceGenerationFormProps {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuthHeaders} from '@/lib/middleware/api-auth';
-import { env } from '@/lib/config/environment';
+import { getAuthHeaders} from '@/app/lib/middleware/api-auth';
+import { env } from '@/app/lib/config/environment';
 
 /**
  * GET /api/export/history/[customerId]

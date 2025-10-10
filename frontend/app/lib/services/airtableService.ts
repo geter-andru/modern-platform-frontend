@@ -5,7 +5,7 @@
  * Provides methods for storing assessment results, actions, and other data.
  */
 
-import { env } from '@/lib/config/environment';
+import { env } from '@/app/lib/config/environment';
 
 interface AirtableRecord {
   id?: string;

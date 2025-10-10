@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
-import { env } from '@/lib/config/environment'
+import { env } from '@/app/lib/config/environment'
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)

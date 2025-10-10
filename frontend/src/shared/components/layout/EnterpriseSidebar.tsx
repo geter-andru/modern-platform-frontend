@@ -22,7 +22,7 @@ import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from 'lucide-react';
-import { useLogout } from '@/lib/hooks/useAPI';
+import { useLogout } from '@/app/lib/hooks/useAPI';
 
 interface EnterpriseSidebarProps {
   isOpen: boolean;

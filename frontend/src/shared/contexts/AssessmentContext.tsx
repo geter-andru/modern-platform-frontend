@@ -6,7 +6,7 @@
  */
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/app/lib/supabase/client';
 
 // TypeScript interfaces for assessment context
 export interface AssessmentData {

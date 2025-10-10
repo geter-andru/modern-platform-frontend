@@ -6,7 +6,7 @@
  */
 
 import { createBrowserClient } from '@supabase/ssr';
-import { env } from '@/lib/config/environment';
+import { env } from '@/app/lib/config/environment';
 
 /**
  * Get the current user's authentication token

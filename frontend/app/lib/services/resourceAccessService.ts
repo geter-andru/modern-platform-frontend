@@ -5,16 +5,16 @@
  * and manages access history for progressive unlocking.
  */
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/app/lib/supabase/server';
 import { 
   Resource, 
   ResourceAccessTracking, 
   AccessType,
   ResourceAccessService as IResourceAccessService
-} from '@/lib/types/resourcesLibrary';
+} from '@/app/lib/types/resourcesLibrary';
 import {
   TrackAccessRequest
-} from '@/lib/validation/schemas/resourcesLibrarySchemas';
+} from '@/app/lib/validation/schemas/resourcesLibrarySchemas';
 
 interface AccessAnalytics {
   totalViews: number;

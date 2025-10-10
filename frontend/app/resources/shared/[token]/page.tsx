@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { supabase } from '@/lib/supabase/client';
-import { type Resource } from '../../../lib/hooks/useResources';
+import { supabase } from '@/app/lib/supabase/client';
+import { type Resource } from '@/app/lib/hooks/useResources';
 
 interface ShareData {
   resource: Resource;

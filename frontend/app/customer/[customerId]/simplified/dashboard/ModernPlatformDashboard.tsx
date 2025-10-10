@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useSearchParams, useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase/client'
+import { supabase } from '@/app/lib/supabase/client'
 import ModernSidebarLayout from '@/src/shared/components/layout/ModernSidebarLayout'
 import { SystematicScalingDashboard } from '@/src/features/dashboard'
 import { SystematicScalingProvider } from '@/src/shared/contexts/SystematicScalingContext'
