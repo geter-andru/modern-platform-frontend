@@ -1,9 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-
-// Force dynamic rendering (no static generation) for authenticated pages
-export const dynamic = 'force-dynamic';
 import { useRequireAuth } from '@/app/lib/auth';
 import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
 import { ProgressOverview } from '../../src/shared/components/dashboard/ProgressOverview';

@@ -8,9 +8,16 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  NEXT_PUBLIC_BACKEND_URL = "https://hs-andru-test.onrender.com"
-  NEXT_PUBLIC_SUPABASE_URL = "https://molcqjsqtjbfclasynpg.supabase.co"
-  NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vbGNxanNxdGpiZmNsYXN5bnBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4ODk1NDcsImV4cCI6MjA3MTQ2NTU0N30.IEP7E2VM2uV1vltbSw1CwYpYw1qw6MvI-JB5SD0tUKI"
+
+  # ⚠️  IMPORTANT: All sensitive environment variables MUST be set in Netlify UI
+  # Navigate to: Site Settings > Environment Variables
+  #
+  # Required environment variables to set in Netlify UI:
+  # - NEXT_PUBLIC_BACKEND_URL (e.g., https://hs-andru-test.onrender.com)
+  # - NEXT_PUBLIC_SUPABASE_URL (e.g., https://molcqjsqtjbfclasynpg.supabase.co)
+  # - NEXT_PUBLIC_SUPABASE_ANON_KEY (Supabase anonymous/public key)
+  #
+  # DO NOT commit API keys, tokens, or secrets to this file!
 
 # Next.js auto-detection - Netlify will automatically detect and configure Next.js
 # No explicit plugin needed for Next.js 15+
@@ -39,7 +46,7 @@
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
-# Security headers
+# Security headers (Enhanced - Oct 16, 2025)
 [[headers]]
   for = "/*"
   [headers.values]
@@ -47,4 +54,7 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.airtable.com https://hook.us1.make.com;"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    # Enhanced CSP - Note: Next.js requires 'unsafe-eval' for development
+    # For production, this can be further tightened with nonces
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' https://vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://molcqjsqtjbfclasynpg.supabase.co https://hs-andru-test.onrender.com https://api.airtable.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"

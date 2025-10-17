@@ -27,6 +27,10 @@
    Note: @layer base variables below serve as fallback values for legacy code
    that hasn't been migrated to use token-bridge aliases yet.
    ============================================================================ */
+
+/* Import Brand System CSS Files */
+@import '../src/shared/styles/design-tokens.css';
+@import '../src/shared/styles/component-patterns.css';
 @import '../src/shared/styles/token-bridge.css';
 
 @layer base {

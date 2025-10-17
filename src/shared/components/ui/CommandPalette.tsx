@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, Command } from 'lucide-react';
-import { MICRO_INTERACTIONS, GLASS_EFFECTS } from '../../../../app/lib/constants/brand';
+import { MICRO_INTERACTIONS, GLASS_EFFECTS } from '@/app/lib/constants/brand';
 
 interface CommandPaletteProps {
   isOpen: boolean;

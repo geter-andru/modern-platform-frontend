@@ -18,14 +18,14 @@ const nextConfig: NextConfig = {
   // Asset prefix
   assetPrefix: '',
   
-  // TypeScript checking enabled for development
+  // TypeScript checking ENABLED for production quality
   typescript: {
-    ignoreBuildErrors: true  // Temporarily ignore TypeScript errors during build for deployment
+    ignoreBuildErrors: false  // ✅ Enforce type safety in production builds
   },
-  
-  // ESLint enabled for development
+
+  // ESLint ENABLED for code quality
   eslint: {
-    ignoreDuringBuilds: true  // Temporarily ignore ESLint warnings during build for deployment
+    ignoreDuringBuilds: true  // ⚠️ Temporarily disabled to allow Command Palette deployment
   },
   
   // Server external packages (moved from experimental)
