@@ -656,18 +656,57 @@ export interface Database {
   };
 }
 
-// Create and export the Supabase client with proper typing
-export const supabase: SupabaseClient<Database> = createClient<Database>(
-  supabaseUrl,
-  supabaseAnonKey,
-  {
-    auth: {
-      autoRefreshToken: true,
-      persistSession: true,
-      detectSessionInUrl: true,
-    },
+/**
+ * SINGLETON SUPABASE CLIENT
+ *
+ * ⚠️ CRITICAL: Only ONE Supabase client instance should exist in the entire application.
+ * Multiple instances cause session storage conflicts and "Multiple GoTrueClient instances" warnings.
+ *
+ * ✅ CORRECT: Import this singleton from '@/app/lib/supabase/client'
+ * ❌ INCORRECT: Calling createClient() elsewhere creates duplicate instances
+ *
+ * If you see "Multiple GoTrueClient instances" warnings, search for other createClient() calls.
+ */
+
+// Singleton instance - created once and reused everywhere
+let _supabaseInstance: SupabaseClient<Database> | null = null;
+
+// Create singleton instance with environment validation
+function getSupabaseClient(): SupabaseClient<Database> {
+  if (_supabaseInstance) {
+    return _supabaseInstance;
   }
-);
+
+  // Warn if client created multiple times
+  if (typeof window !== 'undefined' && (window as any).__supabaseClientCount) {
+    console.warn(
+      '⚠️ Multiple Supabase client creation detected! This causes session conflicts.',
+      'Import the singleton from @/app/lib/supabase/client instead of creating new instances.'
+    );
+  }
+
+  // Track client creation for debugging
+  if (typeof window !== 'undefined') {
+    (window as any).__supabaseClientCount = ((window as any).__supabaseClientCount || 0) + 1;
+  }
+
+  _supabaseInstance = createClient<Database>(
+    supabaseUrl,
+    supabaseAnonKey,
+    {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+      },
+    }
+  );
+
+  return _supabaseInstance;
+}
+
+// Export the singleton instance
+export const supabase: SupabaseClient<Database> = getSupabaseClient();
 
 // Export types for use in other files
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
