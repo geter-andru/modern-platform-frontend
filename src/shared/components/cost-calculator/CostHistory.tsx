@@ -1,5 +1,7 @@
 'use client';
 
+import '../../styles/design-tokens.css';
+
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -93,21 +95,21 @@ export function CostHistory({ customerId, onViewResults }: CostHistoryProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'text-green-600 bg-green-50';
+        return 'text-brand-secondary bg-brand-secondary/10';
       case 'processing':
-        return 'text-blue-600 bg-blue-50';
+        return 'text-brand-primary bg-brand-primary/10';
       case 'failed':
-        return 'text-red-600 bg-red-50';
+        return 'text-accent-danger bg-accent-danger/10';
       default:
-        return 'text-gray-600 bg-gray-50';
+        return 'text-text-muted bg-surface';
     }
   };
 
   const getCostColor = (cost: number) => {
-    if (cost >= 300000) return 'text-red-600';
-    if (cost >= 200000) return 'text-orange-600';
-    if (cost >= 100000) return 'text-yellow-600';
-    return 'text-green-600';
+    if (cost >= 300000) return 'text-accent-danger';
+    if (cost >= 200000) return 'text-accent-warning';
+    if (cost >= 100000) return 'text-accent-warning';
+    return 'text-brand-secondary';
   };
 
   const handleSelectItem = (id: string) => {
@@ -200,8 +202,8 @@ export function CostHistory({ customerId, onViewResults }: CostHistoryProps) {
       {/* Header with actions */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Calculation History</h2>
-          <p className="text-gray-600 mt-1">
+          <h2 className="text-2xl font-bold text-text-primary">Calculation History</h2>
+          <p className="text-text-muted mt-1">
             {mockHistory.length} calculations • {selectedItems.length} selected
           </p>
         </div>
@@ -210,7 +212,7 @@ export function CostHistory({ customerId, onViewResults }: CostHistoryProps) {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="border border-surface rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-primary focus:border-transparent"
           >
             <option value="date">Sort by Date</option>
             <option value="cost">Sort by Cost</option>
@@ -219,11 +221,11 @@ export function CostHistory({ customerId, onViewResults }: CostHistoryProps) {
           
           {selectedItems.length > 0 && (
             <div className="flex space-x-2">
-              <button className="flex items-center space-x-1 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
+              <button className="flex items-center space-x-1 px-3 py-2 border border-surface rounded-lg hover:bg-surface text-sm">
                 <ArrowDownTrayIcon className="h-4 w-4" />
                 <span>Export</span>
               </button>
-              <button className="flex items-center space-x-1 px-3 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 text-sm">
+              <button className="flex items-center space-x-1 px-3 py-2 border border-accent-danger text-accent-danger rounded-lg hover:bg-accent-danger/10 text-sm">
                 <TrashIcon className="h-4 w-4" />
                 <span>Delete</span>
               </button>
@@ -233,16 +235,16 @@ export function CostHistory({ customerId, onViewResults }: CostHistoryProps) {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200">
+      <div className="bg-background-secondary rounded-xl shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-surface">
           <label className="flex items-center">
             <input
               type="checkbox"
               checked={selectedItems.length === mockHistory.length}
               onChange={handleSelectAll}
-              className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              className="rounded border-surface text-brand-primary focus:ring-brand-primary"
             />
-            <span className="ml-2 text-sm text-gray-700">Select all calculations</span>
+            <span className="ml-2 text-sm text-text-secondary">Select all calculations</span>
           </label>
         </div>
 
@@ -253,7 +255,7 @@ export function CostHistory({ customerId, onViewResults }: CostHistoryProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.05 }}
-              className="px-6 py-4 hover:bg-gray-50 transition-colors"
+              className="px-6 py-4 hover:bg-surface transition-colors"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
@@ -261,19 +263,19 @@ export function CostHistory({ customerId, onViewResults }: CostHistoryProps) {
                     type="checkbox"
                     checked={selectedItems.includes(item.id)}
                     onChange={() => handleSelectItem(item.id)}
-                    className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    className="rounded border-surface text-brand-primary focus:ring-brand-primary"
                   />
                   
                   <div className="flex-1">
                     <div className="flex items-center space-x-3">
-                      <h3 className="text-sm font-medium text-gray-900">{item.name}</h3>
+                      <h3 className="text-sm font-medium text-text-primary">{item.name}</h3>
                       {item.aiEnhanced && (
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-brand-accent/10 text-brand-accent">
                           AI Enhanced
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center space-x-4 mt-1 text-sm text-gray-500">
+                    <div className="flex items-center space-x-4 mt-1 text-sm text-text-muted">
                       <span className="flex items-center">
                         <ClockIcon className="h-4 w-4 mr-1" />
                         {formatDate(item.createdAt)}
@@ -289,7 +291,7 @@ export function CostHistory({ customerId, onViewResults }: CostHistoryProps) {
                     <div className={`text-lg font-bold ${getCostColor(item.totalCost)}`}>
                       {formatCurrency(item.totalCost)}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-text-muted">
                       {formatCurrency(item.monthlyImpact)}/month
                     </div>
                   </div>
@@ -301,11 +303,11 @@ export function CostHistory({ customerId, onViewResults }: CostHistoryProps) {
                   <div className="flex space-x-2">
                     <button 
                       onClick={() => handleViewResults(item)}
-                      className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+                      className="p-2 text-text-secondary hover:text-text-muted rounded-lg hover:bg-surface-hover"
                     >
                       <EyeIcon className="h-4 w-4" />
                     </button>
-                    <button className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
+                    <button className="p-2 text-text-secondary hover:text-text-muted rounded-lg hover:bg-surface-hover">
                       <ArrowDownTrayIcon className="h-4 w-4" />
                     </button>
                   </div>
@@ -318,12 +320,12 @@ export function CostHistory({ customerId, onViewResults }: CostHistoryProps) {
 
       {mockHistory.length === 0 && (
         <div className="text-center py-12">
-          <CurrencyDollarIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No Calculation History</h3>
-          <p className="text-gray-600 mb-6">
+          <CurrencyDollarIcon className="h-16 w-16 text-text-secondary mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-text-primary mb-2">No Calculation History</h3>
+          <p className="text-text-muted mb-6">
             Your cost calculations will appear here for easy access and comparison.
           </p>
-          <button className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700">
+          <button className="bg-brand-primary text-text-primary px-6 py-2 rounded-lg hover:bg-brand-primary/90">
             Create First Calculation
           </button>
         </div>
@@ -331,50 +333,50 @@ export function CostHistory({ customerId, onViewResults }: CostHistoryProps) {
 
       {/* Stats summary */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg p-4 shadow-sm">
+        <div className="bg-background-secondary rounded-lg p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-2xl font-bold text-gray-900">{mockHistory.length}</div>
-              <div className="text-sm text-gray-600">Total Calculations</div>
+              <div className="text-2xl font-bold text-text-primary">{mockHistory.length}</div>
+              <div className="text-sm text-text-muted">Total Calculations</div>
             </div>
-            <ChartBarIcon className="h-8 w-8 text-gray-400" />
+            <ChartBarIcon className="h-8 w-8 text-text-secondary" />
           </div>
         </div>
         
-        <div className="bg-white rounded-lg p-4 shadow-sm">
+        <div className="bg-background-secondary rounded-lg p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-2xl font-bold text-text-primary">
                 {formatCurrency(mockHistory.reduce((acc, item) => acc + item.totalCost, 0))}
               </div>
-              <div className="text-sm text-gray-600">Total Cost Identified</div>
+              <div className="text-sm text-text-muted">Total Cost Identified</div>
             </div>
-            <CurrencyDollarIcon className="h-8 w-8 text-red-400" />
+            <CurrencyDollarIcon className="h-8 w-8 text-accent-danger" />
           </div>
         </div>
         
-        <div className="bg-white rounded-lg p-4 shadow-sm">
+        <div className="bg-background-secondary rounded-lg p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-2xl font-bold text-text-primary">
                 {formatCurrency(Math.round(mockHistory.reduce((acc, item) => acc + item.totalCost, 0) / mockHistory.length) || 0)}
               </div>
-              <div className="text-sm text-gray-600">Average Cost</div>
+              <div className="text-sm text-text-muted">Average Cost</div>
             </div>
-            <ArrowTrendingUpIcon className="h-8 w-8 text-orange-400" />
+            <ArrowTrendingUpIcon className="h-8 w-8 text-accent-warning" />
           </div>
         </div>
         
-        <div className="bg-white rounded-lg p-4 shadow-sm">
+        <div className="bg-background-secondary rounded-lg p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-2xl font-bold text-text-primary">
                 {mockHistory.filter(item => item.aiEnhanced).length}
               </div>
-              <div className="text-sm text-gray-600">AI Enhanced</div>
+              <div className="text-sm text-text-muted">AI Enhanced</div>
             </div>
-            <div className="h-8 w-8 bg-purple-100 rounded-lg flex items-center justify-center">
-              <span className="text-purple-600 text-sm font-bold">AI</span>
+            <div className="h-8 w-8 bg-brand-accent/10 rounded-lg flex items-center justify-center">
+              <span className="text-brand-accent text-sm font-bold">AI</span>
             </div>
           </div>
         </div>

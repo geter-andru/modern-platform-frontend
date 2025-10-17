@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import '../../../shared/styles/design-tokens.css';
+
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   RefreshCw, 
@@ -286,7 +288,7 @@ export default function BuyerPersonasWidget({
       case 'high': return 'bg-red-900/30 text-red-400 border border-red-700/50'
       case 'medium': return 'bg-yellow-900/30 text-yellow-400 border border-yellow-700/50'
       case 'low': return 'bg-green-900/30 text-green-400 border border-green-700/50'
-      default: return 'bg-gray-900/30 text-gray-400 border border-gray-700/50'
+      default: return 'bg-background-primary/30 text-text-secondary border border-surface/50'
     }
   }
 
@@ -333,7 +335,7 @@ export default function BuyerPersonasWidget({
                 <p className="text-red-800 text-sm">{error}</p>
                 <button 
                   onClick={() => setError(null)}
-                  className="mt-2 text-red-600 hover:text-red-800 text-sm underline"
+                  className="mt-2 text-accent-danger hover:text-red-800 text-sm underline"
                 >
                   Dismiss
                 </button>
@@ -356,7 +358,7 @@ export default function BuyerPersonasWidget({
             <button
               onClick={handleGeneratePersonas}
               disabled={isGenerating}
-              className="px-6 py-3 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 mx-auto"
+              className="px-6 py-3 bg-brand-primary hover:bg-brand-primary/90 text-text-primary rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 mx-auto"
             >
               {isGenerating ? (
                 <>
@@ -600,7 +602,7 @@ export default function BuyerPersonasWidget({
                                   <ul className="space-y-2">
                                     {persona.informationSources.map((source, srcIndex) => (
                                       <li key={srcIndex} className="text-sm text-text-primary flex items-start gap-2">
-                                        <span className="text-blue-400 mt-1">•</span>
+                                        <span className="text-brand-primary mt-1">•</span>
                                         {source}
                                       </li>
                                     ))}

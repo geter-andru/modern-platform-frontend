@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import '../../../shared/styles/design-tokens.css';
+
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   RefreshCw, 
@@ -160,7 +162,7 @@ export default function RateCompanyWidget({
             name: 'Strong Match',
             minScore: 70,
             maxScore: 84,
-            color: 'text-blue-400',
+            color: 'text-brand-primary',
             description: 'Good fit with solid conversion potential'
           },
           {
@@ -276,9 +278,9 @@ export default function RateCompanyWidget({
   const getTierColorClass = (tierId: string) => {
     switch (tierId) {
       case 'tier-1': return 'text-green-400'
-      case 'tier-2': return 'text-blue-400'
+      case 'tier-2': return 'text-brand-primary'
       case 'tier-3': return 'text-yellow-400'
-      default: return 'text-gray-400'
+      default: return 'text-text-secondary'
     }
   }
 
@@ -289,9 +291,9 @@ export default function RateCompanyWidget({
       case 'negative':
         return { icon: AlertTriangle, color: 'text-red-400' }
       case 'neutral':
-        return { icon: Info, color: 'text-blue-400' }
+        return { icon: Info, color: 'text-brand-primary' }
       default:
-        return { icon: Info, color: 'text-gray-400' }
+        return { icon: Info, color: 'text-text-secondary' }
     }
   }
 
@@ -356,7 +358,7 @@ export default function RateCompanyWidget({
               <button
                 onClick={handleAnalyzeCompany}
                 disabled={isAnalyzing || !companyName.trim()}
-                className="px-6 py-3 bg-brand-primary hover:bg-brand-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+                className="px-6 py-3 bg-brand-primary hover:bg-brand-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-text-primary rounded-lg font-medium transition-colors flex items-center gap-2"
               >
                 {isAnalyzing ? (
                   <>
@@ -589,7 +591,7 @@ export default function RateCompanyWidget({
                                   ? 'bg-red-900/30 text-red-400'
                                   : action.priority === 'medium'
                                   ? 'bg-yellow-900/30 text-yellow-400'
-                                  : 'bg-blue-900/30 text-blue-400'
+                                  : 'bg-blue-900/30 text-brand-primary'
                               }`}>
                                 {action.priority} priority
                               </span>

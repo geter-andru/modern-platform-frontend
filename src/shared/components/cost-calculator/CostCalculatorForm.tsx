@@ -13,6 +13,9 @@ import {
 } from 'lucide-react';
 import { useCostCalculation, useAICostCalculation, useTrackAction } from '@/app/lib/hooks/useAPI';
 
+// Import design tokens for component styling
+import '../../styles/design-tokens.css';
+
 interface CostFormData {
   // Revenue Impact
   averageDealSize: number;
@@ -142,44 +145,44 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
             className="space-y-6"
           >
             <div className="text-center mb-8">
-              <ArrowTrendingUpIcon className="h-12 w-12 text-green-600 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Revenue Impact</h2>
-              <p className="text-gray-600">How does delay affect your revenue?</p>
+              <ArrowTrendingUpIcon className="h-12 w-12 text-brand-secondary mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-text-primary mb-2">Revenue Impact</h2>
+              <p className="text-text-muted">How does delay affect your revenue?</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Average Deal Size ($)
                 </label>
                 <input
                   type="number"
                   {...register('averageDealSize', { required: 'Deal size is required', min: 1 })}
                   placeholder="25000"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 />
                 {errors.averageDealSize && (
-                  <p className="mt-1 text-sm text-red-600">{errors.averageDealSize.message}</p>
+                  <p className="mt-1 text-sm text-accent-danger">{errors.averageDealSize.message}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Monthly Deals Closed
                 </label>
                 <input
                   type="number"
                   {...register('monthlyDeals', { required: 'Monthly deals is required', min: 0 })}
                   placeholder="5"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 />
                 {errors.monthlyDeals && (
-                  <p className="mt-1 text-sm text-red-600">{errors.monthlyDeals.message}</p>
+                  <p className="mt-1 text-sm text-accent-danger">{errors.monthlyDeals.message}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Conversion Rate (%)
                 </label>
                 <input
@@ -188,20 +191,20 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
                   max="1"
                   {...register('conversionRate', { required: 'Conversion rate is required', min: 0, max: 1 })}
                   placeholder="0.15"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 />
-                <p className="text-xs text-gray-500 mt-1">Enter as decimal (e.g., 0.15 for 15%)</p>
+                <p className="text-xs text-text-muted mt-1">Enter as decimal (e.g., 0.15 for 15%)</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Sales Cycle Length (days)
                 </label>
                 <input
                   type="number"
                   {...register('salesCycleLength', { required: 'Sales cycle length is required', min: 1 })}
                   placeholder="90"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 />
               </div>
             </div>
@@ -235,31 +238,31 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Average Annual Salary ($)
                 </label>
                 <input
                   type="number"
                   {...register('averageSalary', { required: 'Average salary is required', min: 1 })}
                   placeholder="75000"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Monthly Operating Costs ($)
                 </label>
                 <input
                   type="number"
                   {...register('operatingCosts', { required: 'Operating costs is required', min: 0 })}
                   placeholder="50000"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Inefficiency Rate (%)
                 </label>
                 <input
@@ -268,9 +271,9 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
                   max="1"
                   {...register('inefficiencyRate', { required: 'Inefficiency rate is required', min: 0, max: 1 })}
                   placeholder="0.12"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 />
-                <p className="text-xs text-gray-500 mt-1">Percentage of time/resources wasted (as decimal)</p>
+                <p className="text-xs text-text-muted mt-1">Percentage of time/resources wasted (as decimal)</p>
               </div>
             </div>
           </motion.div>
@@ -284,14 +287,14 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
             className="space-y-6"
           >
             <div className="text-center mb-8">
-              <ChartBarIcon className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Competitive Impact</h2>
-              <p className="text-gray-600">How does delay affect your market position?</p>
+              <ChartBarIcon className="h-12 w-12 text-brand-accent mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-text-primary mb-2">Competitive Impact</h2>
+              <p className="text-text-muted">How does delay affect your market position?</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Current Market Share (%)
                 </label>
                 <input
@@ -300,13 +303,13 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
                   max="1"
                   {...register('marketShare', { min: 0, max: 1 })}
                   placeholder="0.05"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 />
-                <p className="text-xs text-gray-500 mt-1">Enter as decimal (e.g., 0.05 for 5%)</p>
+                <p className="text-xs text-text-muted mt-1">Enter as decimal (e.g., 0.05 for 5%)</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Competitor Advantage Rate (%)
                 </label>
                 <input
@@ -315,13 +318,13 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
                   max="1"
                   {...register('competitorAdvantage', { min: 0, max: 1 })}
                   placeholder="0.08"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 />
-                <p className="text-xs text-gray-500 mt-1">Rate at which competitors gain advantage</p>
+                <p className="text-xs text-text-muted mt-1">Rate at which competitors gain advantage</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Customer Retention Rate (%)
                 </label>
                 <input
@@ -330,9 +333,9 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
                   max="1"
                   {...register('customerRetention', { min: 0, max: 1 })}
                   placeholder="0.85"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 />
-                <p className="text-xs text-gray-500 mt-1">Current customer retention rate</p>
+                <p className="text-xs text-text-muted mt-1">Current customer retention rate</p>
               </div>
             </div>
           </motion.div>
@@ -346,45 +349,45 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
             className="space-y-6"
           >
             <div className="text-center mb-8">
-              <ClockIcon className="h-12 w-12 text-orange-600 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Timeline & Context</h2>
-              <p className="text-gray-600">When and how will changes be implemented?</p>
+              <ClockIcon className="h-12 w-12 text-accent-warning mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-text-primary mb-2">Timeline & Context</h2>
+              <p className="text-text-muted">When and how will changes be implemented?</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Delay Period (months)
                 </label>
                 <input
                   type="number"
                   {...register('delayMonths', { required: 'Delay period is required', min: 1 })}
                   placeholder="6"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 />
-                <p className="text-xs text-gray-500 mt-1">How long will implementation be delayed?</p>
+                <p className="text-xs text-text-muted mt-1">How long will implementation be delayed?</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Implementation Time (months)
                 </label>
                 <input
                   type="number"
                   {...register('implementationTime', { required: 'Implementation time is required', min: 1 })}
                   placeholder="3"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 />
-                <p className="text-xs text-gray-500 mt-1">Time needed to fully implement solution</p>
+                <p className="text-xs text-text-muted mt-1">Time needed to fully implement solution</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Industry
                 </label>
                 <select
                   {...register('industry', { required: 'Industry is required' })}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 >
                   <option value="">Select industry</option>
                   {industryOptions.map((industry) => (
@@ -394,12 +397,12 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-secondary mb-2">
                   Company Size
                 </label>
                 <select
                   {...register('companySize', { required: 'Company size is required' })}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 >
                   <option value="">Select size</option>
                   <option value="startup">Startup (1-10)</option>
@@ -412,7 +415,7 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-text-secondary mb-2">
                 Primary Pain Points
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -422,43 +425,43 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
                       type="checkbox"
                       value={pain}
                       {...register('painPoints')}
-                      className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                      className="rounded border-surface text-brand-primary focus:ring-brand-primary"
                     />
-                    <span className="ml-2 text-sm text-gray-700">{pain}</span>
+                    <span className="ml-2 text-sm text-text-secondary">{pain}</span>
                   </label>
                 ))}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-text-secondary mb-2">
                 Current Solution
               </label>
               <textarea
                 {...register('currentSolution')}
                 rows={3}
                 placeholder="Describe your current approach or tools..."
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full border border-surface bg-background-elevated text-text-primary rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:border-transparent"
               />
             </div>
 
             {/* AI Enhancement Toggle */}
-            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-4">
+            <div className="bg-gradient-to-r from-brand-primary/10 to-brand-accent/10 rounded-lg p-4">
               <label className="flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={useAI}
                   onChange={(e) => setUseAI(e.target.checked)}
-                  className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  className="rounded border-surface text-brand-primary focus:ring-brand-primary"
                 />
                 <div className="ml-3">
                   <div className="flex items-center">
-                    <SparklesIcon className="h-5 w-5 text-indigo-600 mr-2" />
-                    <span className="text-sm font-medium text-gray-900">
+                    <SparklesIcon className="h-5 w-5 text-brand-primary mr-2" />
+                    <span className="text-sm font-medium text-text-primary">
                       AI-Enhanced Analysis
                     </span>
                   </div>
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="text-xs text-text-muted mt-1">
                     Use AI to provide deeper insights and industry-specific recommendations
                   </p>
                 </div>
@@ -476,30 +479,30 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
     <div className="max-w-4xl mx-auto">
       {/* Progress bar */}
       <div className="mb-8">
-        <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+        <div className="flex items-center justify-between text-sm text-text-muted mb-2">
           <span>Step {step} of {totalSteps}</span>
           <span>{Math.round((step / totalSteps) * 100)}% Complete</span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
+        <div className="w-full bg-surface rounded-full h-2">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${(step / totalSteps) * 100}%` }}
             transition={{ duration: 0.5 }}
-            className="bg-indigo-600 h-2 rounded-full"
+            className="bg-brand-primary h-2 rounded-full"
           />
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-xl shadow-sm p-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-black/80 backdrop-blur-lg border border-white/10 shadow-2xl shadow-black/50 rounded-xl p-8">
         {renderStep()}
 
         {/* Navigation buttons */}
-        <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
+        <div className="flex justify-between mt-8 pt-6 border-t border-surface">
           <button
             type="button"
             onClick={prevStep}
             disabled={step === 1}
-            className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 border border-surface rounded-lg text-text-secondary hover:bg-surface-hover disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Previous
           </button>
@@ -508,7 +511,7 @@ export function CostCalculatorForm({ customerId, onCalculationComplete }: CostCa
             <button
               type="button"
               onClick={nextStep}
-              className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center space-x-2"
+              className="px-6 py-2 bg-brand-primary text-white rounded-lg hover:bg-brand-primary/90 flex items-center space-x-2"
             >
               <span>Next</span>
               <CurrencyDollarIcon className="h-4 w-4" />

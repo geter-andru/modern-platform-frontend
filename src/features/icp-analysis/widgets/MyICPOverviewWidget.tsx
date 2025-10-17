@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import '../../../shared/styles/design-tokens.css';
+
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   RefreshCw, 
@@ -331,7 +333,7 @@ export default function MyICPOverviewWidget({
               <p className="text-red-800 text-sm">{error}</p>
               <button 
                 onClick={handleRefresh}
-                className="mt-2 text-red-600 hover:text-red-800 text-sm underline"
+                className="mt-2 text-accent-danger hover:text-red-800 text-sm underline"
               >
                 Try again
               </button>
@@ -352,7 +354,7 @@ export default function MyICPOverviewWidget({
               <p className="text-text-muted mb-4">Generate an ICP analysis to see your customer profile here.</p>
               <button 
                 onClick={handleRefresh}
-                className="px-4 py-2 bg-brand-primary text-white rounded-lg hover:bg-brand-primary-dark transition-colors"
+                className="px-4 py-2 bg-brand-primary text-text-primary rounded-lg hover:bg-brand-primary-dark transition-colors"
               >
                 Refresh
               </button>
@@ -411,7 +413,7 @@ export default function MyICPOverviewWidget({
                             section.confidence >= 90 
                               ? 'bg-green-900/30 text-green-400' 
                               : section.confidence >= 80
-                              ? 'bg-blue-900/30 text-blue-400'
+                              ? 'bg-blue-900/30 text-brand-primary'
                               : section.confidence >= 70
                               ? 'bg-yellow-900/30 text-yellow-400'
                               : 'bg-red-900/30 text-red-400'
@@ -456,10 +458,10 @@ export default function MyICPOverviewWidget({
                                 [&>div]:!bg-background-tertiary [&>div]:!border-border-standard 
                                 [&_h2]:!text-text-primary [&_h3]:!text-text-primary [&_h4]:!text-text-secondary
                                 [&_p]:!text-text-secondary [&_ul]:!text-text-secondary [&_li]:!text-text-secondary
-                                [&_.bg-white]:!bg-background-tertiary [&_.bg-gray-50]:!bg-background-secondary 
+                                [&_.bg-background-secondary]:!bg-background-tertiary [&_.bg-surface]:!bg-background-secondary 
                                 [&_.text-blue-800]:!text-brand-primary [&_.text-blue-700]:!text-brand-primary 
-                                [&_.text-gray-700]:!text-text-secondary [&_.text-gray-600]:!text-text-muted 
-                                [&_.text-gray-800]:!text-text-primary [&_.text-gray-900]:!text-text-primary
+                                [&_.text-text-secondary]:!text-text-secondary [&_.text-text-muted]:!text-text-muted 
+                                [&_.text-gray-800]:!text-text-primary [&_.text-text-primary]:!text-text-primary
                                 [&_.bg-blue-50]:!bg-brand-primary/20 [&_.border-blue-200]:!border-brand-primary/50
                                 [&_.bg-red-50]:!bg-red-900/20 [&_.border-red-200]:!border-red-600/50 
                                 [&_.border-red-400]:!border-red-500/50 [&_.text-red-500]:!text-red-400

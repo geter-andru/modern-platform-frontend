@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import '../../../shared/styles/design-tokens.css';
+
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Brain, 
@@ -370,12 +372,12 @@ export default function ICPRatingSystemWidget({
   }
 
   return (
-    <div className={`bg-gray-900 border border-gray-700 rounded-xl overflow-hidden ${className}`}>
-      <div className="bg-gray-800/50 px-6 py-4 border-b border-gray-700">
+    <div className={`bg-background-primary border border-surface rounded-xl overflow-hidden ${className}`}>
+      <div className="bg-background-secondary/50 px-6 py-4 border-b border-surface">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-white">ICP Rating System</h2>
-            <p className="text-gray-400 text-sm">
+            <h2 className="text-xl font-bold text-text-primary">ICP Rating System</h2>
+            <p className="text-text-secondary text-sm">
               {isLoading ? 'Loading rating system...' : 
                error ? 'Error loading rating system' :
                ratingSystem ? `${ratingSystem.name} • ${ratingSystem.categories.length} Categories • ${ratingSystem.totalMaxPoints} Point Maximum • ${ratingSystem.tiers.length} Tiers` : 
@@ -385,21 +387,21 @@ export default function ICPRatingSystemWidget({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowMethodology(!showMethodology)}
-              className="p-2 text-gray-400 hover:text-white transition-colors"
+              className="p-2 text-text-secondary hover:text-text-primary transition-colors"
               title="Show methodology"
             >
               <Brain className="w-4 h-4" />
             </button>
             <button
               onClick={loadRatingSystem}
-              className="p-2 text-gray-400 hover:text-white transition-colors"
+              className="p-2 text-text-secondary hover:text-text-primary transition-colors"
               title="Refresh system"
             >
               <RefreshCw className="w-4 h-4" />
             </button>
             <button
               onClick={() => copyToClipboard(generateFrameworkSummary(), 'framework-summary')}
-              className="p-2 text-gray-400 hover:text-white transition-colors"
+              className="p-2 text-text-secondary hover:text-text-primary transition-colors"
               title="Export framework"
             >
               <Download className="w-4 h-4" />
@@ -430,17 +432,17 @@ export default function ICPRatingSystemWidget({
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto mb-4"></div>
-              <p className="text-gray-400">Loading rating system...</p>
+              <p className="text-text-secondary">Loading rating system...</p>
             </div>
           </div>
         ) : !ratingSystem ? (
           <div className="text-center py-12">
-            <Brain className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-white mb-2">No Rating System Available</h3>
-            <p className="text-gray-400 mb-4">Unable to load the rating system framework.</p>
+            <Brain className="w-12 h-12 text-text-muted mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-text-primary mb-2">No Rating System Available</h3>
+            <p className="text-text-secondary mb-4">Unable to load the rating system framework.</p>
             <button 
               onClick={loadRatingSystem}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-brand-primary text-text-primary rounded-lg hover:bg-brand-primary/90 transition-colors"
             >
               Retry
             </button>
@@ -449,7 +451,7 @@ export default function ICPRatingSystemWidget({
           <>
             <div className="bg-blue-900/20 border border-blue-600/50 rounded-lg p-4 mb-6">
               <div className="flex items-start gap-3">
-                <Zap className="w-5 h-5 text-blue-400 mt-0.5" />
+                <Zap className="w-5 h-5 text-brand-primary mt-0.5" />
                 <div>
                   <p className="text-blue-300 text-sm">
                     🧠 <strong>Cumulative Intelligence:</strong> This rating framework was generated using your Product Description and ICP Analysis as context, creating unmatched personalization for your specific market.
@@ -467,23 +469,23 @@ export default function ICPRatingSystemWidget({
               transition={{ duration: 0.3 }}
               className="mb-6 overflow-hidden"
             >
-              <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+              <div className="bg-background-secondary/50 rounded-lg p-4 border border-surface">
+                <h3 className="text-lg font-semibold text-text-primary mb-3 flex items-center gap-2">
                   <Lightbulb className="w-5 h-5 text-yellow-400" />
                   How This Rating Was Built
                 </h3>
-                <div className="space-y-3 text-sm text-gray-300">
+                <div className="space-y-3 text-sm text-text-muted">
                   <div>
-                    <strong className="text-white">Category Selection:</strong> {ratingSystem.methodology.categorySelection}
+                    <strong className="text-text-primary">Category Selection:</strong> {ratingSystem.methodology.categorySelection}
                   </div>
                   <div>
-                    <strong className="text-white">Weighting Rationale:</strong> {ratingSystem.methodology.weightingRationale}
+                    <strong className="text-text-primary">Weighting Rationale:</strong> {ratingSystem.methodology.weightingRationale}
                   </div>
                   <div>
-                    <strong className="text-white">Sales Cycle Complexity:</strong> {ratingSystem.methodology.salesCycleComplexity}
+                    <strong className="text-text-primary">Sales Cycle Complexity:</strong> {ratingSystem.methodology.salesCycleComplexity}
                   </div>
                   <div>
-                    <strong className="text-white">Solution Type:</strong> {ratingSystem.methodology.solutionType}
+                    <strong className="text-text-primary">Solution Type:</strong> {ratingSystem.methodology.solutionType}
                   </div>
                 </div>
               </div>
@@ -492,8 +494,8 @@ export default function ICPRatingSystemWidget({
         </AnimatePresence>
 
         <div className="mb-8">
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-blue-400" />
+          <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+            <Building2 className="w-5 h-5 text-brand-primary" />
             Firmographic Categories (3)
           </h3>
           <div className="space-y-4">
@@ -508,26 +510,26 @@ export default function ICPRatingSystemWidget({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className="bg-gray-800/50 rounded-lg border border-gray-700 overflow-hidden"
+                    className="bg-background-secondary/50 rounded-lg border border-surface overflow-hidden"
                   >
                     
                     <button
                       onClick={() => toggleCriteria(criteria.id)}
-                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-700/50 transition-colors"
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-background-tertiary/50 transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <span className="text-blue-400 font-semibold">{index + 1}.</span>
+                        <span className="text-brand-primary font-semibold">{index + 1}.</span>
                         <div className="text-left">
-                          <h4 className="text-white font-medium">{criteria.name}</h4>
-                          <p className="text-gray-400 text-sm">{criteria.description}</p>
+                          <h4 className="text-text-primary font-medium">{criteria.name}</h4>
+                          <p className="text-text-secondary text-sm">{criteria.description}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-blue-400 font-semibold">{criteria.weight}%</span>
+                        <span className="text-brand-primary font-semibold">{criteria.weight}%</span>
                         {isExpanded ? (
-                          <ChevronUp className="w-4 h-4 text-gray-400" />
+                          <ChevronUp className="w-4 h-4 text-text-secondary" />
                         ) : (
-                          <ChevronDown className="w-4 h-4 text-gray-400" />
+                          <ChevronDown className="w-4 h-4 text-text-secondary" />
                         )}
                       </div>
                     </button>
@@ -541,29 +543,29 @@ export default function ICPRatingSystemWidget({
                           transition={{ duration: 0.3 }}
                           className="overflow-hidden"
                         >
-                          <div className="px-4 pb-4 border-t border-gray-700">
+                          <div className="px-4 pb-4 border-t border-surface">
                             <div className="pt-4 space-y-4">
                               <div>
-                                <h5 className="text-white font-medium mb-1">Reasoning</h5>
-                                <p className="text-gray-400 text-sm">{criteria.reasoning}</p>
+                                <h5 className="text-text-primary font-medium mb-1">Reasoning</h5>
+                                <p className="text-text-secondary text-sm">{criteria.reasoning}</p>
                               </div>
                               <div>
-                                <h5 className="text-white font-medium mb-3">Scoring Criteria:</h5>
+                                <h5 className="text-text-primary font-medium mb-3">Scoring Criteria:</h5>
                                 <div className="space-y-3">
                                   {criteria.scoringLevels.map((level) => (
-                                    <div key={level.score} className="bg-gray-700/30 rounded-lg p-3">
+                                    <div key={level.score} className="bg-background-tertiary/30 rounded-lg p-3">
                                       <div className="flex items-start gap-3">
-                                        <span className="text-blue-400 font-semibold">{level.score} points -</span>
+                                        <span className="text-brand-primary font-semibold">{level.score} points -</span>
                                         <div className="flex-1">
-                                          <p className="text-white font-medium mb-1">{level.description}</p>
+                                          <p className="text-text-primary font-medium mb-1">{level.description}</p>
                                           <div className="space-y-1 text-sm">
-                                            <p className="text-gray-300">
+                                            <p className="text-text-muted">
                                               <strong>Criteria:</strong> {level.criteria.join(', ')}
                                             </p>
-                                            <p className="text-gray-300">
+                                            <p className="text-text-muted">
                                               <strong>Examples:</strong> {level.examples.join(', ')}
                                             </p>
-                                            <p className="text-gray-400">
+                                            <p className="text-text-secondary">
                                               <strong>Data Sources:</strong> {level.dataSources.join(', ')}
                                             </p>
                                           </div>
@@ -585,7 +587,7 @@ export default function ICPRatingSystemWidget({
         </div>
 
         <div className="mb-8">
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
             <Users className="w-5 h-5 text-green-400" />
             Behavioral Categories (3)
           </h3>
@@ -601,26 +603,26 @@ export default function ICPRatingSystemWidget({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className="bg-gray-800/50 rounded-lg border border-gray-700 overflow-hidden"
+                    className="bg-background-secondary/50 rounded-lg border border-surface overflow-hidden"
                   >
                     
                     <button
                       onClick={() => toggleCriteria(criteria.id)}
-                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-700/50 transition-colors"
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-background-tertiary/50 transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         <span className="text-green-400 font-semibold">{index + 1}.</span>
                         <div className="text-left">
-                          <h4 className="text-white font-medium">{criteria.name}</h4>
-                          <p className="text-gray-400 text-sm">{criteria.description}</p>
+                          <h4 className="text-text-primary font-medium">{criteria.name}</h4>
+                          <p className="text-text-secondary text-sm">{criteria.description}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="text-green-400 font-semibold">{criteria.weight}%</span>
                         {isExpanded ? (
-                          <ChevronUp className="w-4 h-4 text-gray-400" />
+                          <ChevronUp className="w-4 h-4 text-text-secondary" />
                         ) : (
-                          <ChevronDown className="w-4 h-4 text-gray-400" />
+                          <ChevronDown className="w-4 h-4 text-text-secondary" />
                         )}
                       </div>
                     </button>
@@ -634,29 +636,29 @@ export default function ICPRatingSystemWidget({
                           transition={{ duration: 0.3 }}
                           className="overflow-hidden"
                         >
-                          <div className="px-4 pb-4 border-t border-gray-700">
+                          <div className="px-4 pb-4 border-t border-surface">
                             <div className="pt-4 space-y-4">
                               <div>
-                                <h5 className="text-white font-medium mb-1">Reasoning</h5>
-                                <p className="text-gray-400 text-sm">{criteria.reasoning}</p>
+                                <h5 className="text-text-primary font-medium mb-1">Reasoning</h5>
+                                <p className="text-text-secondary text-sm">{criteria.reasoning}</p>
                               </div>
                               <div>
-                                <h5 className="text-white font-medium mb-3">Scoring Criteria:</h5>
+                                <h5 className="text-text-primary font-medium mb-3">Scoring Criteria:</h5>
                                 <div className="space-y-3">
                                   {criteria.scoringLevels.map((level) => (
-                                    <div key={level.score} className="bg-gray-700/30 rounded-lg p-3">
+                                    <div key={level.score} className="bg-background-tertiary/30 rounded-lg p-3">
                                       <div className="flex items-start gap-3">
                                         <span className="text-green-400 font-semibold">{level.score} points -</span>
                                         <div className="flex-1">
-                                          <p className="text-white font-medium mb-1">{level.description}</p>
+                                          <p className="text-text-primary font-medium mb-1">{level.description}</p>
                                           <div className="space-y-1 text-sm">
-                                            <p className="text-gray-300">
+                                            <p className="text-text-muted">
                                               <strong>Criteria:</strong> {level.criteria.join(', ')}
                                             </p>
-                                            <p className="text-gray-300">
+                                            <p className="text-text-muted">
                                               <strong>Examples:</strong> {level.examples.join(', ')}
                                             </p>
-                                            <p className="text-gray-400">
+                                            <p className="text-text-secondary">
                                               <strong>Data Sources:</strong> {level.dataSources.join(', ')}
                                             </p>
                                           </div>
@@ -678,7 +680,7 @@ export default function ICPRatingSystemWidget({
         </div>
 
         <div className="mb-8">
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
             <Award className="w-5 h-5 text-yellow-400" />
             Prospect Rating Tiers
           </h3>
@@ -689,7 +691,7 @@ export default function ICPRatingSystemWidget({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
-                className="bg-gray-800/50 rounded-lg p-4 border border-gray-700"
+                className="bg-background-secondary/50 rounded-lg p-4 border border-surface"
               >
                 <div className="flex items-start gap-3">
                   <div 
@@ -698,15 +700,15 @@ export default function ICPRatingSystemWidget({
                   />
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className="text-white font-medium">{tier.name}</h4>
-                      <span className="text-gray-400 text-sm">({tier.minScore}-{tier.maxScore} points)</span>
+                      <h4 className="text-text-primary font-medium">{tier.name}</h4>
+                      <span className="text-text-secondary text-sm">({tier.minScore}-{tier.maxScore} points)</span>
                     </div>
-                    <p className="text-gray-400 text-sm mb-2">{tier.description}</p>
+                    <p className="text-text-secondary text-sm mb-2">{tier.description}</p>
                     <div className="space-y-1 text-sm">
-                      <p className="text-gray-300">
+                      <p className="text-text-muted">
                         <strong>Next Steps:</strong> {tier.nextSteps.join(', ')}
                       </p>
-                      <p className="text-gray-300">
+                      <p className="text-text-muted">
                         <strong>Resource Allocation:</strong> {tier.resourceAllocation}
                       </p>
                     </div>
@@ -718,27 +720,27 @@ export default function ICPRatingSystemWidget({
         </div>
 
         <div className="mb-8">
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
             <Settings className="w-5 h-5 text-purple-400" />
             Implementation Guidelines
           </h3>
-          <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
+          <div className="bg-background-secondary/50 rounded-lg p-4 border border-surface">
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
-                <h4 className="text-white font-medium mb-2">Users & Integration</h4>
-                <p className="text-gray-300 mb-1">
+                <h4 className="text-text-primary font-medium mb-2">Users & Integration</h4>
+                <p className="text-text-muted mb-1">
                   <strong>Users:</strong> {ratingSystem.implementationGuidelines.users.join(', ')}
                 </p>
-                <p className="text-gray-300">
+                <p className="text-text-muted">
                   <strong>Integration:</strong> {ratingSystem.implementationGuidelines.integration.join(', ')}
                 </p>
               </div>
               <div>
-                <h4 className="text-white font-medium mb-2">Training & Edge Cases</h4>
-                <p className="text-gray-300 mb-1">
+                <h4 className="text-text-primary font-medium mb-2">Training & Edge Cases</h4>
+                <p className="text-text-muted mb-1">
                   <strong>Training:</strong> {ratingSystem.implementationGuidelines.training.join(', ')}
                 </p>
-                <p className="text-gray-300">
+                <p className="text-text-muted">
                   <strong>Edge Cases:</strong> {ratingSystem.implementationGuidelines.edgeCases.join(', ')}
                 </p>
               </div>
@@ -749,7 +751,7 @@ export default function ICPRatingSystemWidget({
         <div className="flex gap-3">
           <button
             onClick={() => copyToClipboard(generateFrameworkSummary(), 'framework-summary')}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-background-secondary hover:bg-background-tertiary text-text-primary rounded-lg transition-colors"
           >
             {copiedContent === 'framework-summary' ? (
               <Check className="w-4 h-4 text-green-400" />
@@ -760,8 +762,8 @@ export default function ICPRatingSystemWidget({
           </button>
         </div>
 
-            <div className="mt-6 pt-4 border-t border-gray-700">
-              <div className="flex items-center justify-between text-sm text-gray-400">
+            <div className="mt-6 pt-4 border-t border-surface">
+              <div className="flex items-center justify-between text-sm text-text-secondary">
                 <span>Last updated: {ratingSystem ? ratingSystem.lastUpdated.toLocaleDateString() : 'N/A'}</span>
                 <span>{ratingSystem ? `${ratingSystem.categories.length} Categories • ${ratingSystem.totalMaxPoints} Point System • ${ratingSystem.tiers.length} Tiers` : 'No data available'}</span>
               </div>
