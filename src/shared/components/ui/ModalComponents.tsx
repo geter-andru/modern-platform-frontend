@@ -189,7 +189,7 @@ export const BaseModal: React.FC<BaseModalProps> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+        className="fixed inset-0 z-50 bg-black/80 backdrop-blur-lg"
         onClick={handleBackdropClick}
       >
         <div className={`min-h-full flex items-center justify-center p-4 ${size === 'full' ? 'p-0' : ''}`}>
@@ -199,9 +199,9 @@ export const BaseModal: React.FC<BaseModalProps> = ({
             onClick={(e) => e.stopPropagation()}
             className={`
               ${size === 'full' ? 'w-full h-full' : `w-full ${sizeClasses[size]}`}
-              bg-gray-950 border border-gray-800 
+              bg-black/80 backdrop-blur-lg border border-white/10 
               ${size === 'full' ? 'rounded-none' : 'rounded-xl'} 
-              shadow-2xl focus:outline-none
+              shadow-2xl shadow-black/50 focus:outline-none
               ${className}
             `}
             tabIndex={-1}

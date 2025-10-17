@@ -24,53 +24,108 @@ class SupabaseAuthService {
   private currentUser: AuthUser | null = null;
   private currentSession: Session | null = null;
   private authListeners: ((user: AuthUser | null) => void)[] = [];
+  private sessionDebugEnabled = true; // Enable detailed session debugging
 
   constructor() {
+    console.log('🔐 [AuthService] Initializing Supabase Auth Service...');
     // Listen to auth state changes
     supabase.auth.onAuthStateChange(this.handleAuthStateChange.bind(this));
     // Initialize session on startup
     this.initializeSession();
   }
 
+  /**
+   * Helper to safely log session details without exposing tokens
+   */
+  private logSessionDetails(label: string, session: Session | null) {
+    if (!this.sessionDebugEnabled) return;
+
+    if (session) {
+      console.log(`🔐 [AuthService] ${label}:`, {
+        user: {
+          id: session.user.id,
+          email: session.user.email,
+          role: session.user.role
+        },
+        tokenPresent: !!session.access_token,
+        tokenExpiry: session.expires_at ? new Date(session.expires_at * 1000).toISOString() : 'none',
+        tokenExpiresIn: session.expires_at ? `${Math.round((session.expires_at * 1000 - Date.now()) / 1000)}s` : 'none',
+        isExpired: session.expires_at ? (Date.now() / 1000 > session.expires_at) : false
+      });
+    } else {
+      console.log(`🔐 [AuthService] ${label}: No session`);
+    }
+  }
+
   private async initializeSession() {
+    console.log('🔐 [AuthService] Initializing session from storage...');
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session }, error } = await supabase.auth.getSession();
+
+      if (error) {
+        console.error('🔐 [AuthService] Error getting session:', error);
+        return;
+      }
+
+      this.logSessionDetails('Session initialized', session);
+
       if (session) {
         this.currentSession = session;
         this.currentUser = await this.transformUser(session.user);
+        console.log('🔐 [AuthService] ✅ User restored from session:', this.currentUser.email);
         this.notifyListeners(this.currentUser);
+      } else {
+        console.log('🔐 [AuthService] No existing session found (user not logged in)');
       }
     } catch (error) {
-      console.error('Error initializing session:', error);
+      console.error('🔐 [AuthService] ❌ Error initializing session:', error);
     }
   }
 
   private async handleAuthStateChange(event: AuthChangeEvent, session: Session | null) {
-    console.log('🔐 Auth state change:', event, session?.user?.email);
-    
+    console.log(`🔐 [AuthService] Auth state change: ${event}`);
+    this.logSessionDetails(`After ${event}`, session);
+
     this.currentSession = session;
-    
+
     if (session?.user) {
       this.currentUser = await this.transformUser(session.user);
+      console.log(`🔐 [AuthService] Current user set:`, {
+        id: this.currentUser.id,
+        email: this.currentUser.email,
+        isAdmin: this.currentUser.isAdmin
+      });
     } else {
       this.currentUser = null;
+      console.log('🔐 [AuthService] Current user cleared');
     }
-    
+
     this.notifyListeners(this.currentUser);
-    
+    console.log(`🔐 [AuthService] Notified ${this.authListeners.length} listener(s)`);
+
     // Handle specific events
     switch (event) {
       case 'SIGNED_IN':
-        console.log('✅ User signed in:', this.currentUser?.email);
+        console.log('🔐 [AuthService] ✅ User signed in successfully:', this.currentUser?.email);
         // Ensure user profile exists
-        await this.ensureUserProfile((session as any).user);
+        if (session?.user) {
+          await this.ensureUserProfile(session.user);
+        }
         break;
       case 'SIGNED_OUT':
-        console.log('👋 User signed out');
+        console.log('🔐 [AuthService] 👋 User signed out');
         break;
       case 'TOKEN_REFRESHED':
-        console.log('🔄 Token refreshed');
+        console.log('🔐 [AuthService] 🔄 Token refreshed successfully');
         break;
+      case 'USER_UPDATED':
+        console.log('🔐 [AuthService] 👤 User data updated');
+        break;
+      case 'PASSWORD_RECOVERY':
+        console.log('🔐 [AuthService] 🔑 Password recovery initiated');
+        break;
+      default:
+        console.log(`🔐 [AuthService] Unhandled event: ${event}`);
     }
   }
 
@@ -98,15 +153,23 @@ class SupabaseAuthService {
   }
 
   private async ensureUserProfile(user: User) {
+    console.log('🔐 [AuthService] Ensuring user profile exists for:', user.email);
     try {
       // Check if profile exists
-      const { data: existingProfile } = await supabase
+      const { data: existingProfile, error: selectError } = await supabase
         .from('customer_profiles')
         .select('id')
         .eq('customer_id', user.id)
         .single();
 
+      if (selectError && selectError.code !== 'PGRST116') {
+        // PGRST116 = no rows returned, which is expected for new users
+        console.error('🔐 [AuthService] ❌ Error checking profile:', selectError);
+        return;
+      }
+
       if (!existingProfile) {
+        console.log('🔐 [AuthService] No existing profile found, creating new profile...');
         // Create profile
         const { error } = await (supabase as any)
           .from('customer_profiles')
@@ -119,13 +182,20 @@ class SupabaseAuthService {
           });
 
         if (error) {
-          console.error('Error creating user profile:', error);
+          console.error('🔐 [AuthService] ❌ Error creating user profile:', error.message);
+          console.error('🔐 [AuthService] Error details:', {
+            code: error.code,
+            hint: error.hint,
+            details: error.details
+          });
         } else {
-          console.log('✅ User profile created');
+          console.log('🔐 [AuthService] ✅ User profile created successfully');
         }
+      } else {
+        console.log('🔐 [AuthService] ✅ User profile already exists');
       }
     } catch (error) {
-      console.error('Error ensuring user profile:', error);
+      console.error('🔐 [AuthService] ❌ Unexpected error ensuring user profile:', error);
     }
   }
 
@@ -135,15 +205,28 @@ class SupabaseAuthService {
 
   // Public API
   getCurrentUser(): AuthUser | null {
+    if (this.sessionDebugEnabled && this.currentUser) {
+      console.log('🔐 [AuthService] getCurrentUser() called:', {
+        id: this.currentUser.id,
+        email: this.currentUser.email
+      });
+    }
     return this.currentUser;
   }
 
   getCurrentSession(): Session | null {
+    if (this.sessionDebugEnabled) {
+      this.logSessionDetails('getCurrentSession() called', this.currentSession);
+    }
     return this.currentSession;
   }
 
   isAuthenticated(): boolean {
-    return !!this.currentUser;
+    const authenticated = !!this.currentUser;
+    if (this.sessionDebugEnabled) {
+      console.log('🔐 [AuthService] isAuthenticated():', authenticated);
+    }
+    return authenticated;
   }
 
   isAdmin(): boolean {
@@ -180,12 +263,15 @@ class SupabaseAuthService {
 
   // Get session for server-side use
   async getServerSession() {
+    console.log('🔐 [AuthService] getServerSession() called...');
     const { data: { session }, error } = await supabase.auth.getSession();
-    
+
     if (error) {
+      console.error('🔐 [AuthService] ❌ Error getting server session:', error);
       throw error;
     }
 
+    this.logSessionDetails('Server session retrieved', session);
     return session;
   }
 

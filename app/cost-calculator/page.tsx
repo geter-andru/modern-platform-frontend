@@ -7,6 +7,7 @@ import { CostCalculatorForm } from '../../src/shared/components/cost-calculator/
 import { CostResults } from '../../src/shared/components/cost-calculator/CostResults';
 import { CostHistory } from '../../src/shared/components/cost-calculator/CostHistory';
 import { useCostHistory, useTrackAction } from '@/app/lib/hooks/useAPI';
+import { Skeleton, SkeletonCard } from '../../src/shared/components/ui/Skeleton';
 
 export default function CostCalculatorPage() {
   const { user, loading } = useRequireAuth(); // Auto-redirects if not authenticated
@@ -29,8 +30,24 @@ export default function CostCalculatorPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
+      <div className="min-h-screen bg-gray-900 p-6">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* Header skeleton */}
+          <div className="space-y-3">
+            <Skeleton variant="text" width="70%" height="h-8" animation="shimmer" />
+            <Skeleton variant="text" width="50%" height="h-4" animation="shimmer" />
+          </div>
+          
+          {/* Tabs skeleton */}
+          <div className="flex space-x-8">
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} variant="text" width="120px" height="h-6" animation="shimmer" />
+            ))}
+          </div>
+          
+          {/* Form skeleton */}
+          <SkeletonCard animation="shimmer" />
+        </div>
       </div>
     );
   }
@@ -83,22 +100,22 @@ export default function CostCalculatorPage() {
 
         {/* Tab Content */}
         <div className="mt-6">
-          {activeTab === 'calculator' && (
-            <CostCalculatorForm 
+          {activeTab === 'calculator' && user?.id && (
+            <CostCalculatorForm
               customerId={user.id}
               onCalculationComplete={handleCalculationComplete}
             />
           )}
-          
-          {activeTab === 'results' && (
-            <CostResults 
+
+          {activeTab === 'results' && user?.id && (
+            <CostResults
               customerId={user.id}
               results={currentResults || costHistory?.data?.[0]}
             />
           )}
-          
-          {activeTab === 'history' && (
-            <CostHistory 
+
+          {activeTab === 'history' && user?.id && (
+            <CostHistory
               customerId={user.id}
               onViewResults={(results) => {
                 setCurrentResults(results);

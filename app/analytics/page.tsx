@@ -29,7 +29,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Analytics Dashboard */}
-        <AdvancedAnalyticsDashboard customerId={user.id} />
+        {user?.id && <AdvancedAnalyticsDashboard customerId={user.id} />}
       </div>
     </EnterpriseNavigationV2>
   );

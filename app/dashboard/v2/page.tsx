@@ -53,7 +53,7 @@ export default function DashboardV2Page() {
             </p>
           </div>
           <div className="text-sm text-text-subtle">
-            User ID: <span className="font-mono bg-surface px-2 py-1 rounded">{user.id.slice(0, 8)}...</span>
+            User ID: <span className="font-mono bg-surface px-2 py-1 rounded">{user?.id?.slice(0, 8) || 'Unknown'}...</span>
           </div>
         </div>
 
@@ -66,9 +66,9 @@ export default function DashboardV2Page() {
         {/* Conditional View Rendering */}
         <div className="mt-6">
           {currentView === 'overview' ? (
-            <UnifiedDashboard userId={user.id} />
+            user?.id && <UnifiedDashboard userId={user.id} />
           ) : (
-            <CompetencyDevelopmentView userId={user.id} />
+            user?.id && <CompetencyDevelopmentView userId={user.id} />
           )}
         </div>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { MICRO_INTERACTIONS } from '../../../../app/lib/constants/brand';
 
 /**
  * Button - Professional button component library
@@ -138,13 +139,16 @@ const Button: React.FC<BaseButtonProps> = ({
 
   const baseClasses = `
     relative inline-flex items-center justify-center
-    font-medium rounded-lg border transition-all duration-200
+    font-medium rounded-lg border
     focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:ring-offset-2
     touch-manipulation select-none
     ${sizeClasses[size]}
     ${variantClasses[variant]}
     ${fullWidth ? 'w-full' : ''}
     ${disabled || loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+    ${!disabled && !loading ? MICRO_INTERACTIONS.hover : ''}
+    ${!disabled && !loading ? MICRO_INTERACTIONS.focus : ''}
+    ${!disabled && !loading ? MICRO_INTERACTIONS.active : ''}
     ${className}
   `.trim();
 
@@ -186,9 +190,16 @@ const Button: React.FC<BaseButtonProps> = ({
       aria-busy={ariaBusy || loading}
       aria-disabled={disabled || loading}
       tabIndex={disabled || loading ? -1 : 0}
-      whileHover={!disabled && !loading ? { scale: 1.02 } : {}}
-      whileTap={!disabled && !loading ? { scale: 0.98 } : {}}
-      transition={{ duration: 0.1 }}
+      whileHover={!disabled && !loading ? { 
+        scale: 1.02,
+        y: -1,
+        transition: { duration: 0.2, ease: 'easeOut' }
+      } : {}}
+      whileTap={!disabled && !loading ? { 
+        scale: 0.98,
+        y: 0,
+        transition: { duration: 0.1 }
+      } : {}}
       {...props}
     >
       {content}

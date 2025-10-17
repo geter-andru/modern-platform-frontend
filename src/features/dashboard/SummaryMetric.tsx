@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { TrendingUp, TrendingDown, Minus, ChevronUp, LucideIcon } from 'lucide-react';
+import { AnimatedCounter } from '../../shared/components/ui/AnimatedCounter';
 
 // TypeScript interfaces
 interface ChangeMetrics {
@@ -38,6 +39,7 @@ interface SummaryMetricProps {
   size?: 'small' | 'default' | 'large';
   showTrend?: boolean;
   showChange?: boolean;
+  animated?: boolean;
 }
 
 const SummaryMetric: React.FC<SummaryMetricProps> = ({ 
@@ -51,7 +53,8 @@ const SummaryMetric: React.FC<SummaryMetricProps> = ({
   className = '',
   size = 'default',
   showTrend = true,
-  showChange = true 
+  showChange = true,
+  animated = true
 }) => {
   // Calculate change metrics
   const calculateChange = (): ChangeMetrics | null => {
@@ -157,7 +160,18 @@ const SummaryMetric: React.FC<SummaryMetricProps> = ({
       <div className="space-y-2">
         {/* Value with Prefix/Suffix */}
         <div className={`${sizes.value} text-white font-mono tracking-tight group-hover:text-blue-100 transition-colors`}>
-          {prefix}{formatValue(value)}{suffix}
+          {animated ? (
+            <AnimatedCounter
+              value={value}
+              format={format === 'large_number' ? 'number' : format}
+              duration={800}
+              easing="easeOutExpo"
+              prefix={prefix}
+              suffix={suffix}
+            />
+          ) : (
+            `${prefix}${formatValue(value)}${suffix}`
+          )}
         </div>
         
         {/* Label */}

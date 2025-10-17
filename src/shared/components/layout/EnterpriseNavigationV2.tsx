@@ -78,18 +78,20 @@ const NavItem = ({ item, isActive, onClick }: { item: any, isActive: boolean, on
       href={item.href}
       onClick={() => onClick(item.id)}
       className={`
-        w-full group relative flex items-center px-3 py-3 rounded-lg transition-all duration-200 ease-out
+        w-full group relative flex items-center px-3 py-3 rounded-lg
+        transition-all duration-300 ease-elegant
         ${isActive 
           ? 'bg-brand-primary/10 text-text-primary shadow-sm' 
-          : 'text-text-secondary hover:text-text-primary hover:bg-surface-hover'
+          : 'text-text-secondary hover:text-text-primary hover:bg-surface-hover hover:transform hover:-translate-y-0.5 hover:shadow-md'
         }
       `}
     >
       <div className={`
-        flex items-center justify-center w-8 h-8 rounded-md transition-colors duration-200
+        flex items-center justify-center w-8 h-8 rounded-md 
+        transition-all duration-300 ease-elegant
         ${isActive 
           ? 'bg-brand-primary/20 text-text-primary' 
-          : 'text-text-muted group-hover:text-text-primary group-hover:bg-surface/30'
+          : 'text-text-muted group-hover:text-text-primary group-hover:bg-surface/30 group-hover:scale-110'
         }
       `}>
         <Icon className="w-5 h-5" strokeWidth={1.5} />

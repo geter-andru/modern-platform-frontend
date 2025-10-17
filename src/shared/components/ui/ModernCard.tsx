@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { AnimatedCounter } from './AnimatedCounter';
 
 /**
  * ModernCard - Professional SaaS-style card component
@@ -53,12 +54,14 @@ const ModernCard: React.FC<ModernCardProps> = ({
     highlighted: 'bg-gradient-to-br from-purple-50 to-blue-50',
     success: 'bg-green-50 dark:bg-green-900/20',
     warning: 'bg-yellow-50 dark:bg-yellow-900/20',
-    glass: 'bg-white/80 backdrop-blur-sm'
+    glass: 'bg-black/80 backdrop-blur-lg border border-white/10 shadow-2xl shadow-black/50'
   };
 
-  // Interactive states
+  // Interactive states with enhanced glass effects
   const interactiveClasses = interactive 
-    ? 'hover:shadow-lg transition-all duration-300 cursor-pointer'
+    ? variant === 'glass'
+      ? 'hover:shadow-2xl hover:shadow-black/60 hover:border-white/20 hover:-translate-y-1 transition-all duration-300 cursor-pointer'
+      : 'hover:shadow-lg transition-all duration-300 cursor-pointer'
     : '';
 
   // Use padding prop to override size-based padding
@@ -78,12 +81,17 @@ const ModernCard: React.FC<ModernCardProps> = ({
     <motion.div
       role="article"
       className={baseClasses}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 }
+      }}
+      initial="hidden"
+      animate="visible"
       transition={{ duration: 0.4, ease: 'easeOut' }}
       whileHover={interactive ? { 
-        y: -2,
-        transition: { duration: 0.2 }
+        y: variant === 'glass' ? -4 : -2,
+        scale: variant === 'glass' ? 1.02 : 1.01,
+        transition: { duration: 0.2, ease: 'easeOut' }
       } : {}}
       onClick={interactive ? onClick : undefined}
       tabIndex={interactive ? 0 : undefined}
@@ -185,6 +193,9 @@ interface ModernMetricCardProps {
   icon?: React.ComponentType<{ className?: string }>;
   trend?: React.ReactNode;
   className?: string;
+  animated?: boolean;
+  format?: 'number' | 'currency' | 'percentage' | 'decimal';
+  previousValue?: number;
 }
 
 const ModernMetricCard: React.FC<ModernMetricCardProps> = ({ 
@@ -195,7 +206,10 @@ const ModernMetricCard: React.FC<ModernMetricCardProps> = ({
   changeType = 'neutral',
   icon: Icon,
   trend,
-  className = ''
+  className = '',
+  animated = true,
+  format = 'number',
+  previousValue
 }) => {
   const changeColors = {
     positive: 'text-brand-secondary',
@@ -208,7 +222,17 @@ const ModernMetricCard: React.FC<ModernMetricCardProps> = ({
       <div className="flex items-start justify-between mb-4">
         <div>
           <p className="text-sm font-medium text-text-muted mb-1">{title}</p>
-          <p className="text-2xl font-bold text-text-primary">{value}</p>
+          {animated && typeof value === 'number' ? (
+            <AnimatedCounter
+              value={value}
+              format={format}
+              duration={800}
+              easing="easeOutExpo"
+              className="text-2xl font-bold text-text-primary"
+            />
+          ) : (
+            <p className="text-2xl font-bold text-text-primary">{value}</p>
+          )}
           {subtitle && (
             <p className="text-sm text-text-subtle mt-1">{subtitle}</p>
           )}
@@ -251,14 +275,28 @@ const ModernGridContainer: React.FC<ModernGridContainerProps> = ({
   className = '' 
 }) => {
   return (
-    <div className={`
-      grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
-      gap-4 sm:gap-6 auto-rows-min
-      px-4 sm:px-0
-      ${className}
-    `}>
+    <motion.div 
+      className={`
+        grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
+        gap-4 sm:gap-6 auto-rows-min
+        px-4 sm:px-0
+        ${className}
+      `}
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.1
+          }
+        }
+      }}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 };
 

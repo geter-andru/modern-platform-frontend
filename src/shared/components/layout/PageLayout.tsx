@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import BreadcrumbNavigation, { BreadcrumbItem } from './BreadcrumbNavigation';
 import FooterLayout from './FooterLayout';
+import { Skeleton, SkeletonCard } from '../ui/Skeleton';
 
 /**
  * PageLayout - Enterprise-grade page layout component system
@@ -146,10 +147,20 @@ const PageLayout: React.FC<PageLayoutProps> = ({
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900">
-        <div className="text-center space-y-4">
-          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-gray-400">Loading...</p>
+      <div className="min-h-screen bg-gray-900 p-6">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* Header skeleton */}
+          <div className="space-y-3">
+            <Skeleton variant="text" width="60%" height="h-8" animation="shimmer" />
+            <Skeleton variant="text" width="40%" height="h-4" animation="shimmer" />
+          </div>
+          
+          {/* Content skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
         </div>
       </div>
     );

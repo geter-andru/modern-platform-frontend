@@ -129,7 +129,21 @@ export function ResourceGrid({
 
   // Grid view component
   const GridView = () => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <motion.div 
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.1
+          }
+        }
+      }}
+    >
       <AnimatePresence>
         {filteredAndSortedResources.map((resource, index) => {
           const tierInfo = getTierInfo(resource.tier);
@@ -146,12 +160,26 @@ export function ResourceGrid({
           );
         })}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 
   // List view component
   const ListView = () => (
-    <div className="space-y-4">
+    <motion.div 
+      className="space-y-4"
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: {
+            staggerChildren: 0.05,
+            delayChildren: 0.1
+          }
+        }
+      }}
+    >
       <AnimatePresence>
         {filteredAndSortedResources.map((resource, index) => {
           const tierInfo = getTierInfo(resource.tier);
@@ -168,7 +196,7 @@ export function ResourceGrid({
           );
         })}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 
   return (

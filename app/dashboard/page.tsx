@@ -10,6 +10,7 @@ import { RecentActivity } from '../../src/shared/components/dashboard/RecentActi
 import { InsightsPanel } from '../../src/shared/components/dashboard/InsightsPanel';
 import { EnterpriseDashboard } from '../../src/shared/components/dashboard/EnterpriseDashboard';
 import { useCustomer, useProgress, useMilestones, useProgressInsights } from '@/app/lib/hooks/useAPI';
+import { Skeleton, SkeletonCard } from '../../src/shared/components/ui/Skeleton';
 
 export default function DashboardPage() {
   const { user, loading } = useRequireAuth(); // Auto-redirects if not authenticated
@@ -22,8 +23,28 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <EnterpriseNavigationV2>
-        <div className="flex items-center justify-center h-64">
-          <div className="text-text-muted">Loading...</div>
+        <div className="space-y-6">
+          {/* Header skeleton */}
+          <div className="flex justify-between items-center">
+            <div className="space-y-3">
+              <Skeleton variant="text" width="60%" height="h-8" animation="shimmer" />
+              <Skeleton variant="text" width="40%" height="h-4" animation="shimmer" />
+            </div>
+            <Skeleton variant="text" width="120px" height="h-4" animation="shimmer" />
+          </div>
+          
+          {/* Metrics grid skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <SkeletonCard key={i} animation="shimmer" />
+            ))}
+          </div>
+          
+          {/* Content skeleton */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <SkeletonCard animation="shimmer" />
+            <SkeletonCard animation="shimmer" />
+          </div>
         </div>
       </EnterpriseNavigationV2>
     );
@@ -45,7 +66,7 @@ export default function DashboardPage() {
             </p>
           </div>
           <div className="text-sm text-text-subtle">
-            User ID: <span className="font-mono bg-surface px-2 py-1 rounded">{user.id.slice(0, 8)}...</span>
+            User ID: <span className="font-mono bg-surface px-2 py-1 rounded">{user?.id?.slice(0, 8) || 'Unknown'}...</span>
           </div>
         </div>
 
@@ -60,11 +81,13 @@ export default function DashboardPage() {
           {/* Left Column - 2 cols */}
           <div className="lg:col-span-2 space-y-6">
             {/* Milestones */}
-            <MilestonesCard 
-              milestones={milestones?.data} 
-              isLoading={milestonesLoading}
-              customerId={user.id}
-            />
+            {user?.id && (
+              <MilestonesCard
+                milestones={milestones?.data}
+                isLoading={milestonesLoading}
+                customerId={user.id}
+              />
+            )}
 
             {/* Recent Activity */}
             <RecentActivity
@@ -76,7 +99,7 @@ export default function DashboardPage() {
           {/* Right Column - 1 col */}
           <div className="space-y-6">
             {/* Quick Actions */}
-            <QuickActions customerId={user.id} />
+            {user?.id && <QuickActions customerId={user.id} />}
 
             {/* Insights */}
             <InsightsPanel 

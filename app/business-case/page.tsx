@@ -21,10 +21,10 @@ export default function BusinessCasePage() {
     return null;
   }
 
-  return (
+  return user?.id ? (
     <SimplifiedBusinessCaseBuilder
       customerId={user.id}
       customerData={user}
     />
-  );
+  ) : null;
 }

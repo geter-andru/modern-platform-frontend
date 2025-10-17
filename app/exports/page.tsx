@@ -44,10 +44,12 @@ export default function ExportsPage() {
         </div>
 
         {/* Export Center */}
-        <ExportCenter 
-          customerId={user.id} 
-          onExport={handleExport}
-        />
+        {user?.id && (
+          <ExportCenter
+            customerId={user.id}
+            onExport={handleExport}
+          />
+        )}
       </div>
     </EnterpriseNavigationV2>
   );

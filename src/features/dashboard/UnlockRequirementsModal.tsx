@@ -184,7 +184,7 @@ const UnlockRequirementsModal: React.FC<UnlockRequirementsModalProps> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-lg"
         onClick={handleOverlayClick}
       >
         <motion.div
@@ -193,7 +193,7 @@ const UnlockRequirementsModal: React.FC<UnlockRequirementsModalProps> = ({
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
           onClick={handleStopPropagation}
-          className="bg-gray-900 border border-gray-700 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+          className="bg-black/80 backdrop-blur-lg border border-white/10 shadow-2xl shadow-black/50 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto"
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-700">
