@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { AuthProvider } from "@/app/lib/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,9 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         <ErrorBoundary>
-          <Providers>{children}</Providers>
+          <AuthProvider>
+            <Providers>{children}</Providers>
+          </AuthProvider>
         </ErrorBoundary>
       </body>
     </html>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSupabaseAuth } from './useSupabaseAuth';
+import { useAuth } from '@/app/lib/auth';
 import { CacheService } from '../services/cacheService';
 
 export interface AssessmentBaselines {
@@ -58,7 +58,7 @@ export function useAssessmentBaselines(): UseAssessmentBaselinesReturn {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasAssessmentData, setHasAssessmentData] = useState(false);
-  const { user } = useSupabaseAuth();
+  const { user } = useAuth();
 
   const fetchBaselines = async () => {
     if (!user) {

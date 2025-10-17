@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useSupabaseAuth } from '../../../src/shared/hooks/useSupabaseAuth';
+import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useRequireAuth } from '@/app/lib/auth';
 import { EnterpriseNavigationV2 } from '../../../src/shared/components/layout/EnterpriseNavigationV2';
 import { DashboardViewToggle } from '@/app/components/dashboard/v2/DashboardViewToggle';
 import { UnifiedDashboard } from '@/app/components/dashboard/v2/UnifiedDashboard';
@@ -13,9 +13,8 @@ import { useCustomer } from '@/app/lib/hooks/useAPI';
 export const dynamic = 'force-dynamic';
 
 export default function DashboardV2Page() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, loading: authLoading } = useSupabaseAuth();
+  const { user, loading } = useRequireAuth(); // Auto-redirects if not authenticated
 
   // Get current view from URL params (default: 'overview')
   const [currentView, setCurrentView] = useState<'overview' | 'development'>(
@@ -25,17 +24,8 @@ export default function DashboardV2Page() {
   // Fetch customer data for personalization
   const { data: customer, isLoading: customerLoading } = useCustomer(user?.id);
 
-  // Auth protection
-  useEffect(() => {
-    if (authLoading) return; // Wait for auth to load
-
-    if (!user) {
-      router.push('/login');
-    }
-  }, [user, authLoading, router]);
-
   // Loading state
-  if (authLoading) {
+  if (loading) {
     return (
       <EnterpriseNavigationV2>
         <div className="flex items-center justify-center h-64">
@@ -43,11 +33,6 @@ export default function DashboardV2Page() {
         </div>
       </EnterpriseNavigationV2>
     );
-  }
-
-  // Not authenticated
-  if (!user) {
-    return null;
   }
 
   return (

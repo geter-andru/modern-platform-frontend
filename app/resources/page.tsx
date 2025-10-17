@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSupabaseAuth } from '../../src/shared/hooks/useSupabaseAuth';
+import { useRequireAuth } from '@/app/lib/auth';
 import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
 import { motion } from 'framer-motion';
 import { 
@@ -83,21 +82,13 @@ const RESOURCE_TIERS: ResourceTier[] = [
 const DEFAULT_RESOURCES: Resource[] = [];
 
 export default function ResourcesPage() {
-  const { user, loading: authLoading } = useSupabaseAuth();
-  const router = useRouter();
+  const { user, loading } = useRequireAuth(); // Auto-redirects if not authenticated
   const [resources, setResources] = useState<Resource[]>(DEFAULT_RESOURCES);
   const [selectedTier, setSelectedTier] = useState<1 | 2 | 3>(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
   const [showResourceModal, setShowResourceModal] = useState(false);
-
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/');
-    }
-  }, [user, authLoading, router]);
 
   // Fetch resources from API
   useEffect(() => {
@@ -182,17 +173,12 @@ export default function ResourcesPage() {
   };
 
   // Show loading state
-  if (authLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
       </div>
     );
-  }
-
-  // Show not authenticated state
-  if (!user) {
-    return null;
   }
 
   return (

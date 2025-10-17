@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSupabaseAuth } from '../../src/shared/hooks/useSupabaseAuth';
+import { useState } from 'react';
+import { useRequireAuth } from '@/app/lib/auth';
 import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
 import { ProgressOverview } from '../../src/shared/components/dashboard/ProgressOverview';
 import { MilestonesCard } from '../../src/shared/components/dashboard/MilestonesCard';
@@ -13,23 +12,14 @@ import { EnterpriseDashboard } from '../../src/shared/components/dashboard/Enter
 import { useCustomer, useProgress, useMilestones, useProgressInsights } from '@/app/lib/hooks/useAPI';
 
 export default function DashboardPage() {
-  const router = useRouter();
-  const { user, loading: authLoading } = useSupabaseAuth();
-
-  useEffect(() => {
-    if (authLoading) return; // Wait for auth to load
-    
-    if (!user) {
-      router.push('/login');
-    }
-  }, [user, authLoading, router]);
+  const { user, loading } = useRequireAuth(); // Auto-redirects if not authenticated
 
   const { data: customer, isLoading: customerLoading } = useCustomer(user?.id);
   const { data: progress, isLoading: progressLoading } = useProgress(user?.id);
   const { data: milestones, isLoading: milestonesLoading } = useMilestones(user?.id);
   const { data: insights, isLoading: insightsLoading } = useProgressInsights(user?.id);
 
-  if (authLoading) {
+  if (loading) {
     return (
       <EnterpriseNavigationV2>
         <div className="flex items-center justify-center h-64">
@@ -37,10 +27,6 @@ export default function DashboardPage() {
         </div>
       </EnterpriseNavigationV2>
     );
-  }
-
-  if (!user) {
-    return null;
   }
 
   const isLoading = customerLoading || progressLoading || milestonesLoading || insightsLoading;

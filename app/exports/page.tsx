@@ -1,35 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSupabaseAuth } from '../../src/shared/hooks/useSupabaseAuth';
+import { useState } from 'react';
+import { useRequireAuth } from '@/app/lib/auth';
 import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
 import { ExportCenter } from '../../src/shared/components/export/ExportCenter';
 
 export default function ExportsPage() {
-  const router = useRouter();
-  const { user, loading: authLoading } = useSupabaseAuth();
+  const { user, loading } = useRequireAuth(); // Auto-redirects if not authenticated
   const [exportStage, setExportStage] = useState(0); // Track export workflow stage
 
-  useEffect(() => {
-    if (authLoading) return; // Wait for auth to load
-    
-    if (!user) {
-      router.push('/login');
-      return;
-    }
-  }, [user, authLoading, router]);
-
-  if (authLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-gray-400">Loading...</div>
       </div>
     );
-  }
-
-  if (!user) {
-    return null;
   }
 
   const handleExport = (format: string, options: any) => {

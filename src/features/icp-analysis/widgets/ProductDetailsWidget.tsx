@@ -21,7 +21,7 @@ import {
   Brain,
   ArrowRight
 } from 'lucide-react'
-import { useSupabaseAuth } from '../../../shared/hooks/useSupabaseAuth'
+import { useAuth } from '@/app/lib/auth'
 import { supabase } from '@/app/lib/supabase/client-rewrite'
 import { buildICPRequestData, validateProductData } from '../utils/icp-prompt-builder'
 
@@ -67,7 +67,7 @@ interface ProductHistoryItem {
 export default function ProductDetailsWidget({
   className = ''
 }: ProductDetailsWidgetProps) {
-  const { user, loading: authLoading } = useSupabaseAuth()
+  const { user, loading } = useAuth()
   const [productDetails, setProductDetails] = useState<ProductDetails | null>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [saved, setSaved] = useState(false)

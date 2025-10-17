@@ -1,0 +1,96 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from './auth-provider';
+
+// Re-export main hook
+export { useAuth };
+
+/**
+ * Get the current authenticated user
+ */
+export function useAuthUser() {
+  const { user } = useAuth();
+  return user;
+}
+
+/**
+ * Get the current session
+ */
+export function useAuthSession() {
+  const { session } = useAuth();
+  return session;
+}
+
+/**
+ * Check if user is authenticated
+ */
+export function useIsAuthenticated() {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated;
+}
+
+/**
+ * Check if user is an admin
+ */
+export function useIsAdmin() {
+  const { isAdmin } = useAuth();
+  return isAdmin;
+}
+
+/**
+ * Require authentication - redirects to /auth if not authenticated
+ * Use this hook in protected pages
+ */
+export function useRequireAuth() {
+  const { user, loading, isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      // Store intended destination
+      const currentPath = window.location.pathname;
+      router.push(`/auth?redirect=${encodeURIComponent(currentPath)}`);
+    }
+  }, [user, loading, isAuthenticated, router]);
+
+  return { user, loading, isAuthenticated };
+}
+
+/**
+ * Require admin access - redirects to /dashboard if not admin
+ * Use this hook in admin-only pages
+ */
+export function useRequireAdmin() {
+  const { user, loading, isAuthenticated, isAdmin } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading) {
+      if (!isAuthenticated) {
+        router.push('/auth');
+      } else if (!isAdmin) {
+        router.push('/dashboard');
+      }
+    }
+  }, [user, loading, isAuthenticated, isAdmin, router]);
+
+  return { user, loading, isAuthenticated, isAdmin };
+}
+
+/**
+ * Get auth loading state
+ */
+export function useAuthLoading() {
+  const { loading } = useAuth();
+  return loading;
+}
+
+/**
+ * Get auth error
+ */
+export function useAuthError() {
+  const { error, clearError } = useAuth();
+  return { error, clearError };
+}

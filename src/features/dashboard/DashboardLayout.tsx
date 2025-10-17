@@ -16,7 +16,7 @@ import {
   Menu as Bars3Icon,
   X as XMarkIcon,
 } from 'lucide-react';
-import { useSupabaseAuth } from '@/src/shared/hooks/useSupabaseAuth';
+import { useAuth } from '@/app/lib/auth';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -35,7 +35,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState<string>('');
   const router = useRouter();
-  const { signOut } = useSupabaseAuth();
+  const { signOut } = useAuth();
 
   useEffect(() => {
     // Set initial time on client-side only

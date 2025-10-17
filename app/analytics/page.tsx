@@ -1,34 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSupabaseAuth } from '../../src/shared/hooks/useSupabaseAuth';
+import { useRequireAuth } from '@/app/lib/auth';
 import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
 import { AdvancedAnalyticsDashboard } from '../../src/shared/components/analytics/AdvancedAnalyticsDashboard';
 
 export default function AnalyticsPage() {
-  const router = useRouter();
-  const { user, loading: authLoading } = useSupabaseAuth();
+  const { user, loading } = useRequireAuth(); // Auto-redirects if not authenticated
 
-  useEffect(() => {
-    if (authLoading) return; // Wait for auth to load
-    
-    if (!user) {
-      router.push('/login');
-      return;
-    }
-  }, [user, authLoading, router]);
-
-  if (authLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-gray-400">Loading...</div>
       </div>
     );
-  }
-
-  if (!user) {
-    return null;
   }
 
   return (

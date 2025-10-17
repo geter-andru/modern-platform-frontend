@@ -22,7 +22,7 @@ import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from 'lucide-react';
-import { useSupabaseAuth } from '@/src/shared/hooks/useSupabaseAuth';
+import { useAuth } from '@/app/lib/auth';
 
 interface EnterpriseSidebarProps {
   isOpen: boolean;
@@ -107,7 +107,7 @@ const progressItems = [
 export function EnterpriseSidebar({ isOpen, onClose, collapsed = false, onToggleCollapse }: EnterpriseSidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { signOut } = useSupabaseAuth();
+  const { signOut } = useAuth();
   const [searchFocused, setSearchFocused] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
 

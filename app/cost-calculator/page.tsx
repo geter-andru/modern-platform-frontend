@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSupabaseAuth } from '../../src/shared/hooks/useSupabaseAuth';
+import { useRequireAuth } from '@/app/lib/auth';
 import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
 import { CostCalculatorForm } from '../../src/shared/components/cost-calculator/CostCalculatorForm';
 import { CostResults } from '../../src/shared/components/cost-calculator/CostResults';
@@ -10,21 +9,15 @@ import { CostHistory } from '../../src/shared/components/cost-calculator/CostHis
 import { useCostHistory, useTrackAction } from '@/app/lib/hooks/useAPI';
 
 export default function CostCalculatorPage() {
-  const router = useRouter();
-  const { user, loading: authLoading } = useSupabaseAuth();
+  const { user, loading } = useRequireAuth(); // Auto-redirects if not authenticated
   const [activeTab, setActiveTab] = useState<'calculator' | 'results' | 'history'>('calculator');
   const [currentResults, setCurrentResults] = useState<any>(null);
 
   const trackAction = useTrackAction();
   const { data: costHistory } = useCostHistory(user?.id);
-  
-  useEffect(() => {
-    if (authLoading) return; // Wait for auth to load
 
-    if (!user) {
-      router.push('/login');
-      return;
-    }
+  useEffect(() => {
+    if (loading || !user) return;
 
     // Track page view
     trackAction.mutate({
@@ -32,18 +25,14 @@ export default function CostCalculatorPage() {
       action: 'page_view',
       metadata: { page: 'cost_calculator' }
     });
-  }, [user, authLoading, router]); // trackAction is stable, doesn't need to be in deps
+  }, [user, loading]); // trackAction is stable, doesn't need to be in deps
 
-  if (authLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-gray-400">Loading...</div>
       </div>
     );
-  }
-
-  if (!user) {
-    return null;
   }
 
   const tabs = [

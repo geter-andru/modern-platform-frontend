@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, RefreshCw, Download, FileDown } from 'lucide-react';
 import { Brain, Target, Users, FileText, Zap, BarChart3 } from 'lucide-react';
-import { useSupabaseAuth } from '../../src/shared/hooks/useSupabaseAuth';
+import { useRequireAuth } from '@/app/lib/auth';
 import { useCustomerICP, useTrackAction } from '@/app/lib/hooks/useAPI';
 import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
 
@@ -76,22 +76,16 @@ const WIDGETS: Widget[] = [
 ]
 
 export default function ICPPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, loading: authLoading } = useSupabaseAuth();
+  const { user, loading: authLoading } = useRequireAuth(); // Auto-redirects if not authenticated
   const [activeWidget, setActiveWidget] = useState('product-details');
   const [loading, setLoading] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
 
   const trackAction = useTrackAction();
-  
-  useEffect(() => {
-    if (authLoading) return; // Wait for auth to load
 
-    if (!user) {
-      router.push('/login');
-      return;
-    }
+  useEffect(() => {
+    if (authLoading || !user) return;
 
     // Track page view
     trackAction.mutate({
@@ -99,7 +93,7 @@ export default function ICPPage() {
       action: 'page_view',
       metadata: { page: 'icp_analysis' }
     });
-  }, [user, authLoading, router]); // trackAction is stable, doesn't need to be in deps
+  }, [user, authLoading]); // trackAction is stable, doesn't need to be in deps
 
   // Handle URL parameters for widget selection
   useEffect(() => {

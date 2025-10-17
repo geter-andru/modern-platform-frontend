@@ -11,7 +11,14 @@
  * Created: October 11th, 2025
  */
 
-import '../../src/shared/styles/brand-tokens.css';
+/**
+ * PHASE 2 CANARY TEST: Using new design token system
+ * - design-tokens.css: Rem-based tokens optimized for target buyer
+ * - component-patterns.css: Professional component implementations
+ * - Previous: brand-tokens.css (legacy, removed)
+ */
+import '../../src/shared/styles/design-tokens.css';
+import '../../src/shared/styles/component-patterns.css';
 import React, { useState } from 'react';
 import { SummaryMetric } from '../components/dashboard/v2/widgets/SummaryMetric';
 import { ActivityItem } from '../components/dashboard/v2/widgets/ActivityItem';

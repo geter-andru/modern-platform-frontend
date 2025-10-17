@@ -25,7 +25,7 @@ import {
   Moon as MoonIcon,
 } from 'lucide-react';
 // import { useTheme } from '@/src/shared/components/theme/ThemeProvider'; // TODO: Create ThemeProvider component
-import { useSupabaseAuth } from '@/src/shared/hooks/useSupabaseAuth';
+import { useAuth } from '@/app/lib/auth';
 
 interface EnterpriseNavigationV2Props {
   children: React.ReactNode;
@@ -125,7 +125,7 @@ const allItems = navigationItems;
 export function EnterpriseNavigationV2({ children }: EnterpriseNavigationV2Props) {
   const router = useRouter();
   const pathname = usePathname();
-  const { user, signOut } = useSupabaseAuth();
+  const { user, signOut } = useAuth();
   const [activeItem, setActiveItem] = useState('dashboard');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchValue, setSearchValue] = useState('');

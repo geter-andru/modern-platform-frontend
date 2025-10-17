@@ -16,7 +16,7 @@ import {
   Menu as Bars3Icon,
   X as XMarkIcon,
 } from 'lucide-react';
-import { useSupabaseAuth } from '@/src/shared/hooks/useSupabaseAuth';
+import { useAuth } from '@/app/lib/auth';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -34,7 +34,7 @@ const navigationItems = [
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
-  const { signOut } = useSupabaseAuth();
+  const { signOut } = useAuth();
 
   const handleLogout = async () => {
     await signOut();

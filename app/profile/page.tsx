@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/app/lib/hooks/useAuth';
+import { useRequireAuth } from '@/app/lib/auth';
 import { motion } from 'framer-motion';
 import { 
   User, 
@@ -50,7 +50,7 @@ interface UserProfile {
 }
 
 export default function ProfilePage() {
-  const { user, isAuthenticated, loading } = useAuth();
+  const { user, isAuthenticated, loading } = useRequireAuth(); // Auto-redirects if not authenticated
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);

@@ -18,7 +18,7 @@ import type {
   MilestoneTier,
 } from '@/app/lib/services/TaskDataService';
 import TaskCompletionService from '@/app/lib/services/TaskCompletionService';
-import { useAuth } from '@/app/lib/hooks/useAuth';
+import { useAuth } from '@/app/lib/auth';
 
 export default function TestTasksIntegration() {
   const { user, isAuthenticated } = useAuth();
