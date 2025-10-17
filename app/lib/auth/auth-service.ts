@@ -172,7 +172,7 @@ class SupabaseAuthService {
         console.log('🔐 [AuthService] No existing profile found, creating new profile...');
         // Create profile
         const { error } = await (supabase as any)
-          .from('customer_profiles')
+          .from('customer_assets')
           .insert({
             customer_id: user.id,
             email: user.email || '',
