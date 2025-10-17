@@ -14,6 +14,24 @@ import type {
 } from './CostCalculatorTypes';
 
 // ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+
+/**
+ * Parse ARR string to numeric value
+ * Examples: "$2M" -> 2000000, "$500K" -> 500000
+ */
+function parseARR(arr: string): number {
+  const numStr = arr.replace(/[$,]/g, '').toUpperCase();
+  if (numStr.endsWith('M')) {
+    return parseFloat(numStr) * 1000000;
+  } else if (numStr.endsWith('K')) {
+    return parseFloat(numStr) * 1000;
+  }
+  return parseFloat(numStr) || 0;
+}
+
+// ============================================================================
 // COST CALCULATION CRUD OPERATIONS
 // ============================================================================
 
@@ -24,18 +42,40 @@ export async function saveCostCalculation(
   payload: SaveCostCalculationPayload
 ): Promise<CostCalculationResponse> {
   try {
+    // Transform payload to match database schema
+    const currentRevenue = parseARR(payload.customerData.currentARR);
+    const targetRevenue = parseARR(payload.customerData.targetARR);
+
+    // Calculate derived metrics
+    const monthlyCost = payload.totalCost / payload.timeframe;
+    const averageDealSize = currentRevenue > 0 ? currentRevenue / 12 : 50000; // Default to 50K if unknown
+    const conversionRate = 20.0; // Default 20% conversion rate
+
     const { data, error } = await supabase
       .from('cost_calculations')
       .insert({
         user_id: payload.userId,
-        customer_id: payload.customerId,
-        cost_data: payload.costData,
-        timeframe: payload.timeframe,
+        current_revenue: currentRevenue,
+        average_deal_size: averageDealSize,
+        conversion_rate: conversionRate,
         total_cost: payload.totalCost,
-        savings_opportunity: payload.savingsOpportunity,
-        customer_data: payload.customerData,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        calculation: {
+          // Store the simplified cost data in the calculation JSONB field
+          costData: payload.costData,
+          timeframe: payload.timeframe,
+          savingsOpportunity: payload.savingsOpportunity,
+          monthlyCost,
+          // Also include target for tracking
+          targetRevenue,
+          growthStage: payload.customerData.growthStage
+        },
+        insights: {
+          // Store customer context in insights JSONB field
+          customerData: payload.customerData,
+          customerId: payload.customerId
+        },
+        calculation_method: 'systematic_analysis',
+        status: 'completed'
       })
       .select()
       .single();
@@ -146,12 +186,66 @@ export async function updateCostCalculation(
   payload: Partial<SaveCostCalculationPayload>
 ): Promise<CostCalculationResponse> {
   try {
+    // Build update object with proper field mapping
+    const updateData: any = {};
+
+    if (payload.userId) {
+      updateData.user_id = payload.userId;
+    }
+
+    if (payload.customerData) {
+      const currentRevenue = parseARR(payload.customerData.currentARR);
+      updateData.current_revenue = currentRevenue;
+
+      if (currentRevenue > 0) {
+        updateData.average_deal_size = currentRevenue / 12;
+      }
+    }
+
+    if (payload.totalCost !== undefined) {
+      updateData.total_cost = payload.totalCost;
+    }
+
+    // Update calculation JSONB if any of these fields are provided
+    if (payload.costData || payload.timeframe || payload.savingsOpportunity) {
+      // Fetch existing record to merge with new data
+      const { data: existingData } = await supabase
+        .from('cost_calculations')
+        .select('calculation')
+        .eq('id', calculationId)
+        .single();
+
+      const existingCalculation = existingData?.calculation || {};
+
+      updateData.calculation = {
+        ...existingCalculation,
+        ...(payload.costData && { costData: payload.costData }),
+        ...(payload.timeframe && { timeframe: payload.timeframe }),
+        ...(payload.savingsOpportunity && { savingsOpportunity: payload.savingsOpportunity }),
+        ...(payload.totalCost && payload.timeframe && { monthlyCost: payload.totalCost / payload.timeframe })
+      };
+    }
+
+    // Update insights JSONB if customerData provided
+    if (payload.customerData || payload.customerId) {
+      const { data: existingData } = await supabase
+        .from('cost_calculations')
+        .select('insights')
+        .eq('id', calculationId)
+        .single();
+
+      const existingInsights = existingData?.insights || {};
+
+      updateData.insights = {
+        ...existingInsights,
+        ...(payload.customerData && { customerData: payload.customerData }),
+        ...(payload.customerId && { customerId: payload.customerId })
+      };
+    }
+
     const { data, error } = await supabase
       .from('cost_calculations')
-      .update({
-        ...payload,
-        updated_at: new Date().toISOString()
-      })
+      .update(updateData)
       .eq('id', calculationId)
       .select()
       .single();
@@ -217,15 +311,28 @@ export async function deleteCostCalculation(
  * Transform Supabase row to CostCalculatorResults
  */
 function transformSupabaseToResults(data: any): CostCalculatorResults {
+  // Extract data from JSONB fields
+  const calculation = data.calculation || {};
+  const insights = data.insights || {};
+
   return {
     id: data.id,
     userId: data.user_id,
-    customerId: data.customer_id,
-    costData: data.cost_data,
-    timeframe: data.timeframe,
+    customerId: insights.customerId,
+    costData: calculation.costData || {
+      delayedRevenue: 0,
+      competitorAdvantage: 0,
+      teamEfficiency: 0,
+      marketOpportunity: 0
+    },
+    timeframe: calculation.timeframe || 12,
     totalCost: data.total_cost,
-    savingsOpportunity: data.savings_opportunity,
-    customerData: data.customer_data,
+    savingsOpportunity: calculation.savingsOpportunity || 0,
+    customerData: insights.customerData || {
+      currentARR: '$0',
+      targetARR: '$0',
+      growthStage: 'early' as const
+    },
     createdAt: new Date(data.created_at),
     updatedAt: new Date(data.updated_at)
   };

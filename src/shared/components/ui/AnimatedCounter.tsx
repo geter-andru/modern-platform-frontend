@@ -159,4 +159,7 @@ export const AnimatedMetric: React.FC<AnimatedMetricProps> = ({
   );
 };
 
+// Named export for convenience
+export { AnimatedCounter };
+
 export default AnimatedCounter;

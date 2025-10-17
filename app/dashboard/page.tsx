@@ -11,9 +11,11 @@ import { InsightsPanel } from '../../src/shared/components/dashboard/InsightsPan
 import { EnterpriseDashboard } from '../../src/shared/components/dashboard/EnterpriseDashboard';
 import { useCustomer, useProgress, useMilestones, useProgressInsights } from '@/app/lib/hooks/useAPI';
 import { Skeleton, SkeletonCard } from '../../src/shared/components/ui/Skeleton';
+import { useCommandPalette } from '../../src/shared/components/ui/command-palette';
 
 export default function DashboardPage() {
   const { user, loading } = useRequireAuth(); // Auto-redirects if not authenticated
+  const { openPalette } = useCommandPalette();
 
   const { data: customer, isLoading: customerLoading } = useCustomer(user?.id);
   const { data: progress, isLoading: progressLoading } = useProgress(user?.id);
@@ -65,8 +67,24 @@ export default function DashboardPage() {
               Here's your revenue intelligence overview
             </p>
           </div>
-          <div className="text-sm text-text-subtle">
-            User ID: <span className="font-mono bg-surface px-2 py-1 rounded">{user?.id?.slice(0, 8) || 'Unknown'}...</span>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={openPalette}
+              className="
+                flex items-center gap-2 px-3 py-2 rounded-lg
+                bg-surface/50 border border-white/10
+                text-text-muted hover:text-text-primary
+                hover:bg-surface/80 hover:border-white/20
+                transition-all duration-200 ease-elegant
+                text-sm font-medium
+              "
+            >
+              <kbd className="px-1.5 py-0.5 bg-surface/50 rounded text-xs">⌘K</kbd>
+              <span>Command Palette</span>
+            </button>
+            <div className="text-sm text-text-subtle">
+              User ID: <span className="font-mono bg-surface px-2 py-1 rounded">{user?.id?.slice(0, 8) || 'Unknown'}...</span>
+            </div>
           </div>
         </div>
 

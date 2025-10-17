@@ -1,7 +1,7 @@
 // Supabase client configuration for Next.js - Rewritten with proper types
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-// Environment variables for Next.js
+// Environment variables for Next.js - validate and assert as non-null
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -11,6 +11,10 @@ if (!supabaseUrl || !supabaseAnonKey) {
     'Missing Supabase environment variables. Please check NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY'
   );
 }
+
+// Assert types after validation - we know they're defined after the check
+const validatedUrl: string = supabaseUrl;
+const validatedKey: string = supabaseAnonKey;
 
 // Properly typed interfaces for complex JSON fields
 interface WorkflowProgress {
@@ -434,6 +438,56 @@ export interface Database {
           updated_at?: string;
         };
       };
+      technical_translations: {
+        Row: {
+          id: string;
+          icp_analysis_id: string;
+          technical_metric: string;
+          improvement: string;
+          industry: string;
+          buyer_persona_translations: any;
+          internal_stakeholder_translations: any;
+          total_stakeholders: number;
+          stakeholder_map: any;
+          business_translation: string;
+          competitive_positioning: string;
+          supporting_evidence: any;
+          usage_instructions: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          icp_analysis_id: string;
+          technical_metric: string;
+          improvement: string;
+          industry: string;
+          buyer_persona_translations: any;
+          internal_stakeholder_translations: any;
+          total_stakeholders: number;
+          stakeholder_map: any;
+          business_translation: string;
+          competitive_positioning: string;
+          supporting_evidence: any;
+          usage_instructions: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          icp_analysis_id?: string;
+          technical_metric?: string;
+          improvement?: string;
+          industry?: string;
+          buyer_persona_translations?: any;
+          internal_stakeholder_translations?: any;
+          total_stakeholders?: number;
+          stakeholder_map?: any;
+          business_translation?: string;
+          competitive_positioning?: string;
+          supporting_evidence?: any;
+          usage_instructions?: string;
+          updated_at?: string;
+        };
+      };
       customer_actions: {
         Row: {
           id: string;
@@ -691,8 +745,8 @@ function getSupabaseClient(): SupabaseClient<Database> {
   }
 
   _supabaseInstance = createClient<Database>(
-    supabaseUrl,
-    supabaseAnonKey,
+    validatedUrl,
+    validatedKey,
     {
       auth: {
         autoRefreshToken: true,
@@ -702,7 +756,8 @@ function getSupabaseClient(): SupabaseClient<Database> {
     }
   );
 
-  return _supabaseInstance;
+  // Non-null assertion safe here - we just assigned it above
+  return _supabaseInstance!;
 }
 
 // Export the singleton instance
