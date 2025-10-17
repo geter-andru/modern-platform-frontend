@@ -1,0 +1,595 @@
+'use client';
+
+import React, { useState, useRef, useEffect, forwardRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, X, Check, Search, AlertCircle, CheckCircle } from 'lucide-react';
+
+/**
+ * Select - Advanced select dropdown component
+ * 
+ * Features:
+ * - Single and multi-select modes
+ * - Search/filter functionality
+ * - Custom option rendering
+ * - Grouped options support
+ * - Async loading support
+ * - Keyboard navigation
+ * - Custom trigger rendering
+ * - Validation states
+ * - Portal rendering
+ * - Mobile-friendly interface
+ */
+
+export type SelectSize = 'sm' | 'md' | 'lg';
+export type SelectVariant = 'default' | 'filled' | 'underlined' | 'borderless';
+export type SelectState = 'default' | 'error' | 'success' | 'warning';
+
+export interface SelectOption {
+  value: string | number;
+  label: string;
+  disabled?: boolean;
+  icon?: React.ReactNode;
+  description?: string;
+  group?: string;
+}
+
+export interface SelectProps {
+  options: SelectOption[];
+  value?: string | number | (string | number)[];
+  defaultValue?: string | number | (string | number)[];
+  onChange?: (value: string | number | (string | number)[]) => void;
+  placeholder?: string;
+  multiple?: boolean;
+  searchable?: boolean;
+  clearable?: boolean;
+  disabled?: boolean;
+  loading?: boolean;
+  size?: SelectSize;
+  variant?: SelectVariant;
+  state?: SelectState;
+  label?: string;
+  helperText?: string;
+  errorMessage?: string;
+  maxHeight?: number;
+  portal?: boolean;
+  closeOnSelect?: boolean;
+  renderOption?: (option: SelectOption, selected: boolean) => React.ReactNode;
+  renderValue?: (value: string | number | (string | number)[]) => React.ReactNode;
+  onSearch?: (query: string) => void;
+  emptyMessage?: string;
+  loadingMessage?: string;
+  className?: string;
+  dropdownClassName?: string;
+  containerClassName?: string;
+}
+
+const Select = forwardRef<HTMLDivElement, SelectProps>(({
+  options,
+  value,
+  defaultValue,
+  onChange,
+  placeholder = 'Select option...',
+  multiple = false,
+  searchable = false,
+  clearable = false,
+  disabled = false,
+  loading = false,
+  size = 'md',
+  variant = 'default',
+  state = 'default',
+  label,
+  helperText,
+  errorMessage,
+  maxHeight = 320,
+  portal = true,
+  closeOnSelect = !multiple,
+  renderOption,
+  renderValue,
+  onSearch,
+  emptyMessage = 'No options found',
+  loadingMessage = 'Loading...',
+  className = '',
+  dropdownClassName = '',
+  containerClassName = ''
+}, ref) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const [internalValue, setInternalValue] = useState(defaultValue || (multiple ? [] : ''));
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const optionsRef = useRef<HTMLDivElement>(null);
+
+  const isControlled = value !== undefined;
+  const currentValue = isControlled ? value : internalValue;
+
+  // Filter options based on search query
+  const filteredOptions = searchQuery
+    ? options.filter(option =>
+        option.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        option.description?.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : options;
+
+  // Group options if needed
+  const groupedOptions = filteredOptions.reduce((groups, option) => {
+    const group = option.group || '';
+    if (!groups[group]) {
+      groups[group] = [];
+    }
+    groups[group].push(option);
+    return groups;
+  }, {} as Record<string, SelectOption[]>);
+
+  // Handle value change
+  const handleValueChange = (newValue: string | number | (string | number)[]) => {
+    if (!isControlled) {
+      setInternalValue(newValue);
+    }
+    onChange?.(newValue);
+  };
+
+  // Handle option click
+  const handleOptionClick = (option: SelectOption) => {
+    if (option.disabled) return;
+
+    if (multiple) {
+      const currentArray = Array.isArray(currentValue) ? currentValue : [];
+      const newValue = currentArray.includes(option.value)
+        ? currentArray.filter(v => v !== option.value)
+        : [...currentArray, option.value];
+      handleValueChange(newValue);
+    } else {
+      handleValueChange(option.value);
+      if (closeOnSelect) {
+        setIsOpen(false);
+      }
+    }
+  };
+
+  // Handle clear
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    handleValueChange(multiple ? [] : '');
+    setSearchQuery('');
+  };
+
+  // Handle search
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    setFocusedIndex(-1);
+    onSearch?.(query);
+  };
+
+  // Get selected options
+  const getSelectedOptions = () => {
+    if (multiple) {
+      const values = Array.isArray(currentValue) ? currentValue : [];
+      return options.filter(option => values.includes(option.value));
+    } else {
+      return options.filter(option => option.value === currentValue);
+    }
+  };
+
+  // Get display value
+  const getDisplayValue = () => {
+    const selectedOptions = getSelectedOptions();
+    
+    if (renderValue) {
+      return renderValue(currentValue);
+    }
+
+    if (multiple) {
+      if (selectedOptions.length === 0) return placeholder;
+      if (selectedOptions.length === 1) return selectedOptions[0].label;
+      return `${selectedOptions.length} selected`;
+    } else {
+      return selectedOptions[0]?.label || placeholder;
+    }
+  };
+
+  // Keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (disabled) return;
+
+    switch (e.key) {
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        if (!isOpen) {
+          setIsOpen(true);
+        } else if (focusedIndex >= 0) {
+          const option = filteredOptions[focusedIndex];
+          if (option) {
+            handleOptionClick(option);
+          }
+        }
+        break;
+
+      case 'ArrowDown':
+        e.preventDefault();
+        if (!isOpen) {
+          setIsOpen(true);
+        } else {
+          setFocusedIndex(prev => 
+            prev < filteredOptions.length - 1 ? prev + 1 : prev
+          );
+        }
+        break;
+
+      case 'ArrowUp':
+        e.preventDefault();
+        if (isOpen) {
+          setFocusedIndex(prev => prev > 0 ? prev - 1 : prev);
+        }
+        break;
+
+      case 'Escape':
+        if (isOpen) {
+          e.preventDefault();
+          setIsOpen(false);
+          setSearchQuery('');
+        }
+        break;
+
+      case 'Tab':
+        if (isOpen) {
+          setIsOpen(false);
+          setSearchQuery('');
+        }
+        break;
+    }
+  };
+
+  // Close on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+        setSearchQuery('');
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+
+  // Focus search input when opened
+  useEffect(() => {
+    if (isOpen && searchable && searchRef.current) {
+      searchRef.current.focus();
+    }
+  }, [isOpen, searchable]);
+
+  // Scroll focused option into view
+  useEffect(() => {
+    if (focusedIndex >= 0 && optionsRef.current) {
+      const focusedElement = optionsRef.current.children[focusedIndex] as HTMLElement;
+      if (focusedElement) {
+        focusedElement.scrollIntoView({ block: 'nearest' });
+      }
+    }
+  }, [focusedIndex]);
+
+  // Get size classes
+  const getSizeClasses = () => {
+    switch (size) {
+      case 'sm':
+        return {
+          trigger: 'px-3 py-1.5 text-sm',
+          option: 'px-3 py-2 text-sm'
+        };
+      case 'lg':
+        return {
+          trigger: 'px-4 py-3 text-base',
+          option: 'px-4 py-3 text-base'
+        };
+      default:
+        return {
+          trigger: 'px-3 py-2 text-sm',
+          option: 'px-3 py-2 text-sm'
+        };
+    }
+  };
+
+  // Get variant classes
+  const getVariantClasses = () => {
+    switch (variant) {
+      case 'filled':
+        return 'bg-gray-800 border border-transparent hover:border-gray-600 focus-within:border-blue-500';
+      case 'underlined':
+        return 'bg-transparent border-0 border-b-2 border-gray-700 rounded-none hover:border-gray-600 focus-within:border-blue-500';
+      case 'borderless':
+        return 'bg-transparent border-0 hover:bg-gray-800/50 focus-within:bg-gray-800/50';
+      default:
+        return 'bg-gray-800 border border-gray-700 hover:border-gray-600 focus-within:border-blue-500';
+    }
+  };
+
+  // Get state classes
+  const getStateClasses = () => {
+    switch (state) {
+      case 'error':
+        return {
+          container: 'focus-within:border-red-500 border-red-500',
+          text: 'text-red-400',
+          icon: <AlertCircle className="w-4 h-4" />
+        };
+      case 'success':
+        return {
+          container: 'focus-within:border-green-500 border-green-500',
+          text: 'text-green-400',
+          icon: <CheckCircle className="w-4 h-4" />
+        };
+      case 'warning':
+        return {
+          container: 'focus-within:border-yellow-500 border-yellow-500',
+          text: 'text-yellow-400',
+          icon: <AlertCircle className="w-4 h-4" />
+        };
+      default:
+        return {
+          container: '',
+          text: 'text-gray-400',
+          icon: null
+        };
+    }
+  };
+
+  const sizeClasses = getSizeClasses();
+  const variantClasses = getVariantClasses();
+  const stateClasses = getStateClasses();
+  const selectedOptions = getSelectedOptions();
+  const hasValue = multiple 
+    ? Array.isArray(currentValue) && currentValue.length > 0
+    : currentValue !== '' && currentValue !== null && currentValue !== undefined;
+
+  return (
+    <div className={`space-y-1 ${containerClassName}`}>
+      {/* Label */}
+      {label && (
+        <label className="block text-sm font-medium text-gray-300">
+          {label}
+        </label>
+      )}
+
+      {/* Select Container */}
+      <div
+        ref={containerRef}
+        className={`
+          relative rounded-lg transition-all duration-200
+          ${variantClasses}
+          ${stateClasses.container}
+          ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+        `}
+      >
+        {/* Trigger */}
+        <div
+          ref={ref}
+          className={`
+            flex items-center justify-between w-full transition-colors
+            ${sizeClasses.trigger}
+            ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}
+            ${className}
+          `}
+          onClick={() => !disabled && setIsOpen(!isOpen)}
+          onKeyDown={handleKeyDown}
+          tabIndex={disabled ? -1 : 0}
+          role="combobox"
+          aria-expanded={isOpen}
+          aria-haspopup="listbox"
+          aria-disabled={disabled}
+        >
+          {/* Value Display */}
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            {/* Selected Options (Multiple) */}
+            {multiple && selectedOptions.length > 0 ? (
+              <div className="flex items-center gap-1 flex-wrap">
+                {selectedOptions.slice(0, 2).map(option => (
+                  <span
+                    key={option.value}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded-md"
+                  >
+                    {option.label}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOptionClick(option);
+                      }}
+                      className="hover:bg-blue-500/30 rounded"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                ))}
+                {selectedOptions.length > 2 && (
+                  <span className="text-xs text-gray-400">
+                    +{selectedOptions.length - 2} more
+                  </span>
+                )}
+              </div>
+            ) : (
+              <span className={hasValue ? 'text-white' : 'text-gray-400'}>
+                {getDisplayValue()}
+              </span>
+            )}
+          </div>
+
+          {/* Icons */}
+          <div className="flex items-center gap-2">
+            {/* State Icon */}
+            {stateClasses.icon && (
+              <span className={stateClasses.text}>
+                {stateClasses.icon}
+              </span>
+            )}
+
+            {/* Clear Button */}
+            {clearable && hasValue && !disabled && (
+              <button
+                onClick={handleClear}
+                className="text-gray-400 hover:text-white transition-colors p-0.5"
+                tabIndex={-1}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+
+            {/* Chevron */}
+            <motion.div
+              animate={{ rotate: isOpen ? 180 : 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ChevronDown className="w-4 h-4 text-gray-400" />
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Dropdown */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.15 }}
+              className={`
+                absolute top-full mt-1 left-0 right-0 z-50 bg-gray-800 border border-gray-700 
+                rounded-lg shadow-xl overflow-hidden
+                ${dropdownClassName}
+              `}
+              style={{ maxHeight }}
+            >
+              {/* Search */}
+              {searchable && (
+                <div className="p-3 border-b border-gray-700">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      ref={searchRef}
+                      type="text"
+                      placeholder="Search options..."
+                      value={searchQuery}
+                      onChange={(e) => handleSearch(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Options */}
+              <div
+                ref={optionsRef}
+                className="overflow-auto"
+                style={{ maxHeight: maxHeight - (searchable ? 60 : 0) }}
+                role="listbox"
+                aria-multiselectable={multiple}
+              >
+                {loading ? (
+                  <div className="p-4 text-center text-gray-400">
+                    <div className="animate-pulse">{loadingMessage}</div>
+                  </div>
+                ) : filteredOptions.length === 0 ? (
+                  <div className="p-4 text-center text-gray-400">
+                    {emptyMessage}
+                  </div>
+                ) : (
+                  Object.entries(groupedOptions).map(([group, groupOptions]) => (
+                    <div key={group}>
+                      {/* Group Header */}
+                      {group && (
+                        <div className="px-3 py-2 text-xs font-medium text-gray-400 uppercase tracking-wider bg-gray-700/50">
+                          {group}
+                        </div>
+                      )}
+
+                      {/* Options */}
+                      {groupOptions.map((option, index) => {
+                        const isSelected = multiple
+                          ? Array.isArray(currentValue) && currentValue.includes(option.value)
+                          : currentValue === option.value;
+                        const isFocused = filteredOptions.indexOf(option) === focusedIndex;
+
+                        return (
+                          <div
+                            key={option.value}
+                            className={`
+                              ${sizeClasses.option} flex items-center gap-3 cursor-pointer transition-colors
+                              ${isFocused ? 'bg-gray-700' : 'hover:bg-gray-700/50'}
+                              ${isSelected ? 'bg-blue-500/10 text-blue-400' : 'text-white'}
+                              ${option.disabled ? 'opacity-50 cursor-not-allowed' : ''}
+                            `}
+                            onClick={() => handleOptionClick(option)}
+                            role="option"
+                            aria-selected={isSelected}
+                            aria-disabled={option.disabled}
+                          >
+                            {/* Custom Option Rendering */}
+                            {renderOption ? (
+                              renderOption(option, isSelected)
+                            ) : (
+                              <>
+                                {/* Icon */}
+                                {option.icon && (
+                                  <span className="flex-shrink-0 text-gray-400">
+                                    {option.icon}
+                                  </span>
+                                )}
+
+                                {/* Content */}
+                                <div className="flex-1 min-w-0">
+                                  <div className="font-medium truncate">
+                                    {option.label}
+                                  </div>
+                                  {option.description && (
+                                    <div className="text-xs text-gray-400 truncate">
+                                      {option.description}
+                                    </div>
+                                  )}
+                                </div>
+
+                                {/* Check Icon */}
+                                {isSelected && (
+                                  <Check className="w-4 h-4 text-blue-400" />
+                                )}
+                              </>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ))
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Helper Text / Error Message */}
+      <AnimatePresence>
+        {(helperText || errorMessage) && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <p className={`text-xs ${errorMessage ? 'text-red-400' : stateClasses.text}`}>
+              {errorMessage || helperText}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+});
+
+Select.displayName = 'Select';
+
+export default Select;

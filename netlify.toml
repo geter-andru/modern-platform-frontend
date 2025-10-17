@@ -1,0 +1,50 @@
+# Netlify Configuration for H&S Platform
+# This deploys the Next.js modern-platform (production-ready)
+
+[build]
+  # Base directory is the repo root (modern-platform-frontend is already the frontend)
+  publish = ".next"
+  command = "npm install --prefer-offline=false && npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NEXT_PUBLIC_BACKEND_URL = "https://hs-andru-test.onrender.com"
+  NEXT_PUBLIC_SUPABASE_URL = "https://molcqjsqtjbfclasynpg.supabase.co"
+  NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vbGNxanNxdGpiZmNsYXN5bnBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4ODk1NDcsImV4cCI6MjA3MTQ2NTU0N30.IEP7E2VM2uV1vltbSw1CwYpYw1qw6MvI-JB5SD0tUKI"
+
+# Next.js auto-detection - Netlify will automatically detect and configure Next.js
+# No explicit plugin needed for Next.js 15+
+
+# Next.js ISR (Incremental Static Regeneration) support
+# Functions configuration removed - Netlify auto-detection handles this
+
+# Cache static assets (Next.js specific paths)
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/_next/image/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.airtable.com https://hook.us1.make.com;"

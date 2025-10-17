@@ -1,0 +1,351 @@
+'use client';
+
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  X, 
+  Download, 
+  Share2, 
+  Copy, 
+  FileText,
+  Clock,
+  Users,
+  ExternalLink
+} from 'lucide-react';
+import { ResourceExport } from './ResourceExport';
+
+interface Resource {
+  id: string;
+  title: string;
+  description: string;
+  tier: 1 | 2 | 3;
+  category: 'content_templates' | 'guides' | 'frameworks' | 'ai_prompts' | 'one_pagers' | 'slide_decks';
+  status: 'available' | 'locked' | 'generating';
+  lastUpdated: string;
+  accessCount: number;
+  dependencies?: string[];
+  exportFormats: string[];
+  content?: string;
+}
+
+interface ResourceModalProps {
+  resource: Resource | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onExport: (resource: Resource, format: string) => void;
+  onShare: (resource: Resource) => void;
+  isLoading?: boolean;
+}
+
+export const ResourceModal: React.FC<ResourceModalProps> = ({
+  resource,
+  isOpen,
+  onClose,
+  onExport,
+  onShare,
+  isLoading = false
+}) => {
+  if (!resource) return null;
+
+  // Use real AI-generated content if available, otherwise show generation prompt
+  const content = resource.content || `
+# ${resource.title}
+
+## Description
+${resource.description}
+
+## Status
+⚠️ **Not Yet Generated**
+
+This resource requires AI generation to create personalized content based on your:
+- Product details
+- ICP analysis
+- Customer data
+- Business context
+
+Click the resource card in the library to generate this content using Claude AI.
+
+## What You'll Get
+${resource.category === 'slide_decks'
+  ? '- Professional presentation deck\n- Role-specific messaging\n- Export to PowerPoint, PDF, Google Slides'
+  : resource.category === 'one_pagers'
+  ? '- Executive summary format\n- Key points and recommendations\n- Export to PDF, DOCX'
+  : '- Comprehensive framework\n- Step-by-step guidance\n- Export to multiple formats'
+}
+
+## Export Formats Available
+${resource.exportFormats.join(', ')}
+
+---
+
+**Tip**: Generate this resource first to see AI-powered content tailored to your business.
+`;
+
+  // Content is handled by the generation prompt above - no mock content needed
+# ${resource.title}
+
+## Overview
+${resource.description}
+
+## Template Structure
+1. **Introduction Section**
+   - Problem statement
+   - Solution overview
+   - Value proposition
+
+2. **Main Content**
+   - Key points
+   - Supporting evidence
+   - Call to action
+
+3. **Conclusion**
+   - Summary
+   - Next steps
+   - Contact information
+
+## Usage Instructions
+This template can be customized for your specific use case. Replace the placeholder content with your actual information.
+    `,
+    guides: `
+# ${resource.title}
+
+## Step-by-Step Guide
+
+### Step 1: Preparation
+- Gather necessary information
+- Set up your workspace
+- Review prerequisites
+
+### Step 2: Implementation
+- Follow the detailed instructions
+- Take notes as you go
+- Test each step
+
+### Step 3: Validation
+- Verify results
+- Make adjustments if needed
+- Document outcomes
+
+## Tips and Best Practices
+- Take your time with each step
+- Don't skip validation
+- Keep detailed records
+    `,
+    frameworks: `
+# ${resource.title}
+
+## Framework Overview
+${resource.description}
+
+## Core Components
+
+### 1. Foundation Elements
+- Basic principles
+- Key concepts
+- Essential requirements
+
+### 2. Implementation Process
+- Phase 1: Setup
+- Phase 2: Execution
+- Phase 3: Optimization
+
+### 3. Success Metrics
+- Key performance indicators
+- Measurement methods
+- Improvement targets
+
+## Application Guidelines
+Use this framework as a structured approach to achieve your objectives.
+    `,
+    ai_prompts: `
+# ${resource.title}
+
+## AI Prompt Collection
+
+### Prompt 1: Initial Analysis
+\`\`\`
+Analyze the following [context] and provide insights on [specific aspect]. 
+Consider [relevant factors] and focus on [key areas].
+\`\`\`
+
+### Prompt 2: Deep Dive
+\`\`\`
+Based on the previous analysis, dive deeper into [specific area] and provide 
+actionable recommendations for [target audience].
+\`\`\`
+
+### Prompt 3: Implementation
+\`\`\`
+Create a step-by-step implementation plan for [recommendation] that includes 
+timeline, resources, and success metrics.
+\`\`\`
+
+## Usage Tips
+- Customize prompts for your specific context
+- Iterate based on results
+- Combine multiple prompts for comprehensive analysis
+    `,
+    one_pagers: `
+# ${resource.title}
+
+## Executive Summary
+${resource.description}
+
+## Key Points
+• **Point 1**: Brief description and impact
+• **Point 2**: Brief description and impact  
+• **Point 3**: Brief description and impact
+
+## Recommendations
+1. Immediate action items
+2. Short-term initiatives
+3. Long-term strategic moves
+
+## Next Steps
+- [ ] Action item 1
+- [ ] Action item 2
+- [ ] Action item 3
+
+## Contact Information
+For questions or follow-up, contact [your information].
+    `,
+    slide_decks: `
+# ${resource.title}
+
+## Slide Deck Structure
+
+### Slide 1: Title Slide
+- Main title: ${resource.title}
+- Subtitle: ${resource.description}
+- Your name and date
+
+### Slide 2: Agenda
+- Overview of presentation
+- Key topics to cover
+- Expected outcomes
+
+### Slide 3: Problem Statement
+- Current challenges
+- Impact on business
+- Why this matters
+
+### Slide 4: Solution Overview
+- Proposed approach
+- Key benefits
+- Expected results
+
+### Slide 5: Implementation Plan
+- Timeline
+- Resources needed
+- Success metrics
+
+### Slide 6: Next Steps
+- Immediate actions
+- Follow-up items
+- Contact information
+
+## Design Tips
+- Use consistent formatting
+- Include visual elements
+- Keep text concise
+    `
+  };
+
+  // Fallback is already handled above - mockContent is just a backup
+  // const fallbackContent = mockContent[resource.category] || mockContent.content_templates;
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 overflow-y-auto"
+        >
+          {/* Backdrop */}
+          <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onClose} />
+          
+          {/* Modal */}
+          <div className="flex min-h-full items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-6xl bg-white rounded-lg shadow-xl"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <div className="flex items-center gap-3">
+                  <FileText className="h-6 w-6 text-blue-600" />
+                  <div>
+                    <h2 className="text-xl font-semibold text-gray-900">{resource.title}</h2>
+                    <p className="text-sm text-gray-600">{resource.description}</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => onShare(resource)}
+                    className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                    title="Share resource"
+                  >
+                    <Share2 className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={onClose}
+                    className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-6 max-h-[70vh] overflow-y-auto">
+                <div className="prose prose-sm max-w-none">
+                  <pre className="whitespace-pre-wrap font-sans text-sm text-gray-700 leading-relaxed">
+                    {content}
+                  </pre>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="flex items-center justify-between p-6 border-t border-gray-200 bg-gray-50">
+                <div className="flex items-center gap-4 text-sm text-gray-500">
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-4 w-4" />
+                    Updated {resource.lastUpdated}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Users className="h-4 w-4" />
+                    {resource.accessCount} views
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(content);
+                      // TODO: Add toast notification
+                    }}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
+                  >
+                    <Copy className="h-4 w-4" />
+                    Copy
+                  </button>
+                  
+                  <ResourceExport
+                    resource={resource}
+                    onExport={onExport}
+                    isLoading={isLoading}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};

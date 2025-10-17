@@ -1,0 +1,223 @@
+/* H&S Platform Brand Design Tokens */
+/* Matching Assessment Experience - Dark Theme + Red Hat Display */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tailwind v3 Custom Colors */
+@layer base {
+  --color-background-primary: #0a0a0a;
+  --color-background-secondary: #111111;
+  --color-background-tertiary: #1a1a1a;
+  --color-background-elevated: #222222;
+  --color-surface: #2a2a2a;
+  --color-surface-hover: #333333;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #e2e8f0;
+  --color-text-muted: #94a3b8;
+  --color-text-subtle: #64748b;
+  --color-text-disabled: #475569;
+  --color-brand-primary: #3b82f6;
+  --color-brand-secondary: #10b981;
+  --color-brand-accent: #8b5cf6;
+  --color-accent-warning: #f59e0b;
+  --color-accent-danger: #ef4444;
+  --color-accent-success: #22c55e;
+  --color-hover: rgba(59, 130, 246, 0.08);
+  --color-focus: rgba(59, 130, 246, 0.2);
+  --color-active: rgba(59, 130, 246, 0.12);
+  --color-glass-background: rgba(255, 255, 255, 0.03);
+  --color-glass-border: rgba(255, 255, 255, 0.08);
+}
+
+:root {
+  /* Typography System - Red Hat Display */
+  --font-brand: 'Red Hat Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', Monaco, 'Cascadia Code', monospace;
+  
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Font Sizes - Enterprise Scale */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 1.875rem;   /* 30px */
+  --text-4xl: 2.25rem;    /* 36px */
+  
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  
+  /* Exact Dark Theme Color System */
+  /* Background System */
+  --bg-main: #0f172a;        /* slate-900 */
+  --bg-card: #1e293b;        /* slate-800 */
+  --bg-section: #334155;     /* slate-700 */
+  --bg-input: #475569;       /* slate-600 */
+
+  /* Accent Colors */
+  --color-primary: #3b82f6;   /* blue-500 */
+  --color-purple: #8b5cf6;    /* violet-500 */
+  --color-pink: #ec4899;      /* pink-500 */
+  --color-success: #10b981;   /* emerald-500 */
+
+  /* Text Hierarchy */
+  --text-heading: #ffffff;    /* white */
+  --text-body: #e2e8f0;      /* slate-200 */
+  --text-muted: #94a3b8;     /* slate-400 */
+  --text-dim: #64748b;       /* slate-500 */
+
+  /* Borders */
+  --border-standard: #334155; /* slate-700 */
+  --border-active: #3b82f6;   /* blue-500 */
+  
+  /* Legacy Brand Colors */
+  --color-brand-primary: #3b82f6;      /* Blue 500 */
+  --color-brand-primary-dark: #2563eb; /* Blue 600 */
+  --color-brand-primary-light: #60a5fa; /* Blue 400 */
+  
+  --color-brand-secondary: #8b5cf6;    /* Violet 500 */
+  --color-brand-accent: #06b6d4;       /* Cyan 500 */
+  
+  /* Neutral Colors - Dark Theme Optimized */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-gray-950: #030712;
+  
+  /* Semantic Colors */
+  --color-success: #22c55e;
+  --color-success-bg: #dcfce7;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fef3c7;
+  --color-error: #ef4444;
+  --color-error-bg: #fee2e2;
+  --color-info: #3b82f6;
+  --color-info-bg: #dbeafe;
+  
+  /* Background Colors */
+  --bg-primary: #0f172a;      /* slate-900 - main background */
+  --bg-secondary: #1e293b;    /* slate-800 - card background */
+  --bg-tertiary: #334155;     /* slate-700 - section background */
+  --bg-dark: #0a0a0a;         /* pure black - like assessment */
+  --bg-darker: #000000;       /* absolute black */
+  
+  /* Text Colors */
+  --text-primary: #ffffff;        /* white - for headers */
+  --text-secondary: #e2e8f0;      /* slate-200 - for body text */
+  --text-muted: #94a3b8;          /* slate-400 - for muted text */
+  --text-on-dark: #ffffff;        /* white */
+  --text-on-dark-secondary: #e2e8f0; /* slate-200 */
+  
+  /* Border & Outline */
+  --border-color: var(--color-gray-200);
+  --border-color-dark: var(--color-gray-700);
+  --border-radius-sm: 0.375rem;   /* 6px */
+  --border-radius-md: 0.5rem;     /* 8px */
+  --border-radius-lg: 0.75rem;    /* 12px */
+  --border-radius-xl: 1rem;       /* 16px */
+  
+  /* Gradients */
+  --gradient-strategic: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+  --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-purple) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--color-purple) 0%, var(--color-pink) 100%);
+  
+  /* Shadows - Enhanced for Dark Theme */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.2);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.2);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+  --shadow-blue: 0 10px 15px -3px rgb(59 130 246 / 0.1), 0 4px 6px -2px rgb(59 130 246 / 0.05);
+  
+  /* Spacing System - 8px Grid */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+  --space-20: 5rem;    /* 80px */
+  
+  /* Transitions */
+  --transition-fast: 150ms ease-out;
+  --transition-normal: 200ms ease-out;
+  --transition-slow: 300ms ease-out;
+  
+  /* Z-Index Scale */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 1080;
+}
+
+/* Dark Theme Component Utilities */
+.gradient-strategic {
+  background: var(--gradient-strategic);
+}
+
+.gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.gradient-accent {
+  background: var(--gradient-accent);
+}
+
+/* Dark Theme Card Components */
+.card-dark {
+  background-color: var(--bg-card);
+  border-color: var(--border-standard);
+  border-radius: 0.75rem;
+}
+
+.card-dark:hover {
+  border-color: var(--border-active);
+  box-shadow: var(--shadow-blue);
+}
+
+/* Progress Components */
+.progress-bg {
+  background-color: var(--bg-section);
+}
+
+.progress-fill {
+  background-color: var(--color-purple);
+}
+
+/* Legacy Dark Theme Variant */
+.theme-dark {
+  --bg-primary: var(--color-gray-950);
+  --bg-secondary: var(--color-gray-900);
+  --text-primary: var(--color-gray-50);
+  --text-secondary: var(--color-gray-300);
+  --text-muted: var(--color-gray-400);
+  --border-color: var(--color-gray-700);
+}
+
+/* Red Hat Display Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');

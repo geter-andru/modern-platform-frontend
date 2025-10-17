@@ -1,0 +1,13 @@
+
+import React from 'react';
+
+const CompellingAspectDemo: React.FC = () => {
+  return (
+    <div className="text-center py-8">
+      <h1 className="text-2xl font-bold text-white mb-4">Compelling Aspect Demo</h1>
+      <p className="text-gray-400">Compelling aspect demo component for testing</p>
+    </div>
+  );
+};
+
+export default CompellingAspectDemo;

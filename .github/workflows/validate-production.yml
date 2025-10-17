@@ -1,0 +1,256 @@
+name: Production Validation
+
+# Triggers on pushes to main/production branches and pull requests
+on:
+  push:
+    branches: [main, master, production]
+  pull_request:
+    branches: [main, master, production]
+
+jobs:
+  validate-no-mocks:
+    name: Mock Code Detection
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for mock data patterns
+        run: |
+          echo "🔍 Scanning for mock data patterns in production code..."
+
+          # Define mock patterns to search for
+          MOCK_PATTERNS=(
+            "mockContent"
+            "mockData"
+            "mockAccounts"
+            "mockActivities"
+            "Mock content for now"
+            "MOCK_"
+            "defaultActivities.*TechCorp"
+            "for now, return mock"
+            "Mock implementation"
+            "Simulate loading"
+          )
+
+          # Search for each pattern
+          FOUND_MOCKS=0
+          for pattern in "${MOCK_PATTERNS[@]}"; do
+            echo "Checking for pattern: $pattern"
+
+            # Search in TypeScript/JavaScript files, excluding test files, node_modules, and .next
+            if grep -r "$pattern" \
+               --include="*.ts" \
+               --include="*.tsx" \
+               --include="*.js" \
+               --include="*.jsx" \
+               --exclude-dir="node_modules" \
+               --exclude-dir=".next" \
+               --exclude-dir="__tests__" \
+               --exclude-dir="coverage" \
+               --exclude="*.test.ts" \
+               --exclude="*.test.tsx" \
+               --exclude="*.test.js" \
+               --exclude="*.spec.ts" \
+               --exclude="*.spec.tsx" \
+               . ; then
+              echo "❌ Found mock pattern: $pattern"
+              FOUND_MOCKS=1
+            fi
+          done
+
+          if [ $FOUND_MOCKS -eq 1 ]; then
+            echo ""
+            echo "❌ MOCK DATA DETECTED IN PRODUCTION CODE"
+            echo ""
+            echo "Mock data patterns were found in the codebase."
+            echo "Please remove or gate mock data behind feature flags before deploying to production."
+            echo ""
+            echo "See /MOCK_REMOVAL_REMEDIATION_PLAN_2025-10-12.md for guidance."
+            exit 1
+          fi
+
+          echo "✅ No mock data patterns found in production code"
+
+      - name: Check for hardcoded test tokens
+        run: |
+          echo "🔍 Scanning for hardcoded test tokens..."
+
+          # Search for test tokens and demo credentials
+          TEST_TOKENS=(
+            "admin-demo-token"
+            "test-token-123456"
+            "demo-token"
+            "DEMO_API_KEY"
+            "test-api-key"
+          )
+
+          FOUND_TOKENS=0
+          for token in "${TEST_TOKENS[@]}"; do
+            echo "Checking for token: $token"
+
+            if grep -r "$token" \
+               --include="*.ts" \
+               --include="*.tsx" \
+               --include="*.js" \
+               --include="*.jsx" \
+               --exclude-dir="node_modules" \
+               --exclude-dir=".next" \
+               --exclude-dir="__tests__" \
+               --exclude="*.test.*" \
+               . ; then
+              echo "⚠️  Found hardcoded test token: $token"
+              FOUND_TOKENS=1
+            fi
+          done
+
+          if [ $FOUND_TOKENS -eq 1 ]; then
+            echo ""
+            echo "⚠️  WARNING: Hardcoded test tokens found"
+            echo ""
+            echo "Test tokens should not be committed to production code."
+            echo "Use environment variables instead."
+            # Don't fail for this, just warn
+          else
+            echo "✅ No hardcoded test tokens found"
+          fi
+
+      - name: Check for mock user IDs
+        run: |
+          echo "🔍 Scanning for mock user IDs..."
+
+          # Search for hardcoded mock user IDs
+          if grep -r "00000000-0000-0000-0000-000000000001" \
+             --include="*.ts" \
+             --include="*.tsx" \
+             --include="*.js" \
+             --include="*.jsx" \
+             --exclude-dir="node_modules" \
+             --exclude-dir=".next" \
+             --exclude-dir="__tests__" \
+             . ; then
+            echo "❌ Found mock user ID: 00000000-0000-0000-0000-000000000001"
+            echo ""
+            echo "Mock user IDs should be replaced with real authenticated users."
+            echo "See backend/src/controllers/exportController.js line 701"
+            exit 1
+          fi
+
+          echo "✅ No mock user IDs found"
+
+      - name: Validate feature flags exist
+        run: |
+          echo "🔍 Validating feature flag system..."
+
+          # Check that feature flag file exists
+          if [ ! -f "app/lib/config/features.ts" ]; then
+            echo "❌ Feature flag system not found at app/lib/config/features.ts"
+            echo "Run Phase 1 setup to create feature flags"
+            exit 1
+          fi
+
+          echo "✅ Feature flag system exists"
+
+      - name: Validate production readiness checker exists
+        run: |
+          echo "🔍 Validating production readiness checker..."
+
+          # Check that validation file exists
+          if [ ! -f "app/lib/config/validate-production.ts" ]; then
+            echo "❌ Production validation system not found at app/lib/config/validate-production.ts"
+            echo "Run Phase 1 setup to create production validation"
+            exit 1
+          fi
+
+          echo "✅ Production validation system exists"
+
+  typescript-check:
+    name: TypeScript Type Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run TypeScript compiler
+        run: npx tsc --noEmit
+        continue-on-error: false
+
+  lint-check:
+    name: ESLint Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: true  # Don't block on lint warnings
+
+  production-readiness:
+    name: Production Readiness Summary
+    runs-on: ubuntu-latest
+    needs: [validate-no-mocks, typescript-check, lint-check]
+    if: always()
+
+    steps:
+      - name: Check job results
+        run: |
+          echo "📊 Production Readiness Summary"
+          echo "================================"
+          echo ""
+
+          if [ "${{ needs.validate-no-mocks.result }}" == "success" ]; then
+            echo "✅ Mock Detection: PASSED"
+          else
+            echo "❌ Mock Detection: FAILED"
+          fi
+
+          if [ "${{ needs.typescript-check.result }}" == "success" ]; then
+            echo "✅ TypeScript Check: PASSED"
+          else
+            echo "❌ TypeScript Check: FAILED"
+          fi
+
+          if [ "${{ needs.lint-check.result }}" == "success" ]; then
+            echo "✅ Lint Check: PASSED"
+          elif [ "${{ needs.lint-check.result }}" == "failure" ]; then
+            echo "⚠️  Lint Check: WARNINGS (not blocking)"
+          else
+            echo "⚠️  Lint Check: SKIPPED"
+          fi
+
+          echo ""
+
+          # Fail if critical checks failed
+          if [ "${{ needs.validate-no-mocks.result }}" != "success" ] || [ "${{ needs.typescript-check.result }}" != "success" ]; then
+            echo "❌ PRODUCTION DEPLOYMENT BLOCKED"
+            echo ""
+            echo "Fix the issues above before deploying to production."
+            echo "See /MOCK_REMOVAL_REMEDIATION_PLAN_2025-10-12.md for guidance."
+            exit 1
+          fi
+
+          echo "✅ PRODUCTION READINESS: PASSED"
+          echo ""
+          echo "All critical checks passed. Safe to deploy to production."
