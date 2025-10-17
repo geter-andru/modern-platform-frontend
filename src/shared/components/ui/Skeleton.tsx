@@ -510,4 +510,7 @@ export const useSkeleton = (loading: boolean = true) => {
   };
 };
 
+// Named export for convenience
+export { Skeleton };
+
 export default Skeleton;

@@ -24,7 +24,7 @@ class SupabaseAuthService {
   private currentUser: AuthUser | null = null;
   private currentSession: Session | null = null;
   private authListeners: ((user: AuthUser | null) => void)[] = [];
-  private sessionDebugEnabled = true; // Enable detailed session debugging
+  private sessionDebugEnabled = false; // Disable verbose debugging during build
 
   constructor() {
     console.log('🔐 [AuthService] Initializing Supabase Auth Service...');
