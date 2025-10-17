@@ -76,7 +76,7 @@ export async function saveCostCalculation(
         },
         calculation_method: 'systematic_analysis',
         status: 'completed'
-      })
+      } as any) // Type assertion - Database types are correct but TS inference has issues
       .select()
       .single();
 
@@ -213,7 +213,7 @@ export async function updateCostCalculation(
         .from('cost_calculations')
         .select('calculation')
         .eq('id', calculationId)
-        .single();
+        .single() as any; // Type assertion for TS inference issue
 
       const existingCalculation = existingData?.calculation || {};
 
@@ -232,7 +232,7 @@ export async function updateCostCalculation(
         .from('cost_calculations')
         .select('insights')
         .eq('id', calculationId)
-        .single();
+        .single() as any; // Type assertion for TS inference issue
 
       const existingInsights = existingData?.insights || {};
 
@@ -243,9 +243,9 @@ export async function updateCostCalculation(
       };
     }
 
-    const { data, error } = await supabase
-      .from('cost_calculations')
-      .update(updateData)
+    const { data, error } = await (supabase
+      .from('cost_calculations') as any)
+      .update(updateData) // Type assertion on from() to fix TS inference issue
       .eq('id', calculationId)
       .select()
       .single();

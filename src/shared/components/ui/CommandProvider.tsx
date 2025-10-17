@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
-interface Command {
+export interface Command {
   id: string;
   title: string;
   description: string;
@@ -14,7 +14,7 @@ interface Command {
   badge?: string;
 }
 
-interface CommandCategory {
+export interface CommandCategory {
   id: string;
   name: string;
   icon: React.ComponentType<{ className?: string }>;

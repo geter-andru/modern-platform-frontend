@@ -140,7 +140,7 @@ export default function ProfilePage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading profile...</p>
+          <p className="mt-4 text-text-muted">Loading profile...</p>
         </div>
       </div>
     );
@@ -151,7 +151,7 @@ export default function ProfilePage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-          <p className="text-gray-600">Please sign in to view your profile.</p>
+          <p className="text-text-muted">Please sign in to view your profile.</p>
         </div>
       </div>
     );
@@ -179,8 +179,8 @@ export default function ProfilePage() {
       <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Profile Settings</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-3xl font-bold text-text-primary">Profile Settings</h1>
+          <p className="mt-2 text-text-muted">
             Manage your account settings and preferences
           </p>
         </div>
@@ -223,7 +223,7 @@ export default function ProfilePage() {
                 className={`flex items-center py-2 px-1 border-b-2 font-medium text-sm ${
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-surface'
                 }`}
               >
                 <tab.icon className="h-4 w-4 mr-2" />
@@ -288,7 +288,7 @@ const ProfileTab = ({ profile, onChange, onSave, isSaving }: any) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="bg-white shadow rounded-lg p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-6">Personal Information</h3>
+        <h3 className="text-lg font-medium text-text-primary mb-6">Personal Information</h3>
         
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
@@ -299,7 +299,7 @@ const ProfileTab = ({ profile, onChange, onSave, isSaving }: any) => {
               type="text"
               value={profile?.full_name || ''}
               onChange={(e) => onChange('full_name', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-surface rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -311,7 +311,7 @@ const ProfileTab = ({ profile, onChange, onSave, isSaving }: any) => {
               type="email"
               value={profile?.email || ''}
               disabled
-              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+              className="w-full px-3 py-2 border border-surface rounded-md bg-gray-50 text-gray-500"
             />
           </div>
 
@@ -323,7 +323,7 @@ const ProfileTab = ({ profile, onChange, onSave, isSaving }: any) => {
               type="text"
               value={profile?.company || ''}
               onChange={(e) => onChange('company', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-surface rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -335,7 +335,7 @@ const ProfileTab = ({ profile, onChange, onSave, isSaving }: any) => {
               type="text"
               value={profile?.job_title || ''}
               onChange={(e) => onChange('job_title', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-surface rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -347,7 +347,7 @@ const ProfileTab = ({ profile, onChange, onSave, isSaving }: any) => {
               type="tel"
               value={profile?.phone || ''}
               onChange={(e) => onChange('phone', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-surface rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -358,7 +358,7 @@ const ProfileTab = ({ profile, onChange, onSave, isSaving }: any) => {
             <select
               value={profile?.timezone || 'UTC'}
               onChange={(e) => onChange('timezone', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-surface rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="UTC">UTC</option>
               <option value="America/New_York">Eastern Time</option>
@@ -402,12 +402,12 @@ const PreferencesTab = ({ profile, onChange, onSave, isSaving }: any) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="bg-white shadow rounded-lg p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-6">Notification Preferences</h3>
+        <h3 className="text-lg font-medium text-text-primary mb-6">Notification Preferences</h3>
         
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h4 className="text-sm font-medium text-gray-900">Email Notifications</h4>
+              <h4 className="text-sm font-medium text-text-primary">Email Notifications</h4>
               <p className="text-sm text-gray-500">Receive notifications about account activity</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -417,13 +417,13 @@ const PreferencesTab = ({ profile, onChange, onSave, isSaving }: any) => {
                 onChange={(e) => onChange('email_notifications', e.target.checked)}
                 className="sr-only peer"
               />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-surface after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
             </label>
           </div>
 
           <div className="flex items-center justify-between">
             <div>
-              <h4 className="text-sm font-medium text-gray-900">Marketing Emails</h4>
+              <h4 className="text-sm font-medium text-text-primary">Marketing Emails</h4>
               <p className="text-sm text-gray-500">Receive updates about new features and tips</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -433,12 +433,12 @@ const PreferencesTab = ({ profile, onChange, onSave, isSaving }: any) => {
                 onChange={(e) => onChange('marketing_emails', e.target.checked)}
                 className="sr-only peer"
               />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-surface after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
             </label>
           </div>
         </div>
 
-        <h3 className="text-lg font-medium text-gray-900 mt-8 mb-6">Display Preferences</h3>
+        <h3 className="text-lg font-medium text-text-primary mt-8 mb-6">Display Preferences</h3>
         
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
@@ -448,7 +448,7 @@ const PreferencesTab = ({ profile, onChange, onSave, isSaving }: any) => {
             <select
               value={profile?.preferences?.theme || 'system'}
               onChange={(e) => onChange('theme', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-surface rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="system">System</option>
               <option value="light">Light</option>
@@ -463,7 +463,7 @@ const PreferencesTab = ({ profile, onChange, onSave, isSaving }: any) => {
             <select
               value={profile?.preferences?.language || 'en'}
               onChange={(e) => onChange('language', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-surface rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="en">English</option>
               <option value="es">Spanish</option>
@@ -496,7 +496,7 @@ const PreferencesTab = ({ profile, onChange, onSave, isSaving }: any) => {
 const OrganizationsTab = ({ profile }: any) => {
   return (
     <div className="bg-white shadow rounded-lg p-6">
-      <h3 className="text-lg font-medium text-gray-900 mb-6">Organizations</h3>
+      <h3 className="text-lg font-medium text-text-primary mb-6">Organizations</h3>
       
       {profile?.organizations && profile.organizations.length > 0 ? (
         <div className="space-y-4">
@@ -504,7 +504,7 @@ const OrganizationsTab = ({ profile }: any) => {
             <div key={index} className="border border-gray-200 rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900">
+                  <h4 className="text-sm font-medium text-text-primary">
                     {org.organizations.name}
                   </h4>
                   <p className="text-sm text-gray-500">
@@ -525,7 +525,7 @@ const OrganizationsTab = ({ profile }: any) => {
         </div>
       ) : (
         <div className="text-center py-8">
-          <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+          <Users className="h-12 w-12 text-text-secondary mx-auto mb-4" />
           <p className="text-gray-500">You're not a member of any organizations yet.</p>
         </div>
       )}
@@ -538,12 +538,12 @@ const SecurityTab = ({ profile }: any) => {
   return (
     <div className="space-y-6">
       <div className="bg-white shadow rounded-lg p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-6">Account Security</h3>
+        <h3 className="text-lg font-medium text-text-primary mb-6">Account Security</h3>
         
         <div className="space-y-4">
           <div className="flex items-center justify-between py-3 border-b border-gray-200">
             <div>
-              <h4 className="text-sm font-medium text-gray-900">Password</h4>
+              <h4 className="text-sm font-medium text-text-primary">Password</h4>
               <p className="text-sm text-gray-500">Last updated via Google OAuth</p>
             </div>
             <button className="text-blue-600 hover:text-blue-500 text-sm font-medium">
@@ -553,7 +553,7 @@ const SecurityTab = ({ profile }: any) => {
 
           <div className="flex items-center justify-between py-3 border-b border-gray-200">
             <div>
-              <h4 className="text-sm font-medium text-gray-900">Two-Factor Authentication</h4>
+              <h4 className="text-sm font-medium text-text-primary">Two-Factor Authentication</h4>
               <p className="text-sm text-gray-500">Managed by Google Account</p>
             </div>
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -563,11 +563,11 @@ const SecurityTab = ({ profile }: any) => {
 
           {profile?.roles && profile.roles.length > 0 && (
             <div className="py-3">
-              <h4 className="text-sm font-medium text-gray-900 mb-2">Account Roles</h4>
+              <h4 className="text-sm font-medium text-text-primary mb-2">Account Roles</h4>
               <div className="space-y-2">
                 {profile.roles.map((role: any, index: number) => (
                   <div key={index} className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">{role.role_name}</span>
+                    <span className="text-sm text-text-muted">{role.role_name}</span>
                     <span className="text-xs text-gray-500">
                       Since {new Date(role.granted_at).toLocaleDateString()}
                     </span>

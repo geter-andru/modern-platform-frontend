@@ -129,7 +129,7 @@ export async function saveTranslationsToSupabase(
         competitive_positioning: translation.result.competitivePositioning,
         supporting_evidence: translation.result.supportingEvidence,
         usage_instructions: translation.result.usageInstructions
-      });
+      } as any); // Type assertion for TS inference issue
 
       if (error) {
         console.error('❌ Failed to save translation:', error);

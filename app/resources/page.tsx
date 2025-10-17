@@ -193,10 +193,10 @@ export default function ResourcesPage() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <h1 className="text-3xl font-bold text-text-primary mb-2">
                 Resources Library
               </h1>
-              <p className="text-gray-600">
+              <p className="text-text-muted">
                 AI-powered resources to accelerate your revenue growth
               </p>
             </div>

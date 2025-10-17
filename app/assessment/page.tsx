@@ -126,7 +126,7 @@ export default function AssessmentPage() {
           <div className="flex items-center justify-center min-h-96">
             <div className="text-center">
               <ModernCircularProgress value={0} size="lg" />
-              <p className="text-lg text-gray-600 mt-4">
+              <p className="text-lg text-text-muted mt-4">
                 {source === 'andru-assessment' ? 'Loading your assessment results...' : 'Loading assessment data...'}
               </p>
             </div>
@@ -147,10 +147,10 @@ export default function AssessmentPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
               </div>
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h2 className="text-xl font-semibold text-text-primary dark:text-white mb-2">
                 Error Loading Assessment
               </h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
+              <p className="text-text-muted dark:text-gray-300 mb-6">
                 {error}
               </p>
               <button

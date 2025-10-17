@@ -12,12 +12,12 @@ export default async function SettingsPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Settings</h1>
+        <h1 className="text-3xl font-bold text-text-primary mb-6">Settings</h1>
 
         <div className="bg-white rounded-lg shadow p-6">
           <div className="border-b pb-4 mb-4">
             <h2 className="text-xl font-semibold text-gray-800">Account Settings</h2>
-            <p className="text-gray-600 mt-1">Manage your account preferences</p>
+            <p className="text-text-muted mt-1">Manage your account preferences</p>
           </div>
 
           <div className="space-y-4">
@@ -27,7 +27,7 @@ export default async function SettingsPage() {
                 type="email"
                 value={user.email || ''}
                 disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600"
+                className="w-full px-3 py-2 border border-surface rounded-md bg-gray-50 text-text-muted"
               />
             </div>
 
@@ -37,7 +37,7 @@ export default async function SettingsPage() {
                 type="text"
                 value={user.id}
                 disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600 font-mono text-sm"
+                className="w-full px-3 py-2 border border-surface rounded-md bg-gray-50 text-text-muted font-mono text-sm"
               />
             </div>
           </div>

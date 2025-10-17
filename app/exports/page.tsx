@@ -11,8 +11,8 @@ export default function ExportsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
+      <div className="min-h-screen bg-background-primary flex items-center justify-center">
+        <div className="text-text-secondary">Loading...</div>
       </div>
     );
   }
@@ -35,10 +35,10 @@ export default function ExportsPage() {
       <div className="space-y-6">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-3xl font-bold text-text-primary dark:text-white mb-2">
             Export Center
           </h1>
-          <p className="text-gray-600 dark:text-gray-300">
+          <p className="text-text-muted dark:text-gray-300">
             Export your data in various formats for analysis and sharing
           </p>
         </div>
