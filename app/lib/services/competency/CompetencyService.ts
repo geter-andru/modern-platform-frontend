@@ -12,7 +12,9 @@
  * - Real-time updates via Supabase subscriptions
  */
 
-import { createClient } from '@supabase/supabase-js';
+// Import singleton Supabase client (DO NOT create new instances - causes session conflicts)
+import { supabase } from '@/app/lib/supabase/client';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 // ==================== TYPES & INTERFACES ====================
 
@@ -104,19 +106,12 @@ const TOOL_UNLOCK_REQUIREMENTS = {
 // ==================== COMPETENCY SERVICE ====================
 
 class CompetencyService {
-  private supabase: ReturnType<typeof createClient>;
+  private supabase: SupabaseClient;
   private static instance: CompetencyService;
 
   private constructor() {
-    // Initialize Supabase client
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-    if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Supabase credentials not configured');
-    }
-
-    this.supabase = createClient(supabaseUrl, supabaseKey);
+    // Use singleton Supabase client (DO NOT create new instances - causes session conflicts)
+    this.supabase = supabase;
   }
 
   /**

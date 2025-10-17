@@ -6,6 +6,8 @@
 
 import technicalTranslationService from './TechnicalTranslationService';
 import type { BuyerPersona, TranslationResult } from './TechnicalTranslationService';
+// Import singleton Supabase client (DO NOT create new instances - causes session conflicts)
+import { supabase } from '@/app/lib/supabase/client';
 
 export interface ICPAnalysisData {
   id?: string;
@@ -111,13 +113,7 @@ export async function saveTranslationsToSupabase(
   try {
     console.log('💾 Saving technical translations to Supabase...');
 
-    // Import Supabase client
-    const { createClient } = await import('@supabase/supabase-js');
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-
+    // Use singleton Supabase client (already imported at top)
     // Save each translation
     for (const translation of translations) {
       const { error } = await supabase.from('technical_translations').insert({

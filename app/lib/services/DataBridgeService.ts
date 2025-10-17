@@ -1,11 +1,13 @@
 /**
  * DataBridgeService - Airtable to Supabase Data Bridge
- * 
- * This service bridges the gap between andru-assessment (Airtable-based) 
+ *
+ * This service bridges the gap between andru-assessment (Airtable-based)
  * and modern-platform (Supabase-native) by providing seamless data synchronization.
  */
 
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+// Use singleton Supabase client to avoid session conflicts
+import { supabase } from '@/app/lib/supabase/client';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import axios, { AxiosResponse } from 'axios';
 
 // TypeScript Interfaces
@@ -61,8 +63,6 @@ interface BridgeConfig {
   airtableBaseId: string;
   airtableTableName: string;
   airtableApiKey: string;
-  supabaseUrl: string;
-  supabaseAnonKey: string;
 }
 
 export class DataBridgeService {
@@ -72,10 +72,10 @@ export class DataBridgeService {
 
   constructor(config: BridgeConfig) {
     this.config = config;
-    
-    // Initialize Supabase client
-    this.supabase = createClient(config.supabaseUrl, config.supabaseAnonKey);
-    
+
+    // Use singleton Supabase client (DO NOT create new instances - causes session conflicts)
+    this.supabase = supabase;
+
     // Initialize Airtable client (using axios for direct API calls)
     this.airtableClient = axios.create({
       baseURL: `https://api.airtable.com/v0/${config.airtableBaseId}`,
@@ -506,9 +506,7 @@ export class DataBridgeService {
 export const dataBridgeService = new DataBridgeService({
   airtableBaseId: process.env.AIRTABLE_BASE_ID!,
   airtableTableName: process.env.AIRTABLE_TABLE_NAME!,
-  airtableApiKey: process.env.AIRTABLE_API_KEY!,
-  supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  airtableApiKey: process.env.AIRTABLE_API_KEY!
 });
 
 export default dataBridgeService;

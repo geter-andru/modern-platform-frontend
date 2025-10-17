@@ -5,20 +5,13 @@
  * Integrates with Business Case Builder auto-population
  */
 
-import { createClient } from '@supabase/supabase-js';
+// Import singleton Supabase client (DO NOT create new instances - causes session conflicts)
+import { supabase } from '@/app/lib/supabase/client';
 import type {
   CostCalculatorResults,
   SaveCostCalculationPayload,
   CostCalculationResponse
 } from './CostCalculatorTypes';
-
-// ============================================================================
-// SUPABASE CLIENT
-// ============================================================================
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 // ============================================================================
 // COST CALCULATION CRUD OPERATIONS
