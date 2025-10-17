@@ -11,6 +11,7 @@
  */
 
 import { supabase } from '@/app/lib/supabase/client';
+import type { Database } from '@/app/lib/supabase/client-rewrite';
 
 // ============================================
 // TYPES
@@ -142,10 +143,10 @@ class Logger {
       const { data: { user } } = await this.supabase.auth.getUser();
 
       // Prepare log entry
-      const logEntry = {
+      const logEntry: Database['public']['Tables']['application_logs']['Insert'] = {
         level,
         message,
-        context: context || {},
+        context: (context || {}) as any,
         url: metadata?.url || (typeof window !== 'undefined' ? window.location.href : null),
         user_agent: metadata?.userAgent || (typeof navigator !== 'undefined' ? navigator.userAgent : null),
         session_id: metadata?.sessionId || this.sessionId,
@@ -154,11 +155,10 @@ class Logger {
       };
 
       // Insert log (async, don't await to avoid blocking)
-      // Note: Type assertion needed until migration is run and types are regenerated
       void (this.supabase as any)
         .from('application_logs')
         .insert(logEntry)
-        .then(({ error }: { error: unknown }) => {
+        .then(({ error }: { error: any }) => {
           if (error) {
             // Fail silently in production to avoid infinite logging loops
             if (this.isDevelopment) {
@@ -247,8 +247,7 @@ class Logger {
    */
   async queryLogs(filters?: LogFilter): Promise<LogEntry[]> {
     try {
-      // Note: Type assertion needed until migration is run and types are regenerated
-      let query = (this.supabase as any)
+      let query = this.supabase
         .from('application_logs')
         .select('*')
         .order('timestamp', { ascending: false });
@@ -310,8 +309,7 @@ class Logger {
    */
   async getErrorCount(hours: number = 24): Promise<number> {
     try {
-      // Note: Type assertion needed until migration is run and types are regenerated
-      const { count, error } = await (this.supabase as any)
+      const { count, error } = await this.supabase
         .from('application_logs')
         .select('*', { count: 'exact', head: true })
         .eq('level', 'error')
@@ -343,8 +341,7 @@ class Logger {
       };
 
       for (const level of levels) {
-        // Note: Type assertion needed until migration is run and types are regenerated
-        const { count } = await (this.supabase as any)
+        const { count } = await this.supabase
           .from('application_logs')
           .select('*', { count: 'exact', head: true })
           .eq('level', level)

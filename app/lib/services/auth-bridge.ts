@@ -56,17 +56,16 @@ export class AuthBridgeService {
 
   /**
    * Get authentication headers for backend API calls
-   * Retrieves Supabase session and formats headers for Express backend
+   * Uses AuthProvider's session instead of calling getSession() directly
+   * This prevents duplicate GoTrueClient instances
    */
   async getAuthHeaders(): Promise<BackendAuthHeaders> {
     try {
-      // Get current Supabase session
-      const { data: { session }, error } = await this.supabaseClient.auth.getSession();
-      
-      if (error) {
-        console.error('Error getting Supabase session:', error);
-        throw new Error(`Supabase session error: ${error.message}`);
-      }
+      // Import authService to get the current session from AuthProvider
+      const { authService } = await import('@/app/lib/auth/auth-service');
+
+      // Get current session from AuthProvider (singleton, no duplicate calls)
+      const session = authService.getCurrentSession();
 
       if (!session?.access_token) {
         throw new Error('No active Supabase session found');
@@ -211,11 +210,12 @@ export class AuthBridgeService {
 
   /**
    * Check if user is authenticated
+   * Uses AuthProvider's state instead of calling getSession() directly
    */
   async isAuthenticated(): Promise<boolean> {
     try {
-      const { data: { session } } = await this.supabaseClient.auth.getSession();
-      return !!session?.access_token;
+      const { authService } = await import('@/app/lib/auth/auth-service');
+      return authService.isAuthenticated();
     } catch (error) {
       console.error('AuthBridge: Error checking authentication:', error);
       return false;
@@ -224,17 +224,12 @@ export class AuthBridgeService {
 
   /**
    * Get current user information
+   * Uses AuthProvider's user instead of calling getUser() directly
    */
   async getCurrentUser() {
     try {
-      const { data: { user }, error } = await this.supabaseClient.auth.getUser();
-      
-      if (error) {
-        console.error('AuthBridge: Error getting user:', error);
-        return null;
-      }
-      
-      return user;
+      const { authService } = await import('@/app/lib/auth/auth-service');
+      return authService.getCurrentUser();
     } catch (error) {
       console.error('AuthBridge: Error getting user:', error);
       return null;
@@ -243,17 +238,14 @@ export class AuthBridgeService {
 
   /**
    * Refresh Supabase session if needed
+   * Uses AuthProvider's refresh logic (happens automatically)
+   * Just return current session as refresh is handled by AuthProvider
    */
   async refreshSession() {
     try {
-      const { data, error } = await this.supabaseClient.auth.refreshSession();
-      
-      if (error) {
-        console.error('AuthBridge: Error refreshing session:', error);
-        throw error;
-      }
-      
-      return data;
+      const { authService } = await import('@/app/lib/auth/auth-service');
+      const session = authService.getCurrentSession();
+      return { session, user: authService.getCurrentUser() };
     } catch (error) {
       console.error('AuthBridge: Error refreshing session:', error);
       throw error;

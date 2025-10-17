@@ -165,6 +165,49 @@ export interface Database {
         Update: Record<string, any>;
       };
 
+      application_logs: {
+        Row: {
+          id: string;
+          timestamp: string;
+          level: 'debug' | 'info' | 'warn' | 'error';
+          message: string;
+          context?: Json;
+          user_id?: string | null;
+          session_id?: string | null;
+          url?: string | null;
+          user_agent?: string | null;
+          ip_address?: string | null;
+          created_at: string;
+          [key: string]: any;
+        };
+        Insert: {
+          id?: string;
+          timestamp?: string;
+          level: 'debug' | 'info' | 'warn' | 'error';
+          message: string;
+          context?: Json;
+          user_id?: string | null;
+          session_id?: string | null;
+          url?: string | null;
+          user_agent?: string | null;
+          ip_address?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          timestamp?: string;
+          level?: 'debug' | 'info' | 'warn' | 'error';
+          message?: string;
+          context?: Json;
+          user_id?: string | null;
+          session_id?: string | null;
+          url?: string | null;
+          user_agent?: string | null;
+          ip_address?: string | null;
+          created_at?: string;
+        };
+      };
+
       customer_sessions: {
         Row: {
           id: string;

@@ -697,6 +697,47 @@ export interface Database {
           timestamp?: string;
         };
       };
+      application_logs: {
+        Row: {
+          id: string;
+          timestamp: string;
+          level: 'debug' | 'info' | 'warn' | 'error';
+          message: string;
+          context: any;
+          user_id: string | null;
+          session_id: string | null;
+          url: string | null;
+          user_agent: string | null;
+          ip_address: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          timestamp?: string;
+          level: 'debug' | 'info' | 'warn' | 'error';
+          message: string;
+          context?: any;
+          user_id?: string | null;
+          session_id?: string | null;
+          url?: string | null;
+          user_agent?: string | null;
+          ip_address?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          timestamp?: string;
+          level?: 'debug' | 'info' | 'warn' | 'error';
+          message?: string;
+          context?: any;
+          user_id?: string | null;
+          session_id?: string | null;
+          url?: string | null;
+          user_agent?: string | null;
+          ip_address?: string | null;
+          created_at?: string;
+        };
+      };
     };
     Views: {
       [_ in never]: never;
