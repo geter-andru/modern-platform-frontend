@@ -157,7 +157,7 @@ class SupabaseAuthService {
     try {
       // Check if profile exists
       const { data: existingProfile, error: selectError } = await supabase
-        .from('customer_profiles')
+        .from('customer_assets')
         .select('id')
         .eq('customer_id', user.id)
         .single();
