@@ -107,8 +107,8 @@ export default function ICPPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
+      <div className="min-h-screen bg-background-primary flex items-center justify-center">
+        <div className="text-text-secondary">Loading...</div>
       </div>
     );
   }
@@ -220,13 +220,13 @@ export default function ICPPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gray-800 border border-gray-700 rounded-xl p-12 text-center"
+              className="bg-background-secondary border border-surface rounded-xl p-12 text-center"
             >
-              <currentWidget.icon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+              <currentWidget.icon className="w-16 h-16 text-text-muted mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-white mb-2">
                 {currentWidget.title}
               </h3>
-              <p className="text-gray-400 mb-6">
+              <p className="text-text-secondary mb-6">
                 {currentWidget.description}
               </p>
               <div className="bg-blue-900/20 border border-blue-600/50 rounded-lg p-4 max-w-md mx-auto">
