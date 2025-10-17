@@ -383,7 +383,7 @@ export default function TestDashboardV2Page() {
             }}
             onDismissFeedback={() => alert('Feedback dismissed')}
           >
-            <div className="text-center text-gray-400 py-12">
+            <div className="text-center text-text-secondary py-12">
               Tool content would go here (ICP form, cost calculator, etc.)
             </div>
           </ActiveToolDisplay>
@@ -545,19 +545,19 @@ export default function TestDashboardV2Page() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
               <div>
                 <div className="text-3xl font-bold text-green-400">21</div>
-                <div className="text-sm text-gray-400">Components Tested</div>
+                <div className="text-sm text-text-secondary">Components Tested</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-green-400">~5,100</div>
-                <div className="text-sm text-gray-400">Lines TypeScript</div>
+                <div className="text-sm text-text-secondary">Lines TypeScript</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-green-400">2</div>
-                <div className="text-sm text-gray-400">Main Views</div>
+                <div className="text-sm text-text-secondary">Main Views</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-green-400">18</div>
-                <div className="text-sm text-gray-400">Widgets</div>
+                <div className="text-sm text-text-secondary">Widgets</div>
               </div>
             </div>
             <p className="text-center text-green-300 mt-4">

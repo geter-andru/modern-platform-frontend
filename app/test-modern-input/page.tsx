@@ -18,7 +18,7 @@ export default function TestModernInputPage() {
         {/* Header */}
         <div>
           <h1 className="text-4xl font-bold text-purple-400 mb-2">ModernInput Test Page</h1>
-          <p className="text-gray-400">Testing all variants, sizes, states, and features</p>
+          <p className="text-text-secondary">Testing all variants, sizes, states, and features</p>
         </div>
 
         {/* Basic Inputs - All Sizes */}
@@ -114,13 +114,13 @@ export default function TestModernInputPage() {
             <ModernInput
               label="Username"
               placeholder="Enter username..."
-              leftIcon={<User size={20} className="text-gray-400" />}
+              leftIcon={<User size={20} className="text-text-secondary" />}
             />
             <ModernInput
               label="Email"
               type="email"
               placeholder="Enter email..."
-              leftIcon={<Mail size={20} className="text-gray-400" />}
+              leftIcon={<Mail size={20} className="text-text-secondary" />}
               value={emailValue}
               onChange={(e) => setEmailValue(e.target.value)}
             />
@@ -128,7 +128,7 @@ export default function TestModernInputPage() {
               label="Password"
               type="password"
               placeholder="Enter password..."
-              leftIcon={<Lock size={20} className="text-gray-400" />}
+              leftIcon={<Lock size={20} className="text-text-secondary" />}
               value={passwordValue}
               onChange={(e) => setPasswordValue(e.target.value)}
             />
@@ -136,7 +136,7 @@ export default function TestModernInputPage() {
               label="Date"
               type="text"
               placeholder="Select date..."
-              rightIcon={<Calendar size={20} className="text-gray-400" />}
+              rightIcon={<Calendar size={20} className="text-text-secondary" />}
             />
           </div>
         </section>
@@ -202,21 +202,21 @@ export default function TestModernInputPage() {
               label="Username"
               placeholder=""
               floatingLabel
-              leftIcon={<User size={20} className="text-gray-400" />}
+              leftIcon={<User size={20} className="text-text-secondary" />}
             />
             <ModernInput
               label="Email Address"
               type="email"
               placeholder=""
               floatingLabel
-              leftIcon={<Mail size={20} className="text-gray-400" />}
+              leftIcon={<Mail size={20} className="text-text-secondary" />}
             />
             <ModernInput
               label="Password"
               type="password"
               placeholder=""
               floatingLabel
-              leftIcon={<Lock size={20} className="text-gray-400" />}
+              leftIcon={<Lock size={20} className="text-text-secondary" />}
             />
             <p className="text-sm text-gray-500">
               ✓ Labels float up smoothly when focused or filled
@@ -257,8 +257,8 @@ export default function TestModernInputPage() {
               onDebouncedChange={(value) => setDebouncedValue(value)}
               helperText="Debounced value updates 500ms after you stop typing"
             />
-            <div className="bg-gray-900 rounded-lg p-4">
-              <p className="text-sm text-gray-400">Debounced value:</p>
+            <div className="bg-background-primary rounded-lg p-4">
+              <p className="text-sm text-text-secondary">Debounced value:</p>
               <p className="text-white font-mono">{debouncedValue || '(empty)'}</p>
             </div>
           </div>
@@ -277,7 +277,7 @@ export default function TestModernInputPage() {
             <ModernInput
               label="Disabled with Icon"
               placeholder="Cannot edit..."
-              leftIcon={<User size={20} className="text-gray-400" />}
+              leftIcon={<User size={20} className="text-text-secondary" />}
               disabled
             />
           </div>
@@ -352,7 +352,7 @@ export default function TestModernInputPage() {
               label="Email with Everything"
               type="email"
               placeholder="your.email@example.com"
-              leftIcon={<Mail size={20} className="text-gray-400" />}
+              leftIcon={<Mail size={20} className="text-text-secondary" />}
               clearable
               state="success"
               helperText="Email format is valid"
@@ -375,7 +375,7 @@ export default function TestModernInputPage() {
         {/* Component Summary */}
         <section className="border-t border-gray-700 pt-8">
           <h2 className="text-2xl font-semibold mb-4">Component Summary</h2>
-          <div className="bg-gray-900 rounded-lg p-6 space-y-2 text-sm">
+          <div className="bg-background-primary rounded-lg p-6 space-y-2 text-sm">
             <p><strong className="text-purple-400">File:</strong> /app/components/ui/ModernInput.tsx</p>
             <p><strong className="text-purple-400">Lines:</strong> ~585 lines TypeScript</p>
             <p><strong className="text-purple-400">Components:</strong> ModernInput, ModernTextarea</p>
@@ -383,7 +383,7 @@ export default function TestModernInputPage() {
             <p><strong className="text-purple-400">Variants:</strong> 4 (default, filled, underlined, borderless)</p>
             <p><strong className="text-purple-400">States:</strong> 4 (default, error, success, warning)</p>
             <p><strong className="text-purple-400">Features:</strong></p>
-            <ul className="list-disc list-inside ml-4 space-y-1 text-gray-400">
+            <ul className="list-disc list-inside ml-4 space-y-1 text-text-secondary">
               <li>Multiple input types (text, password, email, search, etc.)</li>
               <li>Icon support (left and right)</li>
               <li>Validation states with icons</li>

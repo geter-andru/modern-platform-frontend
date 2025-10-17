@@ -145,18 +145,18 @@ export default function TestTasksIntegration() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
+    <div className="min-h-screen bg-background-primary text-white p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">🧪 Tasks System Integration Test</h1>
-          <p className="text-gray-400">
+          <p className="text-text-secondary">
             Testing TaskDataService + TaskCompletionService + Supabase
           </p>
         </div>
 
         {/* Authentication Status */}
-        <div className="bg-gray-800 p-6 rounded-lg mb-6">
+        <div className="bg-background-secondary p-6 rounded-lg mb-6">
           <h2 className="text-xl font-bold mb-4">Authentication Status</h2>
           {isAuthenticated ? (
             <div className="space-y-2">
@@ -170,23 +170,23 @@ export default function TestTasksIntegration() {
         </div>
 
         {/* Competency Scores */}
-        <div className="bg-gray-800 p-6 rounded-lg mb-6">
+        <div className="bg-background-secondary p-6 rounded-lg mb-6">
           <h2 className="text-xl font-bold mb-4">Current Competency Scores</h2>
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <p className="text-gray-400 text-sm">Customer Analysis</p>
+              <p className="text-text-secondary text-sm">Customer Analysis</p>
               <p className="text-2xl font-bold text-purple-400">
                 {competencyScores.customerAnalysis}
               </p>
             </div>
             <div>
-              <p className="text-gray-400 text-sm">Value Communication</p>
+              <p className="text-text-secondary text-sm">Value Communication</p>
               <p className="text-2xl font-bold text-blue-400">
                 {competencyScores.valueCommunication}
               </p>
             </div>
             <div>
-              <p className="text-gray-400 text-sm">Executive Readiness</p>
+              <p className="text-text-secondary text-sm">Executive Readiness</p>
               <p className="text-2xl font-bold text-green-400">
                 {competencyScores.executiveReadiness}
               </p>
@@ -220,13 +220,13 @@ export default function TestTasksIntegration() {
         )}
 
         {/* Tasks List */}
-        <div className="bg-gray-800 p-6 rounded-lg">
+        <div className="bg-background-secondary p-6 rounded-lg">
           <h2 className="text-xl font-bold mb-4">
             Fetched Tasks ({tasks.length})
           </h2>
 
           {tasks.length === 0 && !loading && (
-            <p className="text-gray-400">No tasks found. Click "Fetch Tasks" to load.</p>
+            <p className="text-text-secondary">No tasks found. Click "Fetch Tasks" to load.</p>
           )}
 
           <div className="space-y-4">
@@ -238,7 +238,7 @@ export default function TestTasksIntegration() {
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold">{task.name}</h3>
-                    <p className="text-gray-400 text-sm mt-1">{task.description}</p>
+                    <p className="text-text-secondary text-sm mt-1">{task.description}</p>
                   </div>
                   <span
                     className={`px-3 py-1 rounded text-xs font-semibold ${
@@ -257,19 +257,19 @@ export default function TestTasksIntegration() {
 
                 <div className="grid grid-cols-2 gap-4 mt-3 text-sm">
                   <div>
-                    <span className="text-gray-400">Category:</span>{' '}
+                    <span className="text-text-secondary">Category:</span>{' '}
                     <span className="text-white">{task.category}</span>
                   </div>
                   <div>
-                    <span className="text-gray-400">Competency Area:</span>{' '}
+                    <span className="text-text-secondary">Competency Area:</span>{' '}
                     <span className="text-white">{task.competencyArea}</span>
                   </div>
                   <div>
-                    <span className="text-gray-400">Estimated Time:</span>{' '}
+                    <span className="text-text-secondary">Estimated Time:</span>{' '}
                     <span className="text-white">{task.estimatedTime}</span>
                   </div>
                   <div>
-                    <span className="text-gray-400">Stage/Milestone:</span>{' '}
+                    <span className="text-text-secondary">Stage/Milestone:</span>{' '}
                     <span className="text-white">{task.stageMilestone}</span>
                   </div>
                 </div>

@@ -42,7 +42,7 @@ export default function TestActionWidgetsPage() {
           </div>
           <div>
             <h1 className="text-3xl font-bold text-white">Action Tracking Widgets Test</h1>
-            <p className="text-gray-400">Phase 2 - Chunk 2.4: Professional Action Tracking System</p>
+            <p className="text-text-secondary">Phase 2 - Chunk 2.4: Professional Action Tracking System</p>
           </div>
         </div>
 
@@ -53,7 +53,7 @@ export default function TestActionWidgetsPage() {
               <Activity className="w-5 h-5 text-blue-400" />
               <h3 className="text-sm font-medium text-white">Recent Actions</h3>
             </div>
-            <p className="text-xs text-gray-400">Last 10 professional actions with impact tracking</p>
+            <p className="text-xs text-text-secondary">Last 10 professional actions with impact tracking</p>
           </div>
 
           <div className="bg-[#1a1a1a] border border-gray-800 rounded-lg p-4">
@@ -61,7 +61,7 @@ export default function TestActionWidgetsPage() {
               <BarChart3 className="w-5 h-5 text-purple-400" />
               <h3 className="text-sm font-medium text-white">Action Statistics</h3>
             </div>
-            <p className="text-xs text-gray-400">Comprehensive analytics with chart visualizations</p>
+            <p className="text-xs text-text-secondary">Comprehensive analytics with chart visualizations</p>
           </div>
 
           <div className="bg-[#1a1a1a] border border-gray-800 rounded-lg p-4">
@@ -69,7 +69,7 @@ export default function TestActionWidgetsPage() {
               <Lightbulb className="w-5 h-5 text-green-400" />
               <h3 className="text-sm font-medium text-white">Suggested Actions</h3>
             </div>
-            <p className="text-xs text-gray-400">Personalized recommendations with competency gaps</p>
+            <p className="text-xs text-text-secondary">Personalized recommendations with competency gaps</p>
           </div>
         </div>
       </div>

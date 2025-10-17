@@ -35,7 +35,7 @@ export default function TestModernAlertPage() {
           <h1 className="text-4xl font-bold text-purple-400 mb-2">
             ModernAlert Test Page
           </h1>
-          <p className="text-gray-400">
+          <p className="text-text-secondary">
             Testing all variants, sizes, and specialized alert types
           </p>
         </div>
@@ -145,7 +145,7 @@ export default function TestModernAlertPage() {
             </SuccessAlert>
           )}
           {!showAutoDismiss && (
-            <div className="text-gray-400 text-sm">
+            <div className="text-text-secondary text-sm">
               <p>Alert was dismissed. <button onClick={() => setShowAutoDismiss(true)} className="text-purple-400 hover:underline">Show again</button></p>
             </div>
           )}
@@ -403,7 +403,7 @@ export default function TestModernAlertPage() {
                   <li>Export to PDF has formatting issues on Safari</li>
                   <li>Dark mode toggle requires page refresh</li>
                 </ul>
-                <p className="mt-2 text-gray-400">These issues are being actively worked on and will be fixed in the next release.</p>
+                <p className="mt-2 text-text-secondary">These issues are being actively worked on and will be fixed in the next release.</p>
               </div>
             </CollapsibleAlert>
 
@@ -468,14 +468,14 @@ export default function TestModernAlertPage() {
         {/* Component Summary */}
         <section className="border-t border-gray-700 pt-8">
           <h2 className="text-2xl font-semibold mb-4">Component Summary</h2>
-          <div className="bg-gray-900 rounded-lg p-6 space-y-2 text-sm">
+          <div className="bg-background-primary rounded-lg p-6 space-y-2 text-sm">
             <p><strong className="text-purple-400">File:</strong> /app/components/ui/ModernAlert.tsx</p>
             <p><strong className="text-purple-400">Lines:</strong> ~331 lines TypeScript</p>
             <p><strong className="text-purple-400">Variants:</strong> 4 (success, error, warning, info)</p>
             <p><strong className="text-purple-400">Sizes:</strong> 3 (sm, md, lg)</p>
             <p><strong className="text-purple-400">Alert Types:</strong> 8 specialized components</p>
             <p><strong className="text-purple-400">Features:</strong></p>
-            <ul className="list-disc list-inside ml-4 space-y-1 text-gray-400">
+            <ul className="list-disc list-inside ml-4 space-y-1 text-text-secondary">
               <li>4 semantic variants (success, error, warning, info)</li>
               <li>3 sizes (sm, md, lg)</li>
               <li>Optional title with description</li>

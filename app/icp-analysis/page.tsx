@@ -83,19 +83,19 @@ export default function ICPAnalysisPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 py-8">
+    <div className="min-h-screen bg-background-primary py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">
             <button
               onClick={() => window.history.back()}
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-text-secondary hover:text-white transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
             <h1 className="text-3xl font-bold text-white">ICP Analysis Tool</h1>
           </div>
-          <p className="text-gray-400">
+          <p className="text-text-secondary">
             Systematic buyer understanding and targeting framework
           </p>
         </div>
@@ -116,8 +116,8 @@ export default function ICPAnalysisPage() {
                     isActive
                       ? 'bg-blue-600 text-white'
                       : isAvailable
-                      ? 'bg-gray-900 text-gray-400 hover:text-white hover:bg-gray-800'
-                      : 'bg-gray-900 text-gray-600 cursor-not-allowed'
+                      ? 'bg-background-primary text-text-secondary hover:text-white hover:bg-background-secondary'
+                      : 'bg-background-primary text-text-muted cursor-not-allowed'
                   }`}
                 >
                   <IconComponent className="w-4 h-4" />
@@ -155,13 +155,13 @@ export default function ICPAnalysisPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gray-900 border border-gray-800 rounded-xl p-12 text-center"
+              className="bg-background-primary border border-gray-800 rounded-xl p-12 text-center"
             >
-              <currentWidget.icon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+              <currentWidget.icon className="w-16 h-16 text-text-muted mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-white mb-2">
                 {currentWidget.title}
               </h3>
-              <p className="text-gray-400 mb-6">
+              <p className="text-text-secondary mb-6">
                 {currentWidget.description}
               </p>
               <div className="bg-blue-900/20 border border-blue-600/50 rounded-lg p-4 max-w-md mx-auto">
@@ -177,7 +177,7 @@ export default function ICPAnalysisPage() {
           <button
             onClick={handleRefresh}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 bg-background-secondary hover:bg-gray-700 text-white rounded-lg transition-colors disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh Data
@@ -195,13 +195,13 @@ export default function ICPAnalysisPage() {
 
       {showExportModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-900 border border-gray-800 rounded-xl max-w-2xl w-full">
+          <div className="bg-background-primary border border-gray-800 rounded-xl max-w-2xl w-full">
             <div className="px-6 py-4 border-b border-gray-700">
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-bold text-white">Export ICP Analysis</h2>
                 <button
                   onClick={() => setShowExportModal(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-text-secondary hover:text-white transition-colors"
                 >
                   <span className="sr-only">Close</span>
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -217,26 +217,26 @@ export default function ICPAnalysisPage() {
                 <h3 className="text-lg font-semibold text-white mb-2">
                   Export Options Coming Soon
                 </h3>
-                <p className="text-gray-400 mb-6">
+                <p className="text-text-secondary mb-6">
                   Advanced export functionality will be available in the next phase of development.
                 </p>
                 
                 <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
-                  <div className="bg-gray-800 rounded-lg p-4">
+                  <div className="bg-background-secondary rounded-lg p-4">
                     <h4 className="text-white font-medium mb-2">PDF Report</h4>
-                    <p className="text-gray-400 text-sm">Comprehensive ICP analysis document</p>
+                    <p className="text-text-secondary text-sm">Comprehensive ICP analysis document</p>
                   </div>
-                  <div className="bg-gray-800 rounded-lg p-4">
+                  <div className="bg-background-secondary rounded-lg p-4">
                     <h4 className="text-white font-medium mb-2">CRM Integration</h4>
-                    <p className="text-gray-400 text-sm">HubSpot, Salesforce, Pipedrive</p>
+                    <p className="text-text-secondary text-sm">HubSpot, Salesforce, Pipedrive</p>
                   </div>
-                  <div className="bg-gray-800 rounded-lg p-4">
+                  <div className="bg-background-secondary rounded-lg p-4">
                     <h4 className="text-white font-medium mb-2">AI Prompts</h4>
-                    <p className="text-gray-400 text-sm">Claude, ChatGPT, Perplexity</p>
+                    <p className="text-text-secondary text-sm">Claude, ChatGPT, Perplexity</p>
                   </div>
-                  <div className="bg-gray-800 rounded-lg p-4">
+                  <div className="bg-background-secondary rounded-lg p-4">
                     <h4 className="text-white font-medium mb-2">Sales Tools</h4>
-                    <p className="text-gray-400 text-sm">Outreach, SalesLoft, Apollo</p>
+                    <p className="text-text-secondary text-sm">Outreach, SalesLoft, Apollo</p>
                   </div>
                 </div>
               </div>

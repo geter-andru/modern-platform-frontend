@@ -61,7 +61,7 @@ export default function TestComponentsPage() {
         {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold text-white">Chunk 2.1: Foundation UI Components</h1>
-          <p className="text-gray-400">Testing ModernCard, ModernCircularProgress, and CircularProgressPremium</p>
+          <p className="text-text-secondary">Testing ModernCard, ModernCircularProgress, and CircularProgressPremium</p>
         </div>
 
         {/* Section 1: ModernCard Variants */}
@@ -132,7 +132,7 @@ export default function TestComponentsPage() {
         {/* Section 3: ModernCircularProgress */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold text-white">3. ModernCircularProgress</h2>
-          <ModernProgressGroup className="bg-gray-900 p-8 rounded-xl">
+          <ModernProgressGroup className="bg-background-primary p-8 rounded-xl">
             <ModernCircularProgress
               percentage={75}
               color="purple"
@@ -157,7 +157,7 @@ export default function TestComponentsPage() {
         {/* Section 4: Mini Progress */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold text-white">4. ModernMiniProgress</h2>
-          <div className="flex items-center gap-6 bg-gray-900 p-6 rounded-xl">
+          <div className="flex items-center gap-6 bg-background-primary p-6 rounded-xl">
             <ModernMiniProgress percentage={85} color="green" label="ICP" size={60} />
             <ModernMiniProgress percentage={70} color="blue" label="Persona" size={60} />
             <ModernMiniProgress percentage={50} color="orange" label="Market" size={60} />
@@ -168,7 +168,7 @@ export default function TestComponentsPage() {
         {/* Section 5: CircularProgressPremium */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold text-white">5. CircularProgressPremium with Trends</h2>
-          <div className="bg-gray-900 p-8 rounded-xl">
+          <div className="bg-background-primary p-8 rounded-xl">
             <CompetencyGrid competencies={competencies} size={100} />
           </div>
         </section>
@@ -210,7 +210,7 @@ export default function TestComponentsPage() {
                   size={100}
                 />
                 <div className="text-left space-y-2">
-                  <p className="text-sm text-gray-400">Current Level</p>
+                  <p className="text-sm text-text-secondary">Current Level</p>
                   <p className="text-xl font-bold text-white">Market Execution Expert</p>
                   <p className="text-sm text-gray-500">2,500 points to next level</p>
                 </div>
@@ -218,7 +218,7 @@ export default function TestComponentsPage() {
             </ModernCardContent>
             <ModernCardFooter>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-400">Last updated: Just now</span>
+                <span className="text-sm text-text-secondary">Last updated: Just now</span>
                 <span className="text-sm text-purple-400 font-medium">12,540 total points</span>
               </div>
             </ModernCardFooter>

@@ -17,7 +17,7 @@ export default function SimplifiedICPPage() {
         <div className="text-center">
           <div className="text-4xl mb-4">📊</div>
           <h1 className="text-xl font-semibold text-gray-200 mb-2">Loading ICP Analysis Tool</h1>
-          <p className="text-gray-400">Initializing customer profiling system...</p>
+          <p className="text-text-secondary">Initializing customer profiling system...</p>
         </div>
       </div>
     }>

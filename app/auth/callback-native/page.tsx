@@ -87,8 +87,8 @@ export default function NativeAuthCallback() {
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
         <h1 className="text-xl text-white mb-2">Native OAuth Processing</h1>
-        <p className="text-gray-400">{status}</p>
-        <div className="mt-8 text-xs text-gray-600">
+        <p className="text-text-secondary">{status}</p>
+        <div className="mt-8 text-xs text-text-muted">
           <p>This callback lets Supabase handle OAuth completely natively.</p>
           <p>Using detectSessionInUrl: true and onAuthStateChange.</p>
         </div>

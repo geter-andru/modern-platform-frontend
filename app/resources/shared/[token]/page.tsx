@@ -79,7 +79,7 @@ export default function SharedResourcePage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading shared resource...</p>
+          <p className="text-text-muted">Loading shared resource...</p>
         </div>
       </div>
     );
@@ -93,7 +93,7 @@ export default function SharedResourcePage() {
             <div className="text-red-600 text-6xl mb-4">⚠️</div>
             <h1 className="text-xl font-semibold text-red-800 mb-2">Share Link Issue</h1>
             <p className="text-red-600 mb-4">{error || 'This share link is not valid'}</p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-text-muted">
               The link may have expired, been revoked, or the resource may no longer be available.
             </p>
           </div>
@@ -112,12 +112,12 @@ export default function SharedResourcePage() {
         <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{resource.title}</h1>
-              <p className="text-gray-600 mt-1">Shared Resource</p>
+              <h1 className="text-2xl font-bold text-text-primary">{resource.title}</h1>
+              <p className="text-text-muted mt-1">Shared Resource</p>
             </div>
             <div className="text-right">
               <div className="text-sm text-gray-500">Expires</div>
-              <div className="text-sm font-medium text-gray-900">{expiresDate}</div>
+              <div className="text-sm font-medium text-text-primary">{expiresDate}</div>
             </div>
           </div>
         </div>
@@ -148,18 +148,18 @@ export default function SharedResourcePage() {
               <div className="space-y-6">
                 {resource.content.summary && (
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Summary</h3>
+                    <h3 className="text-lg font-semibold text-text-primary mb-2">Summary</h3>
                     <p className="text-gray-700">{resource.content.summary}</p>
                   </div>
                 )}
 
                 {resource.content.sections && resource.content.sections.length > 0 && (
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Content Sections</h3>
+                    <h3 className="text-lg font-semibold text-text-primary mb-4">Content Sections</h3>
                     <div className="space-y-4">
                       {resource.content.sections.map((section: any, index: number) => (
                         <div key={index} className="border border-gray-200 rounded-lg p-4">
-                          <h4 className="font-medium text-gray-900 mb-2">{section.title}</h4>
+                          <h4 className="font-medium text-text-primary mb-2">{section.title}</h4>
                           <p className="text-gray-700 mb-2">{section.content}</p>
                           {section.action && (
                             <div className="bg-blue-50 border border-blue-200 rounded p-3">
@@ -176,7 +176,7 @@ export default function SharedResourcePage() {
 
                 {resource.content.deliverables && resource.content.deliverables.length > 0 && (
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Deliverables</h3>
+                    <h3 className="text-lg font-semibold text-text-primary mb-2">Deliverables</h3>
                     <ul className="list-disc list-inside text-gray-700 space-y-1">
                       {resource.content.deliverables.map((deliverable: string, index: number) => (
                         <li key={index}>{deliverable}</li>
@@ -187,7 +187,7 @@ export default function SharedResourcePage() {
 
                 {resource.content.estimatedTime && (
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Estimated Time</h3>
+                    <h3 className="text-lg font-semibold text-text-primary mb-2">Estimated Time</h3>
                     <p className="text-gray-700">{resource.content.estimatedTime}</p>
                   </div>
                 )}

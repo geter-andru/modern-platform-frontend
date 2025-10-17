@@ -155,11 +155,11 @@ export default function CostPage() {
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  <h3 className="text-lg font-semibold text-text-primary dark:text-white mb-2">
                     {feature.title}
                   </h3>
                   
-                  <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+                  <p className="text-text-muted dark:text-text-secondary mb-4 text-sm">
                     {feature.description}
                   </p>
 
@@ -201,10 +201,10 @@ export default function CostPage() {
         <div className="mt-12">
           <ModernCard className="p-8 text-center">
             <div className="max-w-2xl mx-auto">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              <h2 className="text-2xl font-bold text-text-primary dark:text-white mb-4">
                 Ready to Calculate Your ICP Investment?
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-text-muted dark:text-text-secondary mb-6">
                 Start with our cost calculator to understand the financial impact of implementing your ICP strategy.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

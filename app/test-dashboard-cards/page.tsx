@@ -26,7 +26,7 @@ export default function TestDashboardCardsPage() {
           </div>
           <div>
             <h1 className="text-3xl font-bold text-white">Dashboard Cards Test</h1>
-            <p className="text-gray-400">Phase 2 - Chunk 2.5: Competency Dashboard Cards</p>
+            <p className="text-text-secondary">Phase 2 - Chunk 2.5: Competency Dashboard Cards</p>
           </div>
         </div>
 
@@ -37,7 +37,7 @@ export default function TestDashboardCardsPage() {
               <Target className="w-5 h-5 text-purple-400" />
               <h3 className="text-sm font-medium text-white">Milestone Tracker</h3>
             </div>
-            <p className="text-xs text-gray-400">Progress and timeline tracking</p>
+            <p className="text-xs text-text-secondary">Progress and timeline tracking</p>
           </div>
 
           <div className="bg-[#1a1a1a] border border-gray-800 rounded-lg p-4">
@@ -45,7 +45,7 @@ export default function TestDashboardCardsPage() {
               <Award className="w-5 h-5 text-blue-400" />
               <h3 className="text-sm font-medium text-white">Next Unlock</h3>
             </div>
-            <p className="text-xs text-gray-400">Tool unlock preview</p>
+            <p className="text-xs text-text-secondary">Tool unlock preview</p>
           </div>
 
           <div className="bg-[#1a1a1a] border border-gray-800 rounded-lg p-4">
@@ -53,7 +53,7 @@ export default function TestDashboardCardsPage() {
               <CheckCircle className="w-5 h-5 text-green-400" />
               <h3 className="text-sm font-medium text-white">Daily Objectives</h3>
             </div>
-            <p className="text-xs text-gray-400">Today's goals tracking</p>
+            <p className="text-xs text-text-secondary">Today's goals tracking</p>
           </div>
 
           <div className="bg-[#1a1a1a] border border-gray-800 rounded-lg p-4">
@@ -61,7 +61,7 @@ export default function TestDashboardCardsPage() {
               <LayoutDashboard className="w-5 h-5 text-purple-400" />
               <h3 className="text-sm font-medium text-white">Tool Access</h3>
             </div>
-            <p className="text-xs text-gray-400">Progressive unlock status</p>
+            <p className="text-xs text-text-secondary">Progressive unlock status</p>
           </div>
 
           <div className="bg-[#1a1a1a] border border-gray-800 rounded-lg p-4">
@@ -69,7 +69,7 @@ export default function TestDashboardCardsPage() {
               <Award className="w-5 h-5 text-yellow-400" />
               <h3 className="text-sm font-medium text-white">Competency Feedback</h3>
             </div>
-            <p className="text-xs text-gray-400">Recent achievements</p>
+            <p className="text-xs text-text-secondary">Recent achievements</p>
           </div>
         </div>
       </div>

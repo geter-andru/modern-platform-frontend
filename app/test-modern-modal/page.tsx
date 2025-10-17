@@ -46,7 +46,7 @@ export default function TestModernModalPage() {
         {/* Header */}
         <div>
           <h1 className="text-4xl font-bold text-purple-400 mb-2">ModernModal Test Page</h1>
-          <p className="text-gray-400">Testing all sizes, variants, animations, and features</p>
+          <p className="text-text-secondary">Testing all sizes, variants, animations, and features</p>
           {confirmationResult && (
             <div className="mt-3 px-4 py-2 bg-green-500/20 text-green-400 rounded-lg">
               {confirmationResult}
@@ -152,9 +152,9 @@ export default function TestModernModalPage() {
         {/* Keyboard Navigation Info */}
         <section className="border-t border-gray-700 pt-8">
           <h2 className="text-2xl font-semibold mb-4">Keyboard Navigation</h2>
-          <div className="bg-gray-900 rounded-lg p-6 space-y-2 text-sm">
+          <div className="bg-background-primary rounded-lg p-6 space-y-2 text-sm">
             <p className="font-semibold text-purple-400 mb-2">Keyboard Shortcuts:</p>
-            <ul className="space-y-1 text-gray-400">
+            <ul className="space-y-1 text-text-secondary">
               <li><kbd className="bg-gray-700 px-2 py-0.5 rounded">Esc</kbd> - Close modal</li>
               <li><kbd className="bg-gray-700 px-2 py-0.5 rounded">Tab</kbd> - Cycle through focusable elements (trapped within modal)</li>
               <li><kbd className="bg-gray-700 px-2 py-0.5 rounded">Shift + Tab</kbd> - Cycle backwards through focusable elements</li>
@@ -169,14 +169,14 @@ export default function TestModernModalPage() {
         {/* Component Summary */}
         <section className="border-t border-gray-700 pt-8">
           <h2 className="text-2xl font-semibold mb-4">Component Summary</h2>
-          <div className="bg-gray-900 rounded-lg p-6 space-y-2 text-sm">
+          <div className="bg-background-primary rounded-lg p-6 space-y-2 text-sm">
             <p><strong className="text-purple-400">File:</strong> /app/components/ui/ModernModal.tsx</p>
             <p><strong className="text-purple-400">Lines:</strong> ~398 lines TypeScript</p>
             <p><strong className="text-purple-400">Components:</strong> ModernModal, ModernConfirmationModal, ModernAlertModal</p>
             <p><strong className="text-purple-400">Sizes:</strong> 6 (sm, md, lg, xl, 2xl, full)</p>
             <p><strong className="text-purple-400">Variants:</strong> 4 (default, centered, drawer, fullscreen)</p>
             <p><strong className="text-purple-400">Features:</strong></p>
-            <ul className="list-disc list-inside ml-4 space-y-1 text-gray-400">
+            <ul className="list-disc list-inside ml-4 space-y-1 text-text-secondary">
               <li>Animated entrance/exit with spring physics</li>
               <li>Backdrop blur with click-to-close</li>
               <li>Full keyboard navigation (ESC, Tab focus trap)</li>

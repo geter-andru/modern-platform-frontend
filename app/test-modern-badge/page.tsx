@@ -29,7 +29,7 @@ export default function TestModernBadgePage() {
           <h1 className="text-4xl font-bold text-purple-400 mb-2">
             ModernBadge Test Page
           </h1>
-          <p className="text-gray-400">
+          <p className="text-text-secondary">
             Testing all variants, sizes, and specialized badge types
           </p>
         </div>
@@ -127,17 +127,17 @@ export default function TestModernBadgePage() {
         {/* Pulsing Animation */}
         <section>
           <h2 className="text-2xl font-semibold mb-4">Pulsing Animation (Live Status)</h2>
-          <div className="flex items-center gap-6 p-6 bg-gray-900 rounded-lg">
+          <div className="flex items-center gap-6 p-6 bg-background-primary rounded-lg">
             <div className="flex items-center gap-3">
-              <span className="text-gray-400">Server Status:</span>
+              <span className="text-text-secondary">Server Status:</span>
               <StatusBadge status="active" pulse={true}>Live</StatusBadge>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-gray-400">Build Status:</span>
+              <span className="text-text-secondary">Build Status:</span>
               <StatusBadge status="pending" pulse={true}>Building</StatusBadge>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-gray-400">Recording:</span>
+              <span className="text-text-secondary">Recording:</span>
               <ModernBadge variant="danger" showDot pulse>Recording</ModernBadge>
             </div>
           </div>
@@ -151,7 +151,7 @@ export default function TestModernBadgePage() {
           <h2 className="text-2xl font-semibold mb-4">Number/Count Badges (Notifications)</h2>
           <div className="space-y-4">
             <div className="flex items-center gap-4">
-              <span className="text-gray-400 w-32">Small counts:</span>
+              <span className="text-text-secondary w-32">Small counts:</span>
               <BadgeGroup>
                 <NumberBadge count={0} showZero variant="default" />
                 <NumberBadge count={1} variant="primary" />
@@ -160,7 +160,7 @@ export default function TestModernBadgePage() {
               </BadgeGroup>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-gray-400 w-32">Large counts:</span>
+              <span className="text-text-secondary w-32">Large counts:</span>
               <BadgeGroup>
                 <NumberBadge count={42} variant="info" />
                 <NumberBadge count={99} variant="success" />
@@ -169,15 +169,15 @@ export default function TestModernBadgePage() {
               </BadgeGroup>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-gray-400 w-32">With icons:</span>
+              <span className="text-text-secondary w-32">With icons:</span>
               <div className="relative inline-block">
-                <Bell className="w-6 h-6 text-gray-400" />
+                <Bell className="w-6 h-6 text-text-secondary" />
                 <span className="absolute -top-2 -right-2">
                   <NumberBadge count={5} variant="danger" size="sm" />
                 </span>
               </div>
               <div className="relative inline-block">
-                <Mail className="w-6 h-6 text-gray-400" />
+                <Mail className="w-6 h-6 text-text-secondary" />
                 <span className="absolute -top-2 -right-2">
                   <NumberBadge count={142} max={99} variant="primary" size="sm" />
                 </span>
@@ -202,7 +202,7 @@ export default function TestModernBadgePage() {
           <h2 className="text-2xl font-semibold mb-4">Progress Badges</h2>
           <div className="space-y-4">
             <div className="flex items-center gap-4">
-              <span className="text-gray-400 w-32">Percentage:</span>
+              <span className="text-text-secondary w-32">Percentage:</span>
               <BadgeGroup>
                 <ProgressBadge value={10} format="percentage" />
                 <ProgressBadge value={35} format="percentage" />
@@ -212,7 +212,7 @@ export default function TestModernBadgePage() {
               </BadgeGroup>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-gray-400 w-32">Fraction:</span>
+              <span className="text-text-secondary w-32">Fraction:</span>
               <BadgeGroup>
                 <ProgressBadge value={3} max={10} format="fraction" />
                 <ProgressBadge value={5} max={8} format="fraction" />
@@ -252,7 +252,7 @@ export default function TestModernBadgePage() {
           <h2 className="text-2xl font-semibold mb-4">Tag Badges (Deletable Tags)</h2>
           <div className="space-y-4">
             <div className="flex items-center gap-4">
-              <span className="text-gray-400 w-32">Active Tags:</span>
+              <span className="text-text-secondary w-32">Active Tags:</span>
               <BadgeGroup>
                 {tags.map(tag => (
                   <TagBadge
@@ -277,7 +277,7 @@ export default function TestModernBadgePage() {
           <h2 className="text-2xl font-semibold mb-4">Pill vs Rounded Shapes</h2>
           <div className="space-y-4">
             <div className="flex items-center gap-4">
-              <span className="text-gray-400 w-32">Rounded:</span>
+              <span className="text-text-secondary w-32">Rounded:</span>
               <BadgeGroup>
                 <ModernBadge variant="primary" pill={false}>Default</ModernBadge>
                 <ModernBadge variant="success" pill={false}>Rounded</ModernBadge>
@@ -285,7 +285,7 @@ export default function TestModernBadgePage() {
               </BadgeGroup>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-gray-400 w-32">Pill:</span>
+              <span className="text-text-secondary w-32">Pill:</span>
               <BadgeGroup>
                 <ModernBadge variant="primary" pill={true}>Fully</ModernBadge>
                 <ModernBadge variant="success" pill={true}>Rounded</ModernBadge>
@@ -311,7 +311,7 @@ export default function TestModernBadgePage() {
           <h2 className="text-2xl font-semibold mb-4">Badge Groups (Spacing Variations)</h2>
           <div className="space-y-4">
             <div>
-              <p className="text-sm text-gray-400 mb-2">Tight spacing:</p>
+              <p className="text-sm text-text-secondary mb-2">Tight spacing:</p>
               <BadgeGroup spacing="tight">
                 <ModernBadge variant="primary">Tag 1</ModernBadge>
                 <ModernBadge variant="success">Tag 2</ModernBadge>
@@ -319,7 +319,7 @@ export default function TestModernBadgePage() {
               </BadgeGroup>
             </div>
             <div>
-              <p className="text-sm text-gray-400 mb-2">Normal spacing:</p>
+              <p className="text-sm text-text-secondary mb-2">Normal spacing:</p>
               <BadgeGroup spacing="normal">
                 <ModernBadge variant="primary">Tag 1</ModernBadge>
                 <ModernBadge variant="success">Tag 2</ModernBadge>
@@ -327,7 +327,7 @@ export default function TestModernBadgePage() {
               </BadgeGroup>
             </div>
             <div>
-              <p className="text-sm text-gray-400 mb-2">Loose spacing:</p>
+              <p className="text-sm text-text-secondary mb-2">Loose spacing:</p>
               <BadgeGroup spacing="loose">
                 <ModernBadge variant="primary">Tag 1</ModernBadge>
                 <ModernBadge variant="success">Tag 2</ModernBadge>
@@ -342,7 +342,7 @@ export default function TestModernBadgePage() {
           <h2 className="text-2xl font-semibold mb-4">Interactive Badges (Clickable)</h2>
           <div className="space-y-4">
             <div className="flex items-center gap-4">
-              <span className="text-gray-400 w-32">Click handlers:</span>
+              <span className="text-text-secondary w-32">Click handlers:</span>
               <BadgeGroup>
                 <InteractiveBadge
                   variant="primary"
@@ -359,7 +359,7 @@ export default function TestModernBadgePage() {
               </BadgeGroup>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-gray-400 w-32">Selectable:</span>
+              <span className="text-text-secondary w-32">Selectable:</span>
               <BadgeGroup>
                 <InteractiveBadge
                   variant="primary"
@@ -393,11 +393,11 @@ export default function TestModernBadgePage() {
         {/* Complex Example */}
         <section>
           <h2 className="text-2xl font-semibold mb-4">Complex Example (Product Card)</h2>
-          <div className="bg-gray-900 rounded-lg p-6 space-y-4 max-w-md">
+          <div className="bg-background-primary rounded-lg p-6 space-y-4 max-w-md">
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-white mb-1">Premium Widget Pro</h3>
-                <p className="text-sm text-gray-400">Advanced analytics dashboard</p>
+                <p className="text-sm text-text-secondary">Advanced analytics dashboard</p>
               </div>
               <VersionBadge version="2.1.0" />
             </div>
@@ -412,12 +412,12 @@ export default function TestModernBadgePage() {
 
             <div className="flex items-center justify-between pt-4 border-t border-gray-800">
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-400">Progress:</span>
+                <span className="text-sm text-text-secondary">Progress:</span>
                 <ProgressBadge value={85} />
               </div>
               <div className="flex items-center gap-2">
                 <NumberBadge count={5} variant="danger" />
-                <span className="text-sm text-gray-400">notifications</span>
+                <span className="text-sm text-text-secondary">notifications</span>
               </div>
             </div>
           </div>
@@ -426,14 +426,14 @@ export default function TestModernBadgePage() {
         {/* Component Summary */}
         <section className="border-t border-gray-700 pt-8">
           <h2 className="text-2xl font-semibold mb-4">Component Summary</h2>
-          <div className="bg-gray-900 rounded-lg p-6 space-y-2 text-sm">
+          <div className="bg-background-primary rounded-lg p-6 space-y-2 text-sm">
             <p><strong className="text-purple-400">File:</strong> /app/components/ui/ModernBadge.tsx</p>
             <p><strong className="text-purple-400">Lines:</strong> ~317 lines TypeScript</p>
             <p><strong className="text-purple-400">Variants:</strong> 6 (default, primary, success, warning, danger, info)</p>
             <p><strong className="text-purple-400">Sizes:</strong> 3 (sm, md, lg)</p>
             <p><strong className="text-purple-400">Badge Types:</strong> 9 specialized components</p>
             <p><strong className="text-purple-400">Features:</strong></p>
-            <ul className="list-disc list-inside ml-4 space-y-1 text-gray-400">
+            <ul className="list-disc list-inside ml-4 space-y-1 text-text-secondary">
               <li>6 semantic variants with dark theme colors</li>
               <li>3 sizes (sm, md, lg)</li>
               <li>Optional icon support (left or right position)</li>

@@ -17,7 +17,7 @@ export default function TestModernTooltipPage() {
           <h1 className="text-4xl font-bold text-purple-400 mb-2">
             ModernTooltip Test Page
           </h1>
-          <p className="text-gray-400">
+          <p className="text-text-secondary">
             Testing all positions, delays, and interactive features
           </p>
         </div>
@@ -25,7 +25,7 @@ export default function TestModernTooltipPage() {
         {/* Basic Usage - All Positions */}
         <section>
           <h2 className="text-2xl font-semibold mb-4">All Positions (Hover)</h2>
-          <div className="flex flex-wrap items-center justify-center gap-12 p-12 bg-gray-900 rounded-lg">
+          <div className="flex flex-wrap items-center justify-center gap-12 p-12 bg-background-primary rounded-lg">
             <ModernTooltip content="Tooltip on top" position="top">
               <PrimaryButton>Top</PrimaryButton>
             </ModernTooltip>
@@ -49,37 +49,37 @@ export default function TestModernTooltipPage() {
           <h2 className="text-2xl font-semibold mb-4">With Icons</h2>
           <div className="flex flex-wrap items-center gap-6">
             <ModernTooltip content="Get help and documentation" position="top">
-              <button className="p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+              <button className="p-3 bg-background-secondary hover:bg-gray-700 rounded-lg transition-colors">
                 <HelpCircle className="w-5 h-5 text-purple-400" />
               </button>
             </ModernTooltip>
 
             <ModernTooltip content="Information about this feature" position="top">
-              <button className="p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+              <button className="p-3 bg-background-secondary hover:bg-gray-700 rounded-lg transition-colors">
                 <Info className="w-5 h-5 text-blue-400" />
               </button>
             </ModernTooltip>
 
             <ModernTooltip content="Open settings panel" position="top">
-              <button className="p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
-                <Settings className="w-5 h-5 text-gray-400" />
+              <button className="p-3 bg-background-secondary hover:bg-gray-700 rounded-lg transition-colors">
+                <Settings className="w-5 h-5 text-text-secondary" />
               </button>
             </ModernTooltip>
 
             <ModernTooltip content="Add to favorites" position="top">
-              <button className="p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+              <button className="p-3 bg-background-secondary hover:bg-gray-700 rounded-lg transition-colors">
                 <Star className="w-5 h-5 text-yellow-400" />
               </button>
             </ModernTooltip>
 
             <ModernTooltip content="View notifications" position="top">
-              <button className="p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+              <button className="p-3 bg-background-secondary hover:bg-gray-700 rounded-lg transition-colors">
                 <Bell className="w-5 h-5 text-red-400" />
               </button>
             </ModernTooltip>
 
             <ModernTooltip content="Like this item" position="top">
-              <button className="p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+              <button className="p-3 bg-background-secondary hover:bg-gray-700 rounded-lg transition-colors">
                 <Heart className="w-5 h-5 text-pink-400" />
               </button>
             </ModernTooltip>
@@ -235,7 +235,7 @@ export default function TestModernTooltipPage() {
                 content="We'll never share your email with anyone"
                 position="top"
               >
-                <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                <button className="p-2 text-text-secondary hover:text-white transition-colors">
                   <Info className="w-5 h-5" />
                 </button>
               </ModernTooltip>
@@ -259,7 +259,7 @@ export default function TestModernTooltipPage() {
                 position="right"
                 maxWidth="240px"
               >
-                <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                <button className="p-2 text-text-secondary hover:text-white transition-colors">
                   <HelpCircle className="w-5 h-5" />
                 </button>
               </ModernTooltip>
@@ -270,8 +270,8 @@ export default function TestModernTooltipPage() {
         {/* Auto-Positioning Demo */}
         <section>
           <h2 className="text-2xl font-semibold mb-4">Auto-Positioning (Viewport Edge Detection)</h2>
-          <div className="bg-gray-900 rounded-lg p-4 space-y-4">
-            <p className="text-sm text-gray-400 mb-4">
+          <div className="bg-background-primary rounded-lg p-4 space-y-4">
+            <p className="text-sm text-text-secondary mb-4">
               Tooltips automatically flip to stay within viewport bounds. Try these buttons near screen edges:
             </p>
 
@@ -346,12 +346,12 @@ export default function TestModernTooltipPage() {
         {/* Accessibility Features */}
         <section>
           <h2 className="text-2xl font-semibold mb-4">Accessibility Features</h2>
-          <div className="bg-gray-900 rounded-lg p-6 space-y-3 text-sm">
+          <div className="bg-background-primary rounded-lg p-6 space-y-3 text-sm">
             <div className="flex items-start gap-3">
               <span className="text-green-400">✓</span>
               <div>
                 <strong className="text-white">ARIA Attributes:</strong>
-                <span className="text-gray-400 ml-2">
+                <span className="text-text-secondary ml-2">
                   Uses aria-describedby to associate tooltips with trigger elements
                 </span>
               </div>
@@ -360,7 +360,7 @@ export default function TestModernTooltipPage() {
               <span className="text-green-400">✓</span>
               <div>
                 <strong className="text-white">Keyboard Navigation:</strong>
-                <span className="text-gray-400 ml-2">
+                <span className="text-text-secondary ml-2">
                   Tooltips show on focus, hide on blur, close with Escape key
                 </span>
               </div>
@@ -369,7 +369,7 @@ export default function TestModernTooltipPage() {
               <span className="text-green-400">✓</span>
               <div>
                 <strong className="text-white">Portal Rendering:</strong>
-                <span className="text-gray-400 ml-2">
+                <span className="text-text-secondary ml-2">
                   Tooltips attach to document.body to avoid z-index issues
                 </span>
               </div>
@@ -378,7 +378,7 @@ export default function TestModernTooltipPage() {
               <span className="text-green-400">✓</span>
               <div>
                 <strong className="text-white">Auto-Positioning:</strong>
-                <span className="text-gray-400 ml-2">
+                <span className="text-text-secondary ml-2">
                   Automatically flips to stay within viewport bounds
                 </span>
               </div>
@@ -387,7 +387,7 @@ export default function TestModernTooltipPage() {
               <span className="text-green-400">✓</span>
               <div>
                 <strong className="text-white">Touch Support:</strong>
-                <span className="text-gray-400 ml-2">
+                <span className="text-text-secondary ml-2">
                   Click-to-toggle mode works well on touch devices
                 </span>
               </div>
@@ -396,7 +396,7 @@ export default function TestModernTooltipPage() {
               <span className="text-green-400">✓</span>
               <div>
                 <strong className="text-white">Smooth Animations:</strong>
-                <span className="text-gray-400 ml-2">
+                <span className="text-text-secondary ml-2">
                   Framer Motion fade-in with directional entrance
                 </span>
               </div>
@@ -407,12 +407,12 @@ export default function TestModernTooltipPage() {
         {/* Component Summary */}
         <section className="border-t border-gray-700 pt-8">
           <h2 className="text-2xl font-semibold mb-4">Component Summary</h2>
-          <div className="bg-gray-900 rounded-lg p-6 space-y-2 text-sm">
+          <div className="bg-background-primary rounded-lg p-6 space-y-2 text-sm">
             <p><strong className="text-purple-400">File:</strong> /app/components/ui/ModernTooltip.tsx</p>
             <p><strong className="text-purple-400">Lines:</strong> ~414 lines TypeScript</p>
             <p><strong className="text-purple-400">Positions:</strong> 4 (top, bottom, left, right)</p>
             <p><strong className="text-purple-400">Features:</strong></p>
-            <ul className="list-disc list-inside ml-4 space-y-1 text-gray-400">
+            <ul className="list-disc list-inside ml-4 space-y-1 text-text-secondary">
               <li>4 positioning options with auto-flip for viewport edges</li>
               <li>Hover and focus state triggers</li>
               <li>Optional click-to-toggle mode</li>
@@ -422,7 +422,7 @@ export default function TestModernTooltipPage() {
               <li>Rich content support (React nodes)</li>
               <li>Keyboard navigation (Escape to close)</li>
               <li>Touch device support</li>
-              <li>Dark theme design system (bg-gray-800, border-gray-700)</li>
+              <li>Dark theme design system (bg-background-secondary, border-gray-700)</li>
               <li>Framer Motion fade-in animations</li>
               <li>Auto-repositioning on scroll/resize</li>
               <li>Viewport boundary detection</li>

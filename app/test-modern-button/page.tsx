@@ -34,7 +34,7 @@ export default function TestModernButtonPage() {
         {/* Header */}
         <div>
           <h1 className="text-4xl font-bold text-purple-400 mb-2">ModernButton Test Page</h1>
-          <p className="text-gray-400">Testing all variants, sizes, and states</p>
+          <p className="text-text-secondary">Testing all variants, sizes, and states</p>
           <p className="text-sm text-gray-500 mt-2">Click count: {clickCount}</p>
         </div>
 
@@ -235,13 +235,13 @@ export default function TestModernButtonPage() {
         {/* Component Summary */}
         <section className="border-t border-gray-700 pt-8">
           <h2 className="text-2xl font-semibold mb-4">Component Summary</h2>
-          <div className="bg-gray-900 rounded-lg p-6 space-y-2 text-sm">
+          <div className="bg-background-primary rounded-lg p-6 space-y-2 text-sm">
             <p><strong className="text-purple-400">File:</strong> /app/components/ui/ModernButton.tsx</p>
             <p><strong className="text-purple-400">Lines:</strong> ~279 lines TypeScript</p>
             <p><strong className="text-purple-400">Variants:</strong> 8 (primary, secondary, outline, ghost, link, danger, success, warning)</p>
             <p><strong className="text-purple-400">Sizes:</strong> 4 (sm, md, lg, xl)</p>
             <p><strong className="text-purple-400">Features:</strong></p>
-            <ul className="list-disc list-inside ml-4 space-y-1 text-gray-400">
+            <ul className="list-disc list-inside ml-4 space-y-1 text-text-secondary">
               <li>Loading states with spinner</li>
               <li>Disabled states</li>
               <li>Icon support (left, right, standalone)</li>

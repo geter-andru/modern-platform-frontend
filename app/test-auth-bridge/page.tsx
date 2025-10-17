@@ -88,7 +88,7 @@ export default function TestAuthBridgePage() {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4">
         <div className="bg-white rounded-lg shadow-lg p-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">
+          <h1 className="text-3xl font-bold text-text-primary mb-6">
             🔐 Authentication Bridge Test
           </h1>
           
@@ -110,7 +110,7 @@ export default function TestAuthBridgePage() {
               </div>
               
               {user && (
-                <div className="space-y-1 text-sm text-gray-600">
+                <div className="space-y-1 text-sm text-text-muted">
                   <div><strong>Email:</strong> {user.email}</div>
                   <div><strong>User ID:</strong> {user.id}</div>
                   <div><strong>Created:</strong> {new Date(user.created_at).toLocaleDateString()}</div>
@@ -190,7 +190,7 @@ export default function TestAuthBridgePage() {
                     )}
                     
                     {result.details && (
-                      <div className="mt-2 text-sm text-gray-600">
+                      <div className="mt-2 text-sm text-text-muted">
                         <details>
                           <summary className="cursor-pointer font-medium">
                             Details
