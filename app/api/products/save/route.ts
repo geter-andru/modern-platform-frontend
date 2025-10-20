@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuthHeaders } from '@/app/lib/middleware/api-auth';
 import { env } from '@/app/lib/config/environment';
+import { getBackendUrl } from '@/app/lib/config/api';
 
 /**
  * POST /api/products/save
@@ -30,11 +31,8 @@ export async function POST(request: NextRequest) {
     // Get authentication headers for backend call
     const authHeaders = await getAuthHeaders(customerId);
 
-    // Get backend URL
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-    
     // Forward request to Express backend
-    const backendResponse = await fetch(`${backendUrl}/api/products/save`, {
+    const backendResponse = await fetch(getBackendUrl('/api/products/save'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 // Authentication bridge for Express backend API calls
 import { supabase } from '../supabase/client';
+import { API_CONFIG } from '@/app/lib/config/api';
 
 export interface AuthHeaders {
   'Authorization'?: string;
@@ -85,12 +86,8 @@ export async function authenticatedFetch(
     ...authHeaders,
   };
 
-  // Make sure we're calling the Express backend on port 3001
-  const baseUrl = process.env.NODE_ENV === 'development' 
-    ? 'http://localhost:3001' 
-    : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-  
-  const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : url;
+  // Make sure we're calling the Express backend
+  const fullUrl = url.startsWith('/') ? `${API_CONFIG.backend}${url}` : url;
 
   return fetch(fullUrl, {
     ...options,

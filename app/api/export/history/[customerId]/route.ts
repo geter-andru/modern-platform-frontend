@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuthHeaders} from '@/app/lib/middleware/api-auth';
 import { env } from '@/app/lib/config/environment';
+import { getBackendUrl } from '@/app/lib/config/api';
 
 /**
  * GET /api/export/history/[customerId]
@@ -25,11 +26,8 @@ export async function GET(
     // Get authentication headers for backend call
     const authHeaders = await getAuthHeaders(customerId);
 
-    // Get backend URL
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-    
     // Forward request to Express backend
-    const backendResponse = await fetch(`${backendUrl}/api/export/history/${customerId}`, {
+    const backendResponse = await fetch(getBackendUrl(`/api/export/history/${customerId}`), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

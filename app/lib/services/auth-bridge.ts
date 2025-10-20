@@ -1,10 +1,10 @@
 /**
  * Authentication Bridge Service
- * 
+ *
  * Bridges Supabase authentication from frontend to Express backend APIs.
  * This service handles the communication between Next.js frontend (Supabase auth)
  * and Express backend (JWT validation) seamlessly.
- * 
+ *
  * FUNCTIONALITY STATUS: REAL
  * - Real Supabase session management
  * - Real backend API communication
@@ -13,9 +13,7 @@
  */
 
 import { supabase } from '@/app/lib/supabase/client';
-
-// Backend API configuration
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+import { API_CONFIG, getBackendUrl } from '@/app/lib/config/api';
 
 export interface AuthBridgeConfig {
   backendUrl: string;
@@ -43,7 +41,7 @@ export class AuthBridgeService {
 
   constructor(config?: Partial<AuthBridgeConfig>) {
     this.config = {
-      backendUrl: BACKEND_URL,
+      backendUrl: API_CONFIG.backend,
       timeout: 30000, // 30 seconds
       retryAttempts: 3,
       retryDelay: 1000, // 1 second
@@ -96,7 +94,7 @@ export class AuthBridgeService {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<BackendResponse<T>> {
-    const url = `${this.config.backendUrl}${endpoint}`;
+    const url = getBackendUrl(endpoint);
     
     try {
       const headers = await this.getAuthHeaders();

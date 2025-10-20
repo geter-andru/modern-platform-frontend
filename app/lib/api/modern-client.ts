@@ -13,9 +13,10 @@
 
 import { authBridge, BackendResponse } from '@/app/lib/services/auth-bridge';
 import toast from 'react-hot-toast';
+import { API_CONFIG } from '@/app/lib/config/api';
 
 // Backend API configuration
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+const BACKEND_URL = API_CONFIG.backend;
 
 export interface ApiResponse<T = any> {
   success: boolean;

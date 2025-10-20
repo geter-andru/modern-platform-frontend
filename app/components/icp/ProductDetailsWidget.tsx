@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { API_CONFIG } from '@/app/lib/config/api'
 import {
   Package,
   Edit,
@@ -200,8 +201,7 @@ export default function ProductDetailsWidget({
       console.log('📋 Request data prepared:', requestData)
 
       // Call the backend Express API for real AI-powered ICP generation
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'
-      const response = await fetch(`${backendUrl}/api/customer/${user.id}/generate-icp`, {
+      const response = await fetch(`${API_CONFIG.backend}/api/customer/${user.id}/generate-icp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

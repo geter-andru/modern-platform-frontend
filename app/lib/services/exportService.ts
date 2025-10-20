@@ -9,6 +9,7 @@
 
 import { env } from '@/app/lib/config/environment';
 import { supabase } from '@/app/lib/supabase/client';
+import { API_CONFIG } from '@/app/lib/config/api';
 import PDFGenerator from './export/generators/PDFGenerator';
 import DOCXGenerator from './export/generators/DOCXGenerator';
 
@@ -62,7 +63,7 @@ class ExportService {
   private apiKey: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+    this.baseUrl = API_CONFIG.backend;
     this.apiKey = env.backendApiKey || '';
   }
 

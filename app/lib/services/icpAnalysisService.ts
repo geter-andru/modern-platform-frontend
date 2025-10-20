@@ -6,6 +6,7 @@
  */
 
 import { env } from '@/app/lib/config/environment';
+import { API_CONFIG } from '@/app/lib/config/api';
 
 interface ICPAnalysisInput {
   productName: string;
@@ -95,7 +96,7 @@ class ICPAnalysisService {
   private apiKey: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+    this.baseUrl = API_CONFIG.backend;
     this.apiKey = (env.backendApiKey as any) || '';
   }
 

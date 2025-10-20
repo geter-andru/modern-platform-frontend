@@ -1,9 +1,10 @@
 import axios, { AxiosInstance, AxiosError, AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
+import { API_CONFIG } from '@/app/lib/config/api';
 
 // API Configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_BASE_URL = API_CONFIG.backend;
 const TOKEN_COOKIE_NAME = 'hs_access_token';
 const REFRESH_TOKEN_COOKIE_NAME = 'hs_refresh_token';
 const CUSTOMER_ID_COOKIE_NAME = 'hs_customer_id';

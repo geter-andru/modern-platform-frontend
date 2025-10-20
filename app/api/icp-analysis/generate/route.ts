@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // REMOVED: icpAnalysisService - now calls backend Express API directly for real Claude AI
 // import { icpAnalysisService } from '@/app/lib/services/icpAnalysisService';
 import { createClient } from '@/app/lib/supabase/server';
+import { getBackendUrl } from '@/app/lib/config/api';
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,10 +34,10 @@ export async function POST(request: NextRequest) {
     };
 
     // Call backend Express API for real Claude AI generation
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-    console.log(`🎯 Calling backend API: ${backendUrl}/api/customer/${customerId}/generate-icp`);
+    const apiUrl = getBackendUrl(`/api/customer/${customerId}/generate-icp`);
+    console.log(`🎯 Calling backend API: ${apiUrl}`);
 
-    const backendResponse = await fetch(`${backendUrl}/api/customer/${customerId}/generate-icp`, {
+    const backendResponse = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
