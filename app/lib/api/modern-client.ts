@@ -331,9 +331,9 @@ export class ModernApiClient {
     }
   }
 
-  async getMilestones(customerId: string): Promise<ApiResponse<any[]>> {
+  async getMilestones(customerId: string): Promise<ApiResponse<{ customerId: string; milestones: any[]; summary: any }>> {
     try {
-      const response = await authBridge.get<any[]>(`/api/progress/${customerId}/milestones`);
+      const response = await authBridge.get<{ customerId: string; milestones: any[]; summary: any }>(`/api/progress/${customerId}/milestones`);
       return this.handleResponse(response);
     } catch (error) {
       return {

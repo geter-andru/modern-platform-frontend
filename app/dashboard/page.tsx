@@ -104,7 +104,7 @@ export default function DashboardPage() {
             {/* Milestones */}
             {user?.id && (
               <MilestonesCard
-                milestones={milestones?.data}
+                milestones={milestones?.data?.milestones}
                 isLoading={milestonesLoading}
                 customerId={user.id}
               />

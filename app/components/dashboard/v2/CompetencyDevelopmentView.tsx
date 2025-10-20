@@ -239,9 +239,9 @@ export const CompetencyDevelopmentView: React.FC<CompetencyDevelopmentViewProps>
 
   // Transform milestones data
   const milestones = useMemo((): Milestone[] => {
-    if (!milestonesData?.data) return [];
+    if (!milestonesData?.data?.milestones) return [];
 
-    return milestonesData.data.slice(0, 5).map((m: any) => ({
+    return milestonesData.data.milestones.slice(0, 5).map((m: any) => ({
       id: m.id || String(Math.random()),
       name: m.name || 'Milestone Achieved',
       description: m.description || '',

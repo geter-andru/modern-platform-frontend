@@ -30,6 +30,9 @@ interface MilestonesCardProps {
 export function MilestonesCard({ milestones, isLoading, customerId }: MilestonesCardProps) {
   const completeMilestone = useCompleteMilestone();
 
+  // Array guard: Ensure milestones is always an array
+  const safeMilestones = Array.isArray(milestones) ? milestones : [];
+
   if (isLoading) {
     return (
       <div className="bg-white rounded-xl shadow-sm p-6">
@@ -88,12 +91,12 @@ export function MilestonesCard({ milestones, isLoading, customerId }: Milestones
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-gray-900">Milestones</h2>
         <div className="text-sm text-gray-500">
-          {milestones?.filter(m => m.status === 'completed').length || 0} of {milestones?.length || 0} completed
+          {safeMilestones.filter(m => m.status === 'completed').length} of {safeMilestones.length} completed
         </div>
       </div>
 
       <div className="space-y-4">
-        {milestones?.map((milestone, index) => (
+        {safeMilestones.map((milestone, index) => (
           <motion.div
             key={milestone.id}
             initial={{ opacity: 0, x: -20 }}
