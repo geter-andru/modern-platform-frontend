@@ -2,7 +2,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { createBrowserClient } from '@supabase/ssr';
 import { supabase } from '@/app/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
@@ -14,24 +13,20 @@ const SupabaseAuth: React.FC<SupabaseAuthProps> = ({ redirectTo = '/icp' }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const supabaseClient = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
 
   useEffect(() => {
     // Check if user is already authenticated
     const checkAuth = async () => {
-      const { data: { session } } = await supabaseClient.auth.getSession();
+      const { data: { session } } = await supabase.auth.getSession();
       if (session) {
         router.push(redirectTo);
       }
     };
-    
+
     checkAuth();
 
     // Listen for auth state changes (OAuth callback)
-    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange(
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === 'SIGNED_IN' && session) {
           router.push(redirectTo);
@@ -40,20 +35,20 @@ const SupabaseAuth: React.FC<SupabaseAuthProps> = ({ redirectTo = '/icp' }) => {
     );
 
     return () => subscription.unsubscribe();
-  }, [supabaseClient.auth, router, redirectTo]);
+  }, [router, redirectTo]);
 
   const handleGoogleSignIn = async () => {
     try {
       setLoading(true);
       setError(null);
-      
-      const { data, error } = await supabaseClient.auth.signInWithOAuth({
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback?next=${redirectTo}`
         }
       });
-      
+
       if (error) {
         setError(error.message);
       }
@@ -68,14 +63,14 @@ const SupabaseAuth: React.FC<SupabaseAuthProps> = ({ redirectTo = '/icp' }) => {
     try {
       setLoading(true);
       setError(null);
-      
-      const { error } = await supabaseClient.auth.signInWithOtp({
+
+      const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
           emailRedirectTo: `${window.location.origin}${redirectTo}`
         }
       });
-      
+
       if (error) {
         setError(error.message);
       } else {
