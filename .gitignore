@@ -97,6 +97,5 @@ temp/
 # TypeScript build info
 tsconfig.tsbuildinfo
 
-# Netlify deployment config (contains secrets)
+# Netlify build artifacts
 .netlify/
-netlify.toml
