@@ -58,6 +58,12 @@ export async function generateTranslationsForICP(icpData: ICPAnalysisData): Prom
       technicalFeatures = generateFallbackTechnicalFeatures(icpData);
     }
 
+    // Defensive guard: Ensure fallback function returned a valid array
+    if (!Array.isArray(technicalFeatures)) {
+      console.error('❌ technicalFeatures is not an array after fallback:', technicalFeatures);
+      throw new Error('Failed to generate technical features: Invalid data format');
+    }
+
     const translations = [];
 
     // Generate translations for each technical feature
@@ -112,6 +118,20 @@ export async function saveTranslationsToSupabase(
 ): Promise<{ success: boolean; error?: string }> {
   try {
     console.log('💾 Saving technical translations to Supabase...');
+
+    // Defensive guard: Validate translations array parameter
+    if (!Array.isArray(translations)) {
+      console.error('❌ saveTranslationsToSupabase received non-array translations:', translations);
+      return {
+        success: false,
+        error: 'Invalid translations parameter: expected array'
+      };
+    }
+
+    if (translations.length === 0) {
+      console.warn('⚠️ No translations to save');
+      return { success: true };
+    }
 
     // Use singleton Supabase client (already imported at top)
     // Save each translation

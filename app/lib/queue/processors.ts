@@ -438,13 +438,27 @@ async function analyzeForecast(data: any[], parameters: Record<string, any>): Pr
 async function analyzeSummary(data: any[], parameters: Record<string, any>): Promise<any> {
   console.log('📋 Analyzing summary...');
   await new Promise(resolve => setTimeout(resolve, 800));
-  
+
+  // Defensive guard: Ensure data is a valid array
+  if (!Array.isArray(data) || data.length === 0) {
+    console.warn('⚠️ analyzeSummary received empty or invalid data:', data);
+    return {
+      type: 'summary',
+      count: 0,
+      sum: 0,
+      average: 0,
+      minimum: 0,
+      maximum: 0,
+      range: 0
+    };
+  }
+
   const values = data.map(d => d.value);
   const sum = values.reduce((a, b) => a + b, 0);
   const avg = sum / values.length;
   const min = Math.min(...values);
   const max = Math.max(...values);
-  
+
   return {
     type: 'summary',
     count: data.length,

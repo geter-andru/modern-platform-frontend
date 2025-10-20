@@ -142,10 +142,16 @@ class AgentOrchestrationService {
     };
 
     const coordination = await this.getFounderCoordination(founderId);
-    
+
+    // Defensive guard: Ensure agentPrioritization is an array
+    if (!Array.isArray(strategy.agentPrioritization)) {
+      console.error('❌ orchestrateSystematicScaling received invalid agentPrioritization:', strategy.agentPrioritization);
+      throw new Error('Invalid orchestration strategy: agentPrioritization must be an array');
+    }
+
     // Spawn prioritized agents based on systematic scaling needs
     const spawnedAgents: string[] = [];
-    
+
     for (const priority of strategy.agentPrioritization) {
       const agentResult = await this.spawnScalingAgent(
         founderId,

@@ -301,6 +301,12 @@ class TaskResourceMatcherService {
     customerData: CustomerData,
     usageAssessment: UsageAssessment
   ): ResourceRecommendation[] {
+    // Defensive guard: Ensure completedTasks is a valid array
+    if (!Array.isArray(completedTasks)) {
+      console.warn('⚠️ getTaskDrivenRecommendations received non-array completedTasks:', completedTasks);
+      return [];
+    }
+
     const recommendations: ResourceRecommendation[] = [];
     const completedTaskNames = completedTasks.map(
       task => task.name || task.taskName || ''
@@ -310,19 +316,21 @@ class TaskResourceMatcherService {
     completedTaskNames.forEach(taskName => {
       const mapping = this.findTaskMapping(taskName);
       if (mapping) {
-        // Add immediate resources
-        mapping.immediate.forEach(resourceId => {
-          recommendations.push({
-            resourceId,
-            reason: `Follow-up to "${taskName}"`,
-            priority: 'high',
-            category: mapping.category,
-            source: 'task-completion'
+        // Add immediate resources - with array guard
+        if (Array.isArray(mapping.immediate)) {
+          mapping.immediate.forEach(resourceId => {
+            recommendations.push({
+              resourceId,
+              reason: `Follow-up to "${taskName}"`,
+              priority: 'high',
+              category: mapping.category,
+              source: 'task-completion'
+            });
           });
-        });
+        }
 
-        // Add next-level resources if user is advanced
-        if (this.isAdvancedUser(customerData, usageAssessment)) {
+        // Add next-level resources if user is advanced - with array guard
+        if (this.isAdvancedUser(customerData, usageAssessment) && Array.isArray(mapping.nextLevel)) {
           mapping.nextLevel.forEach(resourceId => {
             recommendations.push({
               resourceId,
@@ -353,7 +361,8 @@ class TaskResourceMatcherService {
       const level = this.getCompetencyLevel(score);
       const resourceMap = COMPETENCY_RESOURCE_MAP[competencyArea];
 
-      if (resourceMap && resourceMap[level]) {
+      // Defensive guard: Ensure resourceMap[level] is an array
+      if (resourceMap && Array.isArray(resourceMap[level])) {
         resourceMap[level].forEach(resourceId => {
           recommendations.push({
             resourceId,
@@ -383,19 +392,21 @@ class TaskResourceMatcherService {
 
     if (!tierResources) return recommendations;
 
-    // Essential resources (always recommend)
-    tierResources.essential.forEach(resourceId => {
-      recommendations.push({
-        resourceId,
-        reason: `Essential for ${milestone.tier} stage`,
-        priority: 'high',
-        category: this.getResourceCategoryFromId(resourceId),
-        source: 'milestone-essential'
+    // Essential resources (always recommend) - with array guard
+    if (Array.isArray(tierResources.essential)) {
+      tierResources.essential.forEach(resourceId => {
+        recommendations.push({
+          resourceId,
+          reason: `Essential for ${milestone.tier} stage`,
+          priority: 'high',
+          category: this.getResourceCategoryFromId(resourceId),
+          source: 'milestone-essential'
+        });
       });
-    });
+    }
 
-    // Recommended resources (if user has completed some tasks)
-    if (completedTasksCount > 2) {
+    // Recommended resources (if user has completed some tasks) - with array guard
+    if (completedTasksCount > 2 && Array.isArray(tierResources.recommended)) {
       tierResources.recommended.forEach(resourceId => {
         recommendations.push({
           resourceId,
@@ -407,8 +418,8 @@ class TaskResourceMatcherService {
       });
     }
 
-    // Advanced resources (if user is progressing well)
-    if (completedTasksCount > 5) {
+    // Advanced resources (if user is progressing well) - with array guard
+    if (completedTasksCount > 5 && Array.isArray(tierResources.advanced)) {
       tierResources.advanced.forEach(resourceId => {
         recommendations.push({
           resourceId,

@@ -330,9 +330,10 @@ When spawned, scan ALL dashboard content for gaming terminology and recommend pr
       workflowSteps: []
     };
     
-    // Check for friction point thresholds
-    const criticalFriction = sessionData.frictionPoints.filter(f => f.severity === 'critical').length;
-    const highFriction = sessionData.frictionPoints.filter(f => f.severity === 'high').length;
+    // Check for friction point thresholds - with defensive guards
+    const frictionPoints = sessionData.frictionPoints || [];
+    const criticalFriction = frictionPoints.filter(f => f.severity === 'critical').length;
+    const highFriction = frictionPoints.filter(f => f.severity === 'high').length;
     
     // Check for value delivery gaps
     const sessionTime = Date.now() - sessionData.startTime;
@@ -357,7 +358,9 @@ When spawned, scan ALL dashboard content for gaming terminology and recommend pr
 
   // Handle critical friction points
   private async handleCriticalFriction(sessionData: SessionData): Promise<void> {
-    const criticalFriction = sessionData.frictionPoints.filter(f => f.severity === 'critical');
+    // Defensive guard: Ensure frictionPoints is an array
+    const frictionPoints = sessionData.frictionPoints || [];
+    const criticalFriction = frictionPoints.filter(f => f.severity === 'critical');
     
     for (const friction of criticalFriction) {
       const step = friction.step;
@@ -633,8 +636,8 @@ When spawned, scan ALL dashboard content for gaming terminology and recommend pr
       })),
       
       finalPerformance: {
-        frictionPoints: sessionData.frictionPoints.length,
-        criticalIssues: sessionData.frictionPoints.filter(f => f.severity === 'critical').length,
+        frictionPoints: (sessionData.frictionPoints || []).length,
+        criticalIssues: (sessionData.frictionPoints || []).filter(f => f.severity === 'critical').length,
         professionalCredibility: sessionData.professionalCredibilityScore,
         exportSuccessRate: sessionData.exportSuccessRate,
         valueRecognitionTime: sessionData.valueRecognitionTime
@@ -656,7 +659,7 @@ When spawned, scan ALL dashboard content for gaming terminology and recommend pr
       exportTargetMet: boolean;
     };
   } {
-    const criticalIssuesResolved = sessionData.frictionPoints.filter(f => f.severity === 'critical').length === 0;
+    const criticalIssuesResolved = (sessionData.frictionPoints || []).filter(f => f.severity === 'critical').length === 0;
     const professionalCredibilityMaintained = sessionData.professionalCredibilityScore >= 100;
     const valueRecognitionAchieved = (sessionData.valueRecognitionTime || 0) <= 30000;
     const exportTargetMet = sessionData.exportSuccessRate >= 98;

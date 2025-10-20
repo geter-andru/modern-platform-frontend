@@ -341,6 +341,12 @@ class ResourceAccessService implements IResourceAccessService {
   }
 
   private calculateAnalytics(accessData: ResourceAccessTracking[]): AccessAnalytics {
+    // Defensive guard: Ensure accessData is a valid array
+    if (!Array.isArray(accessData)) {
+      console.warn('⚠️ calculateAnalytics received non-array accessData:', accessData);
+      accessData = [];
+    }
+
     const totalViews = accessData.reduce((sum, record) => sum + record.access_count, 0);
     const uniqueUsers = new Set(accessData.map(record => record.customer_id)).size;
     

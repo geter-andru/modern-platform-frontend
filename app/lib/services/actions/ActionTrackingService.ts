@@ -531,6 +531,26 @@ class ActionTrackingService {
     try {
       const actions = await this.getActionHistory(customerId);
 
+      // Defensive guard: Ensure actions is a valid array
+      if (!Array.isArray(actions)) {
+        console.warn('⚠️ getActionAnalytics received non-array actions:', actions);
+        return {
+          total_actions: 0,
+          total_points: 0,
+          verified_actions: 0,
+          by_category: {
+            customerAnalysis: { count: 0, points: 0, avg_points: 0 },
+            valueCommunication: { count: 0, points: 0, avg_points: 0 },
+            salesExecution: { count: 0, points: 0, avg_points: 0 },
+          },
+          by_type: {},
+          recent_actions: [],
+          top_action_type: 'none',
+          learning_velocity: 0,
+          avg_action_value: 0,
+        };
+      }
+
       const totalActions = actions.length;
       const totalPoints = actions.reduce((sum, action) => sum + action.points_awarded, 0);
       const verifiedActions = actions.filter((action) => action.verified).length;

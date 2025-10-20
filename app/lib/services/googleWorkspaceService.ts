@@ -315,8 +315,17 @@ Template: ${request.template || 'professional'}
   private async createFallbackSpreadsheet(request: SpreadsheetRequest): Promise<GoogleWorkspaceResult> {
     console.log('🔄 Using fallback spreadsheet creation');
 
-    const csvContent = request.data.map(row => 
-      row.map(cell => `"${cell}"`).join(',')
+    // Defensive guard: Ensure request.data is a valid array
+    if (!Array.isArray(request.data)) {
+      console.error('❌ createFallbackSpreadsheet received non-array data:', request.data);
+      return {
+        success: false,
+        error: 'Invalid spreadsheet data: expected array of rows'
+      };
+    }
+
+    const csvContent = request.data.map(row =>
+      Array.isArray(row) ? row.map(cell => `"${cell}"`).join(',') : ''
     ).join('\n');
 
     return {

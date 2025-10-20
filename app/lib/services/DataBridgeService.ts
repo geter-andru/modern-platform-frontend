@@ -151,7 +151,18 @@ export class DataBridgeService {
 
       // Fetch all records from Airtable
       const airtableRecords = await this.fetchAllAirtableRecords();
-      
+
+      // Defensive guard: Ensure airtableRecords is an array
+      if (!Array.isArray(airtableRecords)) {
+        console.error('❌ fetchAllAirtableRecords did not return an array:', airtableRecords);
+        return {
+          success: false,
+          syncedCount: 0,
+          errors: ['Failed to fetch Airtable records: Invalid response format'],
+          results: []
+        };
+      }
+
       const results: BridgeSyncResult[] = [];
       const errors: string[] = [];
       let syncedCount = 0;
@@ -494,7 +505,13 @@ export class DataBridgeService {
       const response: AxiosResponse<{ records: AirtableAssessmentRecord[] }> = await this.airtableClient.get(
         `/${this.config.airtableTableName}?filterByFormula={Session ID}='${sessionId}'`
       );
-      
+
+      // Defensive guard: Ensure records array exists before accessing
+      if (!response.data || !Array.isArray(response.data.records)) {
+        console.warn('⚠️ Airtable API returned invalid response structure for session:', sessionId);
+        return null;
+      }
+
       return response.data.records[0] || null;
     } catch (error) {
       return null;

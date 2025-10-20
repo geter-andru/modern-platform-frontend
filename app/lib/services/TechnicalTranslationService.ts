@@ -332,6 +332,12 @@ class TechnicalTranslationService {
       competitorClaim,
     } = input;
 
+    // Defensive guard: Ensure targetPersonas is a valid array
+    if (!Array.isArray(targetPersonas)) {
+      console.error('❌ translateTechnicalMetric received non-array targetPersonas:', targetPersonas);
+      throw new Error('Invalid targetPersonas: expected array of buyer personas');
+    }
+
     // Get industry framework (with fallback)
     const industryKey = industry in this.industryFrameworks ? industry as keyof typeof INDUSTRY_FRAMEWORKS : 'healthcare';
     const industryFramework = this.industryFrameworks[industryKey];
