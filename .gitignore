@@ -93,3 +93,10 @@ temp/
 *.njsproj
 *.sln
 *.sw?
+
+# TypeScript build info
+tsconfig.tsbuildinfo
+
+# Netlify deployment config (contains secrets)
+.netlify/
+netlify.toml
