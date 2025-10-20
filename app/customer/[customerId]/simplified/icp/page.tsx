@@ -1,14 +1,14 @@
 import { Suspense } from 'react';
 import ICPAnalysisPage from './ICPAnalysisPage';
 
-// Generate static params for known customer IDs  
-export async function generateStaticParams() {
-  return [
-    { customerId: 'dru9K2L7M8N4P5Q6' }, // Test user
-    { customerId: 'dru78DR9789SDF862' }, // Admin user  
-    { customerId: 'dru90BT3821XCP479' }, // Additional user
-  ];
-}
+// Force dynamic rendering - this page requires client-side authentication and cannot be statically generated
+export const dynamic = 'force-dynamic';
+
+// This page is dynamic and doesn't support static generation
+// Removed generateStaticParams() because:
+// 1. ICPAnalysisPage uses client-side hooks (useEffect, useRouter)
+// 2. Requires runtime Supabase authentication
+// 3. Cannot be prerendered without browser environment
 
 export default function SimplifiedICPPage() {
   return (
