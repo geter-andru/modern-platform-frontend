@@ -1,5 +1,5 @@
 // Supabase client configuration for Next.js - Rewritten with proper types
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
 
 // Environment variables for Next.js - validate and assert as non-null
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -757,17 +757,23 @@ export interface Database {
  * ⚠️ CRITICAL: Only ONE Supabase client instance should exist in the entire application.
  * Multiple instances cause session storage conflicts and "Multiple GoTrueClient instances" warnings.
  *
- * ✅ CORRECT: Import this singleton from '@/app/lib/supabase/client'
- * ❌ INCORRECT: Calling createClient() elsewhere creates duplicate instances
+ * Architecture:
+ * - Browser: createBrowserClient from @supabase/ssr (cookie-based auth)
+ * - Server: createServerClient from @supabase/ssr (cookie-based auth)
+ * - Both use the same cookie storage for session synchronization
  *
- * If you see "Multiple GoTrueClient instances" warnings, search for other createClient() calls.
+ * ✅ CORRECT: Import this singleton from '@/app/lib/supabase/client'
+ * ❌ INCORRECT: Calling createBrowserClient() elsewhere creates duplicate instances
+ *
+ * If you see "Multiple GoTrueClient instances" warnings, search for other createBrowserClient() calls.
  */
 
 // Singleton instance - created once and reused everywhere
-let _supabaseInstance: SupabaseClient<Database> | null = null;
+// Note: Using ReturnType to avoid version conflicts between @supabase/ssr and @supabase/supabase-js
+let _supabaseInstance: ReturnType<typeof createBrowserClient<Database>> | null = null;
 
 // Create singleton instance with environment validation
-function getSupabaseClient(): SupabaseClient<Database> {
+function getSupabaseClient() {
   if (_supabaseInstance) {
     return _supabaseInstance;
   }
@@ -785,24 +791,69 @@ function getSupabaseClient(): SupabaseClient<Database> {
     (window as any).__supabaseClientCount = ((window as any).__supabaseClientCount || 0) + 1;
   }
 
-  _supabaseInstance = createClient<Database>(
+  _supabaseInstance = createBrowserClient<Database>(
     validatedUrl,
-    validatedKey,
-    {
-      auth: {
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: true,
-      },
-    }
+    validatedKey
   );
+
+  // Migrate any orphaned localStorage sessions to new cookie-based storage
+  if (typeof window !== 'undefined') {
+    migrateOrphanedSessions();
+  }
 
   // Non-null assertion safe here - we just assigned it above
   return _supabaseInstance!;
 }
 
+/**
+ * Migrate orphaned localStorage sessions from old @supabase/supabase-js client
+ * to new @supabase/ssr cookie-based storage.
+ *
+ * This handles the migration when switching from createClient to createBrowserClient.
+ * Old sessions are stored in localStorage with key pattern: sb-{project-ref}-auth-token
+ * New sessions are stored in cookies managed by @supabase/ssr.
+ *
+ * After migration, we clear the old localStorage to prevent confusion.
+ */
+function migrateOrphanedSessions() {
+  try {
+    // Look for old Supabase localStorage keys
+    const oldSessionKeys = Object.keys(localStorage).filter(key =>
+      key.startsWith('sb-') && key.includes('-auth-token')
+    );
+
+    if (oldSessionKeys.length > 0) {
+      console.log(`🔄 [Auth Migration] Found ${oldSessionKeys.length} orphaned session(s) in localStorage`);
+
+      // Clear old sessions - the new cookie-based system will handle re-authentication
+      oldSessionKeys.forEach(key => {
+        console.log(`🔄 [Auth Migration] Clearing orphaned session: ${key}`);
+        localStorage.removeItem(key);
+      });
+
+      // Also clear any other Supabase-related localStorage
+      const otherSupabaseKeys = Object.keys(localStorage).filter(key =>
+        key.startsWith('sb-') || key.includes('supabase')
+      );
+
+      otherSupabaseKeys.forEach(key => {
+        if (!oldSessionKeys.includes(key)) {
+          console.log(`🔄 [Auth Migration] Clearing additional Supabase data: ${key}`);
+          localStorage.removeItem(key);
+        }
+      });
+
+      console.log('✅ [Auth Migration] Migration complete - users will need to re-authenticate');
+      console.log('ℹ️  [Auth Migration] Sessions are now stored in cookies (more secure for Next.js)');
+    }
+  } catch (error) {
+    console.warn('⚠️ [Auth Migration] Failed to migrate sessions:', error);
+    // Don't throw - this is a best-effort migration
+  }
+}
+
 // Export the singleton instance
-export const supabase: SupabaseClient<Database> = getSupabaseClient();
+export const supabase = getSupabaseClient();
 
 // Export types for use in other files
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
