@@ -105,6 +105,14 @@ class SupabaseAuthService {
 
     // Handle specific events
     switch (event) {
+      case 'INITIAL_SESSION':
+        console.log('🔐 [AuthService] 🎯 Initial session loaded from storage');
+        if (session?.user) {
+          console.log('🔐 [AuthService] ✅ Restored user session:', this.currentUser?.email);
+        } else {
+          console.log('🔐 [AuthService] No stored session found (user not logged in)');
+        }
+        break;
       case 'SIGNED_IN':
         console.log('🔐 [AuthService] ✅ User signed in successfully:', this.currentUser?.email);
         // Ensure user profile exists
