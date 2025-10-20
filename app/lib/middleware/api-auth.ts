@@ -10,13 +10,13 @@ export interface AuthHeaders {
 
 /**
  * Get authentication headers for Express backend API calls
- * Handles both Supabase sessions and customer access tokens
+ * Uses Supabase JWT authentication only
  */
 export async function getAuthHeaders(customerId?: string): Promise<AuthHeaders> {
   try {
-    // First, try to get Supabase session
+    // Get Supabase session (only supported authentication method)
     const { data: { session } } = await supabase.auth.getSession();
-    
+
     if (session?.access_token) {
       // Use Supabase access token as JWT Bearer token
       // The Express backend will validate it through authenticateMulti middleware
@@ -25,47 +25,40 @@ export async function getAuthHeaders(customerId?: string): Promise<AuthHeaders> 
       };
     }
 
-    // Fallback to customer access tokens for admin/demo users
-    if (customerId === 'dru78DR9789SDF862') {
-      const adminDemoToken = process.env.NEXT_PUBLIC_ADMIN_DEMO_TOKEN || 'admin-demo-token-2025';
-      return {
-        'X-Access-Token': adminDemoToken
-      };
-    }
+    // No Supabase session available
+    throw new AuthenticationError(
+      'No active Supabase session. Please log in to continue.',
+      'MISSING_SESSION'
+    );
 
-    if (customerId === 'CUST_02') {
-      const testToken = process.env.NEXT_PUBLIC_TEST_TOKEN || 'test-token-123456';
-      return {
-        'X-Access-Token': testToken
-      };
-    }
-
-    // Check URL params for access token (legacy support)
-    if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('token');
-      
-      if (token) {
-        return {
-          'X-Access-Token': token
-        };
-      }
-    }
-
-    // No authentication available
-    console.warn('No authentication method available for API call');
-    return {};
-    
   } catch (error) {
-    console.error('Error getting auth headers:', error);
-    // Return customer token as fallback
-    if (customerId === 'dru78DR9789SDF862') {
-      const adminDemoToken = process.env.NEXT_PUBLIC_ADMIN_DEMO_TOKEN || 'admin-demo-token-2025';
-      return {
-        'X-Access-Token': adminDemoToken
-      };
+    // If it's already an AuthenticationError, re-throw it
+    if (error instanceof AuthenticationError) {
+      throw error;
     }
-    return {};
+
+    // For other errors, wrap in AuthenticationError
+    console.error('Error getting auth headers:', error);
+    throw new AuthenticationError(
+      'Failed to retrieve authentication credentials',
+      'AUTH_ERROR',
+      error
+    );
+  }
+}
+
+/**
+ * Custom error class for authentication failures
+ */
+export class AuthenticationError extends Error {
+  code: string;
+  originalError?: unknown;
+
+  constructor(message: string, code: string = 'AUTH_ERROR', originalError?: unknown) {
+    super(message);
+    this.name = 'AuthenticationError';
+    this.code = code;
+    this.originalError = originalError;
   }
 }
 

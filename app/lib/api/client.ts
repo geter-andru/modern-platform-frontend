@@ -81,40 +81,24 @@ apiClient.interceptors.response.use(
   }
 );
 
-// Auth functions
+/**
+ * Auth helper functions
+ * Note: Login is handled by Supabase auth service
+ * These are legacy cookie cleanup utilities
+ */
 export const auth = {
-  async login(customerId: string): Promise<{ success: boolean; data?: any; error?: string }> {
-    try {
-      const response = await apiClient.post('/api/auth/token', { customerId });
-      const { accessToken, refreshToken, customer } = response.data.data;
-      
-      // Store tokens in cookies
-      Cookies.set(TOKEN_COOKIE_NAME, accessToken, { expires: 1 });
-      Cookies.set(REFRESH_TOKEN_COOKIE_NAME, refreshToken, { expires: 7 });
-      Cookies.set(CUSTOMER_ID_COOKIE_NAME, customerId, { expires: 7 });
-      
-      return { success: true, data: customer };
-    } catch (error: any) {
-      return { 
-        success: false, 
-        error: error.response?.data?.error || 'Login failed' 
-      };
-    }
-  },
-
+  /**
+   * Logout and clear legacy cookies
+   * @deprecated Use Supabase auth.signOut() instead
+   */
   logout() {
+    // Clean up legacy cookies (if any exist)
     Cookies.remove(TOKEN_COOKIE_NAME);
     Cookies.remove(REFRESH_TOKEN_COOKIE_NAME);
     Cookies.remove(CUSTOMER_ID_COOKIE_NAME);
+
+    // Redirect to login
     window.location.href = '/login';
-  },
-
-  getCustomerId(): string | undefined {
-    return Cookies.get(CUSTOMER_ID_COOKIE_NAME);
-  },
-
-  isAuthenticated(): boolean {
-    return !!Cookies.get(TOKEN_COOKIE_NAME);
   },
 };
 
