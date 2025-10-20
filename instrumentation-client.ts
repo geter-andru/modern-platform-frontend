@@ -13,10 +13,8 @@ Sentry.init({
   replaysSessionSampleRate: 0.1, // 10% of sessions
   replaysOnErrorSampleRate: 1.0, // 100% of sessions with errors
 
-  // Enable experimental logging
-  _experiments: {
-    enableLogs: true,
-  },
+  // Enable logs to be sent to Sentry
+  enableLogs: true,
 
   // Console logging integration
   integrations: [

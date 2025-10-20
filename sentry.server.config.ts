@@ -9,10 +9,8 @@ Sentry.init({
   // Performance monitoring
   tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
 
-  // Enable experimental logging
-  _experiments: {
-    enableLogs: true,
-  },
+  // Enable logs to be sent to Sentry
+  enableLogs: true,
 
   // Server-side specific integrations
   integrations: [
