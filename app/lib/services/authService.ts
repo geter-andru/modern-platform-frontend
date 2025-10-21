@@ -164,12 +164,21 @@ class AuthService {
         };
       }
 
-      // Validate admin access tokens
+      // Validate admin access tokens - MUST be configured in environment
       if (customer.isAdmin && accessToken) {
-        const validAdminTokens = [
-          process.env.NEXT_PUBLIC_ADMIN_DEMO_TOKEN || 'admin-demo-token-2025',
-          process.env.NEXT_PUBLIC_TEST_TOKEN || 'test-token-123456'
-        ];
+        const adminDemoToken = process.env.NEXT_PUBLIC_ADMIN_DEMO_TOKEN;
+        const testToken = process.env.NEXT_PUBLIC_TEST_TOKEN;
+
+        // Require tokens to be explicitly set in environment (no hardcoded fallbacks)
+        if (!adminDemoToken || !testToken) {
+          console.error('SECURITY: Admin tokens not configured in environment variables');
+          return {
+            success: false,
+            error: 'Admin authentication not properly configured.'
+          };
+        }
+
+        const validAdminTokens = [adminDemoToken, testToken];
         if (!validAdminTokens.includes(accessToken)) {
           return {
             success: false,
@@ -436,7 +445,16 @@ class AuthService {
   async validateCredentials(customerId: string, accessToken: string): Promise<{ valid: boolean; customerData?: any; error?: string }> {
     try {
       // Use existing authentication method for admin users
-      const adminDemoToken = process.env.NEXT_PUBLIC_ADMIN_DEMO_TOKEN || 'admin-demo-token-2025';
+      const adminDemoToken = process.env.NEXT_PUBLIC_ADMIN_DEMO_TOKEN;
+
+      if (!adminDemoToken) {
+        console.error('SECURITY: Admin demo token not configured');
+        return {
+          valid: false,
+          error: 'Admin authentication not configured'
+        };
+      }
+
       if (customerId === 'dru78DR9789SDF862' && accessToken === adminDemoToken) {
         const adminData = await this.getAdminProfile();
         return {

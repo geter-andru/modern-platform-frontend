@@ -22,7 +22,12 @@ export async function signInWithGoogle() {
     console.error('OAuth error:', error)
     // In development with mock Supabase, redirect to admin access instead
     if (error.message?.includes('not configured for development')) {
-      const adminDemoToken = process.env.NEXT_PUBLIC_ADMIN_DEMO_TOKEN || 'admin-demo-token-2025';
+      const adminDemoToken = process.env.NEXT_PUBLIC_ADMIN_DEMO_TOKEN;
+      if (!adminDemoToken) {
+        console.error('SECURITY: Admin demo token not configured for development fallback');
+        redirect('/login?error=auth_not_configured')
+        return
+      }
       redirect(`/customer/dru78DR9789SDF862/simplified/dashboard?token=${adminDemoToken}`)
       return
     }
@@ -33,7 +38,12 @@ export async function signInWithGoogle() {
     redirect(data.url)
   } else {
     // Fallback for development - redirect to admin dashboard
-    const adminDemoToken = process.env.NEXT_PUBLIC_ADMIN_DEMO_TOKEN || 'admin-demo-token-2025';
+    const adminDemoToken = process.env.NEXT_PUBLIC_ADMIN_DEMO_TOKEN;
+    if (!adminDemoToken) {
+      console.error('SECURITY: Admin demo token not configured for development fallback');
+      redirect('/login?error=auth_not_configured')
+      return
+    }
     redirect(`/customer/dru78DR9789SDF862/simplified/dashboard?token=${adminDemoToken}`)
   }
 }

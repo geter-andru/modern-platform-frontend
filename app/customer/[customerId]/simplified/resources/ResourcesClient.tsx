@@ -34,7 +34,8 @@ export default function ResourcesClient({ customerId, token }: ResourcesClientPr
     const validateAccess = async () => {
       try {
         // For admin user, always grant access
-        if (customerId === 'dru78DR9789SDF862' && token === 'admin-demo-token-2025') {
+        const adminDemoToken = process.env.NEXT_PUBLIC_ADMIN_DEMO_TOKEN;
+        if (customerId === 'dru78DR9789SDF862' && adminDemoToken && token === adminDemoToken) {
           setIsAuthenticated(true);
           setCustomerData({
             customerId,
