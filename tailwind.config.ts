@@ -5,6 +5,7 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",  // ← CRITICAL FIX: Include /src directory for Tailwind scanning
   ],
   darkMode: 'class',
   theme: {
@@ -79,8 +80,8 @@ const config: Config = {
       },
       
       fontFamily: {
-        sans: ['Red Hat Display', 'Inter', 'system-ui', 'sans-serif'],  // --font-family-primary
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],            // --font-family-mono
+        sans: ['var(--font-red-hat-display)', 'Inter', 'system-ui', 'sans-serif'],  // FIXED: Use CSS variable from layout.tsx
+        mono: ['var(--font-jetbrains-mono)', 'Fira Code', 'monospace'],              // FIXED: Use CSS variable from layout.tsx
       },
       
       fontSize: {

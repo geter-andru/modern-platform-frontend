@@ -218,7 +218,8 @@ class WebhookService {
         const customerId = this.generationStatus[sessionId]?.customerId;
         console.log('🔍 Checking Airtable sync for session:', sessionId, 'customer:', customerId);
         
-        if (customerId && customerId !== 'CUST_DOTUN_01') { // Skip test customer
+        const testCustomerId = process.env.NEXT_PUBLIC_TEST_CUSTOMER_ID || 'CUST_0001';
+        if (customerId && customerId !== testCustomerId) { // Skip test customer
           console.log('🔄 Syncing generated resources to Airtable for:', customerId);
           console.log('📦 Resources to sync:', Object.keys(this.completedResources[sessionId] || {}));
           

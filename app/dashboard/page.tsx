@@ -186,7 +186,7 @@ export default function DashboardPage() {
 
             {/* Insights */}
             <InsightsPanel
-              insights={transformInsightsToArray(insights?.data)}
+              insights={transformInsightsToArray(insights?.data) || []}
               isLoading={insightsLoading}
             />
           </div>
