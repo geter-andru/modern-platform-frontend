@@ -16,6 +16,58 @@ import { useCustomer, useProgress, useMilestones, useProgressInsights } from '@/
 import { Skeleton, SkeletonCard } from '../../src/shared/components/ui/Skeleton';
 import { useCommandPalette } from '../../src/shared/components/ui/command-palette';
 
+// Helper function to transform backend insights into component format
+function transformInsightsToArray(backendInsights: any) {
+  if (!backendInsights?.insights) return undefined;
+
+  const { nextSteps, recommendations, strengths } = backendInsights.insights;
+  const transformedInsights = [];
+
+  // Add next steps as opportunities
+  if (nextSteps && Array.isArray(nextSteps)) {
+    nextSteps.forEach((step: string, index: number) => {
+      transformedInsights.push({
+        id: `next-step-${index}`,
+        type: 'opportunity' as const,
+        title: 'Next Step',
+        description: step,
+        priority: 'high' as const,
+        actionable: true,
+      });
+    });
+  }
+
+  // Add recommendations as tips
+  if (recommendations && Array.isArray(recommendations)) {
+    recommendations.forEach((rec: string, index: number) => {
+      transformedInsights.push({
+        id: `recommendation-${index}`,
+        type: 'tip' as const,
+        title: 'Recommendation',
+        description: rec,
+        priority: 'medium' as const,
+        actionable: true,
+      });
+    });
+  }
+
+  // Add strengths as achievements
+  if (strengths && Array.isArray(strengths)) {
+    strengths.forEach((strength: string, index: number) => {
+      transformedInsights.push({
+        id: `strength-${index}`,
+        type: 'achievement' as const,
+        title: 'Strength',
+        description: strength,
+        priority: 'low' as const,
+        actionable: false,
+      });
+    });
+  }
+
+  return transformedInsights.length > 0 ? transformedInsights : undefined;
+}
+
 export default function DashboardPage() {
   const { user, loading } = useRequireAuth(); // Auto-redirects if not authenticated
   const { openPalette } = useCommandPalette();
@@ -123,8 +175,8 @@ export default function DashboardPage() {
             {user?.id && <QuickActions customerId={user.id} />}
 
             {/* Insights */}
-            <InsightsPanel 
-              insights={insights?.data}
+            <InsightsPanel
+              insights={transformInsightsToArray(insights?.data)}
               isLoading={insightsLoading}
             />
           </div>
