@@ -1,108 +1,503 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { motion } from 'framer-motion';
+
+export default function HomePage() {
+  const router = useRouter();
+  const supabase = createClientComponentClient();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsAuthenticated(!!session);
+      setLoading(false);
+    };
+    checkAuth();
+  }, [supabase]);
+
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+  };
+
+  const staggerChildren = {
+    animate: {
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-background" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent" />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-blue-600 text-white gap-2 hover:bg-blue-700 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="/icp"
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-24 sm:pb-32">
+          <motion.div
+            className="text-center"
+            initial="initial"
+            animate="animate"
+            variants={staggerChildren}
           >
-            🎯 Test ICP Tool
-          </a>
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            {/* Logo/Brand */}
+            <motion.div variants={fadeInUp} className="mb-8">
+              <h2 className="text-2xl font-bold text-primary tracking-tight">
+                H&S Revenue Intelligence
+              </h2>
+            </motion.div>
+
+            {/* Headline */}
+            <motion.h1
+              variants={fadeInUp}
+              className="text-4xl sm:text-5xl md:text-6xl font-bold text-text-primary mb-6 tracking-tight"
+            >
+              Transform Your Revenue Strategy
+              <span className="block text-primary mt-2">With AI-Powered Intelligence</span>
+            </motion.h1>
+
+            {/* Subheadline */}
+            <motion.p
+              variants={fadeInUp}
+              className="text-xl text-text-muted max-w-3xl mx-auto mb-12 leading-relaxed"
+            >
+              Identify ideal customers, calculate ROI with precision, and build compelling business cases—all in one intelligent platform.
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              variants={fadeInUp}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            >
+              {!loading && (
+                <>
+                  {isAuthenticated ? (
+                    <Link
+                      href="/dashboard"
+                      className="
+                        px-8 py-4 rounded-lg
+                        bg-primary text-white font-semibold
+                        hover:bg-primary-hover
+                        transition-all duration-200 ease-elegant
+                        shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30
+                        transform hover:-translate-y-0.5
+                        min-w-[200px] text-center
+                      "
+                    >
+                      Go to Dashboard
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/pricing"
+                      className="
+                        px-8 py-4 rounded-lg
+                        bg-primary text-white font-semibold
+                        hover:bg-primary-hover
+                        transition-all duration-200 ease-elegant
+                        shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30
+                        transform hover:-translate-y-0.5
+                        min-w-[200px] text-center
+                      "
+                    >
+                      Start Free Trial
+                    </Link>
+                  )}
+
+                  <Link
+                    href="/icp"
+                    className="
+                      px-8 py-4 rounded-lg
+                      bg-surface border border-white/10 text-text-primary font-semibold
+                      hover:bg-surface-hover hover:border-white/20
+                      transition-all duration-200 ease-elegant
+                      min-w-[200px] text-center
+                    "
+                  >
+                    Explore Features
+                  </Link>
+                </>
+              )}
+            </motion.div>
+
+            {/* Trial Badge */}
+            <motion.div variants={fadeInUp} className="mt-8">
+              <p className="text-sm text-text-subtle">
+                ✨ Start with a 3-day free trial • No credit card required
+              </p>
+            </motion.div>
+          </motion.div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-24 bg-surface/30 border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-4">
+              Everything You Need to Drive Revenue
+            </h2>
+            <p className="text-lg text-text-muted max-w-2xl mx-auto">
+              Powerful tools designed for revenue teams to identify, qualify, and convert ideal customers.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {/* Feature 1: ICP Analysis */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="
+                p-6 rounded-lg
+                bg-surface border border-white/10
+                hover:bg-surface-hover hover:border-white/20
+                transition-all duration-200 ease-elegant
+                group
+              "
+            >
+              <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-200">
+                🎯
+              </div>
+              <h3 className="text-xl font-semibold text-text-primary mb-2">
+                ICP Analysis
+              </h3>
+              <p className="text-text-muted leading-relaxed">
+                Define and analyze your Ideal Customer Profile with AI-powered insights and data-driven recommendations.
+              </p>
+            </motion.div>
+
+            {/* Feature 2: Cost Calculator */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="
+                p-6 rounded-lg
+                bg-surface border border-white/10
+                hover:bg-surface-hover hover:border-white/20
+                transition-all duration-200 ease-elegant
+                group
+              "
+            >
+              <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-200">
+                💰
+              </div>
+              <h3 className="text-xl font-semibold text-text-primary mb-2">
+                Cost Calculator
+              </h3>
+              <p className="text-text-muted leading-relaxed">
+                Calculate ROI and total cost of ownership with precision. Make data-backed investment decisions.
+              </p>
+            </motion.div>
+
+            {/* Feature 3: Business Case Generator */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="
+                p-6 rounded-lg
+                bg-surface border border-white/10
+                hover:bg-surface-hover hover:border-white/20
+                transition-all duration-200 ease-elegant
+                group
+              "
+            >
+              <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-200">
+                📊
+              </div>
+              <h3 className="text-xl font-semibold text-text-primary mb-2">
+                Business Case Generator
+              </h3>
+              <p className="text-text-muted leading-relaxed">
+                Create compelling business cases automatically with comprehensive financial models and projections.
+              </p>
+            </motion.div>
+
+            {/* Feature 4: Export & Share */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="
+                p-6 rounded-lg
+                bg-surface border border-white/10
+                hover:bg-surface-hover hover:border-white/20
+                transition-all duration-200 ease-elegant
+                group
+              "
+            >
+              <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-200">
+                📤
+              </div>
+              <h3 className="text-xl font-semibold text-text-primary mb-2">
+                Export & Collaborate
+              </h3>
+              <p className="text-text-muted leading-relaxed">
+                Export to PDF, CSV, or Excel. Share insights with your team and stakeholders instantly.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-4">
+              How It Works
+            </h2>
+            <p className="text-lg text-text-muted max-w-2xl mx-auto">
+              Get started in minutes and transform your revenue strategy in three simple steps.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {/* Step 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-center"
+            >
+              <div className="
+                w-16 h-16 rounded-full
+                bg-primary/10 border-2 border-primary
+                flex items-center justify-center
+                mx-auto mb-6
+                text-2xl font-bold text-primary
+              ">
+                1
+              </div>
+              <h3 className="text-xl font-semibold text-text-primary mb-3">
+                Define Your ICP
+              </h3>
+              <p className="text-text-muted leading-relaxed">
+                Input your product details and target market. Our AI analyzes your data to identify ideal customer characteristics.
+              </p>
+            </motion.div>
+
+            {/* Step 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-center"
+            >
+              <div className="
+                w-16 h-16 rounded-full
+                bg-primary/10 border-2 border-primary
+                flex items-center justify-center
+                mx-auto mb-6
+                text-2xl font-bold text-primary
+              ">
+                2
+              </div>
+              <h3 className="text-xl font-semibold text-text-primary mb-3">
+                Calculate ROI
+              </h3>
+              <p className="text-text-muted leading-relaxed">
+                Use our advanced cost calculator to model scenarios, compare options, and quantify the business impact.
+              </p>
+            </motion.div>
+
+            {/* Step 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-center"
+            >
+              <div className="
+                w-16 h-16 rounded-full
+                bg-primary/10 border-2 border-primary
+                flex items-center justify-center
+                mx-auto mb-6
+                text-2xl font-bold text-primary
+              ">
+                3
+              </div>
+              <h3 className="text-xl font-semibold text-text-primary mb-3">
+                Generate Business Case
+              </h3>
+              <p className="text-text-muted leading-relaxed">
+                Create comprehensive business cases with financial projections, risk analysis, and executive summaries.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing/CTA Section */}
+      <section className="py-24 bg-gradient-to-br from-primary/10 via-background to-background border-t border-white/5">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-4">
+              Ready to Transform Your Revenue Strategy?
+            </h2>
+            <p className="text-xl text-text-muted mb-8">
+              Start your 3-day free trial today. No credit card required.
+            </p>
+
+            <div className="
+              inline-block p-8 rounded-xl
+              bg-surface border border-white/10
+              shadow-xl shadow-primary/5
+            ">
+              <div className="mb-6">
+                <div className="text-5xl font-bold text-primary mb-2">
+                  $99
+                  <span className="text-2xl text-text-muted font-normal">/month</span>
+                </div>
+                <p className="text-text-muted">
+                  All features included • 3-day free trial
+                </p>
+              </div>
+
+              <ul className="text-left space-y-3 mb-8 max-w-md mx-auto">
+                <li className="flex items-start gap-3 text-text-muted">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Unlimited ICP analysis and insights</span>
+                </li>
+                <li className="flex items-start gap-3 text-text-muted">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Advanced cost calculator and ROI modeling</span>
+                </li>
+                <li className="flex items-start gap-3 text-text-muted">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Business case generation with AI</span>
+                </li>
+                <li className="flex items-start gap-3 text-text-muted">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Export to PDF, CSV, and Excel</span>
+                </li>
+                <li className="flex items-start gap-3 text-text-muted">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Priority support and updates</span>
+                </li>
+              </ul>
+
+              {!loading && (
+                <Link
+                  href={isAuthenticated ? "/dashboard" : "/pricing"}
+                  className="
+                    inline-block px-8 py-4 rounded-lg
+                    bg-primary text-white font-semibold text-lg
+                    hover:bg-primary-hover
+                    transition-all duration-200 ease-elegant
+                    shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30
+                    transform hover:-translate-y-0.5
+                  "
+                >
+                  {isAuthenticated ? "Go to Dashboard" : "Start Free Trial"}
+                </Link>
+              )}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-white/10 bg-surface/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            {/* Company Info */}
+            <div className="md:col-span-2">
+              <h3 className="text-xl font-bold text-primary mb-4">
+                H&S Revenue Intelligence
+              </h3>
+              <p className="text-text-muted leading-relaxed max-w-md">
+                Transform your revenue strategy with AI-powered intelligence. Identify ideal customers, calculate ROI, and build compelling business cases.
+              </p>
+            </div>
+
+            {/* Product Links */}
+            <div>
+              <h4 className="font-semibold text-text-primary mb-4">Product</h4>
+              <ul className="space-y-2">
+                <li>
+                  <Link href="/icp" className="text-text-muted hover:text-text-primary transition-colors">
+                    ICP Analysis
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/pricing" className="text-text-muted hover:text-text-primary transition-colors">
+                    Pricing
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/dashboard" className="text-text-muted hover:text-text-primary transition-colors">
+                    Dashboard
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Company Links */}
+            <div>
+              <h4 className="font-semibold text-text-primary mb-4">Company</h4>
+              <ul className="space-y-2">
+                <li>
+                  <a href="#" className="text-text-muted hover:text-text-primary transition-colors">
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-text-muted hover:text-text-primary transition-colors">
+                    Terms of Service
+                  </a>
+                </li>
+                <li>
+                  <a href="mailto:support@hs-platform.com" className="text-text-muted hover:text-text-primary transition-colors">
+                    Contact Support
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div className="pt-8 border-t border-white/10">
+            <p className="text-center text-text-subtle text-sm">
+              © {new Date().getFullYear()} H&S Revenue Intelligence Platform. All rights reserved.
+            </p>
+          </div>
+        </div>
       </footer>
     </div>
   );
