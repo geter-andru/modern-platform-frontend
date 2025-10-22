@@ -16,12 +16,22 @@ import { useCustomer, useProgress, useMilestones, useProgressInsights } from '@/
 import { Skeleton, SkeletonCard } from '../../src/shared/components/ui/Skeleton';
 import { useCommandPalette } from '../../src/shared/components/ui/command-palette';
 
+// Insight type definition (matches InsightsPanel component)
+interface Insight {
+  id: string;
+  type: 'opportunity' | 'warning' | 'achievement' | 'tip';
+  title: string;
+  description: string;
+  priority: 'high' | 'medium' | 'low';
+  actionable: boolean;
+}
+
 // Helper function to transform backend insights into component format
-function transformInsightsToArray(backendInsights: any) {
+function transformInsightsToArray(backendInsights: any): Insight[] | undefined {
   if (!backendInsights?.insights) return undefined;
 
   const { nextSteps, recommendations, strengths } = backendInsights.insights;
-  const transformedInsights = [];
+  const transformedInsights: Insight[] = [];
 
   // Add next steps as opportunities
   if (nextSteps && Array.isArray(nextSteps)) {
