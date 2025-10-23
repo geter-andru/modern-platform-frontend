@@ -16,6 +16,9 @@ interface DesignSystemContextType {
   setBrand: (brand: BrandVariant) => void;
   getToken: (path: string) => string;
   resetTokens: () => void;
+  resetToDefaults: () => void;
+  toggleTheme: () => void;
+  updateBrand: (brand: BrandVariant) => void;
 }
 
 const DesignSystemContext = createContext<DesignSystemContextType | undefined>(undefined);
@@ -121,6 +124,27 @@ export function DesignSystemProvider({ children }: { children: ReactNode }) {
     return getNestedValue(tokens, path) || '';
   };
 
+  // Reset to defaults
+  const resetToDefaults = () => {
+    const defaultTokens = getDefaultTokens();
+    setTokens(defaultTokens);
+    setTheme('dark');
+    setBrand('hs');
+    if (isClient) {
+      applyTokensToDOM(defaultTokens);
+    }
+  };
+
+  // Toggle theme
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
+  };
+
+  // Update brand
+  const updateBrand = (newBrand: BrandVariant) => {
+    setBrand(newBrand);
+  };
+
   // Context value
   const contextValue: DesignSystemContextType = {
     tokens,
@@ -132,6 +156,9 @@ export function DesignSystemProvider({ children }: { children: ReactNode }) {
     setBrand,
     getToken,
     resetTokens,
+    resetToDefaults,
+    toggleTheme,
+    updateBrand,
   };
 
   return (

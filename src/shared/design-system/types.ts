@@ -284,7 +284,7 @@ export type ThemeVariant = 'dark' | 'light' | 'auto';
  * Brand Variants
  * Support for different brand configurations
  */
-export type BrandVariant = 'default' | 'enterprise' | 'premium';
+export type BrandVariant = 'default' | 'enterprise' | 'premium' | 'hs';
 
 /**
  * Design System Context Interface

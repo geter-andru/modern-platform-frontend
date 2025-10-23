@@ -64,7 +64,7 @@ export function DesignSystemTest() {
         </button>
         
         <button
-          onClick={() => setBrand(brand === 'hs' ? 'alternative' : 'hs')}
+          onClick={() => setBrand(brand === 'hs' ? 'enterprise' : 'hs')}
           style={{
             background: 'var(--color-secondary, #6b7280)',
             color: 'white',

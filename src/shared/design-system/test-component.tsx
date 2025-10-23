@@ -22,8 +22,8 @@ import { useDesignSystem, useTheme, useBrand } from './index';
  */
 export const DesignSystemTest: React.FC = () => {
   const { tokens, getToken, updateTokens } = useDesignSystem();
-  const { theme, toggleTheme } = useTheme();
-  const { brand, updateBrand } = useBrand();
+  const { theme, setTheme } = useTheme();
+  const { brand, setBrand } = useBrand();
 
   const handleColorChange = () => {
     updateTokens({
@@ -81,7 +81,7 @@ export const DesignSystemTest: React.FC = () => {
       
       <div style={{ display: 'flex', gap: getToken('spacing.2'), flexDirection: 'column' }}>
         <button
-          onClick={toggleTheme}
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           style={{
             background: getToken('colors.brand.primary'),
             color: getToken('colors.text.primary'),
@@ -123,7 +123,7 @@ export const DesignSystemTest: React.FC = () => {
         </button>
         
         <button
-          onClick={() => updateBrand('enterprise')}
+          onClick={() => setBrand('enterprise')}
           style={{
             background: getToken('colors.semantic.info'),
             color: getToken('colors.text.primary'),

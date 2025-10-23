@@ -85,11 +85,6 @@ export function ProgressOverview({ progress, isLoading }: ProgressOverviewProps)
             className="p-6" 
             hover 
             glow
-            whileHover={{ 
-              scale: 1.05, 
-              y: -4,
-              boxShadow: '0 25px 50px rgba(0, 0, 0, 0.3), 0 12px 24px rgba(0, 0, 0, 0.15)'
-            }}
           >
             <div className="flex items-center">
               <div className="p-3 rounded-xl bg-gradient-to-br from-brand-primary to-blue-600 shadow-lg shadow-brand/30">
