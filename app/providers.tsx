@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 import { useState } from 'react';
 import { CommandProvider, CommandPaletteContainer, CommandRegistry } from '../src/shared/components/ui/command-palette';
+import { DesignSystemProvider } from '../src/shared/design-system';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -22,34 +23,36 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CommandProvider>
-        <CommandRegistry>
-          <CommandPaletteContainer>
-            {children}
-          </CommandPaletteContainer>
-        </CommandRegistry>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: '#363636',
-              color: '#fff',
-            },
-            success: {
+      <DesignSystemProvider>
+        <CommandProvider>
+          <CommandRegistry>
+            <CommandPaletteContainer>
+              {children}
+            </CommandPaletteContainer>
+          </CommandRegistry>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
               style: {
-                background: '#10b981',
+                background: 'var(--bg-surface)', // Use design system tokens
+                color: 'var(--text-primary)',   // Use design system tokens
               },
-            },
-            error: {
-              style: {
-                background: '#ef4444',
+              success: {
+                style: {
+                  background: 'var(--color-success)', // Use design system tokens
+                },
               },
-            },
-          }}
-        />
-      </CommandProvider>
+              error: {
+                style: {
+                  background: 'var(--color-error)', // Use design system tokens
+                },
+              },
+            }}
+          />
+        </CommandProvider>
+      </DesignSystemProvider>
     </QueryClientProvider>
   );
 }

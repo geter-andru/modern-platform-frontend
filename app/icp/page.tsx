@@ -8,6 +8,7 @@ import { Brain, Target, Users, FileText, Zap, BarChart3 } from 'lucide-react';
 import { useRequireAuth } from '@/app/lib/auth';
 import { useCustomerICP, useTrackAction } from '@/app/lib/hooks/useAPI';
 import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
+import { GlassCard, GlassButton, GlassModal } from '../../src/shared/components/design-system';
 
 // Import widget components
 import ProductDetailsWidget from '../../src/features/icp-analysis/widgets/ProductDetailsWidget';
@@ -162,33 +163,59 @@ export default function ICPPage() {
         </div>
 
         <div className="mb-8">
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-3 flex-wrap">
             {WIDGETS.map((widget) => {
               const IconComponent = widget.icon;
               const isActive = activeWidget === widget.id;
               const isAvailable = widget.available;
               
               return (
-                <button
+                <motion.div
                   key={widget.id}
-                  onClick={() => handleWidgetChange(widget.id)}
-                  disabled={!isAvailable}
-                  className={`px-4 py-3 rounded-lg font-medium transition-all flex items-center gap-2 ${
-                    isActive
-                      ? 'bg-brand-primary text-text-primary shadow-glow'
-                      : isAvailable
-                      ? 'bg-surface text-text-muted hover:text-text-primary hover:bg-surface-hover hover:shadow-medium'
-                      : 'bg-surface text-text-disabled cursor-not-allowed'
-                  }`}
+                  whileHover={isAvailable ? { scale: 1.05, y: -2 } : {}}
+                  whileTap={isAvailable ? { scale: 0.95 } : {}}
                 >
-                  <IconComponent className="w-4 h-4" />
-                  {widget.title}
-                  {!isAvailable && (
-                    <span className="text-xs bg-background-elevated text-text-disabled px-2 py-1 rounded">
-                      Coming Soon
+                  <button
+                    onClick={() => handleWidgetChange(widget.id)}
+                    disabled={!isAvailable}
+                    className={`
+                      px-6 py-4 rounded-2xl font-semibold transition-all duration-300 
+                      flex items-center gap-3 min-w-[200px] justify-center
+                      ${isActive
+                        ? 'glass-card bg-white/10 border-brand-primary/50 text-white shadow-lg shadow-brand/30'
+                        : isAvailable
+                        ? 'glass-button text-white/80 hover:text-white hover:bg-white/15 hover:border-white/30'
+                        : 'bg-white/5 text-white/40 cursor-not-allowed border-white/10'
+                      }
+                    `}
+                    style={{
+                      background: isActive 
+                        ? 'rgba(255, 255, 255, 0.1)' 
+                        : isAvailable 
+                        ? 'rgba(255, 255, 255, 0.05)' 
+                        : 'rgba(255, 255, 255, 0.05)',
+                      backdropFilter: 'blur(20px)',
+                      border: isActive 
+                        ? '1px solid rgba(59, 130, 246, 0.5)' 
+                        : '1px solid rgba(255, 255, 255, 0.1)',
+                      boxShadow: isActive 
+                        ? '0 8px 25px rgba(59, 130, 246, 0.3)' 
+                        : '0 4px 12px rgba(0, 0, 0, 0.2)'
+                    }}
+                  >
+                    <IconComponent className="w-5 h-5" />
+                    <span className="font-medium" style={{
+                      fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+                    }}>
+                      {widget.title}
                     </span>
-                  )}
-                </button>
+                    {!isAvailable && (
+                      <span className="text-xs bg-white/10 text-white/60 px-2 py-1 rounded-lg ml-2">
+                        Coming Soon
+                      </span>
+                    )}
+                  </button>
+                </motion.div>
               );
             })}
           </div>
@@ -239,76 +266,105 @@ export default function ICPPage() {
         </div>
 
         <div className="flex gap-4 justify-center">
-          <button
+          <GlassButton
+            variant="secondary"
             onClick={handleRefresh}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 bg-surface hover:bg-surface-hover text-text-primary rounded-lg transition-colors disabled:opacity-50"
+            className="flex items-center gap-2"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh Data
-          </button>
+          </GlassButton>
 
-          <button
+          <GlassButton
+            variant="primary"
             onClick={() => setShowExportModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-brand-primary hover:bg-blue-700 text-text-primary rounded-lg transition-colors shadow-medium"
+            glow
+            className="flex items-center gap-2"
           >
             <Download className="w-4 h-4" />
             Export All
-          </button>
+          </GlassButton>
         </div>
       </div>
 
-      {showExportModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-background-elevated border border-surface rounded-xl max-w-2xl w-full shadow-large">
-            <div className="px-6 py-4 border-b border-surface">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-text-primary">Export ICP Analysis</h2>
-                <button
-                  onClick={() => setShowExportModal(false)}
-                  className="text-text-muted hover:text-text-primary transition-colors"
-                >
-                  <span className="sr-only">Close</span>
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
+      <GlassModal
+        isOpen={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        title="Export ICP Analysis"
+        size="lg"
+      >
+        <div className="text-center">
+          <FileDown className="w-16 h-16 text-brand-primary mx-auto mb-6" style={{
+            filter: 'drop-shadow(0 4px 8px rgba(59, 130, 246, 0.3))'
+          }} />
+          <h3 className="text-2xl font-bold text-white mb-4" style={{
+            fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+            fontWeight: 'var(--font-weight-bold, 700)'
+          }}>
+            Export Options Coming Soon
+          </h3>
+          <p className="text-white/70 mb-8 text-lg" style={{
+            fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+          }}>
+            Advanced export functionality will be available in the next phase of development.
+          </p>
 
-            <div className="p-6">
-              <div className="text-center">
-                <FileDown className="w-12 h-12 text-brand-primary mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-text-primary mb-2">
-                  Export Options Coming Soon
-                </h3>
-                <p className="text-text-muted mb-6">
-                  Advanced export functionality will be available in the next phase of development.
-                </p>
-
-                <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
-                  <div className="bg-surface rounded-lg p-4 hover:bg-surface-hover transition-colors">
-                    <h4 className="text-text-primary font-medium mb-2">PDF Report</h4>
-                    <p className="text-text-muted text-sm">Comprehensive ICP analysis document</p>
-                  </div>
-                  <div className="bg-surface rounded-lg p-4 hover:bg-surface-hover transition-colors">
-                    <h4 className="text-text-primary font-medium mb-2">CRM Integration</h4>
-                    <p className="text-text-muted text-sm">HubSpot, Salesforce, Pipedrive</p>
-                  </div>
-                  <div className="bg-surface rounded-lg p-4 hover:bg-surface-hover transition-colors">
-                    <h4 className="text-text-primary font-medium mb-2">AI Prompts</h4>
-                    <p className="text-text-muted text-sm">Claude, ChatGPT, Perplexity</p>
-                  </div>
-                  <div className="bg-surface rounded-lg p-4 hover:bg-surface-hover transition-colors">
-                    <h4 className="text-text-primary font-medium mb-2">Sales Tools</h4>
-                    <p className="text-text-muted text-sm">Outreach, SalesLoft, Apollo</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto">
+            <GlassCard className="p-6 hover glow">
+              <h4 className="text-white font-semibold mb-3 text-lg" style={{
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+              }}>
+                PDF Report
+              </h4>
+              <p className="text-white/70 text-sm" style={{
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+              }}>
+                Comprehensive ICP analysis document
+              </p>
+            </GlassCard>
+            
+            <GlassCard className="p-6 hover glow">
+              <h4 className="text-white font-semibold mb-3 text-lg" style={{
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+              }}>
+                CRM Integration
+              </h4>
+              <p className="text-white/70 text-sm" style={{
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+              }}>
+                HubSpot, Salesforce, Pipedrive
+              </p>
+            </GlassCard>
+            
+            <GlassCard className="p-6 hover glow">
+              <h4 className="text-white font-semibold mb-3 text-lg" style={{
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+              }}>
+                AI Prompts
+              </h4>
+              <p className="text-white/70 text-sm" style={{
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+              }}>
+                Claude, ChatGPT, Perplexity
+              </p>
+            </GlassCard>
+            
+            <GlassCard className="p-6 hover glow">
+              <h4 className="text-white font-semibold mb-3 text-lg" style={{
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+              }}>
+                Sales Tools
+              </h4>
+              <p className="text-white/70 text-sm" style={{
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+              }}>
+                Outreach, SalesLoft, Apollo
+              </p>
+            </GlassCard>
           </div>
         </div>
-      )}
+      </GlassModal>
       </div>
     </EnterpriseNavigationV2>
   );

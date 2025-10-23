@@ -7,6 +7,7 @@ import {
   Clock as ClockIcon,
   Flame as FireIcon,
 } from 'lucide-react';
+import { GlassCard } from '../design-system';
 
 interface ProgressData {
   overallScore: number;
@@ -31,10 +32,10 @@ export function ProgressOverview({ progress, isLoading }: ProgressOverviewProps)
     return (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="bg-white p-6 rounded-xl shadow-sm animate-pulse">
-            <div className="h-4 bg-gray-200 rounded mb-2"></div>
-            <div className="h-8 bg-gray-200 rounded"></div>
-          </div>
+          <GlassCard key={i} className="p-6 animate-pulse">
+            <div className="h-4 bg-white/20 rounded mb-2"></div>
+            <div className="h-8 bg-white/20 rounded"></div>
+          </GlassCard>
         ))}
       </div>
     );
@@ -79,17 +80,37 @@ export function ProgressOverview({ progress, isLoading }: ProgressOverviewProps)
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: index * 0.1 }}
-          className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
         >
-          <div className="flex items-center">
-            <div className={`p-3 rounded-lg ${stat.bgColor}`}>
-              <stat.icon className={`h-6 w-6 ${stat.color}`} />
+          <GlassCard 
+            className="p-6" 
+            hover 
+            glow
+            whileHover={{ 
+              scale: 1.05, 
+              y: -4,
+              boxShadow: '0 25px 50px rgba(0, 0, 0, 0.3), 0 12px 24px rgba(0, 0, 0, 0.15)'
+            }}
+          >
+            <div className="flex items-center">
+              <div className="p-3 rounded-xl bg-gradient-to-br from-brand-primary to-blue-600 shadow-lg shadow-brand/30">
+                <stat.icon className="h-6 w-6 text-white" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-white/70" style={{
+                  fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+                }}>
+                  {stat.name}
+                </p>
+                <p className="text-2xl font-bold text-white" style={{
+                  fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                  fontWeight: 'var(--font-weight-bold, 700)',
+                  textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                }}>
+                  {stat.value}
+                </p>
+              </div>
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">{stat.name}</p>
-              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-            </div>
-          </div>
+          </GlassCard>
         </motion.div>
       ))}
     </div>

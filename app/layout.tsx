@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Red_Hat_Display, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import "../src/shared/design-system/global-styles.css";
 import { Providers } from "./providers";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { AuthProvider } from "@/app/lib/auth";
