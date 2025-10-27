@@ -83,7 +83,13 @@ jest.mock('@supabase/ssr', () => ({
         })),
       })),
       insert: jest.fn(() => Promise.resolve({ data: null, error: null })),
-      update: jest.fn(() => Promise.resolve({ data: null, error: null })),
+      update: jest.fn(() => ({
+        eq: jest.fn(() => ({
+          select: jest.fn(() => ({
+            single: jest.fn(() => Promise.resolve({ data: null, error: null })),
+          })),
+        })),
+      })),
       delete: jest.fn(() => Promise.resolve({ data: null, error: null })),
     })),
   })),
@@ -100,7 +106,13 @@ jest.mock('@supabase/ssr', () => ({
         })),
       })),
       insert: jest.fn(() => Promise.resolve({ data: null, error: null })),
-      update: jest.fn(() => Promise.resolve({ data: null, error: null })),
+      update: jest.fn(() => ({
+        eq: jest.fn(() => ({
+          select: jest.fn(() => ({
+            single: jest.fn(() => Promise.resolve({ data: null, error: null })),
+          })),
+        })),
+      })),
       delete: jest.fn(() => Promise.resolve({ data: null, error: null })),
     })),
   })),
