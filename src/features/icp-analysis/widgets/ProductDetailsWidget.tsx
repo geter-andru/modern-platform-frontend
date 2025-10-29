@@ -22,7 +22,6 @@ import {
   ArrowRight
 } from 'lucide-react'
 import { useAuth } from '@/app/lib/auth'
-import { supabase } from '@/app/lib/supabase/client-rewrite'
 import { buildICPRequestData, validateProductData } from '../utils/icp-prompt-builder'
 
 interface ProductDetails {
@@ -67,7 +66,7 @@ interface ProductHistoryItem {
 export default function ProductDetailsWidget({
   className = ''
 }: ProductDetailsWidgetProps) {
-  const { user, loading } = useAuth()
+  const { user, loading, session } = useAuth()
   const [productDetails, setProductDetails] = useState<ProductDetails | null>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -81,6 +80,9 @@ export default function ProductDetailsWidget({
   })
   const [errors, setErrors] = useState<FormErrors>({})
   const [productHistory, setProductHistory] = useState<ProductHistoryItem[]>([])
+  const [showSuccessBanner, setShowSuccessBanner] = useState(false)
+  const [generationProgress, setGenerationProgress] = useState(0)
+  const [generationStage, setGenerationStage] = useState('')
 
   const handleEdit = () => {
     setIsEditing(true)
@@ -134,7 +136,9 @@ export default function ProductDetailsWidget({
       const response = await fetch(`/api/products/history?customerId=${user.id}`)
 
       if (response.ok) {
-        const history = await response.json()
+        const result = await response.json()
+        // Backend returns { success: true, data: [...] }
+        const history = result.data || result || []
         setProductHistory(history)
         console.log('✅ Product history loaded:', history.length, 'products')
       }
@@ -159,11 +163,26 @@ export default function ProductDetailsWidget({
   const handleGenerateICP = async () => {
     setIsGenerating(true)
     setErrors({})
+    setShowSuccessBanner(false)
+    setGenerationProgress(0)
+    setGenerationStage('Waking up Andru...')
+
+    let progressInterval: NodeJS.Timeout | null = null
 
     try {
+      // Progress simulation for better UX
+      progressInterval = setInterval(() => {
+        setGenerationProgress(prev => {
+          if (prev >= 90) return prev
+          return prev + Math.random() * 15
+        })
+      }, 500)
+      setGenerationStage('Reading your product details...')
+
       // Validate form using the prompt builder
       const validation = validateProductData(formData)
       if (!validation.isValid) {
+        clearInterval(progressInterval)
         const newErrors: FormErrors = {}
         validation.errors.forEach(error => {
           if (error.includes('Product name')) newErrors.productName = error
@@ -172,24 +191,32 @@ export default function ProductDetailsWidget({
           else if (error.includes('Business model')) newErrors.businessModel = error
         })
         setErrors(newErrors)
+        setIsGenerating(false)
         return
       }
 
       if (!user) {
+        clearInterval(progressInterval)
         setErrors({ general: 'User not authenticated' })
+        setIsGenerating(false)
         return
       }
 
+      setGenerationStage('Getting Andru caffeinated...')
       console.log('🚀 Starting real ICP generation for:', formData.productName)
 
-      // Get Supabase session for authorization
-      const { data: { session } } = await supabase.auth.getSession()
+      // Use session from useAuth hook (already authenticated)
+      console.log('🔐 Checking session from auth context...')
 
       if (!session) {
-        throw new Error('No active session')
+        console.error('❌ No active session found in auth context')
+        throw new Error('No active session. Please log in again.')
       }
 
+      console.log('✅ Session found from auth context, building request data...')
+
       // Build structured request data using the prompt builder
+      console.log('📝 Form data:', formData)
       const requestData = buildICPRequestData(formData, {
         industry: 'Technology', // TODO: Get from form or user profile
         companySize: 'medium',
@@ -198,6 +225,11 @@ export default function ProductDetailsWidget({
       })
 
       console.log('📋 Request data prepared:', requestData)
+
+      setGenerationStage('Andru is doing the smart stuff...')
+      setGenerationProgress(40)
+
+      console.log('📡 About to call backend API...')
 
       // Call the backend Express API for real AI-powered ICP generation
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'
@@ -210,19 +242,28 @@ export default function ProductDetailsWidget({
         body: JSON.stringify(requestData)
       })
 
+      console.log('📡 Response received! Status:', response.status, 'OK:', response.ok)
+
       if (!response.ok) {
         const errorData = await response.json()
+        console.error('❌ API returned error:', errorData)
         throw new Error(errorData.error || 'Failed to generate ICP analysis')
       }
 
+      console.log('📦 Parsing response JSON...')
       const result = await response.json()
+      console.log('📦 Response parsed:', result)
 
       if (!result.success) {
         throw new Error(result.error || 'ICP generation failed')
       }
 
+      clearInterval(progressInterval)
+      setGenerationStage('Adding the final touches...')
+      setGenerationProgress(100)
+
       console.log('✅ ICP Analysis generated successfully with real AI:', result.data)
-      
+
       // Update product details with generated data
       const generatedProductDetails: ProductDetails = {
         name: formData.productName,
@@ -231,7 +272,7 @@ export default function ProductDetailsWidget({
         targetMarket: result.data.sections?.targetCompanyProfile?.industry || 'B2B Companies',
         keyFeatures: [
           'ICP Analysis',
-          'Market Intelligence', 
+          'Market Intelligence',
           'Decision Maker Profiling',
           'Competitive Analysis'
         ],
@@ -239,20 +280,47 @@ export default function ProductDetailsWidget({
         competitiveAdvantage: formData.distinguishingFeature,
         lastUpdated: new Date().toISOString().split('T')[0]
       }
-      
+
       setProductDetails(generatedProductDetails)
       setSaved(true)
-      setTimeout(() => setSaved(false), 3000)
-      
-      // TODO: Navigate to ICP results page or show success message
+
+      // Show success banner
+      setShowSuccessBanner(true)
+
+      // Refresh product history to show new product
+      await handleRefresh()
+
+      // Auto-navigate to ICP Overview tab after 2 seconds
+      setTimeout(() => {
+        const overviewButton = document.querySelector('[data-widget-id="overview"]') as HTMLElement
+        if (overviewButton) {
+          overviewButton.click()
+        }
+      }, 2000)
+
       console.log('🎯 ICP generation completed, ready for next steps')
       
     } catch (error) {
+      // CRITICAL: Clear the progress interval on error
+      if (progressInterval) {
+        clearInterval(progressInterval)
+        console.log('🔄 Progress interval cleared due to error')
+      }
+
       const errorMessage = error instanceof Error ? error.message : 'Failed to generate ICP analysis. Please try again.'
       setErrors({ general: errorMessage })
       console.error('❌ ICP generation failed:', error)
+      console.error('❌ Error details:', {
+        name: error instanceof Error ? error.name : 'Unknown',
+        message: errorMessage,
+        stack: error instanceof Error ? error.stack : 'No stack trace'
+      })
+
+      // Show error in UI
+      alert(`ICP Generation Failed:\n\n${errorMessage}\n\nCheck console for details.`)
     } finally {
       setIsGenerating(false)
+      console.log('🏁 Finally block executed, isGenerating = false')
     }
   }
 
@@ -267,9 +335,138 @@ export default function ProductDetailsWidget({
 
   return (
     <div className={`bg-background-secondary border border-border-standard rounded-xl overflow-hidden ${className}`}>
-      <div className="px-6 py-4 border-b" style={{ 
-        backgroundColor: 'var(--color-background-tertiary)', 
-        borderColor: 'var(--border-standard)' 
+      {/* Loading Overlay - Modern & Sophisticated */}
+      {isGenerating && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            backdropFilter: 'blur(8px)'
+          }}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 shadow-2xl max-w-md w-full mx-4"
+            style={{
+              border: '1px solid rgba(124, 77, 255, 0.3)',
+              boxShadow: '0 0 60px rgba(124, 77, 255, 0.2)'
+            }}
+          >
+            {/* Animated Brain Icon */}
+            <div className="flex justify-center mb-6">
+              <motion.div
+                animate={{
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <Brain className="w-16 h-16" style={{ color: 'var(--color-brand-primary)' }} />
+              </motion.div>
+            </div>
+
+            {/* Stage Text */}
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
+                {generationStage}
+              </h3>
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                Andru is analyzing your product...
+              </p>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden mb-4">
+              <motion.div
+                className="absolute inset-y-0 left-0 rounded-full"
+                style={{
+                  background: 'linear-gradient(90deg, var(--color-brand-primary), var(--color-brand-secondary))',
+                  width: `${generationProgress}%`
+                }}
+                initial={{ width: '0%' }}
+                animate={{ width: `${generationProgress}%` }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+              />
+            </div>
+
+            {/* Progress Percentage */}
+            <div className="text-center">
+              <span className="text-sm font-mono" style={{ color: 'var(--text-secondary)' }}>
+                {Math.round(generationProgress)}%
+              </span>
+            </div>
+
+            {/* Witty Messages */}
+            <motion.div
+              key={generationStage}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mt-4"
+            >
+              <p className="text-xs italic" style={{ color: 'var(--text-tertiary)' }}>
+                {generationProgress < 30 && "Warming up the neural networks..."}
+                {generationProgress >= 30 && generationProgress < 60 && "Crunching the numbers with style..."}
+                {generationProgress >= 60 && generationProgress < 90 && "Almost there! Making it perfect..."}
+                {generationProgress >= 90 && "Putting on the finishing touches..."}
+              </p>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* Success Banner */}
+      {showSuccessBanner && (
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -50 }}
+          className="fixed top-4 right-4 z-50 max-w-md"
+        >
+          <div
+            className="rounded-lg shadow-2xl p-4 border"
+            style={{
+              backgroundColor: 'var(--color-surface)',
+              borderColor: 'var(--color-accent-success)',
+              boxShadow: '0 10px 40px rgba(0, 255, 0, 0.2)'
+            }}
+          >
+            <div className="flex items-start gap-3">
+              <CheckCircle className="w-6 h-6 flex-shrink-0" style={{ color: 'var(--color-accent-success)' }} />
+              <div className="flex-1">
+                <h4 className="font-bold mb-1" style={{ color: 'var(--text-primary)' }}>
+                  ICP Analysis Complete!
+                </h4>
+                <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>
+                  Your ICP has been generated successfully. Redirecting to overview...
+                </p>
+                <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--color-brand-primary)' }}>
+                  <ArrowRight className="w-4 h-4" />
+                  <span>Auto-navigating in 2 seconds</span>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowSuccessBanner(false)}
+                className="text-sm hover:opacity-70 transition-opacity"
+                style={{ color: 'var(--text-tertiary)' }}
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      <div className="px-6 py-4 border-b" style={{
+        backgroundColor: 'var(--color-background-tertiary)',
+        borderColor: 'var(--border-standard)'
       }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

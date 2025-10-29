@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import '../../../shared/styles/design-tokens.css';
+import '../../../shared/styles/component-patterns.css';
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
@@ -27,24 +28,29 @@ import {
 } from 'lucide-react'
 
 interface ICPData {
-  companyName: string
-  industry: string
+  title: string
+  description: string
   confidence: number
-  companySize: string
-  revenue: string
-  location: string
-  painPoints: string[]
-  goals: string[]
-  timeline: string
-  budget: string
-  decisionMakers: string[]
-  lastUpdated: string
+  segments: Array<{
+    name: string
+    score: number
+    criteria: string[]
+  }>
+  keyIndicators: string[]
+  redFlags: string[]
+  ratingCriteria: Array<{
+    name: string
+    weight: number
+    description: string
+  }>
+  generatedAt: string
+  source: string
 }
 
 interface ICPSection {
   id: string
   title: string
-  content: string
+  content: React.ReactNode
   icon: React.ComponentType<any>
   priority: 'high' | 'medium' | 'low'
   confidence: number
@@ -63,42 +69,108 @@ interface MyICPOverviewWidgetProps {
   onExport?: (data: ICPData) => void
 }
 
-// Helper functions to generate content from ICP data
-const generateCompanyOverviewContent = (icpData: any): string => {
-  return `
+// TSX Components to render ICP data (replaces dangerous HTML string generation)
+const ICPOverviewContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
+  return (
     <div>
-      <p><strong>${icpData.companyName}</strong> is a ${icpData.industry} company with ${icpData.companySize || 'unknown size'}.</p>
-      ${icpData.revenue ? `<p><strong>Revenue:</strong> ${icpData.revenue}</p>` : ''}
-      ${icpData.location ? `<p><strong>Location:</strong> ${icpData.location}</p>` : ''}
-      ${icpData.sections?.targetCompanyProfile ? `<p>${icpData.sections.targetCompanyProfile.description || 'Company profile generated from AI analysis.'}</p>` : ''}
+      <p className="body-large" style={{ marginBottom: '1.5rem', color: 'var(--text-primary)' }}>
+        {icpData.description}
+      </p>
+      <div style={{ marginTop: '1.5rem' }}>
+        <h4 className="heading-4" style={{ marginBottom: '1rem', color: 'var(--text-primary)' }}>
+          Customer Segments
+        </h4>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          {icpData.segments.map((segment, idx) => (
+            <div key={idx} className="card-glass hover-lift" style={{ padding: '1.25rem', borderRadius: '0.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <strong className="heading-4" style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>
+                  {segment.name}
+                </strong>
+                <span className={`badge ${
+                  segment.score >= 90 ? 'badge-success' :
+                  segment.score >= 80 ? 'badge-primary' :
+                  'badge-warning'
+                }`}>
+                  {segment.score}
+                </span>
+              </div>
+              <ul className="body-small" style={{ listStyle: 'none', paddingLeft: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem', color: 'var(--text-secondary)' }}>
+                {segment.criteria.map((c, cidx) => (
+                  <li key={cidx} style={{ paddingLeft: '1.25rem', position: 'relative' }}>
+                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-primary)' }}>•</span>
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
-  `
+  )
 }
 
-const generatePainPointsContent = (icpData: any): string => {
-  const painPoints = icpData.sections?.keyPainPoints?.painPoints || icpData.painPoints || ['Scaling challenges', 'Technical debt', 'Team growth']
-  return `
+const KeyIndicatorsContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
+  return (
     <div>
-      <p>Key challenges identified for ${icpData.companyName}:</p>
-      <ul>
-        ${painPoints.map((point: string) => `<li>${point}</li>`).join('')}
-      </ul>
-      ${icpData.sections?.keyPainPoints?.description ? `<p>${icpData.sections.keyPainPoints.description}</p>` : ''}
+      <div className="card" style={{ padding: '1.25rem', marginBottom: '1rem' }}>
+        <h4 className="heading-4" style={{ marginBottom: '0.75rem', color: 'var(--color-success)' }}>
+          ✓ Strong Fit Indicators
+        </h4>
+        <ul className="body" style={{ listStyle: 'none', paddingLeft: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          {icpData.keyIndicators.map((indicator, idx) => (
+            <li key={idx} style={{ paddingLeft: '1.5rem', position: 'relative', color: 'var(--text-secondary)' }}>
+              <span style={{ position: 'absolute', left: 0, color: 'var(--color-success)', fontWeight: 600 }}>✓</span>
+              {indicator}
+            </li>
+          ))}
+        </ul>
+      </div>
+      {icpData.redFlags && icpData.redFlags.length > 0 && (
+        <div className="card" style={{ padding: '1.25rem', borderLeft: '3px solid var(--color-danger)' }}>
+          <h4 className="heading-4" style={{ marginBottom: '0.75rem', color: 'var(--color-danger)' }}>
+            ⚠ Red Flags to Watch
+          </h4>
+          <ul className="body" style={{ listStyle: 'none', paddingLeft: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {icpData.redFlags.map((flag, idx) => (
+              <li key={idx} style={{ paddingLeft: '1.5rem', position: 'relative', color: 'var(--text-secondary)' }}>
+                <span style={{ position: 'absolute', left: 0, color: 'var(--color-danger)', fontWeight: 600 }}>⚠</span>
+                {flag}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
-  `
+  )
 }
 
-const generateDecisionMakersContent = (icpData: any): string => {
-  const decisionMakers = icpData.sections?.decisionMakerProfile?.decisionMakers || icpData.decisionMakers || ['CTO', 'VP Engineering', 'Head of Product']
-  return `
+const RatingCriteriaContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
+  return (
     <div>
-      <p>Primary decision makers for ${icpData.companyName}:</p>
-      <ul>
-        ${decisionMakers.map((maker: string) => `<li>${maker}</li>`).join('')}
-      </ul>
-      ${icpData.sections?.decisionMakerProfile?.description ? `<p>${icpData.sections.decisionMakerProfile.description}</p>` : ''}
+      <p className="body" style={{ marginBottom: '1rem', color: 'var(--text-primary)' }}>
+        Use these weighted criteria to score potential customers:
+      </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        {icpData.ratingCriteria.map((criteria, idx) => (
+          <div key={idx} className="card-metric hover-lift" style={{ padding: '1rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+              <strong className="heading-4" style={{ fontSize: '0.95rem', color: 'var(--text-primary)' }}>
+                {criteria.name}
+              </strong>
+              <span className="badge badge-primary" style={{ fontSize: '0.75rem' }}>
+                {criteria.weight}%
+              </span>
+            </div>
+            <p className="body-small" style={{ color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+              {criteria.description}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
-  `
+  )
 }
 
 export default function MyICPOverviewWidget({ 
@@ -157,7 +229,7 @@ export default function MyICPOverviewWidget({
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `icp-analysis-${icpData.companyName}-${new Date().toISOString().split('T')[0]}.pdf`
+      a.download = `icp-analysis-${icpData.title.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.pdf`
       document.body.appendChild(a)
       a.click()
       window.URL.revokeObjectURL(url)
@@ -192,62 +264,69 @@ export default function MyICPOverviewWidget({
       }
 
       const result = await response.json()
-      
+
       if (!result.success) {
         throw new Error(result.error || 'Failed to load ICP data')
       }
 
-      const icpData = result.icp
+      // Parse ICP data if it's a string (comes from database as JSON string)
+      let icpData = result.icp
+      if (typeof icpData === 'string') {
+        icpData = JSON.parse(icpData)
+      }
+
+      console.log('✅ ICP data parsed:', icpData)
       setIcpData(icpData)
       
-      // Transform ICP data into sections
+      // Transform ICP data into sections (using TSX components)
       const sections: ICPSection[] = [
         {
-          id: 'company-overview',
-          title: 'Company Overview',
-          content: generateCompanyOverviewContent(icpData),
+          id: 'icp-overview',
+          title: 'ICP Framework',
+          content: <ICPOverviewContent icpData={icpData} />,
           icon: Building2,
           priority: 'high',
-          confidence: icpData.confidence || 85,
+          confidence: icpData.confidence || 90,
           confidenceReasoning: 'Based on AI analysis and market research'
         },
         {
-          id: 'pain-points',
-          title: 'Key Pain Points',
-          content: generatePainPointsContent(icpData),
+          id: 'key-indicators',
+          title: 'Key Indicators & Red Flags',
+          content: <KeyIndicatorsContent icpData={icpData} />,
           icon: AlertTriangle,
           priority: 'high',
-          confidence: icpData.confidence || 85,
-          confidenceReasoning: 'Inferred from company stage and industry analysis'
+          confidence: icpData.confidence || 90,
+          confidenceReasoning: 'AI-generated from comprehensive market analysis'
         },
         {
-          id: 'decision-makers',
-          title: 'Decision Makers',
-          content: generateDecisionMakersContent(icpData),
-          icon: Users,
+          id: 'rating-criteria',
+          title: 'Rating Criteria',
+          content: <RatingCriteriaContent icpData={icpData} />,
+          icon: BarChart3,
           priority: 'medium',
-          confidence: icpData.confidence || 80,
-          confidenceReasoning: 'Based on company structure and industry patterns'
+          confidence: icpData.confidence || 90,
+          confidenceReasoning: 'Weighted scoring system for prospect qualification'
         }
       ]
       
       setSectionsWithContent(sections)
       
       // Generate when-to-use scenarios
+      const topSegment = icpData.segments[0]?.name || 'target companies'
       const scenarios: WhenToUseScenario[] = [
         {
           title: 'Sales Calls',
-          description: `Use this ICP to personalize your sales approach for ${icpData.companyName} and identify key talking points.`,
+          description: `Use this ICP to personalize your sales approach for ${topSegment} and identify key talking points.`,
           icon: Target
         },
         {
           title: 'Marketing Campaigns',
-          description: `Tailor your marketing messages to resonate with ${icpData.industry} companies like ${icpData.companyName}.`,
+          description: `Tailor your marketing messages to resonate with companies matching this ${icpData.title}.`,
           icon: TrendingUp
         },
         {
           title: 'Product Development',
-          description: `Focus product features on solving the specific pain points identified for ${icpData.companyName}.`,
+          description: `Focus product features on solving the specific needs identified in the key indicators.`,
           icon: Lightbulb
         }
       ]
@@ -277,37 +356,43 @@ export default function MyICPOverviewWidget({
     setExpandedSections(newExpanded)
   }
 
-  const copySectionContent = async (sectionId: string, content: string) => {
+  const copySectionContent = async (sectionId: string) => {
     try {
-      await navigator.clipboard.writeText(content)
-      setCopiedSection(sectionId)
-      setTimeout(() => setCopiedSection(null), 2000)
+      // Get the text content from the section's DOM element
+      const sectionElement = document.getElementById(`section-content-${sectionId}`)
+      if (sectionElement) {
+        const textContent = sectionElement.innerText || sectionElement.textContent || ''
+        await navigator.clipboard.writeText(textContent)
+        setCopiedSection(sectionId)
+        setTimeout(() => setCopiedSection(null), 2000)
+      }
     } catch (error) {
       console.error('Failed to copy content:', error)
     }
   }
 
   return (
-    <div className={`bg-background-secondary border border-border-standard rounded-xl overflow-hidden ${className}`}>
-      <div className="bg-background-tertiary px-6 py-4">
+    <div className={`card-executive overflow-hidden ${className}`}>
+      <div className="card-padding-md" style={{ background: 'var(--bg-elevated)' }}>
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-text-primary">My ICP Overview</h2>
-            <p className="text-text-muted text-sm">
-              {isLoading ? 'Loading ICP data...' : 
+            <h2 className="heading-3">My ICP Overview</h2>
+            <p className="body-small text-text-muted">
+              {isLoading ? 'Loading ICP data...' :
                error ? 'Error loading ICP data' :
-               icpData ? `${icpData.companyName} • ${icpData.industry} • ${icpData.confidence}% confidence` : 
+               icpData ? `${icpData.title} • ${icpData.confidence}% confidence` :
                'No ICP data available - generate an analysis first'}
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 text-sm text-text-muted">
-              <CheckCircle className="w-4 h-4 text-brand-primary" />
+            <div className="flex items-center gap-1 caption text-text-muted">
+              <CheckCircle className="w-4 h-4" style={{ color: 'var(--color-primary)' }} />
               {icpData?.confidence || 0}% match
             </div>
             <button
               onClick={onRefresh}
-              className="p-2 text-text-muted hover:text-text-primary transition-colors"
+              className="btn-secondary"
+              style={{ minWidth: 'auto', padding: 'var(--space-2)' }}
               title="Refresh ICP data"
             >
               <RefreshCw className="w-4 h-4" />
@@ -315,7 +400,8 @@ export default function MyICPOverviewWidget({
             {onExport && (
               <button
                 onClick={() => icpData && onExport(icpData)}
-                className="p-2 text-text-muted hover:text-text-primary transition-colors"
+                className="btn-secondary"
+                style={{ minWidth: 'auto', padding: 'var(--space-2)' }}
                 title="Export ICP data"
               >
                 <ExternalLink className="w-4 h-4" />
@@ -327,58 +413,63 @@ export default function MyICPOverviewWidget({
 
       <div className="flex">
         
-        <div className="flex-1 p-6">
+        <div className="flex-1 card-padding-md">
           {error && (
-            <div className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200">
-              <p className="text-red-800 text-sm">{error}</p>
-              <button 
+            <div className="card mb-6 card-padding-md" style={{ borderLeft: '3px solid var(--color-danger)' }}>
+              <p className="body-small" style={{ color: 'var(--color-danger)' }}>{error}</p>
+              <button
                 onClick={handleRefresh}
-                className="mt-2 text-accent-danger hover:text-red-800 text-sm underline"
+                className="btn btn-secondary mt-2"
               >
                 Try again
               </button>
             </div>
           )}
-          
+
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary mx-auto mb-4"></div>
-                <p className="text-text-muted">Loading ICP data...</p>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 mx-auto mb-4" style={{ borderColor: 'var(--color-primary)' }}></div>
+                <p className="body text-text-muted">Loading ICP data...</p>
               </div>
             </div>
           ) : !icpData ? (
             <div className="text-center py-12">
               <Target className="w-12 h-12 text-text-muted mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-text-primary mb-2">No ICP Data Available</h3>
-              <p className="text-text-muted mb-4">Generate an ICP analysis to see your customer profile here.</p>
-              <button 
+              <h3 className="heading-4 mb-2">No ICP Data Available</h3>
+              <p className="body text-text-muted mb-4">Generate an ICP analysis to see your customer profile here.</p>
+              <button
                 onClick={handleRefresh}
-                className="px-4 py-2 bg-brand-primary text-text-primary rounded-lg hover:bg-brand-primary-dark transition-colors"
+                className="btn btn-primary"
               >
                 Refresh
               </button>
             </div>
           ) : (
             <>
-              <div className="bg-brand-primary/20 border border-brand-primary/50 rounded-lg p-4 mb-6">
+              <div className="card-padding-md mb-8" style={{
+                background: 'rgba(59, 130, 246, 0.1)',
+                border: '1px solid rgba(59, 130, 246, 0.3)',
+                borderRadius: 'var(--radius-md)',
+                backdropFilter: 'blur(12px)'
+              }}>
                 <div className="flex items-start gap-3">
-                  <Info className="w-5 h-5 text-brand-primary mt-0.5" />
+                  <Info className="w-5 h-5 mt-0.5" style={{ color: 'var(--color-primary)' }} />
                   <div>
-                    <p className="text-brand-primary text-sm">
-                      💡 <strong>Pro Tip:</strong> Use this comprehensive analysis to guide your prospect 
+                    <p className="body-small" style={{ color: 'var(--color-primary)' }}>
+                      💡 <strong>Pro Tip:</strong> Use this comprehensive analysis to guide your prospect
                       conversations, marketing messaging, and sales qualification process.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-4">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
                 <AnimatePresence>
                   {sectionsWithContent.map((section, index) => {
                     const IconComponent = section.icon;
                     const isExpanded = expandedSections.has(section.id);
-                    
+
                     return (
                       <motion.div
                         key={section.id}
@@ -386,41 +477,48 @@ export default function MyICPOverviewWidget({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.3, delay: index * 0.1 }}
-                        className="bg-background-tertiary rounded-lg overflow-hidden"
+                        className="overflow-hidden"
+                        style={{
+                          background: 'rgba(0, 0, 0, 0.5)', // Dark glass background
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          borderRadius: 'var(--radius-md)',
+                          backdropFilter: 'blur(12px)'
+                        }}
                       >
-                        
-                        <div className="px-4 py-3 bg-background-secondary flex items-center justify-between">
+
+                        <div className="card-padding-sm flex items-center justify-between" style={{ background: 'transparent' }}>
                           <button
                             onClick={() => toggleSection(section.id)}
-                            className="flex items-center gap-3 hover:bg-surface-hover rounded-lg px-2 py-1 transition-colors flex-1"
+                            className="flex items-center gap-3 hover-lift px-2 py-1 transition-all flex-1"
+                            style={{ background: 'transparent' }}
                           >
-                            <IconComponent className="w-5 h-5 text-brand-primary" />
-                            <h3 className="text-lg font-semibold text-text-primary">
+                            <IconComponent className="w-5 h-5" style={{ color: 'var(--color-primary)' }} />
+                            <h3 className="heading-4">
                               {section.title}
                             </h3>
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              section.priority === 'high' 
-                                ? 'bg-red-900/30 text-red-400' 
+                            <span className={`badge ${
+                              section.priority === 'high'
+                                ? 'badge-danger'
                                 : section.priority === 'medium'
-                                ? 'bg-yellow-900/30 text-yellow-400'
-                                : 'bg-surface text-text-disabled'
+                                ? 'badge-warning'
+                                : 'badge-secondary'
                             }`}>
                               {section.priority}
                             </span>
-                        
+
                           <div className="flex items-center gap-2">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            section.confidence >= 90 
-                              ? 'bg-green-900/30 text-green-400' 
+                          <span className={`badge ${
+                            section.confidence >= 90
+                              ? 'badge-success'
                               : section.confidence >= 80
-                              ? 'bg-blue-900/30 text-brand-primary'
+                              ? 'badge-primary'
                               : section.confidence >= 70
-                              ? 'bg-yellow-900/30 text-yellow-400'
-                              : 'bg-red-900/30 text-red-400'
+                              ? 'badge-warning'
+                              : 'badge-danger'
                           }`}>
                             {section.confidence}%
                           </span>
-                          <span className="text-xs text-text-muted italic">
+                          <span className="caption text-text-muted italic">
                             {section.confidenceReasoning}
                           </span>
                         </div>
@@ -431,12 +529,13 @@ export default function MyICPOverviewWidget({
                         )}
                       </button>
                       <button
-                        onClick={() => copySectionContent(section.id, section.content)}
-                        className="p-1 text-text-muted hover:text-text-primary transition-colors ml-2"
+                        onClick={() => copySectionContent(section.id)}
+                        className="btn-secondary ml-2"
+                        style={{ minWidth: 'auto', padding: 'var(--space-1)' }}
                         title="Copy section content"
                       >
                         {copiedSection === section.id ? (
-                          <CheckCircle className="w-4 h-4 text-brand-primary" />
+                          <CheckCircle className="w-4 h-4" style={{ color: 'var(--color-primary)' }} />
                         ) : (
                           <Copy className="w-4 h-4" />
                         )}
@@ -452,26 +551,8 @@ export default function MyICPOverviewWidget({
                           transition={{ duration: 0.3 }}
                           className="overflow-hidden"
                         >
-                          <div className="p-4">
-                            <div 
-                              className="prose max-w-none prose-invert 
-                                [&>div]:!bg-background-tertiary [&>div]:!border-border-standard 
-                                [&_h2]:!text-text-primary [&_h3]:!text-text-primary [&_h4]:!text-text-secondary
-                                [&_p]:!text-text-secondary [&_ul]:!text-text-secondary [&_li]:!text-text-secondary
-                                [&_.bg-background-secondary]:!bg-background-tertiary [&_.bg-surface]:!bg-background-secondary 
-                                [&_.text-blue-800]:!text-brand-primary [&_.text-blue-700]:!text-brand-primary 
-                                [&_.text-text-secondary]:!text-text-secondary [&_.text-text-muted]:!text-text-muted 
-                                [&_.text-gray-800]:!text-text-primary [&_.text-text-primary]:!text-text-primary
-                                [&_.bg-blue-50]:!bg-brand-primary/20 [&_.border-blue-200]:!border-brand-primary/50
-                                [&_.bg-red-50]:!bg-red-900/20 [&_.border-red-200]:!border-red-600/50 
-                                [&_.border-red-400]:!border-red-500/50 [&_.text-red-500]:!text-red-400
-                                [&_.bg-green-50]:!bg-green-900/20 [&_.border-green-200]:!border-green-600/50 
-                                [&_.border-green-400]:!border-green-500/50 [&_.text-green-500]:!text-green-400
-                                [&_.bg-yellow-50]:!bg-yellow-900/20 [&_.border-yellow-200]:!border-yellow-600/50 
-                                [&_.border-yellow-400]:!border-yellow-500/50 [&_.text-yellow-500]:!text-yellow-400
-                                [&_.shadow-md]:!shadow-lg [&_.shadow-md]:!shadow-black/20"
-                              dangerouslySetInnerHTML={{ __html: section.content }}
-                            />
+                          <div className="p-4" id={`section-content-${section.id}`}>
+                            {section.content}
                           </div>
                         </motion.div>
                       )}
@@ -484,7 +565,7 @@ export default function MyICPOverviewWidget({
 
           <div className="mt-6 pt-4">
             <div className="flex items-center justify-between text-sm text-text-muted">
-              <span>Last updated: {icpData ? new Date(icpData.lastUpdated).toLocaleDateString() : 'N/A'}</span>
+              <span>Last updated: {icpData ? new Date(icpData.generatedAt).toLocaleDateString() : 'N/A'}</span>
               <span>{sectionsWithContent.length} sections available</span>
             </div>
           </div>
@@ -492,26 +573,31 @@ export default function MyICPOverviewWidget({
           )}
         </div>
 
-        <div className="w-80 bg-background-tertiary p-6">
+        <div className="w-80 card-padding-md" style={{ background: 'rgba(0, 0, 0, 0.2)', borderLeft: '1px solid rgba(255, 255, 255, 0.1)' }}>
           <div className="sticky top-6">
-            <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
-              <Target className="w-5 h-5 text-brand-primary" />
+            <h3 className="heading-4 mb-6 flex items-center gap-2">
+              <Target className="w-5 h-5" style={{ color: 'var(--color-primary)' }} />
               When to Use This
             </h3>
-            <div className="space-y-4">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
               {whenToUseScenarios.map((scenario, index) => {
                 const IconComponent = scenario.icon;
                 return (
-                  <div key={index} className="bg-background-secondary rounded-lg p-4">
+                  <div key={index} className="card-padding-sm" style={{
+                    background: 'rgba(0, 0, 0, 0.4)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: 'var(--radius-md)',
+                    backdropFilter: 'blur(12px)'
+                  }}>
                     <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 w-8 h-8 bg-brand-primary/20 rounded-lg flex items-center justify-center">
-                        <IconComponent className="w-4 h-4 text-brand-primary" />
+                      <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(59, 130, 246, 0.2)' }}>
+                        <IconComponent className="w-4 h-4" style={{ color: 'var(--color-primary)' }} />
                       </div>
                       <div>
-                        <h4 className="text-sm font-semibold text-text-primary mb-2">
+                        <h4 className="heading-4 text-sm mb-2">
                           {scenario.title}
                         </h4>
-                        <p className="text-xs text-text-muted leading-relaxed">
+                        <p className="caption text-text-muted leading-relaxed">
                           {scenario.description}
                         </p>
                       </div>
@@ -521,11 +607,16 @@ export default function MyICPOverviewWidget({
               })}
             </div>
 
-            <div className="mt-6 p-4 bg-brand-primary/10 rounded-lg">
-              <h4 className="text-sm font-semibold text-brand-primary mb-2">
+            <div className="mt-8 card-padding-sm" style={{
+              background: 'rgba(59, 130, 246, 0.1)',
+              border: '1px solid rgba(59, 130, 246, 0.3)',
+              borderRadius: 'var(--radius-md)',
+              backdropFilter: 'blur(12px)'
+            }}>
+              <h4 className="heading-4 text-sm mb-2" style={{ color: 'var(--color-primary)' }}>
                 💡 Pro Tip
               </h4>
-              <p className="text-xs text-text-muted">
+              <p className="caption text-text-muted">
                 Use your ICP as a living document - regularly update it based on customer feedback and market changes to maintain accuracy and relevance.
               </p>
             </div>
