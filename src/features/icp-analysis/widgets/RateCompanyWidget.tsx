@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import '../../../shared/styles/design-tokens.css';
 
 import { motion, AnimatePresence } from 'framer-motion'
+import { ProgressRing } from '../../../shared/components/ui/ProgressRing'
 import { 
   RefreshCw, 
   Download, 
@@ -275,12 +276,20 @@ export default function RateCompanyWidget({
                       Generated on {new Date(rating.generatedAt).toLocaleDateString()} • {rating.confidence}% confidence
                     </p>
                   </div>
-                  <div className="text-right">
-                    <div className={`text-3xl font-bold ${getTierColorClass(rating.tier.id)}`}>
-                      {rating.overallScore}/100
-                    </div>
-                    <div className={`text-sm font-medium ${getTierColorClass(rating.tier.id)}`}>
-                      {rating.tier.name}
+                  <div className="flex items-center gap-4">
+                    {/* Progress Ring for Overall Score - Makes sense here for comparing performance */}
+                    <div className="flex flex-col items-center">
+                      <ProgressRing
+                        value={rating.overallScore}
+                        size={80}
+                        strokeWidth={6}
+                        colorScheme="auto"
+                        showLabel={true}
+                        className="flex-shrink-0"
+                      />
+                      <div className={`text-sm font-medium mt-2 ${getTierColorClass(rating.tier.id)}`}>
+                        {rating.tier.name}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -336,13 +345,19 @@ export default function RateCompanyWidget({
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <div className="text-right">
-                              <div className="text-lg font-semibold text-text-primary">
-                                {criteria.score}/10
-                              </div>
-                              <div className="text-xs text-text-muted">
-                                {criteria.weightedScore.toFixed(1)} pts
+                          <div className="flex items-center gap-3">
+                            {/* Progress Ring for Criteria Score - Makes sense here for comparing performance */}
+                            <div className="flex flex-col items-center">
+                              <ProgressRing
+                                value={criteria.score * 10}
+                                size={56}
+                                strokeWidth={5}
+                                colorScheme="auto"
+                                showLabel={true}
+                                className="flex-shrink-0"
+                              />
+                              <div className="text-xs text-text-muted mt-1">
+                                {(criteria.weightedScore).toFixed(1)} pts
                               </div>
                             </div>
                             <IconComponent className="w-4 h-4 text-text-muted" />
