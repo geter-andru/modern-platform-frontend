@@ -3,7 +3,6 @@ import '../../../shared/styles/design-tokens.css';
 import '../../../shared/styles/component-patterns.css';
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { ProgressRing } from '../../../shared/components/ui/ProgressRing'
 import { 
   RefreshCw, 
   Download, 
@@ -74,15 +73,13 @@ const ICPOverviewContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
                 <strong className="heading-4" style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>
                   {segment.name}
                 </strong>
-                {/* Expert Requirement: Progress Ring instead of text badge */}
-                <ProgressRing
-                  value={segment.score}
-                  size={56}
-                  strokeWidth={5}
-                  colorScheme="auto"
-                  showLabel={true}
-                  className="flex-shrink-0"
-                />
+                <span className={`badge ${
+                  segment.score >= 90 ? 'badge-success' :
+                  segment.score >= 80 ? 'badge-primary' :
+                  'badge-warning'
+                }`}>
+                  {segment.score}
+                </span>
               </div>
               <ul className="body-small" style={{ listStyle: 'none', paddingLeft: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem', color: 'var(--text-secondary)' }}>
                 {segment.criteria.map((c, cidx) => (
@@ -148,15 +145,9 @@ const RatingCriteriaContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
               <strong className="heading-4" style={{ fontSize: '0.95rem', color: 'var(--text-primary)' }}>
                 {criteria.name}
               </strong>
-              {/* Expert Requirement: Progress Ring instead of text badge */}
-              <ProgressRing
-                value={criteria.weight}
-                size={48}
-                strokeWidth={4}
-                colorScheme="primary"
-                showLabel={true}
-                className="flex-shrink-0"
-              />
+              <span className="badge badge-primary" style={{ fontSize: '0.75rem' }}>
+                {criteria.weight}%
+              </span>
             </div>
             <p className="body-small" style={{ color: 'var(--text-secondary)', lineHeight: 1.5 }}>
               {criteria.description}
@@ -354,20 +345,10 @@ export default function MyICPOverviewWidget({
             </p>
           </div>
           <div className="flex items-center gap-2">
-            {/* Expert Requirement: Progress Ring for confidence score instead of text */}
-            {currentIcpData?.confidence && (
-              <div className="flex items-center gap-2">
-                <ProgressRing
-                  value={currentIcpData.confidence}
-                  size={48}
-                  strokeWidth={4}
-                  colorScheme="auto"
-                  showLabel={true}
-                  className="flex-shrink-0"
-                />
-                <span className="caption text-text-muted">match</span>
-              </div>
-            )}
+            <div className="flex items-center gap-1 caption text-text-muted">
+              <CheckCircle className="w-4 h-4" style={{ color: 'var(--color-primary)' }} />
+              {currentIcpData?.confidence || 0}% match
+            </div>
             <button
               onClick={onRefresh}
               className="btn-secondary"
@@ -486,15 +467,17 @@ export default function MyICPOverviewWidget({
                             </span>
 
                           <div className="flex items-center gap-2">
-                          {/* Expert Requirement: Progress Ring for confidence score instead of text badge */}
-                          <ProgressRing
-                            value={section.confidence}
-                            size={40}
-                            strokeWidth={3}
-                            colorScheme="auto"
-                            showLabel={true}
-                            className="flex-shrink-0"
-                          />
+                          <span className={`badge ${
+                            section.confidence >= 90
+                              ? 'badge-success'
+                              : section.confidence >= 80
+                              ? 'badge-primary'
+                              : section.confidence >= 70
+                              ? 'badge-warning'
+                              : 'badge-danger'
+                          }`}>
+                            {section.confidence}%
+                          </span>
                           <span className="caption text-text-muted italic">
                             {section.confidenceReasoning}
                           </span>
