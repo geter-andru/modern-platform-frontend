@@ -135,3 +135,52 @@ body {
   font-weight: 500; /* Expert requirement: Medium (500) weight for body text */
   line-height: var(--line-height-normal);
 }
+
+/* ============================================================================
+   ICP Scenario Pages - Custom Branding
+   ============================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800&display=swap');
+
+.icp-scenario-page {
+  --color-background-primary: #000000;
+  --color-background-secondary: #0a0a0a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #e5e5e5;
+  --color-text-muted: #a3a3a3;
+  --color-brand-primary: #3b82f6;
+  --color-brand-accent: #8b5cf6;
+  --glass-background: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  
+  font-family: 'Red Hat Display', sans-serif;
+  background: linear-gradient(135deg, var(--color-background-primary) 0%, var(--color-background-secondary) 100%);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+.icp-scenario-page .glass-card {
+  background: var(--glass-background);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+}
+
+.icp-scenario-page .gradient-text {
+  background: linear-gradient(135deg, var(--color-brand-primary) 0%, var(--color-brand-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.icp-scenario-page .btn-primary {
+  background: linear-gradient(135deg, var(--color-brand-primary) 0%, var(--color-brand-accent) 100%);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.icp-scenario-page .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
