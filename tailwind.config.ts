@@ -11,11 +11,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Background Colors (Dark Theme)
+        // Background Colors (Dark Theme - Expert Requirement)
         background: {
-          primary: '#0a0a0a',      // --color-background-primary
-          secondary: '#111111',    // --color-background-secondary
-          tertiary: '#1a1a1a',     // --color-background-tertiary
+          primary: '#1a1a1a',      // --color-background-primary (expert: #1A1A1A, not #000000)
+          secondary: '#121212',    // --color-background-secondary (expert: #121212 or #1A1A1A)
+          tertiary: '#111111',     // --color-background-tertiary
           elevated: '#222222',     // --color-background-elevated
         },
         surface: {
@@ -23,11 +23,11 @@ const config: Config = {
           hover: '#333333',        // --color-surface-hover
         },
         
-        // Text Colors (Dark Theme) - Matching Design Tokens
+        // Text Colors (Dark Theme - Expert Requirement) - Matching Design Tokens
         text: {
-          primary: '#ffffff',      // --text-heading/--text-primary
-          secondary: '#e2e8f0',    // --text-body/--text-secondary (slate-200)
-          muted: '#94a3b8',        // --text-muted (slate-400)
+          primary: '#e0e0e0',      // --text-primary (expert: #E0E0E0, not #ffffff)
+          secondary: '#e0e0e0',    // --text-secondary (expert: #E0E0E0 for body text)
+          muted: '#a0a0a0',        // --text-muted (expert: #A0A0A0 for less important info)
           subtle: '#64748b',       // --text-dim (slate-500)
           disabled: '#475569',     // slate-600
         },

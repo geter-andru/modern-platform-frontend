@@ -35,17 +35,17 @@
 
 @layer base {
   :root {
-    /* Exact Andru Assessment Color System */
-    --color-background-primary: #000000;
-    --color-background-secondary: #0a0a0a;
+    /* Expert Requirement: Deep Charcoal Background & Off-White Text */
+    --color-background-primary: #1a1a1a; /* Expert: #1A1A1A (Deep Charcoal), not #000000 */
+    --color-background-secondary: #121212; /* Expert: #121212 or #1A1A1A */
     --color-background-tertiary: #111111;
-    --color-background-elevated: #1a1a1a;
+    --color-background-elevated: #222222; /* Adjusted for contrast */
     --color-surface: #2a2a2a;
     --color-surface-hover: #333333;
     
-    --color-text-primary: #ffffff;
-    --color-text-secondary: #e2e8f0;
-    --color-text-muted: #94a3b8;
+    --color-text-primary: #e0e0e0; /* Expert: #E0E0E0 (Off-white), not #ffffff */
+    --color-text-secondary: #e0e0e0; /* Expert: #E0E0E0 for body text */
+    --color-text-muted: #a0a0a0; /* Expert: #A0A0A0 for less important info */
     --color-text-subtle: #64748b;
     --color-text-disabled: #475569;
     
@@ -132,5 +132,6 @@ body {
   color: var(--color-text-primary);
   font-family: var(--font-family-primary);
   font-size: var(--font-size-base);
+  font-weight: 500; /* Expert requirement: Medium (500) weight for body text */
   line-height: var(--line-height-normal);
 }

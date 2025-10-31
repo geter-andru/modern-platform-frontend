@@ -593,18 +593,21 @@
 
 .body-large {
   font-size: var(--text-lg);
+  font-weight: 500; /* Expert requirement: Medium (500) weight for body text */
   line-height: var(--leading-relaxed);
   color: var(--text-secondary);
 }
 
 .body {
   font-size: var(--text-base);
+  font-weight: 500; /* Expert requirement: Medium (500) weight for body text */
   line-height: var(--leading-normal);
   color: var(--text-secondary);
 }
 
 .body-small {
   font-size: var(--text-sm);
+  font-weight: 500; /* Expert requirement: Medium (500) weight for body text (14px minimum) */
   line-height: var(--leading-normal);
   color: var(--text-muted);
 }

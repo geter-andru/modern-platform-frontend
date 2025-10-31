@@ -51,11 +51,11 @@
      COLOR SYSTEM - Executive Dark Theme
      ============================================================================ */
 
-  /* Background Hierarchy - Pure Black Foundation */
-  --bg-primary: #000000;      /* Canvas background - absolute focus */
-  --bg-secondary: #0a0a0a;    /* Subtle depth variation */
+  /* Background Hierarchy - Deep Charcoal Foundation (Expert Requirement) */
+  --bg-primary: #1a1a1a;      /* Canvas background - Deep Charcoal (expert: #1A1A1A, not #000000) */
+  --bg-secondary: #121212;    /* Subtle depth variation (expert: #121212 or #1A1A1A) */
   --bg-tertiary: #111111;     /* Section backgrounds */
-  --bg-elevated: #1a1a1a;     /* Elevated cards/modals */
+  --bg-elevated: #222222;     /* Elevated cards/modals (adjusted for contrast) */
   --bg-surface: #2a2a2a;      /* Interactive surfaces */
   --bg-surface-hover: #333333; /* Hover states */
 
@@ -78,10 +78,10 @@
   --color-danger: #ef4444;     /* Red 500 - Critical issues, risks */
   --color-info: #06b6d4;       /* Cyan 500 - Information, insights */
 
-  /* Text Hierarchy - Professional Readability */
-  --text-primary: #ffffff;         /* Pure white - Headings, KPIs */
-  --text-secondary: #e5e5e5;       /* Light gray - Body text */
-  --text-muted: #a3a3a3;           /* Medium gray - Labels, metadata */
+  /* Text Hierarchy - Professional Readability (Expert Requirement) */
+  --text-primary: #e0e0e0;         /* Off-white - Primary text (expert: #E0E0E0, not #ffffff) */
+  --text-secondary: #e0e0e0;       /* Off-white - Body text (expert: #E0E0E0 for high contrast) */
+  --text-muted: #a0a0a0;           /* Light Gray - Labels, metadata (expert: #A0A0A0 for less important info) */
   --text-subtle: #737373;          /* Subtle gray - Disabled, helper text */
   --text-disabled: #525252;        /* Disabled state */
 

@@ -128,8 +128,13 @@ export default function ICPPage() {
   const isOutputWidget = OUTPUT_WIDGETS.includes(activeWidget);
 
   // Determine which widgets to show in each column (STYLING DATA ACCESS ONLY - no logic changes)
-  const leftColumnWidget = isInputWidget ? currentWidget : WIDGETS.find(w => w.id === 'product-details');
-  const rightColumnWidget = isOutputWidget ? currentWidget : WIDGETS.find(w => w.id === 'overview');
+  // Provide fallbacks to prevent undefined errors
+  const leftColumnWidget = isInputWidget && currentWidget 
+    ? currentWidget 
+    : WIDGETS.find(w => w.id === 'product-details') || WIDGETS[0];
+  const rightColumnWidget = isOutputWidget && currentWidget 
+    ? currentWidget 
+    : WIDGETS.find(w => w.id === 'overview') || WIDGETS.find(w => OUTPUT_WIDGETS.includes(w.id)) || WIDGETS[0];
 
   const handleWidgetChange = (widgetId: string) => {
     setActiveWidget(widgetId);
@@ -233,7 +238,7 @@ export default function ICPPage() {
                 >
                   <leftColumnWidget.component
                     className="w-full"
-                    userId={user.id}
+                    userId={user?.id}
                     icpData={icpData?.data}
                     isLoading={isLoading}
                     onExport={handleExport}
@@ -278,7 +283,7 @@ export default function ICPPage() {
                 >
                   <rightColumnWidget.component
                     className="w-full"
-                    userId={user.id}
+                    userId={user?.id}
                     icpData={icpData?.data}
                     isLoading={isLoading}
                     onExport={handleExport}

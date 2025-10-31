@@ -319,7 +319,7 @@ ${researchData.real ?
                 color: #e5e5e5; 
                 line-height: 1.6;
               }
-              h1, h2, h3 { color: #ffffff; }
+              h1, h2, h3 { color: #e0e0e0; } /* Expert requirement: #E0E0E0, not #ffffff */
               pre { 
                 background: #1a1a1a; 
                 padding: 20px; 
