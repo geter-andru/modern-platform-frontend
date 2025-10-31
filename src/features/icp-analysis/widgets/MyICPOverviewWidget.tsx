@@ -136,7 +136,7 @@ const RatingCriteriaContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
   return (
     <div>
       <p className="body" style={{ marginBottom: '1rem', color: 'var(--text-primary)' }}>
-        Use these weighted criteria to score potential customers:
+        Use these weighted criteria to score potential customers against your ICP. Higher weights indicate more critical qualification factors. Multiply each criteria score by its weight percentage to calculate weighted contribution to overall match score.
       </p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {icpData.ratingCriteria.map((criteria, idx) => (
@@ -285,17 +285,17 @@ export default function MyICPOverviewWidget({
       const scenarios: WhenToUseScenario[] = [
         {
           title: 'Sales Calls',
-          description: `Use this ICP to personalize your sales approach for ${topSegment} and identify key talking points.`,
+          description: `Reference ${topSegment} firmographics and pain points from key indicators to open discovery calls. Surface specific technical challenges (e.g., ${currentIcpData.keyIndicators?.[0]?.substring(0, 50) || 'integration complexity'}) within the first 2 minutes to establish relevance.`,
           icon: Target
         },
         {
           title: 'Marketing Campaigns',
-          description: `Tailor your marketing messages to resonate with companies matching this ${currentIcpData.title}.`,
+          description: `Target messaging to ${topSegment} companies matching ${currentIcpData.title}. Use key indicators to craft technical value propositions that address specific pain points (e.g., API integration challenges, data silos, scalability bottlenecks).`,
           icon: TrendingUp
         },
         {
           title: 'Product Development',
-          description: `Focus product features on solving the specific needs identified in the key indicators.`,
+          description: `Prioritize features that address the top 3 pain points identified in key indicators. Use segment criteria to validate feature prioritization against actual customer needs (e.g., ${currentIcpData.segments?.[0]?.criteria?.[0]?.substring(0, 50) || 'enterprise security requirements'}).`,
           icon: Lightbulb
         }
       ]
@@ -397,7 +397,7 @@ export default function MyICPOverviewWidget({
             <div className="text-center py-12">
               <Target className="w-12 h-12 text-text-muted mx-auto mb-4" />
               <h3 className="heading-4 mb-2">No ICP Data Available</h3>
-              <p className="body text-text-muted mb-4">Generate an ICP analysis to see your customer profile here.</p>
+              <p className="body text-text-muted mb-4">Generate an ICP analysis from Product Details to see your customer profile, segments, and rating criteria here.</p>
               <button
                 onClick={handleRefresh}
                 className="btn btn-primary"
@@ -417,8 +417,7 @@ export default function MyICPOverviewWidget({
                   <Info className="w-5 h-5 mt-0.5" style={{ color: 'var(--color-primary)' }} />
                   <div>
                     <p className="body-small" style={{ color: 'var(--color-primary)' }}>
-                      💡 <strong>Pro Tip:</strong> Use this comprehensive analysis to guide your prospect
-                      conversations, marketing messaging, and sales qualification process.
+                      <strong>Action:</strong> Export this ICP before prospect calls to reference firmographics, pain points, and technical requirements. Use the rating criteria weights to prioritize qualification questions (focus on criteria with 25%+ weight first).
                     </p>
                   </div>
                 </div>

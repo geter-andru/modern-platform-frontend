@@ -208,7 +208,7 @@ export default function RateCompanyWidget({
                 type="text"
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
-                placeholder="Enter company name (e.g., TechCorp Solutions)"
+                placeholder="e.g., Stripe, GitHub, Vercel, Datadog"
                 className="w-full px-4 py-3 bg-background-tertiary border border-border-standard rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
               />
             </div>
@@ -518,10 +518,10 @@ export default function RateCompanyWidget({
 
         <div className="mt-6 p-4 bg-brand-primary/10 rounded-lg">
           <h4 className="text-sm font-semibold text-brand-primary mb-2">
-            💡 Pro Tip
+            Next Steps
           </h4>
           <p className="text-xs text-text-muted">
-            Use this rating to prioritize your sales efforts and tailor your approach based on the company's specific strengths and weaknesses. Focus on Tier 1 and Tier 2 companies for maximum conversion rates.
+            Prioritize Tier 1 (20-24 points) and Tier 2 (16-19 points) companies for immediate outreach. Reference specific criteria scores below 7/10 to craft targeted messaging addressing those gaps. Export this rating to share with your sales team or add to your CRM.
           </p>
         </div>
       </div>

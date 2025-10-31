@@ -523,7 +523,7 @@ export default function ProductDetailsWidget({
                     borderColor: errors.productName ? 'var(--color-accent-danger)' : 'var(--border-standard)',
                     color: 'var(--text-primary)'
                   } as React.CSSProperties}
-                  placeholder="Enter your product name"
+                  placeholder="e.g., Revenue Intelligence Platform, API Gateway, Data Pipeline"
                 />
                 {errors.productName && (
                   <p className="text-sm mt-1" style={{ color: 'var(--color-accent-danger)' }}>{errors.productName}</p>
@@ -544,7 +544,7 @@ export default function ProductDetailsWidget({
                     borderColor: errors.productDescription ? 'var(--color-accent-danger)' : 'var(--border-standard)',
                     color: 'var(--text-primary)'
                   } as React.CSSProperties}
-                  placeholder="Describe what your product does and its main value proposition"
+                  placeholder="Describe core functionality, technical architecture, and primary use cases. Include key technical capabilities (e.g., real-time data processing, REST API integration, multi-tenant architecture)."
                 />
                 {errors.productDescription && (
                   <p className="text-sm mt-1" style={{ color: 'var(--color-accent-danger)' }}>{errors.productDescription}</p>
