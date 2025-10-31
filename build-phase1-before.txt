@@ -1,0 +1,39 @@
+
+> hs-platform-frontend@0.1.0 build
+> next build
+
+ ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/geter/andru/hs-andru-test/package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * /Users/geter/andru/hs-andru-test/modern-platform/frontend/package-lock.json
+
+   ▲ Next.js 15.5.6
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+Failed to compile.
+
+./app/pricing/page.tsx
+Error:   [31mx[0m Expected '</', got 'jsx text (
+  [31m|[0m           )'
+     ,-[[36;1;4m/Users/geter/andru/hs-andru-test/modern-platform/frontend/app/pricing/page.tsx[0m:419:1]
+ [2m416[0m |                       </div>
+ [2m417[0m |                     </div>
+ [2m418[0m |                   </div>
+ [2m419[0m | [35;1m,[0m[35;1m-[0m[35;1m>[0m             </motion.div>
+ [2m420[0m | [35;1m`[0m[35;1m-[0m[35;1m>[0m           </motion.div>
+ [2m421[0m |             </section>
+ [2m422[0m |     
+ [2m423[0m |             {/* Section 2: Immediate Deal Assistance */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/pricing/page.tsx
+
+
+> Build failed because of webpack errors

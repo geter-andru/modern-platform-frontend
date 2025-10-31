@@ -31,44 +31,78 @@ interface EnterpriseNavigationV2Props {
   children: React.ReactNode;
 }
 
-const navigationItems = [
-  {
-    id: 'dashboard',
-    label: 'Dashboard',
-    icon: HomeIcon,
-    href: '/dashboard'
-  },
-  {
-    id: 'icp',
-    label: 'ICP Analysis',
-    icon: UserGroupIcon,
-    href: '/icp'
-  },
-  {
-    id: 'resources',
-    label: 'Resources',
-    icon: DocumentTextIcon,
-    href: '/resources'
-  },
-  {
-    id: 'business-case',
-    label: 'Business Case',
-    icon: ChartPieIcon,
-    href: '/business-case'
-  },
-  {
-    id: 'cost-calculator',
-    label: 'Cost Calculator',
-    icon: CalculatorIcon,
-    href: '/cost-calculator'
-  },
-  {
-    id: 'assessment',
-    label: 'Assessment',
-    icon: ChartBarIcon,
-    href: '/assessment'
-  }
-];
+interface NavigationItem {
+  id: string;
+  label: string;
+  description?: string;
+  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  href: string;
+  badge?: string | null;
+}
+
+// Navigation structure with sections (STYLING DATA ONLY - no logic changes)
+const navigationItems: {
+  main: NavigationItem[];
+  salesTools: NavigationItem[];
+  quickActions: NavigationItem[];
+  development: NavigationItem[];
+} = {
+  main: [
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      description: 'Overview and insights',
+      icon: HomeIcon,
+      href: '/dashboard',
+      badge: null
+    }
+  ],
+  salesTools: [
+    {
+      id: 'icp',
+      label: 'ICP Analysis',
+      description: 'AI-powered buyer persona generation',
+      icon: UserGroupIcon,
+      href: '/icp',
+      badge: null
+    },
+    {
+      id: 'business-case',
+      label: 'Business Case',
+      description: 'Data-driven value proposition builder',
+      icon: ChartPieIcon,
+      href: '/business-case',
+      badge: null
+    },
+    {
+      id: 'cost-calculator',
+      label: 'Cost Calculator',
+      description: 'ROI and total cost analysis',
+      icon: CalculatorIcon,
+      href: '/cost-calculator',
+      badge: null
+    }
+  ],
+  quickActions: [],
+  development: [
+    {
+      id: 'resources',
+      label: 'Resources',
+      description: 'Documentation and guides',
+      icon: DocumentTextIcon,
+      href: '/resources',
+      badge: null
+    },
+    {
+      id: 'assessment',
+      label: 'Assessment',
+      description: 'Sales competency evaluation',
+      icon: ChartBarIcon,
+      href: '/assessment',
+      badge: null
+    }
+  ]
+};
 
 const NavItem = ({ item, isActive, onClick }: { item: any, isActive: boolean, onClick: (id: string) => void }) => {
   const Icon = item.icon;
@@ -79,50 +113,68 @@ const NavItem = ({ item, isActive, onClick }: { item: any, isActive: boolean, on
       onClick={() => onClick(item.id)}
       className={`
         w-full group relative flex items-center px-3 py-3 rounded-lg
-        transition-all duration-300 ease-elegant
+        transition-all duration-200 ease-out
         ${isActive 
-          ? 'bg-brand-primary/10 text-text-primary shadow-sm' 
-          : 'text-text-secondary hover:text-text-primary hover:bg-surface-hover hover:transform hover:-translate-y-0.5 hover:shadow-md'
+          ? 'text-text-primary' 
+          : 'text-text-secondary hover:text-text-primary hover:bg-surface-hover'
         }
       `}
     >
+      {/* Active state: thin underline in Electric Teal (expert requirement - NO GLOW) */}
+      {isActive && (
+        <div className="absolute left-0 bottom-0 right-0 h-0.5 bg-[#00CED1]" />
+      )}
+      
       <div className={`
         flex items-center justify-center w-8 h-8 rounded-md 
-        transition-all duration-300 ease-elegant
+        transition-colors duration-200
         ${isActive 
-          ? 'bg-brand-primary/20 text-text-primary' 
-          : 'text-text-muted group-hover:text-text-primary group-hover:bg-surface/30 group-hover:scale-110'
+          ? 'text-text-primary' 
+          : 'text-text-muted group-hover:text-text-primary'
         }
       `}>
         <Icon className="w-5 h-5" strokeWidth={1.5} />
       </div>
       
       <div className="ml-3 flex-1 min-w-0">
-        <span className={`
-          text-sm font-medium truncate
-          ${isActive ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'}
-        `}>
-          {item.label}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className={`
+            text-sm font-medium truncate
+            ${isActive ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'}
+          `}>
+            {item.label}
+          </span>
+          {item.badge && (
+            <span className="px-1.5 py-0.5 text-xs font-medium rounded bg-[#00CED1]/20 text-[#00CED1]">
+              {item.badge}
+            </span>
+          )}
+        </div>
+        {item.description && (
+          <p className="text-xs mt-0.5 truncate text-text-muted">
+            {item.description}
+          </p>
+        )}
       </div>
-      
-      {isActive && (
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-6 bg-brand-primary rounded-full" />
-      )}
     </Link>
   );
 };
 
 const SectionHeader = ({ title }: { title: string }) => (
   <div className="px-3 py-2 mb-2">
-    <h3 className="text-xs font-semibold tracking-wider uppercase text-white">
+    <h3 className="text-xs font-semibold tracking-wider uppercase text-text-muted">
       {title}
     </h3>
   </div>
 );
 
-// Use the simplified navigation items directly
-const allItems = navigationItems;
+// Flatten sections for pathname checking (STYLING DATA ACCESS ONLY - no logic changes)
+const allItems = [
+  ...navigationItems.main,
+  ...navigationItems.salesTools,
+  ...navigationItems.quickActions,
+  ...navigationItems.development
+];
 
 export function EnterpriseNavigationV2({ children }: EnterpriseNavigationV2Props) {
   const router = useRouter();
@@ -149,14 +201,11 @@ export function EnterpriseNavigationV2({ children }: EnterpriseNavigationV2Props
     <div className="flex h-screen bg-black">
       {/* Sidebar */}
       <div className={`
-        bg-background-secondary border-r border-surface flex flex-col transition-all duration-200 ease-out relative
-        before:absolute before:inset-0 before:bg-gradient-to-b before:from-brand-primary/5 before:to-brand-accent/5 before:pointer-events-none
+        bg-background-secondary border-r border-surface flex flex-col transition-all duration-200 ease-out
         ${sidebarCollapsed ? 'w-16' : 'w-72'}
       `}>
         {/* Header */}
-        <div className="p-4 border-b border-surface relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-primary/10 to-brand-accent/10 rounded-lg opacity-50"></div>
-          <div className="relative">
+        <div className="p-4 border-b border-surface">
           <div className="flex items-center justify-between">
             <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : ''}`}>
               <div className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-accent rounded-lg flex items-center justify-center">
@@ -178,7 +227,6 @@ export function EnterpriseNavigationV2({ children }: EnterpriseNavigationV2Props
               />
             </button>
           </div>
-          </div>
           
           {!sidebarCollapsed && (
             <div className="mt-4">
@@ -199,24 +247,71 @@ export function EnterpriseNavigationV2({ children }: EnterpriseNavigationV2Props
         {/* Navigation */}
         <div className="flex-1 overflow-y-auto py-4">
           <nav className="space-y-6">
-            <div className="space-y-1 px-2">
-              {navigationItems.map((item) => (
-                <NavItem
-                  key={item.id}
-                  item={item}
-                  isActive={activeItem === item.id}
-                  onClick={setActiveItem}
-                />
-              ))}
-            </div>
+            {/* MAIN Section */}
+            {navigationItems.main.length > 0 && (
+              <div className="space-y-1 px-2">
+                {!sidebarCollapsed && <SectionHeader title="MAIN" />}
+                {navigationItems.main.map((item) => (
+                  <NavItem
+                    key={item.id}
+                    item={item}
+                    isActive={activeItem === item.id}
+                    onClick={setActiveItem}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* SALES TOOLS Section */}
+            {navigationItems.salesTools.length > 0 && (
+              <div className="space-y-1 px-2">
+                {!sidebarCollapsed && <SectionHeader title="SALES TOOLS" />}
+                {navigationItems.salesTools.map((item) => (
+                  <NavItem
+                    key={item.id}
+                    item={item}
+                    isActive={activeItem === item.id}
+                    onClick={setActiveItem}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* QUICK ACTIONS Section */}
+            {navigationItems.quickActions.length > 0 && (
+              <div className="space-y-1 px-2">
+                {!sidebarCollapsed && <SectionHeader title="QUICK ACTIONS" />}
+                {navigationItems.quickActions.map((item) => (
+                  <NavItem
+                    key={item.id}
+                    item={item}
+                    isActive={activeItem === item.id}
+                    onClick={setActiveItem}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* DEVELOPMENT Section */}
+            {navigationItems.development.length > 0 && (
+              <div className="space-y-1 px-2">
+                {!sidebarCollapsed && <SectionHeader title="DEVELOPMENT" />}
+                {navigationItems.development.map((item) => (
+                  <NavItem
+                    key={item.id}
+                    item={item}
+                    isActive={activeItem === item.id}
+                    onClick={setActiveItem}
+                  />
+                ))}
+              </div>
+            )}
           </nav>
         </div>
 
         {/* Footer */}
         {!sidebarCollapsed && (
-          <div className="p-4 border-t border-surface relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-accent/5 to-brand-primary/5"></div>
-            <div className="relative">
+          <div className="p-4 border-t border-surface">
             <div className="flex items-center justify-between text-xs text-text-muted mb-3">
               <span>Customer ID: {user?.id ? user.id.slice(0, 8) + '...' : 'Loading...'}</span>
               <div className="flex items-center">
@@ -240,7 +335,6 @@ export function EnterpriseNavigationV2({ children }: EnterpriseNavigationV2Props
                 Logout
               </button>
             </div>
-          </div>
           </div>
         )}
       </div>
