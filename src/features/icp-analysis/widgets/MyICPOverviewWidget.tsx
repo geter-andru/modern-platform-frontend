@@ -26,26 +26,11 @@ import {
   Copy,
   Lightbulb
 } from 'lucide-react'
+import { useCustomerCache } from '@/app/lib/hooks/cache'
+import type { ICPData } from '@/app/lib/hooks/cache'
+// import { ErrorBoundary } from '../../../../app/components/ErrorBoundary'
 
-interface ICPData {
-  title: string
-  description: string
-  confidence: number
-  segments: Array<{
-    name: string
-    score: number
-    criteria: string[]
-  }>
-  keyIndicators: string[]
-  redFlags: string[]
-  ratingCriteria: Array<{
-    name: string
-    weight: number
-    description: string
-  }>
-  generatedAt: string
-  source: string
-}
+// Use ICPData type from cache hook
 
 interface ICPSection {
   id: string
@@ -67,6 +52,7 @@ interface MyICPOverviewWidgetProps {
   className?: string
   onRefresh?: () => void
   onExport?: (data: ICPData) => void
+  userId?: string
 }
 
 // TSX Components to render ICP data (replaces dangerous HTML string generation)
@@ -176,35 +162,45 @@ const RatingCriteriaContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
 export default function MyICPOverviewWidget({ 
   className = '',
   onRefresh,
-  onExport
+  onExport,
+  userId
 }: MyICPOverviewWidgetProps) {
-  const [icpData, setIcpData] = useState<ICPData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set())
   const [copiedSection, setCopiedSection] = useState<string | null>(null)
+  
+  // Use cache hook instead of manual state management
+  const {
+    icpData,
+    isLoadingICP,
+    icpError,
+    refetchICP
+  } = useCustomerCache({ 
+    customerId: userId, 
+    enabled: !!userId 
+  })
+  
+  // Use cache hook data
+  const currentIcpData = icpData
+  const isLoading = isLoadingICP
+  const error = icpError?.message || null
 
   const [sectionsWithContent, setSectionsWithContent] = useState<ICPSection[]>([])
 
   const [whenToUseScenarios, setWhenToUseScenarios] = useState<WhenToUseScenario[]>([])
 
   const handleRefresh = async () => {
-    setIsLoading(true)
-    setError(null)
     try {
-      console.log('🔄 Refreshing ICP data...')
-      await loadICPData()
+      // Use cache hook refresh
+      refetchICP()
+      onRefresh?.()
     } catch (error) {
-      console.error('❌ Failed to refresh ICP data:', error)
-      setError('Failed to refresh ICP data. Please try again.')
-    } finally {
-      setIsLoading(false)
+      console.error('Failed to refresh ICP data:', error)
     }
   }
 
   const handleExport = async () => {
-    if (!icpData) {
-      setError('No ICP data available to export')
+    if (!currentIcpData) {
+      console.error('No ICP data available to export')
       return
     }
 
@@ -214,6 +210,7 @@ export default function MyICPOverviewWidget({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          icpData: currentIcpData,
           format: 'pdf',
           includeAssessmentData: true,
           includeProductDetails: true,
@@ -238,7 +235,7 @@ export default function MyICPOverviewWidget({
       console.log('✅ ICP data exported successfully')
     } catch (error) {
       console.error('❌ Export failed:', error)
-      setError('Failed to export ICP data. Please try again.')
+      // Error handling is now managed by the cache hook
     }
   }
 
@@ -247,64 +244,36 @@ export default function MyICPOverviewWidget({
     // TODO: Navigate to ICP editor or open edit modal
   }
 
-  const loadICPData = async () => {
-    try {
-      console.log('📊 Loading ICP data...')
-      const response = await fetch('/api/icp-analysis/current-user', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      })
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          setError('No ICP data found. Generate an ICP analysis first.')
-          return
-        }
-        throw new Error('Failed to load ICP data')
-      }
-
-      const result = await response.json()
-
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to load ICP data')
-      }
-
-      // Parse ICP data if it's a string (comes from database as JSON string)
-      let icpData = result.icp
-      if (typeof icpData === 'string') {
-        icpData = JSON.parse(icpData)
-      }
-
-      console.log('✅ ICP data parsed:', icpData)
-      setIcpData(icpData)
-      
+  // Generate sections and scenarios when ICP data changes
+  useEffect(() => {
+    if (currentIcpData) {
       // Transform ICP data into sections (using TSX components)
       const sections: ICPSection[] = [
         {
           id: 'icp-overview',
           title: 'ICP Framework',
-          content: <ICPOverviewContent icpData={icpData} />,
+          content: <ICPOverviewContent icpData={currentIcpData} />,
           icon: Building2,
           priority: 'high',
-          confidence: icpData.confidence || 90,
+          confidence: currentIcpData.confidence || 90,
           confidenceReasoning: 'Based on AI analysis and market research'
         },
         {
           id: 'key-indicators',
           title: 'Key Indicators & Red Flags',
-          content: <KeyIndicatorsContent icpData={icpData} />,
+          content: <KeyIndicatorsContent icpData={currentIcpData} />,
           icon: AlertTriangle,
           priority: 'high',
-          confidence: icpData.confidence || 90,
+          confidence: currentIcpData.confidence || 90,
           confidenceReasoning: 'AI-generated from comprehensive market analysis'
         },
         {
           id: 'rating-criteria',
           title: 'Rating Criteria',
-          content: <RatingCriteriaContent icpData={icpData} />,
+          content: <RatingCriteriaContent icpData={currentIcpData} />,
           icon: BarChart3,
           priority: 'medium',
-          confidence: icpData.confidence || 90,
+          confidence: currentIcpData.confidence || 90,
           confidenceReasoning: 'Weighted scoring system for prospect qualification'
         }
       ]
@@ -312,7 +281,7 @@ export default function MyICPOverviewWidget({
       setSectionsWithContent(sections)
       
       // Generate when-to-use scenarios
-      const topSegment = icpData.segments[0]?.name || 'target companies'
+      const topSegment = currentIcpData.segments?.[0]?.name || 'target companies'
       const scenarios: WhenToUseScenario[] = [
         {
           title: 'Sales Calls',
@@ -321,7 +290,7 @@ export default function MyICPOverviewWidget({
         },
         {
           title: 'Marketing Campaigns',
-          description: `Tailor your marketing messages to resonate with companies matching this ${icpData.title}.`,
+          description: `Tailor your marketing messages to resonate with companies matching this ${currentIcpData.title}.`,
           icon: TrendingUp
         },
         {
@@ -333,18 +302,9 @@ export default function MyICPOverviewWidget({
       
       setWhenToUseScenarios(scenarios)
       
-      console.log('✅ ICP data loaded successfully')
-      
-    } catch (error) {
-      console.error('❌ Failed to load ICP data:', error)
-      setError(error instanceof Error ? error.message : 'Failed to load ICP data')
+      console.log('✅ ICP data processed successfully')
     }
-  }
-
-  // Load ICP data on component mount
-  useEffect(() => {
-    loadICPData().finally(() => setIsLoading(false))
-  }, [])
+  }, [currentIcpData])
 
   const toggleSection = (sectionId: string) => {
     const newExpanded = new Set(expandedSections)
@@ -387,7 +347,7 @@ export default function MyICPOverviewWidget({
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1 caption text-text-muted">
               <CheckCircle className="w-4 h-4" style={{ color: 'var(--color-primary)' }} />
-              {icpData?.confidence || 0}% match
+              {currentIcpData?.confidence || 0}% match
             </div>
             <button
               onClick={onRefresh}
@@ -565,7 +525,7 @@ export default function MyICPOverviewWidget({
 
           <div className="mt-6 pt-4">
             <div className="flex items-center justify-between text-sm text-text-muted">
-              <span>Last updated: {icpData ? new Date(icpData.generatedAt).toLocaleDateString() : 'N/A'}</span>
+              <span>Last updated: {currentIcpData?.generatedAt ? new Date(currentIcpData.generatedAt).toLocaleDateString() : 'N/A'}</span>
               <span>{sectionsWithContent.length} sections available</span>
             </div>
           </div>

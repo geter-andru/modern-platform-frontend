@@ -28,42 +28,12 @@ import {
   Clock,
   Copy
 } from 'lucide-react'
+import { useCompanyRatingCache } from '@/app/lib/hooks/cache'
+import type { CompanyRating } from '@/app/lib/hooks/cache'
 
 
-interface RatingResult {
-  companyName: string
-  generatedAt: Date
-  confidence: number
-  overallScore: number
-  tier: {
-    id: string
-    name: string
-  }
-  recommendation: string
-  criteria: {
-    criteriaId: string
-    criteriaName: string
-    score: number
-    weight: number
-    weightedScore: number
-    explanation: string
-    evidence?: string[]
-  }[]
-  insights: {
-    type: string
-    message: string
-    actionable: boolean
-  }[]
-  salesActions: {
-    id: string
-    title: string
-    description: string
-    timeline: string
-    priority: string
-    expectedOutcome: string
-    resources?: string[]
-  }[]
-}
+// Use CompanyRating type from cache hook
+type RatingResult = CompanyRating
 
 interface RateCompanyWidgetProps {
   className?: string
@@ -76,160 +46,45 @@ export default function RateCompanyWidget({
   onExport,
   userId
 }: RateCompanyWidgetProps) {
-  const [rating, setRating] = useState<RatingResult | null>(null)
   const [companyName, setCompanyName] = useState('')
-  const [isAnalyzing, setIsAnalyzing] = useState(false)
-  const [error, setError] = useState<string | null>(null)
   const [expandedCriteria, setExpandedCriteria] = useState<Set<string>>(new Set())
+  
+  // Use cache hook instead of manual state management
+  const {
+    ratings,
+    currentRating,
+    isLoadingRatings,
+    isAnalyzingCompany,
+    hasError,
+    ratingsError,
+    analysisError,
+    analyzeCompany,
+    refetchRatings
+  } = useCompanyRatingCache({ 
+    customerId: userId, 
+    enabled: !!userId 
+  })
+  
+  // Use currentRating as the main rating for display
+  const rating = currentRating
   
   const handleAnalyzeCompany = async () => {
     if (!companyName.trim()) {
-      setError('Please enter a company name')
+      console.error('Please enter a company name')
       return
     }
 
-    setIsAnalyzing(true)
-    setError(null)
-    
     try {
       console.log(`🔍 Starting real analysis for: ${companyName}`)
       
-      // Step 1: Get company research data
-      console.log('📊 Fetching company research data...')
-      const researchResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/company-research`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          companyName: companyName.trim(),
-          includeLinkedIn: true,
-          includeNews: true,
-          includeFinancials: true
-        })
-      })
+      // Use cache hook instead of manual state management
+      await analyzeCompany(companyName.trim(), userId)
       
-      if (!researchResponse.ok) {
-        throw new Error('Failed to fetch company research data')
-      }
-      
-      const researchData = await researchResponse.json()
-      console.log('✅ Company research data received:', researchData)
-      
-      // Step 2: Get user's rating framework (for now, use default framework)
-      const defaultFramework = {
-        criteria: [
-          {
-            id: 'company-size',
-            name: 'Company Size',
-            weight: 0.25,
-            description: 'Employee count and revenue alignment'
-          },
-          {
-            id: 'industry-fit',
-            name: 'Industry Fit',
-            weight: 0.25,
-            description: 'Industry alignment with target market'
-          },
-          {
-            id: 'technology-stack',
-            name: 'Technology Stack',
-            weight: 0.20,
-            description: 'Technology compatibility and integration potential'
-          },
-          {
-            id: 'growth-stage',
-            name: 'Growth Stage',
-            weight: 0.15,
-            description: 'Company growth stage and funding status'
-          },
-          {
-            id: 'market-position',
-            name: 'Market Position',
-            weight: 0.15,
-            description: 'Market position and competitive landscape'
-          }
-        ],
-        tiers: [
-          {
-            id: 'tier-1',
-            name: 'Perfect Match',
-            minScore: 85,
-            maxScore: 100,
-            color: 'text-green-400',
-            description: 'Ideal customer with high conversion probability'
-          },
-          {
-            id: 'tier-2',
-            name: 'Strong Match',
-            minScore: 70,
-            maxScore: 84,
-            color: 'text-brand-primary',
-            description: 'Good fit with solid conversion potential'
-          },
-          {
-            id: 'tier-3',
-            name: 'Moderate Match',
-            minScore: 55,
-            maxScore: 69,
-            color: 'text-yellow-400',
-            description: 'Moderate fit with some potential'
-          },
-          {
-            id: 'tier-4',
-            name: 'Weak Match',
-            minScore: 0,
-            maxScore: 54,
-            color: 'text-red-400',
-            description: 'Limited fit, low conversion probability'
-          }
-        ]
-      }
-      
-      // Step 3: Call the rating API with real data
-      console.log('🤖 Calling company rating API...')
-      const ratingResponse = await fetch('/api/ai/rate-company', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          companyName: companyName.trim(),
-          researchData: researchData,
-          framework: defaultFramework,
-          customerId: userId
-        })
-      })
-      
-      if (!ratingResponse.ok) {
-        const errorData = await ratingResponse.json()
-        throw new Error(errorData.error || 'Failed to generate company rating')
-      }
-      
-      const ratingResult = await ratingResponse.json()
-      
-      if (!ratingResult.success) {
-        throw new Error(ratingResult.error || 'Rating generation failed')
-      }
-      
-      // Step 4: Transform API response to widget format
-      const rating: RatingResult = {
-        companyName: companyName.trim(),
-        generatedAt: new Date(),
-        confidence: ratingResult.data.confidence,
-        overallScore: ratingResult.data.overallScore,
-        tier: ratingResult.data.tier,
-        recommendation: ratingResult.data.recommendation,
-        criteria: ratingResult.data.criteria,
-        insights: ratingResult.data.insights,
-        salesActions: ratingResult.data.salesActions
-      }
-      
-      setRating(rating)
-      console.log('✅ Company analysis completed successfully:', rating)
+      console.log('✅ Company analysis initiated successfully')
       
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to analyze company. Please try again.'
-      setError(errorMessage)
       console.error('❌ Company analysis failed:', error)
-    } finally {
-      setIsAnalyzing(false)
+      // Error handling is now managed by the cache hook
     }
   }
 
@@ -260,8 +115,7 @@ export default function RateCompanyWidget({
   }
 
   const handleRefresh = () => {
-    setRating(null)
-    setError(null)
+    refetchRatings()
     setExpandedCriteria(new Set())
   }
 
@@ -318,7 +172,10 @@ export default function RateCompanyWidget({
           </div>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setRating(null)}
+              onClick={() => {
+                // Clear the current rating by refetching ratings
+                refetchRatings();
+              }}
               className="p-2 text-text-muted hover:text-text-primary hover:bg-surface-hover rounded-lg transition-colors"
               title="Clear results"
             >
@@ -357,10 +214,10 @@ export default function RateCompanyWidget({
             <div className="flex items-end gap-2">
               <button
                 onClick={handleAnalyzeCompany}
-                disabled={isAnalyzing || !companyName.trim()}
+                disabled={isAnalyzingCompany || !companyName.trim()}
                 className="px-6 py-3 bg-brand-primary hover:bg-brand-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-text-primary rounded-lg font-medium transition-colors flex items-center gap-2"
               >
-                {isAnalyzing ? (
+                {isAnalyzingCompany ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
                     Researching & Analyzing...
@@ -375,13 +232,13 @@ export default function RateCompanyWidget({
             </div>
           </div>
           
-          {error && (
+          {hasError && (
             <div className="mt-3 p-3 bg-red-900/20 border border-red-500/30 rounded-lg">
-              <p className="text-red-400 text-sm">{error}</p>
+              <p className="text-red-400 text-sm">{ratingsError?.message || analysisError?.message || 'An error occurred'}</p>
             </div>
           )}
 
-          {isAnalyzing && (
+          {isAnalyzingCompany && (
             <div className="mt-4 p-4 bg-brand-primary/10 border border-brand-primary/30 rounded-lg">
               <div className="flex items-center gap-3">
                 <RefreshCw className="w-5 h-5 text-brand-primary animate-spin" />
@@ -415,7 +272,7 @@ export default function RateCompanyWidget({
                       {rating.companyName} - ICP Rating
                     </h3>
                     <p className="text-text-muted text-sm">
-                      Generated on {rating.generatedAt.toLocaleDateString()} • {rating.confidence}% confidence
+                      Generated on {new Date(rating.generatedAt).toLocaleDateString()} • {rating.confidence}% confidence
                     </p>
                   </div>
                   <div className="text-right">

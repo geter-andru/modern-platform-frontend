@@ -70,20 +70,27 @@ export async function authenticatedFetch(
   options: RequestInit = {}, 
   customerId?: string
 ): Promise<Response> {
-  const authHeaders = await getAuthHeaders(customerId);
-  
-  // Merge auth headers with existing headers
-  const headers = {
-    'Content-Type': 'application/json',
-    ...options.headers,
-    ...authHeaders,
-  };
+  try {
+    const authHeaders = await getAuthHeaders(customerId);
+    
+    // Merge auth headers with existing headers
+    const headers = {
+      'Content-Type': 'application/json',
+      ...options.headers,
+      ...authHeaders,
+    };
 
-  // Make sure we're calling the Express backend
-  const fullUrl = url.startsWith('/') ? `${API_CONFIG.backend}${url}` : url;
+    // Make sure we're calling the Express backend
+    const fullUrl = url.startsWith('/') ? `${API_CONFIG.backend}${url}` : url;
 
-  return fetch(fullUrl, {
-    ...options,
-    headers,
-  });
+    return fetch(fullUrl, {
+      ...options,
+      headers,
+    });
+  } catch (error) {
+    console.error('❌ authenticatedFetch: Authentication failed:', error);
+    // Return a rejected promise instead of throwing
+    const errorMessage = error instanceof Error ? error.message : 'Unknown authentication error';
+    return Promise.reject(new Error(`Authentication failed: ${errorMessage}`));
+  }
 }

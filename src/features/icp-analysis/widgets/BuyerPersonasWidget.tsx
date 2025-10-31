@@ -2,61 +2,56 @@ import React, { useState, useEffect } from 'react'
 import '../../../shared/styles/design-tokens.css';
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  RefreshCw, 
-  ExternalLink, 
-  Users, 
-  Zap, 
-  AlertTriangle, 
-  Eye, 
-  EyeOff, 
-  User, 
-  Brain, 
-  Target, 
-  CheckCircle, 
-  TrendingUp, 
-  MessageSquare 
+import {
+  RefreshCw,
+  ExternalLink,
+  Users,
+  Zap,
+  AlertTriangle,
+  Eye,
+  EyeOff,
+  User,
+  Brain,
+  Target,
+  CheckCircle,
+  TrendingUp,
+  MessageSquare
 } from 'lucide-react'
+import { usePersonasCache } from '@/app/lib/hooks/cache'
 
-interface Demographics {
-  ageRange: string
-  experience: string
-  education: string
-  location: string
-}
+// Use the types from the cache hook
+import type { BuyerPersona as CacheBuyerPersona } from '@/app/lib/hooks/cache'
 
-interface Psychographics {
-  values: string
-  motivations: string
-  fears: string
-}
-
-interface BuyingBehavior {
-  decisionProcess: string
-}
-
-interface DecisionInfluence {
-  timeline: string
-  budgetAuthority: string
-}
-
-interface CommunicationPreferences {
-  preferredChannels: string[]
-  communicationStyle: string
-}
-
+// Local interface that matches the component's expected structure
 interface BuyerPersona {
   id: string
   name: string
   title: string
   role: string
-  demographics: Demographics
-  psychographics: Psychographics
+  demographics: {
+    ageRange: string
+    experience: string
+    education: string
+    location: string
+  }
+  psychographics: {
+    values: string
+    motivations: string
+    fears: string
+  }
   goals: string[]
   painPoints: string[]
-  buyingBehavior: BuyingBehavior
-  decisionInfluence: DecisionInfluence
-  communicationPreferences: CommunicationPreferences
+  buyingBehavior: {
+    decisionProcess: string
+  }
+  decisionInfluence: {
+    timeline: string
+    budgetAuthority: string
+  }
+  communicationPreferences: {
+    preferredChannels: string[]
+    communicationStyle: string
+  }
   objections: string[]
   informationSources: string[]
 }
@@ -72,136 +67,117 @@ export default function BuyerPersonasWidget({
   className = '',
   userId
 }: BuyerPersonasWidgetProps) {
-  const [personas, setPersonas] = useState<BuyerPersona[]>([])
-  const [isGenerating, setIsGenerating] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  // Use cache hook instead of manual state management
+  const {
+    personas,
+    isLoadingPersonas,
+    isGeneratingPersonas,
+    hasError,
+    personasError,
+    generationError,
+    generatePersonas,
+    refetchPersonas
+  } = usePersonasCache({ 
+    customerId: userId, 
+    enabled: !!userId 
+  })
+  
   const [expandedPersona, setExpandedPersona] = useState<string | null>(null)
 
   const handleGeneratePersonas = async () => {
-    setIsGenerating(true)
-    setError(null)
     try {
+      console.log('👥 Starting buyer persona generation...')
+
       // Validate userId is available
       if (!userId) {
-        throw new Error('User not authenticated - userId is required')
+        throw new Error('User ID is required to generate personas')
       }
 
-      console.log('👥 Starting buyer persona generation...')
-      
-      // First, get ICP data to use for persona generation
-      const icpResponse = await fetch('/api/icp-analysis/current-user', {
+      // First, get ICP data from backend to use for persona generation
+      console.log(`📡 Fetching ICP data for user ${userId}`)
+      const icpResponse = await fetch(`/api/customer/${userId}/icp`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       })
+      console.log('🔍 [DEBUG] ICP response received, status:', icpResponse.status)
 
-      let icpData = null
+      let companyContext = ''
+      let industry = 'Technology'
+      let targetMarket = ''
+
       if (icpResponse.ok) {
+        console.log('🔍 [DEBUG] ICP response OK, parsing JSON...')
         const icpResult = await icpResponse.json()
-        if (icpResult.success && icpResult.icp) {
-          icpData = icpResult.icp
-          console.log('✅ ICP data loaded for persona generation')
+        console.log('🔍 [DEBUG] ICP JSON parsed successfully:', icpResult)
+        if (icpResult.success && icpResult.data?.icpData) {
+          const icpData = icpResult.data.icpData
+          console.log('✅ ICP data loaded for persona generation', icpData)
+
+          // Extract companyContext from ICP data structure
+          // Build context from title, description, segments, and key indicators
+          const contextParts = []
+
+          if (icpData.title) {
+            contextParts.push(icpData.title)
+          }
+
+          if (icpData.description) {
+            contextParts.push(icpData.description)
+          }
+
+          // Add segment information
+          if (icpData.segments && Array.isArray(icpData.segments)) {
+            const segmentDescriptions = icpData.segments.map((seg: any) =>
+              `${seg.name}: ${seg.criteria?.join(', ') || ''}`
+            ).filter(Boolean)
+            if (segmentDescriptions.length > 0) {
+              contextParts.push('Target segments: ' + segmentDescriptions.join('; '))
+            }
+          }
+
+          // Add key indicators
+          if (icpData.keyIndicators && Array.isArray(icpData.keyIndicators) && icpData.keyIndicators.length > 0) {
+            contextParts.push('Key indicators: ' + icpData.keyIndicators.slice(0, 5).join(', '))
+          }
+
+          companyContext = contextParts.filter(Boolean).join('. ')
+          industry = 'Technology' // Default, as ICP doesn't specify industry directly
+          targetMarket = icpData.segments?.[0]?.criteria?.[0] || 'Mid-market companies'
+          console.log('🔍 [DEBUG] Context built, length:', companyContext.length)
+        } else {
+          console.warn('⚠️ No ICP data found in response')
         }
+      } else {
+        console.warn(`⚠️ Failed to fetch ICP data: ${icpResponse.status}`)
       }
 
-      // Get product data if available
-      const productResponse = await fetch('/api/products/current-user', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
+      console.log('🔍 [DEBUG] Before validation - companyContext length:', companyContext.length)
+
+      // Require valid company context
+      if (!companyContext || companyContext.length < 10) {
+        console.error('🔴 [DEBUG] Validation failed - companyContext too short!')
+        throw new Error('No ICP data available. Please complete your ICP analysis first before generating buyer personas.')
+      }
+
+      console.log('🔍 [DEBUG] Validation passed, preparing persona generation request')
+      console.log('📤 Sending persona generation request', {
+        contextLength: companyContext.length,
+        industry,
+        targetMarket
       })
 
-      let productData = null
-      if (productResponse.ok) {
-        const productResult = await productResponse.json()
-        if (productResult.success && productResult.product) {
-          productData = productResult.product
-          console.log('✅ Product data loaded for persona generation')
-        }
-      }
-
-      // Call the real persona generation API
-      const response = await fetch('/api/ai/generate-personas', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          icpData: icpData || {
-            companyName: 'Target Company',
-            industry: 'Technology',
-            companySize: '50-200 employees',
-            painPoints: ['Scaling challenges', 'Technical debt', 'Team growth'],
-            goals: ['Improve efficiency', 'Scale systems', 'Reduce costs']
-          },
-          productData: productData || {
-            name: 'Your Product',
-            description: 'A solution for your target market',
-            features: ['Feature 1', 'Feature 2', 'Feature 3']
-          },
-          customerId: userId
-        })
+      // Use cache hook instead of manual state management
+      await generatePersonas({
+        companyContext,
+        industry,
+        targetMarket: targetMarket || 'Mid-market companies'
       })
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to generate buyer personas')
-      }
-
-      const result = await response.json()
-      
-      if (!result.success) {
-        throw new Error(result.error || 'Persona generation failed')
-      }
-
-      // Transform the API response to match our component's expected format
-      const transformedPersonas = result.data.personas.map((persona: any, index: number) => ({
-        id: `persona-${index + 1}`,
-        name: persona.name,
-        title: persona.title,
-        role: persona.role,
-        demographics: {
-          ageRange: persona.demographics?.ageRange || '30-50',
-          experience: persona.demographics?.experience || '5-15 years',
-          education: persona.demographics?.education || 'Bachelor\'s degree',
-          location: persona.demographics?.location || 'Major metropolitan areas'
-        },
-        psychographics: {
-          values: persona.psychographics?.values || 'Professional growth and efficiency',
-          motivations: persona.psychographics?.motivations || 'Achieving business objectives',
-          fears: persona.psychographics?.fears || 'Making wrong decisions'
-        },
-        goals: persona.goals || ['Improve efficiency', 'Drive growth', 'Reduce costs'],
-        painPoints: persona.painPoints || ['Current limitations', 'Process inefficiencies', 'Resource constraints'],
-        buyingBehavior: {
-          decisionProcess: persona.buyingBehavior?.decisionProcess || 'Data-driven evaluation',
-          timeline: persona.buyingBehavior?.timeline || '3-6 months',
-          budgetAuthority: persona.buyingBehavior?.budgetAuthority || 'Medium'
-        },
-        decisionInfluence: {
-          timeline: persona.buyingBehavior?.timeline || '3-6 months',
-          budgetAuthority: persona.buyingBehavior?.budgetAuthority || 'Medium',
-          priority: persona.decisionInfluence?.priority || 'High',
-          influenceLevel: persona.decisionInfluence?.influenceLevel || 'High'
-        },
-        communicationPreferences: {
-          preferredChannels: persona.communicationPreferences?.channels || ['Email', 'LinkedIn', 'Phone calls'],
-          communicationStyle: persona.communicationPreferences?.tone || 'Professional and data-driven'
-        },
-        objections: persona.objections || ['Cost concerns', 'Implementation complexity', 'Change management'],
-        informationSources: persona.informationSources || ['Industry publications', 'Peer networks', 'Online research'],
-        technologyUsage: {
-          currentTools: persona.technologyUsage?.currentTools || ['Current business tools'],
-          techComfort: persona.technologyUsage?.techComfort || 'Medium',
-          adoptionStyle: persona.technologyUsage?.adoptionStyle || 'Mainstream'
-        }
-      }))
-
-      setPersonas(transformedPersonas)
-      console.log(`✅ Generated ${transformedPersonas.length} buyer personas successfully`)
+      console.log('✅ Personas generation initiated successfully')
       
     } catch (error) {
       console.error('❌ Persona generation failed:', error)
-      const errorMessage = error instanceof Error ? error.message : 'Failed to generate buyer personas. Please try again.'
-      setError(errorMessage)
-    } finally {
-      setIsGenerating(false)
+      // Error handling is now managed by the cache hook
     }
   }
 
@@ -209,29 +185,10 @@ export default function BuyerPersonasWidget({
     setExpandedPersona(expandedPersona === personaId ? null : personaId)
   }
 
-  const loadExistingPersonas = async () => {
-    try {
-      console.log('📊 Loading existing personas...')
-      const response = await fetch('/api/personas/current-user', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      })
-
-      if (response.ok) {
-        const result = await response.json()
-        if (result.success && result.personas) {
-          setPersonas(result.personas)
-          console.log('✅ Existing personas loaded:', result.personas.length)
-        }
-      }
-    } catch (error) {
-      console.log('ℹ️ No existing personas found or failed to load')
-    }
-  }
 
   const handleExportPersonas = async () => {
-    if (personas.length === 0) {
-      setError('No personas to export. Generate personas first.')
+    if (transformedPersonas.length === 0) {
+      console.error('No personas to export. Generate personas first.')
       return
     }
 
@@ -242,7 +199,7 @@ export default function BuyerPersonasWidget({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           format: 'pdf',
-          personas: personas,
+          personas: transformedPersonas,
           includeMethodology: true,
           includeRecommendations: true
         })
@@ -265,14 +222,45 @@ export default function BuyerPersonasWidget({
       console.log('✅ Personas exported successfully')
     } catch (error) {
       console.error('❌ Export failed:', error)
-      setError('Failed to export personas. Please try again.')
+      // Error handling could be improved with toast notifications
     }
   }
 
-  // Load existing personas on component mount
-  useEffect(() => {
-    loadExistingPersonas()
-  }, [])
+  // Transform cache hook personas to component format
+  const transformedPersonas: BuyerPersona[] = personas.map((persona: CacheBuyerPersona, index: number) => ({
+    id: persona.id || `persona-${index + 1}`,
+    name: persona.name,
+    title: persona.title,
+    role: persona.title, // Use title as role for now
+    demographics: {
+      ageRange: persona.demographics.age || '30-50',
+      experience: '5-15 years', // Default value
+      education: 'Bachelor\'s degree', // Default value
+      location: persona.demographics.location || 'Major metropolitan areas'
+    },
+    psychographics: {
+      values: persona.psychographics.goals?.join(', ') || 'Professional growth and efficiency',
+      motivations: persona.psychographics.motivations?.join(', ') || 'Achieving business objectives',
+      fears: persona.psychographics.challenges?.join(', ') || 'Making wrong decisions'
+    },
+    goals: persona.psychographics.goals || ['Improve efficiency', 'Drive growth', 'Reduce costs'],
+    painPoints: persona.psychographics.challenges || ['Current limitations', 'Process inefficiencies', 'Resource constraints'],
+    buyingBehavior: {
+      decisionProcess: persona.behavior?.decisionMakingProcess || 'Data-driven evaluation'
+    },
+    decisionInfluence: {
+      timeline: '3-6 months', // Default value
+      budgetAuthority: 'Medium' // Default value
+    },
+    communicationPreferences: {
+      preferredChannels: persona.behavior?.preferredChannels || ['Email', 'LinkedIn', 'Phone calls'],
+      communicationStyle: 'Professional and data-driven' // Default value
+    },
+    objections: persona.behavior?.objections || ['Cost concerns', 'Implementation complexity', 'Change management'],
+    informationSources: ['Industry publications', 'Peer networks', 'Online research'] // Default value
+  }))
+
+  // Personas are automatically loaded by the cache hook
 
   const getPersonaIcon = (role: string) => {
     switch (role.toLowerCase()) {
@@ -299,21 +287,21 @@ export default function BuyerPersonasWidget({
           <div>
             <h2 className="text-xl font-bold text-text-primary">Target Buyer Personas</h2>
             <p className="text-text-muted text-sm">
-              {isGenerating ? 'Generating buyer personas...' : 
-               error ? 'Error generating personas' :
-               personas.length > 0 ? `${personas.length} personas generated • AI-powered with empathy mapping` : 
+              {isGeneratingPersonas ? 'Generating buyer personas...' : 
+               hasError ? 'Error generating personas' :
+               transformedPersonas.length > 0 ? `${transformedPersonas.length} personas generated • AI-powered with empathy mapping` : 
                'AI-generated buyer personas with empathy mapping and behavioral insights'}
             </p>
           </div>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setPersonas([])}
+              onClick={() => {/* Clear personas - handled by cache hook */}}
               className="p-2 text-text-muted hover:text-text-primary hover:bg-surface-hover rounded-lg transition-colors"
               title="Clear personas"
             >
               <RefreshCw className="w-4 h-4" />
             </button>
-            {personas.length > 0 && (
+            {transformedPersonas.length > 0 && (
               <button
                 onClick={handleExportPersonas}
                 className="p-2 text-text-muted hover:text-text-primary hover:bg-surface-hover rounded-lg transition-colors"
@@ -327,24 +315,24 @@ export default function BuyerPersonasWidget({
       </div>
 
       <div className="p-6">
-        {error && (
+        {hasError && (
           <div className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200">
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-red-400 mt-0.5" />
               <div>
-                <p className="text-red-800 text-sm">{error}</p>
+                <p className="text-red-800 text-sm">{personasError?.message || generationError?.message || 'An error occurred'}</p>
                 <button 
-                  onClick={() => setError(null)}
+                  onClick={() => refetchPersonas()}
                   className="mt-2 text-accent-danger hover:text-red-800 text-sm underline"
                 >
-                  Dismiss
+                  Retry
                 </button>
               </div>
             </div>
           </div>
         )}
         
-        {personas.length === 0 && (
+        {transformedPersonas.length === 0 && (
           <div className="text-center py-12">
             <div className="w-16 h-16 bg-brand-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <Users className="w-8 h-8 text-brand-primary" />
@@ -357,10 +345,10 @@ export default function BuyerPersonasWidget({
             </p>
             <button
               onClick={handleGeneratePersonas}
-              disabled={isGenerating}
+              disabled={isGeneratingPersonas}
               className="px-6 py-3 bg-brand-primary hover:bg-brand-primary/90 text-text-primary rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 mx-auto"
             >
-              {isGenerating ? (
+              {isGeneratingPersonas ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin" />
                   Generating Personas...
@@ -375,21 +363,7 @@ export default function BuyerPersonasWidget({
           </div>
         )}
 
-        {error && (
-          <div className="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
-              <div>
-                <h3 className="text-sm font-semibold text-red-400 mb-1">
-                  Generation Failed
-                </h3>
-                <p className="text-sm text-red-300">{error}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {isGenerating && (
+        {isGeneratingPersonas && (
           <div className="mb-6 p-4 bg-brand-primary/10 border border-brand-primary/30 rounded-lg">
             <div className="flex items-center gap-3">
               <RefreshCw className="w-5 h-5 text-brand-primary animate-spin" />
@@ -414,7 +388,7 @@ export default function BuyerPersonasWidget({
               transition={{ duration: 0.3 }}
               className="space-y-6"
             >
-              {personas.map((persona, index) => {
+              {transformedPersonas.map((persona, index) => {
                 const isExpanded = expandedPersona === persona.id;
                 const IconComponent = getPersonaIcon(persona.role);
                 

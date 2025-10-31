@@ -1,0 +1,896 @@
+{
+  "config": {
+    "configFile": "/Users/geter/andru/hs-andru-test/modern-platform/frontend/playwright.config.ts",
+    "rootDir": "/Users/geter/andru/hs-andru-test/modern-platform/frontend/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "playwright-report/results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/geter/andru/hs-andru-test/modern-platform/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {},
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/geter/andru/hs-andru-test/modern-platform/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.0",
+    "workers": 4,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "auth.spec.ts",
+      "file": "auth.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Authentication Flow",
+          "file": "auth.spec.ts",
+          "line": 16,
+          "column": 6,
+          "specs": [
+            {
+              "title": "auth page loads successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-b51a16804b27554c9a92",
+              "file": "auth.spec.ts",
+              "line": 23,
+              "column": 3
+            },
+            {
+              "title": "auth page with redirect parameter",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-72d95e61a62932cd7cf3",
+              "file": "auth.spec.ts",
+              "line": 36,
+              "column": 3
+            },
+            {
+              "title": "protected route redirects to auth when not authenticated",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-435e45576ff2bf6d832b",
+              "file": "auth.spec.ts",
+              "line": 48,
+              "column": 3
+            },
+            {
+              "title": "oauth callback route exists",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-57163bae96865a5efea1",
+              "file": "auth.spec.ts",
+              "line": 61,
+              "column": 3
+            },
+            {
+              "title": "dashboard route requires authentication",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-b8074ef8d61f4ca8cba8",
+              "file": "auth.spec.ts",
+              "line": 70,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Authentication UI Elements",
+          "file": "auth.spec.ts",
+          "line": 88,
+          "column": 6,
+          "specs": [
+            {
+              "title": "auth page has expected structure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-38fec13a2c0f2aa14f7c",
+              "file": "auth.spec.ts",
+              "line": 89,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Navigation After Auth",
+          "file": "auth.spec.ts",
+          "line": 102,
+          "column": 6,
+          "specs": [
+            {
+              "title": "can navigate between public pages",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-b7a8127a6c164ad5e73a",
+              "file": "auth.spec.ts",
+              "line": 103,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "cost-calculator.spec.ts",
+      "file": "cost-calculator.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cost Calculator - Page Access",
+          "file": "cost-calculator.spec.ts",
+          "line": 17,
+          "column": 6,
+          "specs": [
+            {
+              "title": "cost page loads successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-b871dd70416c25835b52",
+              "file": "cost-calculator.spec.ts",
+              "line": 18,
+              "column": 3
+            },
+            {
+              "title": "cost page has header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-a6ef4ca174d3f1ab8ee9",
+              "file": "cost-calculator.spec.ts",
+              "line": 33,
+              "column": 3
+            },
+            {
+              "title": "cost page shows feature cards",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-49cb34513701fb2675fb",
+              "file": "cost-calculator.spec.ts",
+              "line": 41,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Cost Calculator - Feature Availability",
+          "file": "cost-calculator.spec.ts",
+          "line": 52,
+          "column": 6,
+          "specs": [
+            {
+              "title": "cost calculator feature is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-b5166dbfe862818efbcb",
+              "file": "cost-calculator.spec.ts",
+              "line": 58,
+              "column": 3
+            },
+            {
+              "title": "business case builder feature is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-75c872c35e30a94d707f",
+              "file": "cost-calculator.spec.ts",
+              "line": 64,
+              "column": 3
+            },
+            {
+              "title": "features show status badges",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-d80318642ff250cd3ce1",
+              "file": "cost-calculator.spec.ts",
+              "line": 70,
+              "column": 3
+            },
+            {
+              "title": "available features are clickable",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-64fe17adf28d4e58e19d",
+              "file": "cost-calculator.spec.ts",
+              "line": 79,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Cost Calculator - Navigation",
+          "file": "cost-calculator.spec.ts",
+          "line": 88,
+          "column": 6,
+          "specs": [
+            {
+              "title": "can navigate to calculator from cost page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-be143deea621f283512e",
+              "file": "cost-calculator.spec.ts",
+              "line": 89,
+              "column": 3
+            },
+            {
+              "title": "can navigate to business case from cost page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-b80d998eb3490032ea17",
+              "file": "cost-calculator.spec.ts",
+              "line": 112,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Cost Calculator - UI Interactions",
+          "file": "cost-calculator.spec.ts",
+          "line": 135,
+          "column": 6,
+          "specs": [
+            {
+              "title": "page handles hover interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-e177fdf872a628cd5280",
+              "file": "cost-calculator.spec.ts",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "coming soon features are clearly marked",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-8ed0db361d2d73d4525a",
+              "file": "cost-calculator.spec.ts",
+              "line": 156,
+              "column": 3
+            },
+            {
+              "title": "premium features are clearly marked",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-d13e3cfd2d35c561614a",
+              "file": "cost-calculator.spec.ts",
+              "line": 168,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Cost Calculator - Responsive Design",
+          "file": "cost-calculator.spec.ts",
+          "line": 181,
+          "column": 6,
+          "specs": [
+            {
+              "title": "cost page renders on mobile viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-b629924488d83edd9f79",
+              "file": "cost-calculator.spec.ts",
+              "line": 182,
+              "column": 3
+            },
+            {
+              "title": "cost page renders on desktop viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-0cdb13f7d75207413282",
+              "file": "cost-calculator.spec.ts",
+              "line": 198,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Cost Calculator - Error Handling",
+          "file": "cost-calculator.spec.ts",
+          "line": 216,
+          "column": 6,
+          "specs": [
+            {
+              "title": "page handles invalid routes gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4c8f34faf43091f8731f-a2a9c0d360b33249c00a",
+              "file": "cost-calculator.spec.ts",
+              "line": 217,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "icp-workflow.spec.ts",
+      "file": "icp-workflow.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "ICP Framework - Page Access",
+          "file": "icp-workflow.spec.ts",
+          "line": 17,
+          "column": 6,
+          "specs": [
+            {
+              "title": "ICP page loads successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "19dcfe916fefd621c06e-fddccda3e33b7cdf96d1",
+              "file": "icp-workflow.spec.ts",
+              "line": 18,
+              "column": 3
+            },
+            {
+              "title": "ICP page has navigation structure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "19dcfe916fefd621c06e-66d062c2a6db9c6c70c6",
+              "file": "icp-workflow.spec.ts",
+              "line": 36,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "ICP Framework - Widget Navigation",
+          "file": "icp-workflow.spec.ts",
+          "line": 56,
+          "column": 6,
+          "specs": [
+            {
+              "title": "product details widget is available",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "19dcfe916fefd621c06e-a35a9357c6ce4df87518",
+              "file": "icp-workflow.spec.ts",
+              "line": 67,
+              "column": 3
+            },
+            {
+              "title": "rating system widget is available",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "19dcfe916fefd621c06e-7c00b0f088ae73e3a8ee",
+              "file": "icp-workflow.spec.ts",
+              "line": 76,
+              "column": 3
+            },
+            {
+              "title": "personas widget is available",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "19dcfe916fefd621c06e-ee37ba1ca5277caa403d",
+              "file": "icp-workflow.spec.ts",
+              "line": 85,
+              "column": 3
+            },
+            {
+              "title": "overview widget is available",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "19dcfe916fefd621c06e-ebb644c356fea7e31c7c",
+              "file": "icp-workflow.spec.ts",
+              "line": 94,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "ICP Framework - Widget Interaction",
+          "file": "icp-workflow.spec.ts",
+          "line": 104,
+          "column": 6,
+          "specs": [
+            {
+              "title": "can interact with widget selection",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "19dcfe916fefd621c06e-a09879da8e649749f4d6",
+              "file": "icp-workflow.spec.ts",
+              "line": 115,
+              "column": 3
+            },
+            {
+              "title": "page handles navigation without crashes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "19dcfe916fefd621c06e-85fed3c93b5bb208aa77",
+              "file": "icp-workflow.spec.ts",
+              "line": 135,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "ICP Framework - Data Display",
+          "file": "icp-workflow.spec.ts",
+          "line": 149,
+          "column": 6,
+          "specs": [
+            {
+              "title": "page can display loading states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "19dcfe916fefd621c06e-3e1535d9276f8493ff08",
+              "file": "icp-workflow.spec.ts",
+              "line": 150,
+              "column": 3
+            },
+            {
+              "title": "page handles empty state gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "19dcfe916fefd621c06e-377d3ec3b3b143a0d68e",
+              "file": "icp-workflow.spec.ts",
+              "line": 162,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "ICP Framework - URL Parameters",
+          "file": "icp-workflow.spec.ts",
+          "line": 182,
+          "column": 6,
+          "specs": [
+            {
+              "title": "handles widget URL parameter",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "19dcfe916fefd621c06e-a0ab43fa5c45e722e4c0",
+              "file": "icp-workflow.spec.ts",
+              "line": 183,
+              "column": 3
+            },
+            {
+              "title": "handles invalid URL parameters gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "19dcfe916fefd621c06e-987d5644cbbc8ef703ff",
+              "file": "icp-workflow.spec.ts",
+              "line": 192,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-10-27T21:03:38.783Z",
+    "duration": 116.18700000000001,
+    "expected": 0,
+    "skipped": 34,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

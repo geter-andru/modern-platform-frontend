@@ -20,7 +20,7 @@ import { useDesignSystem, useTheme, useBrand } from './index';
  * This component can be used to test the design system functionality
  * Remove this file after testing is complete
  */
-export const DesignSystemTest: React.FC = () => {
+export const DesignSystemTestComponent: React.FC = () => {
   const { tokens, getToken, updateTokens } = useDesignSystem();
   const { theme, setTheme } = useTheme();
   const { brand, setBrand } = useBrand();

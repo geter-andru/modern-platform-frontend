@@ -27,6 +27,10 @@ interface Widget {
   component?: React.ComponentType<any>
 }
 
+// Widget categorization for two-column layout (STYLING DATA ONLY - no logic changes)
+const INPUT_WIDGETS = ['product-details', 'rating-system', 'rate-company'];
+const OUTPUT_WIDGETS = ['overview', 'personas'];
+
 const WIDGETS: Widget[] = [
   {
     id: 'product-details',
@@ -120,6 +124,12 @@ export default function ICPPage() {
   }
 
   const currentWidget = WIDGETS.find(w => w.id === activeWidget);
+  const isInputWidget = INPUT_WIDGETS.includes(activeWidget);
+  const isOutputWidget = OUTPUT_WIDGETS.includes(activeWidget);
+
+  // Determine which widgets to show in each column (STYLING DATA ACCESS ONLY - no logic changes)
+  const leftColumnWidget = isInputWidget ? currentWidget : WIDGETS.find(w => w.id === 'product-details');
+  const rightColumnWidget = isOutputWidget ? currentWidget : WIDGETS.find(w => w.id === 'overview');
 
   const handleWidgetChange = (widgetId: string) => {
     setActiveWidget(widgetId);
@@ -207,48 +217,98 @@ export default function ICPPage() {
           </div>
         </div>
 
-        <div className="mb-8">
-          <AnimatePresence mode="wait">
-            {currentWidget && currentWidget.available && currentWidget.component && (
+        {/* Two-Column Layout: 30-35% Input, 65-70% Output (Expert Requirement) */}
+        {/* Mobile: Single column, Desktop (md+): Two columns */}
+        <div className="mb-8 grid grid-cols-1 md:grid-cols-[30fr_70fr] gap-6">
+          {/* Left Column: Input & Configuration (30-35%) */}
+          <div className="space-y-6">
+            <AnimatePresence mode="wait">
+              {leftColumnWidget && leftColumnWidget.available && leftColumnWidget.component && (
+                <motion.div
+                  key={leftColumnWidget.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <leftColumnWidget.component
+                    className="w-full"
+                    userId={user.id}
+                    icpData={icpData?.data}
+                    isLoading={isLoading}
+                    onExport={handleExport}
+                    onRefresh={handleRefresh}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {leftColumnWidget && !leftColumnWidget.available && (
               <motion.div
-                key={activeWidget}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
+                className="card-executive card-padding-lg text-center"
               >
-                <currentWidget.component
-                  className="max-w-6xl mx-auto"
-                  userId={user.id}
-                  icpData={icpData?.data}
-                  isLoading={isLoading}
-                  onExport={handleExport}
-                  onRefresh={handleRefresh}
-                />
+                <leftColumnWidget.icon className="w-16 h-16 text-text-muted mx-auto mb-4" />
+                <h3 className="heading-3 mb-2">
+                  {leftColumnWidget.title}
+                </h3>
+                <p className="body text-text-secondary mb-6">
+                  {leftColumnWidget.description}
+                </p>
+                <div className="card-glass card-padding-md">
+                  <p className="body-small" style={{ color: 'var(--color-primary)' }}>
+                    🚧 This widget is currently under development and will be available soon.
+                  </p>
+                </div>
               </motion.div>
             )}
-          </AnimatePresence>
+          </div>
 
-          {currentWidget && !currentWidget.available && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="card-executive card-padding-lg text-center"
-            >
-              <currentWidget.icon className="w-16 h-16 text-text-muted mx-auto mb-4" />
-              <h3 className="heading-3 mb-2">
-                {currentWidget.title}
-              </h3>
-              <p className="body text-text-secondary mb-6">
-                {currentWidget.description}
-              </p>
-              <div className="card-glass card-padding-md max-w-md mx-auto">
-                <p className="body-small" style={{ color: 'var(--color-primary)' }}>
-                  🚧 This widget is currently under development and will be available soon.
+          {/* Right Column: Output & Visualization (65-70%) */}
+          <div className="space-y-6">
+            <AnimatePresence mode="wait">
+              {rightColumnWidget && rightColumnWidget.available && rightColumnWidget.component && (
+                <motion.div
+                  key={rightColumnWidget.id}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <rightColumnWidget.component
+                    className="w-full"
+                    userId={user.id}
+                    icpData={icpData?.data}
+                    isLoading={isLoading}
+                    onExport={handleExport}
+                    onRefresh={handleRefresh}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {rightColumnWidget && !rightColumnWidget.available && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="card-executive card-padding-lg text-center"
+              >
+                <rightColumnWidget.icon className="w-16 h-16 text-text-muted mx-auto mb-4" />
+                <h3 className="heading-3 mb-2">
+                  {rightColumnWidget.title}
+                </h3>
+                <p className="body text-text-secondary mb-6">
+                  {rightColumnWidget.description}
                 </p>
-              </div>
-            </motion.div>
-          )}
+                <div className="card-glass card-padding-md">
+                  <p className="body-small" style={{ color: 'var(--color-primary)' }}>
+                    🚧 This widget is currently under development and will be available soon.
+                  </p>
+                </div>
+              </motion.div>
+            )}
+          </div>
         </div>
 
         <div className="flex gap-4 justify-center">

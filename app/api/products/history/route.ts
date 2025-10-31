@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuthHeaders } from '@/app/lib/middleware/api-auth';
+import { createClient } from '@/app/lib/supabase/server';
 import { env } from '@/app/lib/config/environment';
 import { getBackendUrl } from '@/app/lib/config/api';
 
@@ -21,8 +21,21 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get authentication headers for backend call
-    const authHeaders = await getAuthHeaders(customerId);
+    // Get server-side Supabase session for authentication
+    const supabase = await createClient();
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+    if (sessionError || !session) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    // Build authentication headers with Supabase JWT
+    const authHeaders = {
+      'Authorization': `Bearer ${session.access_token}`
+    };
 
     // Forward request to Express backend
     const backendResponse = await fetch(getBackendUrl(`/api/products/history?customerId=${customerId}`), {
