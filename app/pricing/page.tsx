@@ -796,7 +796,7 @@ export default function PricingPage() {
                         e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
                       }}
                     >
-                      <span>Start Free Trial & View Sample ICP Report</span>
+                      <span>Join Waitlist & View Sample ICP Report</span>
                       <ArrowRight className="h-4 w-4" />
                     </button>
                   </div>

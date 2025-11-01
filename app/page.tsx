@@ -152,7 +152,7 @@ export default function HomePage() {
                         border: '1px solid rgba(255, 255, 255, 0.1)'
                       }}
                     >
-                      <span className="relative z-10">Start Free Trial</span>
+                      <span className="relative z-10">View Pricing</span>
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                     </Link>
                   )}
@@ -176,7 +176,7 @@ export default function HomePage() {
               )}
             </motion.div>
 
-            {/* Executive Trial Badge */}
+            {/* Platform Status Badge */}
             <motion.div variants={fadeInUp} className="mt-12">
               <div className="inline-block px-6 py-3 rounded-full" style={{
                 background: 'rgba(255, 255, 255, 0.08)',
@@ -189,7 +189,7 @@ export default function HomePage() {
                   fontFamily: '"Inter", sans-serif',
                   letterSpacing: '0.5px'
                 }}>
-                  ✨ Start with a 3-day free trial • No credit card required
+                  🚧 Platform in Beta • Launching December 2025
                 </p>
               </div>
             </motion.div>
@@ -426,7 +426,7 @@ export default function HomePage() {
                 fontWeight: 'var(--font-weight-normal, 400)',
                 lineHeight: 'var(--line-height-relaxed, 1.6)'
               }}>
-                Export to PDF, CSV, or Excel. Share insights with your team and stakeholders instantly.
+                Share insights with your team and stakeholders. Export functionality coming soon in full launch.
               </p>
             </motion.div>
           </div>
