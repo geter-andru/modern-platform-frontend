@@ -70,7 +70,7 @@ const ModernCard: React.FC<ModernCardProps> = ({
     : sizeClasses[size];
 
   const baseClasses = `
-    relative rounded-xl border backdrop-blur-sm
+    relative rounded-xl border border-transparent backdrop-blur-sm
     ${finalSizeClasses}
     ${variantClasses[variant]}
     ${interactiveClasses}
@@ -175,7 +175,7 @@ const ModernCardFooter: React.FC<ModernCardFooterProps> = ({
   className = '' 
 }) => {
   return (
-    <div className={`mt-6 pt-4 border-t border-surface ${className}`}>
+    <div className={`mt-6 pt-4 border-t border-transparent ${className}`}>
       {children}
     </div>
   );

@@ -197,13 +197,13 @@ const RecentActionsWidget: React.FC<RecentActionsWidgetProps> = ({
 
   return (
     <motion.div
-      className={`bg-[#1a1a1a] border border-gray-800 rounded-xl overflow-hidden ${className}`}
+      className={`bg-[#1a1a1a] border border-transparent rounded-xl overflow-hidden ${className}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-900/30 to-green-900/30 border-b border-gray-800 p-6">
+      <div className="bg-gradient-to-r from-blue-900/30 to-green-900/30 border-b border-transparent p-6">
         <h3 className="text-xl font-bold text-white mb-1">Recent Professional Actions</h3>
         <p className="text-sm text-gray-400">Tracking your business development activities</p>
       </div>

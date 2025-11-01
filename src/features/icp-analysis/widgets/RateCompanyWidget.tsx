@@ -162,7 +162,7 @@ export default function RateCompanyWidget({
   }
 
   return (
-    <div className={`bg-background-secondary border border-border-standard rounded-xl overflow-hidden ${className}`}>
+    <div className={`bg-background-secondary border border-transparent rounded-xl overflow-hidden ${className}`}>
       <div className="bg-background-tertiary px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
@@ -327,7 +327,7 @@ export default function RateCompanyWidget({
                     const IconComponent = isExpanded ? XCircle : Info;
                     
                     return (
-                      <div key={criteria.criteriaId} className="border border-border-standard rounded-lg">
+                      <div key={criteria.criteriaId} className="border border-transparent rounded-lg">
                         <button
                           onClick={() => toggleCriteria(criteria.criteriaId)}
                           className="w-full px-4 py-3 flex items-center justify-between hover:bg-surface-hover transition-colors"
@@ -373,7 +373,7 @@ export default function RateCompanyWidget({
                               transition={{ duration: 0.2 }}
                               className="overflow-hidden"
                             >
-                              <div className="px-4 pb-4 border-t border-border-standard">
+                              <div className="px-4 pb-4 border-t border-transparent">
                                 <div className="pt-4 space-y-3">
                                   <div>
                                     <h5 className="text-sm font-medium text-text-primary mb-2">
@@ -443,7 +443,7 @@ export default function RateCompanyWidget({
                 </h3>
                 <div className="space-y-4">
                   {rating.salesActions.map((action) => (
-                    <div key={action.id} className="border border-border-standard rounded-lg p-4">
+                    <div key={action.id} className="border border-transparent rounded-lg p-4">
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 bg-brand-primary/20 rounded-lg flex items-center justify-center">

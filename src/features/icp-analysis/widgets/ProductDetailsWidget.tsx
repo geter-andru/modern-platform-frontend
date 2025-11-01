@@ -334,7 +334,7 @@ export default function ProductDetailsWidget({
   }
 
   return (
-    <div className={`bg-background-secondary border border-border-standard rounded-xl overflow-hidden ${className}`}>
+    <div className={`bg-background-secondary border border-transparent rounded-xl overflow-hidden ${className}`}>
       {/* Loading Overlay - Modern & Sophisticated */}
       {isGenerating && (
         <motion.div
@@ -464,9 +464,8 @@ export default function ProductDetailsWidget({
         </motion.div>
       )}
 
-      <div className="px-6 py-4 border-b" style={{
-        backgroundColor: 'var(--color-background-tertiary)',
-        borderColor: 'var(--border-standard)'
+      <div className="px-6 py-4 border-b border-transparent" style={{ 
+        backgroundColor: 'var(--color-background-tertiary)'
       }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

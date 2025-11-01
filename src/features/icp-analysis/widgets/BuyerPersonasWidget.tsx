@@ -281,7 +281,7 @@ export default function BuyerPersonasWidget({
   }
 
   return (
-    <div className={`bg-background-secondary border border-border-standard rounded-xl overflow-hidden ${className}`}>
+    <div className={`bg-background-secondary border border-transparent rounded-xl overflow-hidden ${className}`}>
       <div className="bg-background-tertiary px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
@@ -433,7 +433,7 @@ export default function BuyerPersonasWidget({
                           transition={{ duration: 0.2 }}
                           className="overflow-hidden"
                         >
-                          <div className="px-6 pb-6 border-t border-border-standard">
+                          <div className="px-6 pb-6 border-t border-transparent">
                             <div className="pt-6 space-y-6">
                               
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

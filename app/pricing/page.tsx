@@ -38,7 +38,7 @@ export default function PricingPage() {
 
   // External links
   const STRIPE_WAITLIST_LINK = 'https://buy.stripe.com/6oU9AVgJn4y78iqdU6bsc0n';
-  const CALENDLY_DEAL_ASSISTANCE_LINK = 'https://calendly.com/humusnshore/discovery-60-min?back=1&month=2025-10';
+  const CALENDLY_DEAL_ASSISTANCE_LINK = 'https://calendly.com/humusnshore/60-min-sales-solution-session';
 
   // Pricing Data (Technical Founder Focus)
   const pricingTiers = {
@@ -158,7 +158,7 @@ export default function PricingPage() {
             className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 rounded text-xs z-50 max-w-xs"
             style={{
               background: '#1A1A1A',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+                    border: '1px solid transparent',
               color: '#E0E0E0',
               fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
               boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5)',
@@ -551,7 +551,7 @@ export default function PricingPage() {
                       className="w-full max-w-md mx-auto px-12 py-6 rounded-lg font-semibold text-base text-center transition-all duration-300 flex items-center justify-center gap-2"
                       style={{
                         background: '#1A1A1A',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        border: '1px solid transparent',
                         color: '#FFFFFF',
                         fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
                         fontWeight: '600'
@@ -668,7 +668,7 @@ export default function PricingPage() {
                   className="p-8 rounded-xl relative transition-all duration-300"
                   style={{
                     background: '#1A1A1A',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    border: '1px solid transparent',
                     boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)'
                   }}
                   onMouseEnter={(e) => {
@@ -676,7 +676,7 @@ export default function PricingPage() {
                     e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.5)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                    e.currentTarget.style.borderColor = 'transparent';
                     e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.4)';
                   }}
                 >
@@ -782,7 +782,7 @@ export default function PricingPage() {
                       className="w-full px-6 py-3 rounded-lg font-semibold text-sm text-center transition-all duration-300 flex items-center justify-center gap-2"
                       style={{
                         background: '#1A1A1A',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        border: '1px solid transparent',
                         color: '#FFFFFF',
                         fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
                         fontWeight: '600'
@@ -979,7 +979,7 @@ export default function PricingPage() {
                   className="p-8 rounded-xl relative transition-all duration-300"
                   style={{
                     background: '#1A1A1A',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    border: '1px solid transparent',
                     boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)'
                   }}
                   onMouseEnter={(e) => {
@@ -987,7 +987,7 @@ export default function PricingPage() {
                     e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.5)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                    e.currentTarget.style.borderColor = 'transparent';
                     e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.4)';
                   }}
                 >
@@ -1108,7 +1108,7 @@ export default function PricingPage() {
                       className="w-full px-6 py-3 rounded-lg font-semibold text-sm text-center transition-all duration-300 flex items-center justify-center gap-2"
                       style={{
                         background: '#1A1A1A',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        border: '1px solid transparent',
                         color: '#FFFFFF',
                         fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
                         fontWeight: '600'
@@ -1174,7 +1174,7 @@ export default function PricingPage() {
                   className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-2"
                   style={{
                     background: '#1A1A1A',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    border: '1px solid transparent',
                     color: '#E0E0E0',
                     fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
                   }}
@@ -1183,7 +1183,7 @@ export default function PricingPage() {
                     e.currentTarget.style.color = '#FFFFFF';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                    e.currentTarget.style.borderColor = 'transparent';
                     e.currentTarget.style.color = '#E0E0E0';
                   }}
                 >
@@ -1205,7 +1205,7 @@ export default function PricingPage() {
                   className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-2"
                   style={{
                     background: '#1A1A1A',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    border: '1px solid transparent',
                     color: '#E0E0E0',
                     fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
                   }}
@@ -1214,7 +1214,7 @@ export default function PricingPage() {
                     e.currentTarget.style.color = '#FFFFFF';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                    e.currentTarget.style.borderColor = 'transparent';
                     e.currentTarget.style.color = '#E0E0E0';
                   }}
                 >
@@ -1283,7 +1283,7 @@ export default function PricingPage() {
                         key={index} 
                         className="hover:bg-[rgba(255,255,255,0.02)] transition-colors"
                         style={{ 
-                          borderBottom: index < 9 ? '1px solid rgba(255, 255, 255, 0.05)' : 'none'
+                          borderBottom: index < 9 ? '1px solid transparent' : 'none'
                         }}
                       >
                         <td className="p-4 text-sm font-medium" style={{
@@ -1417,7 +1417,7 @@ export default function PricingPage() {
                   {['GitHub', 'AWS', 'Stripe', 'Slack', 'JSON/CSV'].map((integration, index) => (
                     <div key={index} className="px-4 py-2 rounded text-xs font-medium" style={{
                       background: 'rgba(255, 255, 255, 0.03)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      border: '1px solid transparent',
                       color: '#E0E0E0',
                       fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
                     }}>

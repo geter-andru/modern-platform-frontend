@@ -201,11 +201,11 @@ export function EnterpriseNavigationV2({ children }: EnterpriseNavigationV2Props
     <div className="flex h-screen bg-black">
       {/* Sidebar */}
       <div className={`
-        bg-background-secondary border-r border-surface flex flex-col transition-all duration-200 ease-out
+        bg-background-secondary border-r border-transparent flex flex-col transition-all duration-200 ease-out
         ${sidebarCollapsed ? 'w-16' : 'w-72'}
       `}>
         {/* Header */}
-        <div className="p-4 border-b border-surface">
+        <div className="p-4 border-b border-transparent">
           <div className="flex items-center justify-between">
             <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : ''}`}>
               <div className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-accent rounded-lg flex items-center justify-center">
@@ -311,7 +311,7 @@ export function EnterpriseNavigationV2({ children }: EnterpriseNavigationV2Props
 
         {/* Footer */}
         {!sidebarCollapsed && (
-          <div className="p-4 border-t border-surface">
+          <div className="p-4 border-t border-transparent">
             <div className="flex items-center justify-between text-xs text-text-muted mb-3">
               <span>Customer ID: {user?.id ? user.id.slice(0, 8) + '...' : 'Loading...'}</span>
               <div className="flex items-center">
@@ -342,7 +342,7 @@ export function EnterpriseNavigationV2({ children }: EnterpriseNavigationV2Props
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Top Header */}
-        <header className="bg-background-elevated border-b border-surface px-6 py-4 relative">
+        <header className="bg-background-elevated border-b border-transparent px-6 py-4 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-brand-primary/5 via-brand-accent/5 to-brand-secondary/5"></div>
           <div className="relative">
           <div className="flex items-center justify-between">
@@ -377,7 +377,7 @@ export function EnterpriseNavigationV2({ children }: EnterpriseNavigationV2Props
                 <Cog6ToothIcon className="w-5 h-5" />
               </button>
               
-              <div className="flex items-center space-x-3 pl-4 border-l border-surface">
+              <div className="flex items-center space-x-3 pl-4 border-l border-transparent">
                 <div className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-accent rounded-full flex items-center justify-center">
                   <UserCircleIcon className="w-4 h-4 text-text-primary" />
                 </div>

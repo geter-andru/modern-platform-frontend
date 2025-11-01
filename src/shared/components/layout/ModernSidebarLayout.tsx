@@ -238,7 +238,7 @@ const ModernSidebarLayout: React.FC<ModernSidebarLayoutProps> = ({
       {/* Mobile Layout */}
       <div className="md:hidden">
         {/* Mobile Header */}
-        <header className="h-16 bg-[#1a1a1a] border-b border-gray-800 flex items-center justify-between px-4">
+        <header className="h-16 bg-[#1a1a1a] border-b border-transparent flex items-center justify-between px-4">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-lg hover:bg-gray-700 transition-colors"
@@ -290,7 +290,7 @@ const ModernSidebarLayout: React.FC<ModernSidebarLayoutProps> = ({
                 animate={{ x: 0 }}
                 exit={{ x: -300 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                className="fixed top-16 left-0 bottom-0 w-80 bg-[#1a1a1a] border-r border-gray-800 z-50 overflow-y-auto"
+                className="fixed top-16 left-0 bottom-0 w-80 bg-[#1a1a1a] border-r border-transparent z-50 overflow-y-auto"
               >
                 <nav className="p-4 space-y-2">
                   {navigationItems.map((item) => {
@@ -348,13 +348,13 @@ const ModernSidebarLayout: React.FC<ModernSidebarLayoutProps> = ({
       }}>
         {/* Fixed Left Sidebar */}
         <motion.aside 
-          className="bg-[#1a1a1a] border-r border-gray-800 flex flex-col"
+          className="bg-[#1a1a1a] border-r border-transparent flex flex-col"
           initial={{ width: sidebarCollapsed ? 72 : 260 }}
           animate={{ width: sidebarCollapsed ? 72 : 260 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
           {/* Sidebar Header */}
-          <div className="h-16 flex items-center justify-between px-4 border-b border-gray-800">
+          <div className="h-16 flex items-center justify-between px-4 border-b border-transparent">
             {!sidebarCollapsed && (
               <motion.div 
                 initial={{ opacity: 0 }}
@@ -507,7 +507,7 @@ const ModernSidebarLayout: React.FC<ModernSidebarLayoutProps> = ({
 
           {/* Milestone Tracker Section - positioned right after navigation */}
           {!sidebarCollapsed && MilestoneTrackerWidget && (
-            <div className="px-4 pb-4 border-b border-gray-800">
+            <div className="px-4 pb-4 border-b border-transparent">
               <div className="mb-3">
                 <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
                   Progress Tracking
@@ -521,7 +521,7 @@ const ModernSidebarLayout: React.FC<ModernSidebarLayoutProps> = ({
 
           {/* Quick Actions Section - positioned right after milestone tracker */}
           {!sidebarCollapsed && QuickActionsGrid && (
-            <div className="px-4 pb-4 border-b border-gray-800">
+            <div className="px-4 pb-4 border-b border-transparent">
               <div className="mb-3">
                 <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
                   Quick Actions
@@ -537,7 +537,7 @@ const ModernSidebarLayout: React.FC<ModernSidebarLayoutProps> = ({
           <div className="flex-1"></div>
 
           {/* Sidebar Footer */}
-          <div className="p-4 border-t border-gray-800">
+          <div className="p-4 border-t border-transparent">
             {!sidebarCollapsed ? (
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
@@ -562,7 +562,7 @@ const ModernSidebarLayout: React.FC<ModernSidebarLayoutProps> = ({
         {/* Main Content Area */}
         <div className="flex flex-col min-h-screen">
           {/* Clean Header - 60px height */}
-          <header className="h-16 bg-[#1a1a1a] border-b border-gray-800 flex items-center justify-between px-6">
+          <header className="h-16 bg-[#1a1a1a] border-b border-transparent flex items-center justify-between px-6">
             {/* Personalized Greeting */}
             <div className="flex items-center space-x-4">
               <div>

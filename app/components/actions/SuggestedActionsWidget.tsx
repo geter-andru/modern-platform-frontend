@@ -236,7 +236,7 @@ const SuggestedActionsWidget: React.FC<SuggestedActionsWidgetProps> = ({
 
   return (
     <motion.div
-      className={`bg-[#1a1a1a] border border-gray-800 rounded-xl overflow-hidden ${className}`}
+      className={`bg-[#1a1a1a] border border-transparent rounded-xl overflow-hidden ${className}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}

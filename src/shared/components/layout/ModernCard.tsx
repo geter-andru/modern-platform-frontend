@@ -49,20 +49,20 @@ const ModernCard: React.FC<ModernCardProps> = ({
 
   // Variant configurations
   const variantClasses = {
-    default: 'bg-[#1a1a1a] border-gray-800',
-    highlighted: 'bg-[#1a1a1a] border-purple-500/30 ring-1 ring-purple-500/20',
-    success: 'bg-[#1a1a1a] border-green-500/30 ring-1 ring-green-500/20',
-    warning: 'bg-[#1a1a1a] border-orange-500/30 ring-1 ring-orange-500/20',
-    glass: 'bg-gray-900/50 border-gray-700/50 backdrop-blur-sm'
+    default: 'bg-[#1a1a1a] border-transparent',
+    highlighted: 'bg-[#1a1a1a] border-transparent ring-1 ring-purple-500/20',
+    success: 'bg-[#1a1a1a] border-transparent ring-1 ring-green-500/20',
+    warning: 'bg-[#1a1a1a] border-transparent ring-1 ring-orange-500/20',
+    glass: 'bg-gray-900/50 border-transparent backdrop-blur-sm'
   };
 
   // Interactive states
   const interactiveClasses = interactive 
-    ? 'hover:border-gray-700 hover:shadow-xl hover:shadow-black/20 transition-all duration-300 cursor-pointer'
+    ? 'hover:shadow-xl hover:shadow-black/20 transition-all duration-300 cursor-pointer'
     : '';
 
   const baseClasses = `
-    relative rounded-xl border backdrop-blur-sm
+    relative rounded-xl border border-transparent backdrop-blur-sm
     ${sizeClasses[size]}
     ${paddingClasses[padding]}
     ${variantClasses[variant]}
@@ -148,7 +148,7 @@ interface ModernCardFooterProps {
 
 const ModernCardFooter: React.FC<ModernCardFooterProps> = ({ children, className = '' }) => {
   return (
-    <div className={`mt-6 pt-4 border-t border-gray-800 ${className}`}>
+    <div className={`mt-6 pt-4 border-t border-transparent ${className}`}>
       {children}
     </div>
   );
