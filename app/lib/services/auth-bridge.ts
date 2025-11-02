@@ -61,21 +61,39 @@ export class AuthBridgeService {
     try {
       // Import authService to get the current session from AuthProvider
       const { authService } = await import('@/app/lib/auth/auth-service');
+      const { sessionMonitor } = await import('@/app/lib/auth/session-monitor');
 
       // Get current session from AuthProvider (singleton, no duplicate calls)
-      const session = authService.getCurrentSession();
+      let session = authService.getCurrentSession();
 
       if (!session?.access_token) {
         throw new Error('No active Supabase session found');
       }
 
-      // Validate session expiry
-      if (session.expires_at && Date.now() / 1000 > session.expires_at) {
+      // Check session status and auto-refresh if needed
+      const status = sessionMonitor.getSessionStatus();
+      
+      if (status.isExpired) {
+        throw new Error('Supabase session has expired. Please refresh the page.');
+      }
+
+      // If session needs refresh and we're not already refreshing, trigger refresh
+      if (status.needsRefresh) {
+        console.log('🔐 [AuthBridge] Session needs refresh, refreshing before request...');
+        const refreshed = await sessionMonitor.refreshSession();
+        if (refreshed) {
+          // Get updated session after refresh
+          session = authService.getCurrentSession();
+        }
+      }
+
+      // Validate session expiry one more time
+      if (session && session.expires_at && Date.now() / 1000 > session.expires_at) {
         throw new Error('Supabase session has expired');
       }
 
       return {
-        'Authorization': `Bearer ${session.access_token}`,
+        'Authorization': `Bearer ${session!.access_token}`,
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
       };

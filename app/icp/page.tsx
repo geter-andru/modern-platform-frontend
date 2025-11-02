@@ -7,8 +7,11 @@ import { ArrowLeft, RefreshCw, Download, FileDown } from 'lucide-react';
 import { Brain, Target, Users, FileText, Zap, BarChart3 } from 'lucide-react';
 import { useRequireAuth } from '@/app/lib/auth';
 import { useCustomerICP, useTrackAction } from '@/app/lib/hooks/useAPI';
+import { usePersonasCache } from '@/app/lib/hooks/cache';
 import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
 import { GlassCard, GlassButton, GlassModal } from '../../src/shared/components/design-system';
+import { exportICPToPDF } from '@/app/lib/utils/pdf-export';
+import toast from 'react-hot-toast';
 import '../../src/shared/styles/component-patterns.css';
 
 // Import widget components
@@ -111,6 +114,15 @@ export default function ICPPage() {
 
   const { data: icpData, isLoading } = useCustomerICP(user?.id);
 
+  // Get personas data for export
+  const {
+    personas,
+    isLoadingPersonas,
+  } = usePersonasCache({
+    customerId: user?.id,
+    enabled: !!user?.id
+  });
+
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg-primary)' }}>
@@ -148,6 +160,53 @@ export default function ICPPage() {
     console.log('Exporting data:', data);
     // Handle export logic
   }
+
+  const handlePDFExport = () => {
+    // Validate we have persona data
+    if (!personas || personas.length === 0) {
+      toast.error('No personas available to export. Please generate your ICP first.');
+      return;
+    }
+
+    // Show loading state
+    toast.loading('Generating PDF...', { id: 'pdf-export' });
+
+    // Prepare export data
+    const exportData = {
+      companyName: user?.user_metadata?.company_name || 'Your Company',
+      productName: 'ICP Analysis',
+      personas: personas,
+      generatedAt: new Date().toISOString()
+    };
+
+    // Check if user is on free tier (we'll implement this properly in Phase 2)
+    // For now, assume all exports include watermark for beta
+    const isFreeTier = true;
+
+    // Export PDF with error handling
+    const result = exportICPToPDF(exportData, {
+      includeFreeWatermark: isFreeTier,
+      companyName: exportData.companyName,
+      productName: exportData.productName
+    });
+
+    // Handle result
+    if (result.success) {
+      toast.success('PDF exported successfully!', { id: 'pdf-export' });
+      setShowExportModal(false);
+
+      // Track export action
+      if (trackAction?.mutate) {
+        trackAction.mutate({
+          customerId: user.id,
+          action: 'export_pdf',
+          metadata: { personaCount: personas.length }
+        });
+      }
+    } else {
+      toast.error(result.error || 'Failed to export PDF. Please try again.', { id: 'pdf-export' });
+    }
+  };
 
   const handleRefresh = async () => {
     setLoading(true);
@@ -345,53 +404,91 @@ export default function ICPPage() {
         title="Export ICP Analysis"
         size="lg"
       >
-        <div className="text-center">
+        <div>
           <FileDown className="w-16 h-16 mx-auto mb-6" style={{
             color: 'var(--color-primary)',
             filter: 'drop-shadow(0 4px 8px rgba(59, 130, 246, 0.3))'
           }} />
-          <h3 className="heading-2 mb-4">
-            Export Options Coming Soon
+          <h3 className="heading-2 mb-4 text-center">
+            Choose Export Format
           </h3>
-          <p className="body-large text-text-secondary mb-8">
-            Advanced export functionality will be available in the next phase of development.
+          <p className="body text-text-secondary mb-8 text-center">
+            {!personas || personas.length === 0
+              ? 'Generate your ICP first to enable exports'
+              : `Export ${personas.length} buyer personas`}
           </p>
 
-          <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto">
-            <GlassCard className="p-6 hover glow">
-              <h4 className="heading-4 mb-3">
+          <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
+            {/* PDF Export - WORKING */}
+            <button
+              onClick={handlePDFExport}
+              disabled={!personas || personas.length === 0 || isLoadingPersonas}
+              className={`
+                p-6 rounded-lg border-2 transition-all
+                ${!personas || personas.length === 0 || isLoadingPersonas
+                  ? 'opacity-50 cursor-not-allowed border-gray-700 bg-gray-900'
+                  : 'border-blue-500 bg-blue-900/20 hover:bg-blue-900/40 hover:scale-105 cursor-pointer'
+                }
+              `}
+            >
+              <FileText className="w-8 h-8 mx-auto mb-3" style={{ color: 'var(--color-primary)' }} />
+              <h4 className="heading-4 mb-2">
                 PDF Report
               </h4>
               <p className="body-small text-text-secondary">
                 Comprehensive ICP analysis document
               </p>
+              {!personas || personas.length === 0 ? (
+                <span className="text-xs text-yellow-500 mt-2 inline-block">
+                  Generate ICP first
+                </span>
+              ) : (
+                <span className="text-xs text-green-500 mt-2 inline-block">
+                  ✓ Ready to export
+                </span>
+              )}
+            </button>
+
+            {/* Markdown/CSV - Coming in Task 1.2 */}
+            <GlassCard className="p-6 opacity-50">
+              <FileDown className="w-8 h-8 mx-auto mb-3 text-gray-500" />
+              <h4 className="heading-4 mb-2">
+                Markdown / CSV
+              </h4>
+              <p className="body-small text-text-secondary">
+                Copy to Notion or export to spreadsheet
+              </p>
+              <span className="text-xs text-gray-500 mt-2 inline-block">
+                Coming in Phase 1.2
+              </span>
             </GlassCard>
 
-            <GlassCard className="p-6 hover glow">
-              <h4 className="heading-4 mb-3">
+            {/* CRM Integration - Phase 4 */}
+            <GlassCard className="p-6 opacity-50">
+              <Users className="w-8 h-8 mx-auto mb-3 text-gray-500" />
+              <h4 className="heading-4 mb-2">
                 CRM Integration
               </h4>
               <p className="body-small text-text-secondary">
                 HubSpot, Salesforce, Pipedrive
               </p>
+              <span className="text-xs text-gray-500 mt-2 inline-block">
+                Coming in Phase 4
+              </span>
             </GlassCard>
 
-            <GlassCard className="p-6 hover glow">
-              <h4 className="heading-4 mb-3">
+            {/* AI Prompts - Phase 4 */}
+            <GlassCard className="p-6 opacity-50">
+              <Zap className="w-8 h-8 mx-auto mb-3 text-gray-500" />
+              <h4 className="heading-4 mb-2">
                 AI Prompts
               </h4>
               <p className="body-small text-text-secondary">
                 Claude, ChatGPT, Perplexity
               </p>
-            </GlassCard>
-
-            <GlassCard className="p-6 hover glow">
-              <h4 className="heading-4 mb-3">
-                Sales Tools
-              </h4>
-              <p className="body-small text-text-secondary">
-                Outreach, SalesLoft, Apollo
-              </p>
+              <span className="text-xs text-gray-500 mt-2 inline-block">
+                Coming in Phase 4
+              </span>
             </GlassCard>
           </div>
         </div>

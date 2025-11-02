@@ -23,6 +23,10 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/app/lib/auth'
 import { buildICPRequestData, validateProductData } from '../utils/icp-prompt-builder'
+import { useJobStatus } from '@/app/hooks/useJobStatus'
+import { authenticatedFetch } from '@/app/lib/middleware/api-auth'
+import { API_CONFIG } from '@/app/lib/config/api'
+import toast from 'react-hot-toast'
 
 interface ProductDetails {
   name: string
@@ -83,6 +87,94 @@ export default function ProductDetailsWidget({
   const [showSuccessBanner, setShowSuccessBanner] = useState(false)
   const [generationProgress, setGenerationProgress] = useState(0)
   const [generationStage, setGenerationStage] = useState('')
+  const [jobId, setJobId] = useState<string | null>(null)
+
+  // Ref to store progress interval for cleanup
+  const progressIntervalRef = React.useRef<NodeJS.Timeout | null>(null)
+
+  // Use job status hook to poll for ICP generation completion
+  const { 
+    status: jobStatus, 
+    progress: jobProgress, 
+    result: jobResult, 
+    error: jobError, 
+    isComplete, 
+    isFailed,
+    isLoading: isJobLoading
+  } = useJobStatus(jobId, {
+    onComplete: (result) => {
+      console.log('✅ ICP generation job completed:', result);
+      
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = null;
+      }
+      setGenerationStage('✨ ICP Analysis Complete!');
+      setGenerationProgress(100);
+      setIsGenerating(false);
+      setJobId(null); // Clear job ID after completion
+
+      // Show success toast
+      toast.success('ICP Analysis generated successfully!');
+
+      // Update product details (will be saved by backend worker)
+      const generatedProductDetails: ProductDetails = {
+        name: formData.productName,
+        description: formData.productDescription,
+        category: 'SaaS',
+        targetMarket: 'B2B Companies',
+        keyFeatures: [
+          'ICP Analysis',
+          'Market Intelligence',
+          'Decision Maker Profiling',
+          'Competitive Analysis'
+        ],
+        pricing: formData.businessModel === 'b2b-subscription' ? 'Subscription-based' : 'One-time Purchase',
+        competitiveAdvantage: formData.distinguishingFeature,
+        lastUpdated: new Date().toISOString().split('T')[0]
+      };
+
+      setProductDetails(generatedProductDetails);
+      setSaved(true);
+      setShowSuccessBanner(true);
+
+      // Refresh product history
+      handleRefresh();
+
+      // Auto-navigate to ICP Overview tab after 2 seconds
+      setTimeout(() => {
+        const overviewButton = document.querySelector('[data-widget-id="overview"]') as HTMLElement;
+        if (overviewButton) {
+          overviewButton.click();
+        }
+      }, 2000);
+    },
+    onError: (error) => {
+      console.error('❌ ICP generation job failed:', error);
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = null;
+      }
+      setErrors({ general: error || 'Failed to generate ICP analysis' });
+      setIsGenerating(false);
+      setJobId(null);
+      toast.error(error || 'ICP generation failed');
+    },
+    onStatusUpdate: (statusData) => {
+      // Update progress based on job status
+      if (statusData.status === 'waiting') {
+        setGenerationProgress(10);
+        setGenerationStage('Job queued, waiting to start...');
+      } else if (statusData.status === 'active') {
+        setGenerationProgress(30 + (statusData.progress || 0) * 0.6); // 30-90%
+        setGenerationStage('Andru is doing the smart stuff...');
+      } else if (statusData.status === 'completed') {
+        setGenerationProgress(100);
+        setGenerationStage('Adding the final touches...');
+      }
+    },
+    autoStart: true
+  });
 
   const handleEdit = () => {
     setIsEditing(true)
@@ -167,22 +259,24 @@ export default function ProductDetailsWidget({
     setGenerationProgress(0)
     setGenerationStage('Waking up Andru...')
 
-    let progressInterval: NodeJS.Timeout | null = null
+    // Progress simulation for better UX while waiting for job to start
+    progressIntervalRef.current = setInterval(() => {
+      setGenerationProgress(prev => {
+        if (prev >= 30) return prev // Cap at 30% until job starts
+        return prev + Math.random() * 5
+      })
+    }, 500)
 
     try {
-      // Progress simulation for better UX
-      progressInterval = setInterval(() => {
-        setGenerationProgress(prev => {
-          if (prev >= 90) return prev
-          return prev + Math.random() * 15
-        })
-      }, 500)
       setGenerationStage('Reading your product details...')
 
       // Validate form using the prompt builder
       const validation = validateProductData(formData)
       if (!validation.isValid) {
-        clearInterval(progressInterval)
+        if (progressIntervalRef.current) {
+          clearInterval(progressIntervalRef.current)
+          progressIntervalRef.current = null
+        }
         const newErrors: FormErrors = {}
         validation.errors.forEach(error => {
           if (error.includes('Product name')) newErrors.productName = error
@@ -196,131 +290,77 @@ export default function ProductDetailsWidget({
       }
 
       if (!user) {
-        clearInterval(progressInterval)
+        if (progressIntervalRef.current) {
+          clearInterval(progressIntervalRef.current)
+          progressIntervalRef.current = null
+        }
         setErrors({ general: 'User not authenticated' })
         setIsGenerating(false)
         return
       }
 
       setGenerationStage('Getting Andru caffeinated...')
-      console.log('🚀 Starting real ICP generation for:', formData.productName)
+      console.log('🚀 Starting async ICP generation for:', formData.productName)
 
-      // Use session from useAuth hook (already authenticated)
-      console.log('🔐 Checking session from auth context...')
-
-      if (!session) {
-        console.error('❌ No active session found in auth context')
-        throw new Error('No active session. Please log in again.')
-      }
-
-      console.log('✅ Session found from auth context, building request data...')
-
-      // Build structured request data using the prompt builder
-      console.log('📝 Form data:', formData)
-      const requestData = buildICPRequestData(formData, {
-        industry: 'Technology', // TODO: Get from form or user profile
-        companySize: 'medium',
-        challenges: ['scalability', 'efficiency'],
-        goals: ['increase revenue', 'improve operations']
-      })
-
-      console.log('📋 Request data prepared:', requestData)
-
-      setGenerationStage('Andru is doing the smart stuff...')
-      setGenerationProgress(40)
-
-      console.log('📡 About to call backend API...')
-
-      // Call the backend Express API for real AI-powered ICP generation
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'
-      const response = await fetch(`${backendUrl}/api/customer/${user.id}/generate-icp`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify(requestData)
-      })
-
-      console.log('📡 Response received! Status:', response.status, 'OK:', response.ok)
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        console.error('❌ API returned error:', errorData)
-        throw new Error(errorData.error || 'Failed to generate ICP analysis')
-      }
-
-      console.log('📦 Parsing response JSON...')
-      const result = await response.json()
-      console.log('📦 Response parsed:', result)
-
-      if (!result.success) {
-        throw new Error(result.error || 'ICP generation failed')
-      }
-
-      clearInterval(progressInterval)
-      setGenerationStage('Adding the final touches...')
-      setGenerationProgress(100)
-
-      console.log('✅ ICP Analysis generated successfully with real AI:', result.data)
-
-      // Update product details with generated data
-      const generatedProductDetails: ProductDetails = {
+      // Build product info from form data
+      const productInfo = {
         name: formData.productName,
         description: formData.productDescription,
-        category: 'SaaS', // Default category, could be enhanced
-        targetMarket: result.data.sections?.targetCompanyProfile?.industry || 'B2B Companies',
-        keyFeatures: [
-          'ICP Analysis',
-          'Market Intelligence',
-          'Decision Maker Profiling',
-          'Competitive Analysis'
-        ],
-        pricing: formData.businessModel === 'b2b-subscription' ? 'Subscription-based' : 'One-time Purchase',
-        competitiveAdvantage: formData.distinguishingFeature,
-        lastUpdated: new Date().toISOString().split('T')[0]
+        distinguishingFeature: formData.distinguishingFeature,
+        businessModel: formData.businessModel
       }
 
-      setProductDetails(generatedProductDetails)
-      setSaved(true)
+      console.log('📤 Submitting ICP generation job to queue...')
 
-      // Show success banner
-      setShowSuccessBanner(true)
-
-      // Refresh product history to show new product
-      await handleRefresh()
-
-      // Auto-navigate to ICP Overview tab after 2 seconds
-      setTimeout(() => {
-        const overviewButton = document.querySelector('[data-widget-id="overview"]') as HTMLElement
-        if (overviewButton) {
-          overviewButton.click()
-        }
-      }, 2000)
-
-      console.log('🎯 ICP generation completed, ready for next steps')
-      
-    } catch (error) {
-      // CRITICAL: Clear the progress interval on error
-      if (progressInterval) {
-        clearInterval(progressInterval)
-        console.log('🔄 Progress interval cleared due to error')
-      }
-
-      const errorMessage = error instanceof Error ? error.message : 'Failed to generate ICP analysis. Please try again.'
-      setErrors({ general: errorMessage })
-      console.error('❌ ICP generation failed:', error)
-      console.error('❌ Error details:', {
-        name: error instanceof Error ? error.name : 'Unknown',
-        message: errorMessage,
-        stack: error instanceof Error ? error.stack : 'No stack trace'
+      // Submit job to async queue (matches usePersonasCache pattern)
+      const jobResponse = await authenticatedFetch(`${API_CONFIG.backend}/api/jobs/generate-icp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productInfo,
+          industry: 'Technology', // TODO: Get from form or user profile
+          goals: ['increase revenue', 'improve operations']
+        })
       })
 
-      // Show error in UI
-      alert(`ICP Generation Failed:\n\n${errorMessage}\n\nCheck console for details.`)
-    } finally {
-      setIsGenerating(false)
-      console.log('🏁 Finally block executed, isGenerating = false')
+      if (!jobResponse.ok) {
+        const errorData = await jobResponse.json();
+        throw new Error(errorData.error || 'Failed to submit ICP generation job');
+      }
+
+      const jobData = await jobResponse.json();
+
+      if (!jobData.success || !jobData.jobId) {
+        throw new Error('Failed to get job ID from ICP generation submission');
+      }
+
+      console.log('✅ ICP generation job submitted:', jobData.jobId);
+
+      // Set job ID to trigger useJobStatus polling
+      setJobId(jobData.jobId);
+
+      // Clear progress interval - useJobStatus will update progress now
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = null;
+      }
+
+      setGenerationStage('Job submitted, processing...');
+      setGenerationProgress(20);
+
+    } catch (error) {
+      // Clear progress interval on error
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = null;
+      }
+
+      const errorMessage = error instanceof Error ? error.message : 'Failed to generate ICP analysis. Please try again.';
+      setErrors({ general: errorMessage });
+      console.error('❌ ICP generation job submission failed:', error);
+      toast.error(errorMessage);
+      setIsGenerating(false);
+      setJobId(null);
     }
   }
 
@@ -333,10 +373,13 @@ export default function ProductDetailsWidget({
     })
   }
 
+  // Combine isGenerating and isJobLoading for overlay display
+  const isProcessing = isGenerating || isJobLoading;
+
   return (
     <div className={`bg-background-secondary border border-transparent rounded-xl overflow-hidden ${className}`}>
       {/* Loading Overlay - Modern & Sophisticated */}
-      {isGenerating && (
+      {isProcessing && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -617,21 +660,21 @@ export default function ProductDetailsWidget({
               )}
               <motion.button
                 onClick={handleGenerateICP}
-                disabled={isGenerating}
-                whileHover={{ scale: isGenerating ? 1 : 1.02 }}
-                whileTap={{ scale: isGenerating ? 1 : 0.98 }}
+                disabled={isProcessing}
+                whileHover={{ scale: isProcessing ? 1 : 1.02 }}
+                whileTap={{ scale: isProcessing ? 1 : 0.98 }}
                 className="flex items-center gap-3 px-6 py-3 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ 
                   backgroundColor: 'var(--color-brand-primary)',
                   color: 'var(--text-primary)'
                 }}
-                onMouseEnter={(e) => !isGenerating && ((e.target as HTMLElement).style.backgroundColor = 'var(--color-brand-primary-dark)')}
-                onMouseLeave={(e) => !isGenerating && ((e.target as HTMLElement).style.backgroundColor = 'var(--color-brand-primary)')}
+                onMouseEnter={(e) => !isProcessing && ((e.target as HTMLElement).style.backgroundColor = 'var(--color-brand-primary-dark)')}
+                onMouseLeave={(e) => !isProcessing && ((e.target as HTMLElement).style.backgroundColor = 'var(--color-brand-primary)')}
               >
-                {isGenerating ? (
+                {isProcessing ? (
                   <>
                     <RefreshCw className="w-5 h-5 animate-spin" />
-                    Generating ICP Analysis...
+                    {isGenerating ? 'Submitting job...' : 'Processing ICP Analysis...'}
                   </>
                 ) : (
                   <>

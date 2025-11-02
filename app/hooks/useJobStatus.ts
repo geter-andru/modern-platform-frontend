@@ -25,7 +25,7 @@ export type JobStatus = 'waiting' | 'active' | 'completed' | 'failed';
 /**
  * Job queue types
  */
-export type JobQueueType = 'persona-generation' | 'company-rating' | 'batch-rating';
+export type JobQueueType = 'persona-generation' | 'company-rating' | 'batch-rating' | 'icp-generation';
 
 /**
  * Job metadata from backend

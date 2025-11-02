@@ -5,6 +5,7 @@ import "../src/shared/design-system/global-styles.css";
 import { Providers } from "./providers";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { AuthProvider } from "@/app/lib/auth";
+import { SessionWarningBanner } from "./components/auth/SessionWarningBanner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,7 +52,10 @@ export default function RootLayout({
       >
         <ErrorBoundary>
           <AuthProvider>
-            <Providers>{children}</Providers>
+            <Providers>
+              <SessionWarningBanner position="top" />
+              {children}
+            </Providers>
           </AuthProvider>
         </ErrorBoundary>
       </body>
