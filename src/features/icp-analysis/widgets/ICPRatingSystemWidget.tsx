@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import '../../../shared/styles/design-tokens.css';
 
 import { motion, AnimatePresence } from 'framer-motion'
+import Tooltip from '../../../shared/components/ui/Tooltip'
 import { 
   Brain, 
   RefreshCw, 
@@ -22,7 +23,8 @@ import {
   ChevronDown,
   Settings,
   Check,
-  Copy
+  Copy,
+  Info
 } from 'lucide-react'
 
 interface RatingCategory {
@@ -376,7 +378,26 @@ export default function ICPRatingSystemWidget({
       <div className="bg-background-secondary/50 px-6 py-4 border-b border-surface">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-text-primary">ICP Rating System</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl font-bold text-text-primary">ICP Rating System</h2>
+              {ratingSystem && (
+                <Tooltip
+                  content={
+                    <div className="max-w-xs">
+                      <p className="text-sm text-text-primary">
+                        🧠 <strong>Cumulative Intelligence:</strong> This rating framework was generated using your Product Description and ICP Analysis as context, creating unmatched personalization for your specific market.
+                      </p>
+                    </div>
+                  }
+                  placement="bottom"
+                  trigger="hover"
+                >
+                  <span className="inline-flex items-center">
+                    <Info className="w-4 h-4 text-text-muted cursor-help" />
+                  </span>
+                </Tooltip>
+              )}
+            </div>
             <p className="text-text-secondary text-sm">
               {isLoading ? 'Loading rating system...' : 
                error ? 'Error loading rating system' :
@@ -449,16 +470,7 @@ export default function ICPRatingSystemWidget({
           </div>
         ) : (
           <>
-            <div className="bg-blue-900/20 border border-blue-600/50 rounded-lg p-4 mb-6">
-              <div className="flex items-start gap-3">
-                <Zap className="w-5 h-5 text-brand-primary mt-0.5" />
-                <div>
-                  <p className="text-blue-300 text-sm">
-                    🧠 <strong>Cumulative Intelligence:</strong> This rating framework was generated using your Product Description and ICP Analysis as context, creating unmatched personalization for your specific market.
-                  </p>
-                </div>
-              </div>
-            </div>
+            {/* Removed blue "Cumulative Intelligence" box - replaced with tooltip icon next to widget title */}
 
         <AnimatePresence>
           {showMethodology && (

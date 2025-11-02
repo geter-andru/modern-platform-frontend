@@ -3,6 +3,7 @@ import '../../../shared/styles/design-tokens.css';
 import '../../../shared/styles/component-patterns.css';
 
 import { motion, AnimatePresence } from 'framer-motion'
+import Tooltip from '../../../shared/components/ui/Tooltip'
 import { 
   RefreshCw, 
   Download, 
@@ -358,14 +359,31 @@ export default function MyICPOverviewWidget({
               <RefreshCw className="w-4 h-4" />
             </button>
             {onExport && (
-              <button
-                onClick={() => icpData && onExport(icpData)}
-                className="btn-secondary"
-                style={{ minWidth: 'auto', padding: 'var(--space-2)' }}
-                title="Export ICP data"
-              >
-                <ExternalLink className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => icpData && onExport(icpData)}
+                  className="btn-secondary"
+                  style={{ minWidth: 'auto', padding: 'var(--space-2)' }}
+                  title="Export ICP data"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </button>
+                <Tooltip
+                  content={
+                    <div className="max-w-xs">
+                      <p className="text-sm text-text-primary">
+                        <strong>Action:</strong> Export this ICP before prospect calls to reference firmographics, pain points, and technical requirements. Use the rating criteria weights to prioritize qualification questions (focus on criteria with 25%+ weight first).
+                      </p>
+                    </div>
+                  }
+                  placement="bottom"
+                  trigger="hover"
+                >
+                  <span className="inline-flex items-center cursor-help">
+                    <Info className="w-3 h-3 text-text-muted" />
+                  </span>
+                </Tooltip>
+              </div>
             )}
           </div>
         </div>
@@ -407,22 +425,7 @@ export default function MyICPOverviewWidget({
             </div>
           ) : (
             <>
-              <div className="card-padding-md mb-8" style={{
-                background: 'rgba(59, 130, 246, 0.1)',
-                border: '1px solid rgba(59, 130, 246, 0.3)',
-                borderRadius: 'var(--radius-md)',
-                backdropFilter: 'blur(12px)'
-              }}>
-                <div className="flex items-start gap-3">
-                  <Info className="w-5 h-5 mt-0.5" style={{ color: 'var(--color-primary)' }} />
-                  <div>
-                    <p className="body-small" style={{ color: 'var(--color-primary)' }}>
-                      <strong>Action:</strong> Export this ICP before prospect calls to reference firmographics, pain points, and technical requirements. Use the rating criteria weights to prioritize qualification questions (focus on criteria with 25%+ weight first).
-                    </p>
-                  </div>
-                </div>
-              </div>
-
+              {/* Removed blue "Action" box - replaced with tooltip icon next to export button */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
                 <AnimatePresence>
                   {sectionsWithContent.map((section, index) => {
@@ -537,6 +540,21 @@ export default function MyICPOverviewWidget({
             <h3 className="heading-4 mb-6 flex items-center gap-2">
               <Target className="w-5 h-5" style={{ color: 'var(--color-primary)' }} />
               When to Use This
+              <Tooltip
+                content={
+                  <div className="max-w-xs">
+                    <p className="text-sm text-text-primary">
+                      Use your ICP as a living document - regularly update it based on customer feedback and market changes to maintain accuracy and relevance.
+                    </p>
+                  </div>
+                }
+                placement="right"
+                trigger="hover"
+              >
+                <span className="inline-flex items-center cursor-help">
+                  <Info className="w-4 h-4 text-text-muted" />
+                </span>
+              </Tooltip>
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
               {whenToUseScenarios.map((scenario, index) => {
@@ -565,20 +583,7 @@ export default function MyICPOverviewWidget({
                 );
               })}
             </div>
-
-            <div className="mt-8 card-padding-sm" style={{
-              background: 'rgba(59, 130, 246, 0.1)',
-              border: '1px solid rgba(59, 130, 246, 0.3)',
-              borderRadius: 'var(--radius-md)',
-              backdropFilter: 'blur(12px)'
-            }}>
-              <h4 className="heading-4 text-sm mb-2" style={{ color: 'var(--color-primary)' }}>
-                💡 Pro Tip
-              </h4>
-              <p className="caption text-text-muted">
-                Use your ICP as a living document - regularly update it based on customer feedback and market changes to maintain accuracy and relevance.
-              </p>
-            </div>
+            {/* Removed blue "Pro Tip" box - replaced with tooltip icon next to "When to Use This" title */}
           </div>
         </div>
       </div>

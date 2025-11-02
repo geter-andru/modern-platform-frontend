@@ -3,6 +3,7 @@ import '../../../shared/styles/design-tokens.css';
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { ProgressRing } from '../../../shared/components/ui/ProgressRing'
+import Tooltip from '../../../shared/components/ui/Tooltip'
 import { 
   RefreshCw, 
   Download, 
@@ -166,7 +167,26 @@ export default function RateCompanyWidget({
       <div className="bg-background-tertiary px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-text-primary">Rate A Company</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl font-bold text-text-primary">Rate A Company</h2>
+              {rating && (
+                <Tooltip
+                  content={
+                    <div className="max-w-xs">
+                      <p className="text-sm text-text-primary">
+                        Prioritize Tier 1 (20-24 points) and Tier 2 (16-19 points) companies for immediate outreach. Reference specific criteria scores below 7/10 to craft targeted messaging addressing those gaps. Export this rating to share with your sales team or add to your CRM.
+                      </p>
+                    </div>
+                  }
+                  placement="bottom"
+                  trigger="hover"
+                >
+                  <span className="inline-flex items-center">
+                    <Info className="w-4 h-4 text-text-muted cursor-help" />
+                  </span>
+                </Tooltip>
+              )}
+            </div>
             <p className="text-text-muted text-sm">
               Score companies against your ICP rating framework
             </p>
@@ -516,14 +536,7 @@ export default function RateCompanyWidget({
           )}
         </AnimatePresence>
 
-        <div className="mt-6 p-4 bg-brand-primary/10 rounded-lg">
-          <h4 className="text-sm font-semibold text-brand-primary mb-2">
-            Next Steps
-          </h4>
-          <p className="text-xs text-text-muted">
-            Prioritize Tier 1 (20-24 points) and Tier 2 (16-19 points) companies for immediate outreach. Reference specific criteria scores below 7/10 to craft targeted messaging addressing those gaps. Export this rating to share with your sales team or add to your CRM.
-          </p>
-        </div>
+        {/* Removed blue "Next Steps" box - replaced with tooltip icon next to widget title */}
       </div>
     </div>
   );
