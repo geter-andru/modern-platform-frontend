@@ -141,7 +141,7 @@ export default function HomePage() {
                     </Link>
                   ) : (
                     <Link
-                      href="/pricing"
+                      href="/founding-members"
                       className="group relative overflow-hidden px-12 py-6 rounded-2xl font-semibold text-lg min-w-[240px] text-center transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
                       style={{
                         background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
@@ -152,7 +152,7 @@ export default function HomePage() {
                         border: '1px solid rgba(255, 255, 255, 0.1)'
                       }}
                     >
-                      <span className="relative z-10">View Pricing</span>
+                      <span className="relative z-10">Join Free Beta</span>
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                     </Link>
                   )}
@@ -179,17 +179,17 @@ export default function HomePage() {
             {/* Platform Status Badge */}
             <motion.div variants={fadeInUp} className="mt-12">
               <div className="inline-block px-6 py-3 rounded-full" style={{
-                background: 'rgba(255, 255, 255, 0.08)',
+                background: 'rgba(59, 130, 246, 0.1)',
                 backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
+                border: '1px solid rgba(59, 130, 246, 0.3)',
+                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.2)'
               }}>
                 <p className="text-sm font-medium" style={{
-                  color: 'rgba(255, 255, 255, 0.9)',
+                  color: '#3b82f6',
                   fontFamily: '"Inter", sans-serif',
                   letterSpacing: '0.5px'
                 }}>
-                  🚧 Platform in Beta • Launching December 2025
+                  🚀 Free Beta • 100 Founding Member Spots • December 1, 2025
                 </p>
               </div>
             </motion.div>

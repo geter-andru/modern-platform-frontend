@@ -54,6 +54,10 @@ interface MyICPOverviewWidgetProps {
   onRefresh?: () => void
   onExport?: (data: ICPData) => void
   userId?: string
+  icpData?: any // Direct ICP data for demo mode
+  personas?: any[] // Direct personas data for demo mode
+  productName?: string // Product name for demo mode
+  isDemo?: boolean // Flag to indicate demo mode
 }
 
 // TSX Components to render ICP data (replaces dangerous HTML string generation)
@@ -160,25 +164,32 @@ const RatingCriteriaContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
   )
 }
 
-export default function MyICPOverviewWidget({ 
+export default function MyICPOverviewWidget({
   className = '',
   onRefresh,
   onExport,
-  userId
+  userId,
+  icpData: directIcpData,
+  personas: directPersonas,
+  productName,
+  isDemo = false
 }: MyICPOverviewWidgetProps) {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set())
   const [copiedSection, setCopiedSection] = useState<string | null>(null)
-  
-  // Use cache hook instead of manual state management
+
+  // Use cache hook instead of manual state management (only if not in demo mode)
   const {
-    icpData,
+    icpData: cachedIcpData,
     isLoadingICP,
     icpError,
     refetchICP
-  } = useCustomerCache({ 
-    customerId: userId, 
-    enabled: !!userId 
+  } = useCustomerCache({
+    customerId: userId,
+    enabled: !!userId && !isDemo // Disable API calls in demo mode
   })
+
+  // Use direct data if in demo mode, otherwise use cached data
+  const icpData = isDemo ? directIcpData : cachedIcpData
   
   // Use cache hook data
   const currentIcpData = icpData

@@ -62,16 +62,20 @@ interface BuyerPersonasWidgetProps {
   onExport?: (personas: BuyerPersona[]) => void
   className?: string
   userId?: string
+  personas?: any[] // Direct personas data for demo mode
+  isDemo?: boolean // Flag to indicate demo mode
 }
 
-export default function BuyerPersonasWidget({ 
-  onExport, 
+export default function BuyerPersonasWidget({
+  onExport,
   className = '',
-  userId
+  userId,
+  personas: directPersonas,
+  isDemo = false
 }: BuyerPersonasWidgetProps) {
-  // Use cache hook instead of manual state management
+  // Use cache hook instead of manual state management (only if not in demo mode)
   const {
-    personas,
+    personas: cachedPersonas,
     isLoadingPersonas,
     isGeneratingPersonas,
     hasError,
@@ -79,11 +83,14 @@ export default function BuyerPersonasWidget({
     generationError,
     generatePersonas,
     refetchPersonas
-  } = usePersonasCache({ 
-    customerId: userId, 
-    enabled: !!userId 
+  } = usePersonasCache({
+    customerId: userId,
+    enabled: !!userId && !isDemo // Disable API calls in demo mode
   })
-  
+
+  // Use direct personas if in demo mode, otherwise use cached personas
+  const personas = isDemo ? directPersonas : cachedPersonas
+
   const [expandedPersona, setExpandedPersona] = useState<string | null>(null)
 
   const handleGeneratePersonas = async () => {
@@ -229,7 +236,7 @@ export default function BuyerPersonasWidget({
   }
 
   // Transform cache hook personas to component format
-  const transformedPersonas: BuyerPersona[] = personas.map((persona: CacheBuyerPersona, index: number) => ({
+  const transformedPersonas: BuyerPersona[] = (personas || []).map((persona: CacheBuyerPersona, index: number) => ({
     id: persona.id || `persona-${index + 1}`,
     name: persona.name,
     title: persona.title,
@@ -289,7 +296,7 @@ export default function BuyerPersonasWidget({
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-xl font-bold text-text-primary">Target Buyer Personas</h2>
-              {personas.length > 0 && (
+              {personas && personas.length > 0 && (
                 <Tooltip
                   content={
                     <div className="max-w-xs">
@@ -401,7 +408,7 @@ export default function BuyerPersonasWidget({
         )}
 
         <AnimatePresence>
-          {personas.length > 0 && (
+          {personas && personas.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
