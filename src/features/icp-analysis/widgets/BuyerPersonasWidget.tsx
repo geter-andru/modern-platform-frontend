@@ -236,7 +236,7 @@ export default function BuyerPersonasWidget({
   }
 
   // Transform cache hook personas to component format
-  const transformedPersonas: BuyerPersona[] = (personas || []).map((persona: CacheBuyerPersona, index: number) => ({
+  const transformedPersonas: BuyerPersona[] = (personas || []).map((persona: any, index: number) => ({
     id: persona.id || `persona-${index + 1}`,
     name: persona.name,
     title: persona.title,
@@ -248,9 +248,15 @@ export default function BuyerPersonasWidget({
       location: persona.demographics.location || 'Major metropolitan areas'
     },
     psychographics: {
-      values: persona.psychographics.goals?.join(', ') || 'Professional growth and efficiency',
-      motivations: persona.psychographics.motivations?.join(', ') || 'Achieving business objectives',
-      fears: persona.psychographics.challenges?.join(', ') || 'Making wrong decisions'
+      values: Array.isArray(persona.psychographics.values)
+        ? persona.psychographics.values.join(', ')
+        : (persona.psychographics.values || persona.psychographics.goals?.join(', ') || 'Professional growth and efficiency'),
+      motivations: Array.isArray(persona.psychographics.motivations)
+        ? persona.psychographics.motivations.join(', ')
+        : (persona.psychographics.motivations || 'Achieving business objectives'),
+      fears: Array.isArray(persona.psychographics.fears)
+        ? persona.psychographics.fears.join(', ')
+        : (persona.psychographics.fears || persona.psychographics.challenges?.join(', ') || 'Making wrong decisions')
     },
     goals: persona.psychographics.goals || ['Improve efficiency', 'Drive growth', 'Reduce costs'],
     painPoints: persona.psychographics.challenges || ['Current limitations', 'Process inefficiencies', 'Resource constraints'],

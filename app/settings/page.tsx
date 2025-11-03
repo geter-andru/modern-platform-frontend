@@ -41,12 +41,6 @@ export default async function SettingsPage() {
               />
             </div>
           </div>
-
-          <div className="mt-6 pt-6 border-t">
-            <p className="text-sm text-gray-500">
-              🚧 Additional settings coming soon...
-            </p>
-          </div>
         </div>
       </div>
     </div>

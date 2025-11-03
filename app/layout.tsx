@@ -35,8 +35,8 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "H&S Revenue Intelligence Platform",
-  description: "AI-powered revenue optimization and business intelligence",
+  title: "Andru Revenue Intelligence",
+  description: "Stop guessing who your buyers are. AI-powered ICP analysis for B2B SaaS founders in under 3 minutes.",
 };
 
 export default function RootLayout({

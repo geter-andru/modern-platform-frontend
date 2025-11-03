@@ -14,12 +14,39 @@ const SupabaseAuth: React.FC<SupabaseAuthProps> = ({ redirectTo = '/icp' }) => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  // Helper: Check if user needs onboarding
+  const checkOnboardingStatus = async (userId: string): Promise<string> => {
+    try {
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('onboarding_completed')
+        .eq('id', userId)
+        .single();
+
+      if (error) {
+        console.error('Error checking onboarding status:', error);
+        return redirectTo; // Fallback to default redirect on error
+      }
+
+      // If onboarding not completed, redirect to onboarding
+      if (data && !data.onboarding_completed) {
+        return '/onboarding';
+      }
+
+      return redirectTo;
+    } catch (err) {
+      console.error('Exception checking onboarding:', err);
+      return redirectTo; // Fallback to default redirect on exception
+    }
+  };
+
   useEffect(() => {
     // Check if user is already authenticated
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        router.push(redirectTo);
+        const destination = await checkOnboardingStatus(session.user.id);
+        router.push(destination);
       }
     };
 
@@ -29,7 +56,8 @@ const SupabaseAuth: React.FC<SupabaseAuthProps> = ({ redirectTo = '/icp' }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === 'SIGNED_IN' && session) {
-          router.push(redirectTo);
+          const destination = await checkOnboardingStatus(session.user.id);
+          router.push(destination);
         }
       }
     );
@@ -91,7 +119,7 @@ const SupabaseAuth: React.FC<SupabaseAuthProps> = ({ redirectTo = '/icp' }) => {
             Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-400">
-            Access the H&S Revenue Intelligence Platform
+            Access Andru Revenue Intelligence
           </p>
         </div>
         

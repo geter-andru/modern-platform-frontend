@@ -64,18 +64,18 @@ interface MyICPOverviewWidgetProps {
 const ICPOverviewContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
   return (
     <div>
-      <p className="body-large" style={{ marginBottom: '1.5rem', color: 'var(--text-primary)' }}>
+      <p className="body-large mb-6" style={{ color: 'var(--text-primary)' }}>
         {icpData.description}
       </p>
-      <div style={{ marginTop: '1.5rem' }}>
-        <h4 className="heading-4" style={{ marginBottom: '1rem', color: 'var(--text-primary)' }}>
+      <div className="mt-6">
+        <h4 className="heading-4 mb-4" style={{ color: 'var(--text-primary)' }}>
           Customer Segments
         </h4>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        <div className="flex flex-col gap-3">
           {icpData.segments.map((segment, idx) => (
-            <div key={idx} className="card-glass hover-lift" style={{ padding: '1.25rem', borderRadius: '0.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                <strong className="heading-4" style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>
+            <div key={idx} className="card-glass hover-lift p-5 rounded-lg">
+              <div className="flex justify-between items-center mb-3">
+                <strong className="heading-4" style={{ color: 'var(--text-primary)' }}>
                   {segment.name}
                 </strong>
                 <span className={`badge ${
@@ -86,9 +86,9 @@ const ICPOverviewContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
                   {segment.score}
                 </span>
               </div>
-              <ul className="body-small" style={{ listStyle: 'none', paddingLeft: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem', color: 'var(--text-secondary)' }}>
+              <ul className="body-small list-none pl-0 flex flex-col gap-2" style={{ color: 'var(--text-secondary)' }}>
                 {segment.criteria.map((c, cidx) => (
-                  <li key={cidx} style={{ paddingLeft: '1.25rem', position: 'relative' }}>
+                  <li key={cidx} className="pl-5 relative">
                     <span style={{ position: 'absolute', left: 0, color: 'var(--color-primary)' }}>•</span>
                     {c}
                   </li>
@@ -105,13 +105,13 @@ const ICPOverviewContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
 const KeyIndicatorsContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
   return (
     <div>
-      <div className="card" style={{ padding: '1.25rem', marginBottom: '1rem' }}>
-        <h4 className="heading-4" style={{ marginBottom: '0.75rem', color: 'var(--color-success)' }}>
+      <div className="card p-5 mb-4">
+        <h4 className="heading-4 mb-3" style={{ color: 'var(--color-success)' }}>
           ✓ Strong Fit Indicators
         </h4>
-        <ul className="body" style={{ listStyle: 'none', paddingLeft: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <ul className="body list-none pl-0 flex flex-col gap-2">
           {icpData.keyIndicators.map((indicator, idx) => (
-            <li key={idx} style={{ paddingLeft: '1.5rem', position: 'relative', color: 'var(--text-secondary)' }}>
+            <li key={idx} className="pl-6 relative" style={{ color: 'var(--text-secondary)' }}>
               <span style={{ position: 'absolute', left: 0, color: 'var(--color-success)', fontWeight: 600 }}>✓</span>
               {indicator}
             </li>
@@ -119,13 +119,13 @@ const KeyIndicatorsContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
         </ul>
       </div>
       {icpData.redFlags && icpData.redFlags.length > 0 && (
-        <div className="card" style={{ padding: '1.25rem', borderLeft: '3px solid var(--color-danger)' }}>
-          <h4 className="heading-4" style={{ marginBottom: '0.75rem', color: 'var(--color-danger)' }}>
+        <div className="card p-5" style={{ borderLeft: '3px solid var(--color-danger)' }}>
+          <h4 className="heading-4 mb-3" style={{ color: 'var(--color-danger)' }}>
             ⚠ Red Flags to Watch
           </h4>
-          <ul className="body" style={{ listStyle: 'none', paddingLeft: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <ul className="body list-none pl-0 flex flex-col gap-2">
             {icpData.redFlags.map((flag, idx) => (
-              <li key={idx} style={{ paddingLeft: '1.5rem', position: 'relative', color: 'var(--text-secondary)' }}>
+              <li key={idx} className="pl-6 relative" style={{ color: 'var(--text-secondary)' }}>
                 <span style={{ position: 'absolute', left: 0, color: 'var(--color-danger)', fontWeight: 600 }}>⚠</span>
                 {flag}
               </li>
@@ -140,21 +140,21 @@ const KeyIndicatorsContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
 const RatingCriteriaContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
   return (
     <div>
-      <p className="body" style={{ marginBottom: '1rem', color: 'var(--text-primary)' }}>
+      <p className="body mb-4" style={{ color: 'var(--text-primary)' }}>
         Use these weighted criteria to score potential customers against your ICP. Higher weights indicate more critical qualification factors. Multiply each criteria score by its weight percentage to calculate weighted contribution to overall match score.
       </p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <div className="flex flex-col gap-3">
         {icpData.ratingCriteria.map((criteria, idx) => (
-          <div key={idx} className="card-metric hover-lift" style={{ padding: '1rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-              <strong className="heading-4" style={{ fontSize: '0.95rem', color: 'var(--text-primary)' }}>
+          <div key={idx} className="card-metric hover-lift p-4">
+            <div className="flex justify-between items-center mb-2">
+              <strong className="heading-4" style={{ color: 'var(--text-primary)' }}>
                 {criteria.name}
               </strong>
               <span className="badge badge-primary" style={{ fontSize: '0.75rem' }}>
                 {criteria.weight}%
               </span>
             </div>
-            <p className="body-small" style={{ color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+            <p className="body-small" style={{ color: 'var(--text-secondary)' }}>
               {criteria.description}
             </p>
           </div>

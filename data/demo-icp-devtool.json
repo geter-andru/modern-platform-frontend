@@ -1,0 +1,426 @@
+{
+  "product": {
+    "id": "demo-devtool-pro",
+    "productName": "DevTool Pro",
+    "description": "AI-powered code review platform for engineering teams that catches 3x more bugs than traditional tools through advanced static analysis and machine learning",
+    "distinguishingFeature": "Proprietary ML model trained on 50M+ commits that identifies critical bugs in real-time during development, integrating seamlessly into existing CI/CD pipelines",
+    "businessModel": "SaaS - Usage-based pricing with enterprise contracts",
+    "targetMarket": "B2B Developer Tools",
+    "category": "Developer Tools & Infrastructure"
+  },
+  "icp": {
+    "companyProfile": {
+      "industryVerticals": ["Software & Technology", "SaaS", "Financial Services", "Healthcare Tech"],
+      "companySize": "50-500 employees",
+      "revenue": "$5M-$100M ARR",
+      "fundingStage": "Series A to Series C",
+      "techStack": ["Modern web frameworks", "Cloud infrastructure (AWS/GCP/Azure)", "CI/CD pipelines", "GitHub/GitLab"],
+      "location": "North America, Europe (Remote-first companies)"
+    },
+    "buyingCommittee": {
+      "economicBuyer": "VP of Engineering, CTO",
+      "champion": "Engineering Managers, Senior Engineers",
+      "decisionCriteria": ["Code quality improvement metrics", "Developer productivity gains", "Integration ease", "ROI in first quarter"],
+      "budgetRange": "$25K-$150K annually",
+      "purchaseTimeline": "6-12 weeks"
+    },
+    "keyMetrics": {
+      "averageDealSize": "$50K ACV",
+      "salesCycleLength": "8 weeks",
+      "expectedCloseRate": "35%",
+      "churnRisk": "Low (mission-critical tool)",
+      "expansionPotential": "High (seat-based + usage growth)"
+    }
+  },
+  "personas": [
+    {
+      "id": "persona-1",
+      "name": "Alex Chen",
+      "title": "VP of Engineering",
+      "role": "Primary Decision Maker - Economic Buyer",
+      "demographics": {
+        "ageRange": "35-45",
+        "experience": "10-15 years in engineering leadership",
+        "education": "Bachelor's or Master's in Computer Science",
+        "location": "San Francisco, New York, Seattle, Austin (or remote)"
+      },
+      "psychographics": {
+        "values": "Engineering excellence, team scalability, data-driven decisions, work-life balance for team",
+        "motivations": "Ship faster without sacrificing quality, scale team efficiently, reduce production incidents, become industry leader",
+        "fears": "Production outages, losing top engineers to burnout, falling behind competitors, technical debt accumulation"
+      },
+      "goals": [
+        "Reduce critical bugs in production by 60%+ within 6 months",
+        "Decrease code review cycle time from 2 days to 4 hours",
+        "Scale engineering team from 20 to 50 engineers without quality degradation",
+        "Implement measurable engineering KPIs (DORA metrics)",
+        "Improve developer satisfaction scores by 25%"
+      ],
+      "painPoints": [
+        "Manual code reviews are bottlenecks - senior engineers spend 15+ hours/week reviewing PRs",
+        "Critical bugs still reach production despite peer reviews (human fatigue/oversight)",
+        "No visibility into code quality trends across teams",
+        "Onboarding new engineers takes 3+ months due to codebase complexity",
+        "Limited time for strategic work - stuck firefighting production issues"
+      ],
+      "buyingBehavior": {
+        "decisionProcess": "Data-driven with peer validation - requires proof of ROI, case studies from similar companies, and successful pilot",
+        "timeline": "6-12 weeks (pilot for 2 weeks, team evaluation 2 weeks, procurement 4 weeks)",
+        "budgetAuthority": "High - can approve up to $100K with exec approval for larger deals"
+      },
+      "decisionInfluence": {
+        "timeline": "6-12 weeks",
+        "budgetAuthority": "High",
+        "priority": "Critical",
+        "influenceLevel": "Final decision maker"
+      },
+      "communicationPreferences": {
+        "preferredChannels": ["Email (concise with data)", "Slack for quick questions", "Video calls for demos", "Technical whitepapers"],
+        "communicationStyle": "Direct, data-driven, values efficiency - prefers metrics over marketing speak"
+      },
+      "objections": [
+        "Does it slow down our CI/CD pipeline? (Current build time: 8 minutes)",
+        "Will developers actually adopt it or ignore warnings?",
+        "How does it compare to our current tools (SonarQube, ESLint)?",
+        "What's the learning curve for my team?",
+        "Can we customize rules for our specific codebase?"
+      ],
+      "informationSources": [
+        "Engineering blogs (GitHub Engineering, Uber Engineering)",
+        "Peer networks at VP Engineering meetups",
+        "G2/Capterra reviews",
+        "Technical conferences (QCon, DevOps Enterprise Summit)",
+        "Recommendations from CTO network"
+      ],
+      "technologyUsage": {
+        "currentTools": ["GitHub Enterprise", "Jenkins/CircleCI", "SonarQube", "Jira", "Slack", "Datadog"],
+        "techComfort": "High - former IC, still reviews code occasionally",
+        "adoptionStyle": "Pragmatic innovator - adopts proven tech that solves real problems"
+      },
+      "successMetrics": [
+        "Reduce production bugs by 60% in first 6 months",
+        "Decrease code review time by 70%",
+        "Improve team velocity by 25%",
+        "Positive ROI within one quarter"
+      ],
+      "personalBackground": {
+        "careerPath": "Senior Engineer → Engineering Manager → Director → VP",
+        "managementStyle": "Servant leadership, data-driven, empowers teams",
+        "pressures": "Board wants faster feature delivery AND higher quality",
+        "successCriteria": "Team NPS, deployment frequency, change failure rate"
+      }
+    },
+    {
+      "id": "persona-2",
+      "name": "Dr. Sarah Williams",
+      "title": "CTO & Co-Founder",
+      "role": "Strategic Influencer - Technical Validator",
+      "demographics": {
+        "ageRange": "40-55",
+        "experience": "15-20 years in engineering + 5+ years in executive leadership",
+        "education": "PhD in Computer Science or equivalent deep technical expertise",
+        "location": "Global (remote-first companies)"
+      },
+      "psychographics": {
+        "values": "Technical excellence, innovation, competitive moat, team culture, long-term thinking",
+        "motivations": "Build category-defining company, attract world-class engineers, create defensible technical advantages, IPO/acquisition readiness",
+        "fears": "Technical debt preventing scale, losing top engineers to FAANG, competitors out-executing, security breaches, losing board confidence"
+      },
+      "goals": [
+        "Achieve 99.99% uptime (current: 99.5%)",
+        "Build engineering culture that attracts top 1% talent",
+        "Create measurable technical differentiation vs. competitors",
+        "Reduce security vulnerabilities to near-zero",
+        "Enable engineering team to scale 3x without proportional cost increase"
+      ],
+      "painPoints": [
+        "Tech debt accumulated during hypergrowth (Series A → B transition)",
+        "Inconsistent code quality across teams (10 different coding standards)",
+        "Security audit findings requiring immediate attention",
+        "Difficulty attracting senior engineers due to code quality reputation",
+        "Board pressure to increase engineering velocity while improving quality"
+      ],
+      "buyingBehavior": {
+        "decisionProcess": "Strategic evaluation - must align with long-term technical vision, requires deep technical validation, proof of security/compliance",
+        "timeline": "8-16 weeks (technical evaluation 4 weeks, security review 2 weeks, stakeholder buy-in 2+ weeks)",
+        "budgetAuthority": "Final say on all technical infrastructure spending"
+      },
+      "decisionInfluence": {
+        "timeline": "8-16 weeks",
+        "budgetAuthority": "Unlimited (within reason)",
+        "priority": "Strategic",
+        "influenceLevel": "Executive sponsor or deal-breaker"
+      },
+      "communicationPreferences": {
+        "preferredChannels": ["In-depth technical discussions (video/in-person)", "Architecture documents", "Direct access to founding team/CTO", "Technical webinars"],
+        "communicationStyle": "Systems thinker - wants to understand architecture, scalability, security, long-term roadmap"
+      },
+      "objections": [
+        "Is this a point solution or does it fit our broader technical strategy?",
+        "What happens if you get acquired or shut down? (vendor risk)",
+        "Can we self-host for security/compliance reasons?",
+        "How does this integrate with our existing observability stack?",
+        "What's your security posture? (SOC 2, penetration testing results)"
+      ],
+      "informationSources": [
+        "Academic research papers",
+        "CTO peer groups (Reforge, First Round CTO Summit)",
+        "Y Combinator network",
+        "Technical advisory board members",
+        "Direct conversations with portfolio CTOs from VCs"
+      ],
+      "technologyUsage": {
+        "currentTools": ["GitHub Enterprise", "Kubernetes", "AWS/GCP", "Terraform", "Datadog", "PagerDuty", "Slack", "Linear"],
+        "techComfort": "Expert - still writes code, reviews architecture",
+        "adoptionStyle": "Visionary - invests in tools that provide long-term strategic advantage"
+      },
+      "successMetrics": [
+        "Engineering team NPS increases to 9+/10",
+        "Zero critical security vulnerabilities",
+        "Code review velocity improves 10x",
+        "Able to hire 50+ engineers in next 12 months"
+      ],
+      "personalBackground": {
+        "careerPath": "PhD → Research → Startup CTO → Current role",
+        "managementStyle": "Visionary, technically hands-on, empowers but validates",
+        "pressures": "Board expectations for IPO readiness, competitive threats, scaling culture",
+        "successCriteria": "Company valuation, technical moat strength, engineering brand reputation"
+      }
+    },
+    {
+      "id": "persona-3",
+      "name": "Jordan Martinez",
+      "title": "Senior Software Engineer",
+      "role": "End User - Champion/Blocker",
+      "demographics": {
+        "ageRange": "28-38",
+        "experience": "5-10 years professional development experience",
+        "education": "Bachelor's in CS, bootcamp grad, or equivalent self-taught",
+        "location": "Distributed (remote work preference)"
+      },
+      "psychographics": {
+        "values": "Craftsmanship, efficiency, autonomy, learning, impact",
+        "motivations": "Write elegant code, ship features users love, grow technical skills, get promoted to Staff/Principal, maintain work-life balance",
+        "fears": "Being blamed for production bugs, falling behind technically, tool bloat slowing them down, micromanagement, tedious busywork"
+      },
+      "goals": [
+        "Ship 2-3 major features per quarter with zero critical bugs",
+        "Reduce time spent in code review back-and-forth from 40% to 15%",
+        "Learn new technologies (Rust, Go, advanced distributed systems)",
+        "Get promoted to Staff Engineer within 18 months",
+        "Maintain <40 hour work weeks (currently 50+ hours)"
+      ],
+      "painPoints": [
+        "PRs sit in review queue for days - blocks shipping features",
+        "Reviewers nitpick style instead of catching real bugs",
+        "No consistent feedback - different reviewers want different things",
+        "Bugs slip through review, then Jordan gets paged at 2am",
+        "Context switching kills productivity - 15+ tools, constant Slack interruptions"
+      ],
+      "buyingBehavior": {
+        "decisionProcess": "Hands-on evaluation - must try the tool, see real value in daily workflow, not another useless corporate mandate",
+        "timeline": "Immediate feedback (1-2 week trial) - will advocate if it genuinely helps, resist if it adds friction",
+        "budgetAuthority": "None - but can kill deals by refusing to adopt"
+      },
+      "decisionInfluence": {
+        "timeline": "Immediate",
+        "budgetAuthority": "None",
+        "priority": "Critical",
+        "influenceLevel": "Champion or silent saboteur - adoption depends on Jordan's buy-in"
+      },
+      "communicationPreferences": {
+        "preferredChannels": ["Slack", "GitHub comments", "Async documentation", "Short demo videos"],
+        "communicationStyle": "Show, don't tell - wants to see tool in action, not sit through sales pitches"
+      },
+      "objections": [
+        "Just another tool that generates noise I'll have to ignore",
+        "Will it slow down my workflow? (Already using 12 tools)",
+        "How do I know it's catching real bugs vs. false positives?",
+        "Can I customize it to match my coding style?",
+        "Will management use this to micromanage my productivity?"
+      ],
+      "informationSources": [
+        "Hacker News",
+        "Reddit (r/programming, r/ExperiencedDevs)",
+        "Twitter tech community",
+        "YouTube engineering channels",
+        "Dev.to, Medium engineering blogs"
+      ],
+      "technologyUsage": {
+        "currentTools": ["VS Code", "GitHub", "Terminal", "Slack", "Linear/Jira", "Postman", "Docker"],
+        "techComfort": "Expert - lives in terminal and IDE",
+        "adoptionStyle": "Early adopter IF it solves real pain and has good DX"
+      },
+      "successMetrics": [
+        "Catch bugs before code review (save embarrassment)",
+        "Reduce PR review cycles from 3-4 to 1",
+        "Ship features 30% faster",
+        "Fewer production incidents with Jordan's name on them"
+      ],
+      "personalBackground": {
+        "careerPath": "Junior Engineer → Mid-level → Senior → targeting Staff",
+        "workStyle": "Deep focus sessions, prefers async communication, protective of flow state",
+        "pressures": "Feature deadlines, on-call rotation, promotion timeline",
+        "successCriteria": "Shipping impact, technical growth, peer recognition"
+      }
+    },
+    {
+      "id": "persona-4",
+      "name": "Maya Patel",
+      "title": "VP of Product",
+      "role": "Stakeholder - Quality Advocate",
+      "demographics": {
+        "ageRange": "32-42",
+        "experience": "8-12 years in product management",
+        "education": "Bachelor's in Business, CS, or Design + MBA (optional)",
+        "location": "Tech hubs or remote"
+      },
+      "psychographics": {
+        "values": "User experience, velocity, data-driven decisions, cross-functional collaboration",
+        "motivations": "Deliver features customers love, hit OKRs, maintain product-market fit, build legendary product",
+        "fears": "Buggy releases damaging user trust, missing competitive windows, engineer-product friction, churn from quality issues"
+      },
+      "goals": [
+        "Launch 5 major features per quarter without quality regressions",
+        "Improve NPS from 45 to 65 in next 6 months",
+        "Reduce customer-reported bugs by 70%",
+        "Increase feature adoption rate from 30% to 60%",
+        "Decrease time-to-market for new features by 40%"
+      ],
+      "painPoints": [
+        "Bugs in production damage user trust and NPS scores",
+        "Engineering team is cautious and slow due to past incidents",
+        "No visibility into engineering quality metrics",
+        "Customer churn from reliability issues (3 enterprise customers left last quarter)",
+        "Difficult roadmap planning - uncertain engineering capacity due to bug fixes"
+      ],
+      "buyingBehavior": {
+        "decisionProcess": "Outcome-focused - cares about impact on product velocity and quality, not technical details",
+        "timeline": "Fast decision if value is clear - 2-4 weeks",
+        "budgetAuthority": "Medium - can influence VP Eng budget decisions"
+      },
+      "decisionInfluence": {
+        "timeline": "2-4 weeks",
+        "budgetAuthority": "Medium",
+        "priority": "High",
+        "influenceLevel": "Strong influencer - advocates for quality tools"
+      },
+      "communicationPreferences": {
+        "preferredChannels": ["Slack", "Product reviews", "Quarterly planning meetings", "Data dashboards"],
+        "communicationStyle": "Outcome-oriented - wants to see metrics on velocity, quality, and customer impact"
+      },
+      "objections": [
+        "Will this slow down feature development?",
+        "How does this help us ship faster AND better?",
+        "What's the impact on customer satisfaction metrics?",
+        "Do we really need another tool? (Context: trying to simplify stack)"
+      ],
+      "informationSources": [
+        "Product management communities (Lenny's Newsletter, Product School)",
+        "Customer feedback and support tickets",
+        "Data analytics (Amplitude, Mixpanel)",
+        "Competitor product teardowns"
+      ],
+      "technologyUsage": {
+        "currentTools": ["Linear/Jira", "Figma", "Amplitude", "Slack", "Notion", "Google Workspace"],
+        "techComfort": "Medium - understands tech concepts but not deeply technical",
+        "adoptionStyle": "Mainstream - adopts tools that are proven and widely used"
+      },
+      "successMetrics": [
+        "Zero critical bugs in production launches",
+        "Feature release velocity increases 30%",
+        "Customer satisfaction scores improve",
+        "Engineering-product collaboration improves"
+      ],
+      "personalBackground": {
+        "careerPath": "Product Manager → Senior PM → Director → VP",
+        "workStyle": "Collaborative, data-driven, balances user needs with business goals",
+        "pressures": "Revenue targets, user growth, competitive threats, exec expectations",
+        "successCriteria": "Product metrics, revenue impact, team effectiveness"
+      }
+    },
+    {
+      "id": "persona-5",
+      "name": "Marcus Johnson",
+      "title": "Director of Sales Engineering",
+      "role": "Economic Buyer - ROI Validator",
+      "demographics": {
+        "ageRange": "38-50",
+        "experience": "12-18 years in technical sales and engineering",
+        "education": "Bachelor's in Engineering + technical sales certifications",
+        "location": "Major metro areas or remote"
+      },
+      "psychographics": {
+        "values": "Customer success, technical credibility, revenue growth, team development",
+        "motivations": "Close enterprise deals, prove ROI to customers, build high-performing SE team, earn VP promotion",
+        "fears": "Failed POCs, customer churn from product issues, competition winning on technical superiority, missed quota"
+      },
+      "goals": [
+        "Increase enterprise deal close rate from 25% to 40%",
+        "Reduce POC duration from 8 weeks to 4 weeks",
+        "Demonstrate clear ROI in every customer engagement",
+        "Reduce customer-reported bugs during POCs by 90%",
+        "Build technical trust with Fortune 500 prospects"
+      ],
+      "painPoints": [
+        "Lost 3 enterprise deals last quarter due to bugs discovered during POC",
+        "Difficult to prove technical superiority vs. competitors",
+        "Customer engineers skeptical of product quality claims",
+        "Long POC cycles drain SE team resources",
+        "No quantifiable metrics to prove engineering quality to prospects"
+      ],
+      "buyingBehavior": {
+        "decisionProcess": "ROI-focused - needs proof this improves win rates and shortens sales cycles",
+        "timeline": "4-6 weeks - faster if it helps active deals",
+        "budgetAuthority": "High - controls sales engineering budget"
+      },
+      "decisionInfluence": {
+        "timeline": "4-6 weeks",
+        "budgetAuthority": "High",
+        "priority": "High",
+        "influenceLevel": "Strong advocate if it improves sales outcomes"
+      },
+      "communicationPreferences": {
+        "preferredChannels": ["Demo presentations", "ROI calculators", "Customer success stories", "Competitive battle cards"],
+        "communicationStyle": "Business value focused - wants to see revenue impact and win rate improvements"
+      },
+      "objections": [
+        "How does this help us close more deals?",
+        "Can we use this as a competitive differentiator?",
+        "Will this prevent embarrassing bugs during customer POCs?",
+        "What's the ROI for the sales organization?"
+      ],
+      "informationSources": [
+        "Sales enablement platforms",
+        "Customer success teams",
+        "Competitive intelligence",
+        "Revenue operations data"
+      ],
+      "technologyUsage": {
+        "currentTools": ["Salesforce", "Gong", "Highspot", "Slack", "Zoom", "Demo environments"],
+        "techComfort": "High - technical background, can discuss architecture",
+        "adoptionStyle": "Pragmatic - adopts tools that improve sales metrics"
+      },
+      "successMetrics": [
+        "Zero critical bugs found during customer POCs",
+        "Close rate increases 15+ percentage points",
+        "POC duration decreases 50%",
+        "Technical win rate improves vs. competitors"
+      ],
+      "personalBackground": {
+        "careerPath": "Solutions Engineer → Senior SE → Manager → Director",
+        "workStyle": "Customer-obsessed, metrics-driven, technically credible",
+        "pressures": "Quota attainment, competitive losses, product-market fit validation",
+        "successCriteria": "Revenue impact, win rates, customer satisfaction"
+      }
+    }
+  ],
+  "generatedAt": "2025-11-01T10:00:00Z",
+  "version": "1.0",
+  "metadata": {
+    "purpose": "Demo mode for ICP tool - showcases high-quality persona generation",
+    "displayName": "DevTool Pro - AI Code Review Platform",
+    "scenario": "Series A SaaS company selling developer productivity tools to mid-market engineering teams",
+    "useCase": "Users can explore this example before generating their own ICP"
+  }
+}

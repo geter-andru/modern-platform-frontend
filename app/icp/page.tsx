@@ -3,14 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, RefreshCw, Download, FileDown } from 'lucide-react';
+import { ArrowLeft, RefreshCw, Download, FileDown, FileCode, Table, Sparkles } from 'lucide-react';
 import { Brain, Target, Users, FileText, Zap, BarChart3 } from 'lucide-react';
 import { useRequireAuth } from '@/app/lib/auth';
-import { useCustomerICP, useTrackAction } from '@/app/lib/hooks/useAPI';
+import { useCustomer, useCustomerICP, useTrackAction } from '@/app/lib/hooks/useAPI';
 import { usePersonasCache } from '@/app/lib/hooks/cache';
 import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
 import { GlassCard, GlassButton, GlassModal } from '../../src/shared/components/design-system';
 import { exportICPToPDF } from '@/app/lib/utils/pdf-export';
+import { exportToMarkdown, exportToCSV } from '@/app/lib/utils/data-export';
+import { exportToChatGPTPrompt, exportToClaudePrompt, exportToGeminiPrompt } from '@/app/lib/utils/ai-prompt-export';
 import toast from 'react-hot-toast';
 import '../../src/shared/styles/component-patterns.css';
 
@@ -113,6 +115,7 @@ export default function ICPPage() {
   }, [searchParams]);
 
   const { data: icpData, isLoading } = useCustomerICP(user?.id);
+  const { data: customerData } = useCustomer(user?.id); // Fetch full customer data for brand assets
 
   // Get personas data for export
   const {
@@ -161,7 +164,7 @@ export default function ICPPage() {
     // Handle export logic
   }
 
-  const handlePDFExport = () => {
+  const handlePDFExport = async () => {
     // Validate we have persona data
     if (!personas || personas.length === 0) {
       toast.error('No personas available to export. Please generate your ICP first.');
@@ -183,11 +186,15 @@ export default function ICPPage() {
     // For now, assume all exports include watermark for beta
     const isFreeTier = true;
 
-    // Export PDF with error handling
-    const result = exportICPToPDF(exportData, {
+    // Extract brand assets from customer data
+    const brandAssets = (customerData?.data as any)?.brand_assets || null;
+
+    // Export PDF with error handling (now async to support logo loading)
+    const result = await exportICPToPDF(exportData, {
       includeFreeWatermark: isFreeTier,
       companyName: exportData.companyName,
-      productName: exportData.productName
+      productName: exportData.productName,
+      brandAssets: brandAssets || undefined // Pass brand assets if available
     });
 
     // Handle result
@@ -205,6 +212,207 @@ export default function ICPPage() {
       }
     } else {
       toast.error(result.error || 'Failed to export PDF. Please try again.', { id: 'pdf-export' });
+    }
+  };
+
+  const handleMarkdownExport = async () => {
+    // Validate we have persona data
+    if (!personas || personas.length === 0) {
+      toast.error('No personas available to export. Please generate your ICP first.');
+      return;
+    }
+
+    // Show loading state
+    toast.loading('Copying to clipboard...', { id: 'markdown-export' });
+
+    // Prepare export data
+    const exportData = {
+      companyName: user?.user_metadata?.company_name || 'Your Company',
+      productName: 'ICP Analysis',
+      personas: personas,
+      generatedAt: new Date().toISOString()
+    };
+
+    // Export Markdown
+    const result = await exportToMarkdown(exportData);
+
+    // Handle result
+    if (result.success) {
+      toast.success('Markdown copied to clipboard! Paste into Notion.', { id: 'markdown-export' });
+      setShowExportModal(false);
+
+      // Track export action
+      if (trackAction?.mutate) {
+        trackAction.mutate({
+          customerId: user.id,
+          action: 'export_markdown',
+          metadata: { personaCount: personas.length }
+        });
+      }
+    } else {
+      toast.error(result.error || 'Failed to copy Markdown. Please try again.', { id: 'markdown-export' });
+    }
+  };
+
+  const handleCSVExport = () => {
+    // Validate we have persona data
+    if (!personas || personas.length === 0) {
+      toast.error('No personas available to export. Please generate your ICP first.');
+      return;
+    }
+
+    // Show loading state
+    toast.loading('Generating CSV...', { id: 'csv-export' });
+
+    // Prepare export data
+    const exportData = {
+      companyName: user?.user_metadata?.company_name || 'Your Company',
+      productName: 'ICP Analysis',
+      personas: personas,
+      generatedAt: new Date().toISOString()
+    };
+
+    // Export CSV
+    const result = exportToCSV(exportData);
+
+    // Handle result
+    if (result.success) {
+      toast.success('CSV downloaded successfully!', { id: 'csv-export' });
+      setShowExportModal(false);
+
+      // Track export action
+      if (trackAction?.mutate) {
+        trackAction.mutate({
+          customerId: user.id,
+          action: 'export_csv',
+          metadata: { personaCount: personas.length }
+        });
+      }
+    } else {
+      toast.error(result.error || 'Failed to export CSV. Please try again.', { id: 'csv-export' });
+    }
+  };
+
+  const handleChatGPTExport = async () => {
+    // Validate we have persona data
+    if (!personas || personas.length === 0) {
+      toast.error('No personas available to export. Please generate your ICP first.');
+      return;
+    }
+
+    // Show loading state
+    toast.loading('Copying ChatGPT prompt...', { id: 'chatgpt-export' });
+
+    // Prepare export data
+    const exportData = {
+      companyName: user?.user_metadata?.company_name || 'Your Company',
+      productName: 'ICP Analysis',
+      productDescription: undefined,
+      targetMarket: undefined,
+      personas: personas,
+      generatedAt: new Date().toISOString()
+    };
+
+    // Export ChatGPT Prompt
+    const result = await exportToChatGPTPrompt(exportData);
+
+    // Handle result
+    if (result.success) {
+      toast.success('ChatGPT prompt copied! Paste into ChatGPT to extend your research.', { id: 'chatgpt-export' });
+      setShowExportModal(false);
+
+      // Track export action
+      if (trackAction?.mutate) {
+        trackAction.mutate({
+          customerId: user.id,
+          action: 'export_chatgpt_prompt',
+          metadata: { personaCount: personas.length }
+        });
+      }
+    } else {
+      toast.error(result.error || 'Failed to copy ChatGPT prompt. Please try again.', { id: 'chatgpt-export' });
+    }
+  };
+
+  const handleClaudeExport = async () => {
+    // Validate we have persona data
+    if (!personas || personas.length === 0) {
+      toast.error('No personas available to export. Please generate your ICP first.');
+      return;
+    }
+
+    // Show loading state
+    toast.loading('Copying Claude prompt...', { id: 'claude-export' });
+
+    // Prepare export data
+    const exportData = {
+      companyName: user?.user_metadata?.company_name || 'Your Company',
+      productName: 'ICP Analysis',
+      productDescription: undefined,
+      targetMarket: undefined,
+      personas: personas,
+      generatedAt: new Date().toISOString()
+    };
+
+    // Export Claude Prompt
+    const result = await exportToClaudePrompt(exportData);
+
+    // Handle result
+    if (result.success) {
+      toast.success('Claude prompt copied! Paste into Claude to extend your research.', { id: 'claude-export' });
+      setShowExportModal(false);
+
+      // Track export action
+      if (trackAction?.mutate) {
+        trackAction.mutate({
+          customerId: user.id,
+          action: 'export_claude_prompt',
+          metadata: { personaCount: personas.length }
+        });
+      }
+    } else {
+      toast.error(result.error || 'Failed to copy Claude prompt. Please try again.', { id: 'claude-export' });
+    }
+  };
+
+  const handleGeminiExport = async () => {
+    // Validate we have persona data
+    if (!personas || personas.length === 0) {
+      toast.error('No personas available to export. Please generate your ICP first.');
+      return;
+    }
+
+    // Show loading state
+    toast.loading('Copying Gemini prompt...', { id: 'gemini-export' });
+
+    // Prepare export data
+    const exportData = {
+      companyName: user?.user_metadata?.company_name || 'Your Company',
+      productName: 'ICP Analysis',
+      productDescription: undefined,
+      targetMarket: undefined,
+      personas: personas,
+      generatedAt: new Date().toISOString()
+    };
+
+    // Export Gemini Prompt
+    const result = await exportToGeminiPrompt(exportData);
+
+    // Handle result
+    if (result.success) {
+      toast.success('Gemini prompt copied! Paste into Gemini to extend your research.', { id: 'gemini-export' });
+      setShowExportModal(false);
+
+      // Track export action
+      if (trackAction?.mutate) {
+        trackAction.mutate({
+          customerId: user.id,
+          action: 'export_gemini_prompt',
+          metadata: { personaCount: personas.length }
+        });
+      }
+    } else {
+      toast.error(result.error || 'Failed to copy Gemini prompt. Please try again.', { id: 'gemini-export' });
     }
   };
 
@@ -234,7 +442,10 @@ export default function ICPPage() {
             <h1 className="heading-1">Ideal Customer Profile (ICP)</h1>
           </div>
           <p className="body-large text-text-muted">
-            Define and refine your perfect customer segments
+            Rate any company 1-100 for sales fit in 30 seconds
+          </p>
+          <p className="body text-text-secondary mt-2">
+            <strong>When to use:</strong> Before reaching out to new prospects
           </p>
         </div>
 
@@ -255,8 +466,11 @@ export default function ICPPage() {
                     onClick={() => handleWidgetChange(widget.id)}
                     disabled={!isAvailable}
                     data-widget-id={widget.id}
+                    aria-label={`${widget.title} - ${widget.description}${!isAvailable ? ' (Coming Soon)' : ''}`}
+                    aria-current={isActive ? 'page' : undefined}
+                    aria-disabled={!isAvailable}
                     className={`
-                      btn min-w-[200px]
+                      btn min-w-full sm:min-w-[180px]
                       ${isActive
                         ? 'btn-primary'
                         : isAvailable
@@ -412,17 +626,28 @@ export default function ICPPage() {
           <h3 className="heading-2 mb-4 text-center">
             Choose Export Format
           </h3>
-          <p className="body text-text-secondary mb-8 text-center">
+          <p className="body text-text-secondary mb-2 text-center">
             {!personas || personas.length === 0
               ? 'Generate your ICP first to enable exports'
-              : `Export ${personas.length} buyer personas`}
+              : `Export ${personas.length} buyer personas as ready-to-use sales materials`}
           </p>
+          {personas && personas.length > 0 && (
+            <p className="body-small text-text-muted mb-8 text-center">
+              Create sales materials, AI research prompts, or spreadsheet data in one click
+            </p>
+          )}
 
-          <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
             {/* PDF Export - WORKING */}
             <button
               onClick={handlePDFExport}
               disabled={!personas || personas.length === 0 || isLoadingPersonas}
+              aria-label={
+                personas && personas.length > 0
+                  ? `Export ${personas.length} buyer personas as PDF report`
+                  : "Generate your ICP first to export PDF report"
+              }
+              aria-disabled={!personas || personas.length === 0 || isLoadingPersonas}
               className={`
                 p-6 rounded-lg border-2 transition-all
                 ${!personas || personas.length === 0 || isLoadingPersonas
@@ -439,57 +664,195 @@ export default function ICPPage() {
                 Comprehensive ICP analysis document
               </p>
               {!personas || personas.length === 0 ? (
-                <span className="text-xs text-yellow-500 mt-2 inline-block">
+                <span className="text-sm text-yellow-500 mt-2 inline-block">
                   Generate ICP first
                 </span>
               ) : (
-                <span className="text-xs text-green-500 mt-2 inline-block">
+                <span className="text-sm text-green-500 mt-2 inline-block">
                   ✓ Ready to export
                 </span>
               )}
             </button>
 
-            {/* Markdown/CSV - Coming in Task 1.2 */}
-            <GlassCard className="p-6 opacity-50">
-              <FileDown className="w-8 h-8 mx-auto mb-3 text-gray-500" />
+            {/* Markdown Export - WORKING */}
+            <button
+              onClick={handleMarkdownExport}
+              disabled={!personas || personas.length === 0 || isLoadingPersonas}
+              aria-label={
+                personas && personas.length > 0
+                  ? `Copy ${personas.length} buyer personas as Markdown to clipboard for Notion`
+                  : "Generate your ICP first to copy Markdown"
+              }
+              aria-disabled={!personas || personas.length === 0 || isLoadingPersonas}
+              className={`
+                p-6 rounded-lg border-2 transition-all
+                ${!personas || personas.length === 0 || isLoadingPersonas
+                  ? 'opacity-50 cursor-not-allowed border-gray-700 bg-gray-900'
+                  : 'border-purple-500 bg-purple-900/20 hover:bg-purple-900/40 hover:scale-105 cursor-pointer'
+                }
+              `}
+            >
+              <FileCode className="w-8 h-8 mx-auto mb-3" style={{ color: personas?.length ? '#a855f7' : '#6b7280' }} />
               <h4 className="heading-4 mb-2">
-                Markdown / CSV
+                Copy to Notion
               </h4>
               <p className="body-small text-text-secondary">
-                Copy to Notion or export to spreadsheet
+                Markdown format for Notion, Obsidian
               </p>
-              <span className="text-xs text-gray-500 mt-2 inline-block">
-                Coming in Phase 1.2
-              </span>
-            </GlassCard>
+              {!personas || personas.length === 0 ? (
+                <span className="text-sm text-yellow-500 mt-2 inline-block">
+                  Generate ICP first
+                </span>
+              ) : (
+                <span className="text-sm text-green-500 mt-2 inline-block">
+                  ✓ Ready to copy
+                </span>
+              )}
+            </button>
 
-            {/* CRM Integration - Phase 4 */}
-            <GlassCard className="p-6 opacity-50">
-              <Users className="w-8 h-8 mx-auto mb-3 text-gray-500" />
+            {/* CSV Export - WORKING */}
+            <button
+              onClick={handleCSVExport}
+              disabled={!personas || personas.length === 0 || isLoadingPersonas}
+              aria-label={
+                personas && personas.length > 0
+                  ? `Export ${personas.length} buyer personas as CSV spreadsheet`
+                  : "Generate your ICP first to export CSV"
+              }
+              aria-disabled={!personas || personas.length === 0 || isLoadingPersonas}
+              className={`
+                p-6 rounded-lg border-2 transition-all
+                ${!personas || personas.length === 0 || isLoadingPersonas
+                  ? 'opacity-50 cursor-not-allowed border-gray-700 bg-gray-900'
+                  : 'border-green-500 bg-green-900/20 hover:bg-green-900/40 hover:scale-105 cursor-pointer'
+                }
+              `}
+            >
+              <Table className="w-8 h-8 mx-auto mb-3" style={{ color: personas?.length ? '#10b981' : '#6b7280' }} />
               <h4 className="heading-4 mb-2">
-                CRM Integration
+                Export CSV
               </h4>
               <p className="body-small text-text-secondary">
-                HubSpot, Salesforce, Pipedrive
+                Spreadsheet with all persona details
               </p>
-              <span className="text-xs text-gray-500 mt-2 inline-block">
-                Coming in Phase 4
-              </span>
-            </GlassCard>
+              {!personas || personas.length === 0 ? (
+                <span className="text-sm text-yellow-500 mt-2 inline-block">
+                  Generate ICP first
+                </span>
+              ) : (
+                <span className="text-sm text-green-500 mt-2 inline-block">
+                  ✓ Ready to download
+                </span>
+              )}
+            </button>
 
-            {/* AI Prompts - Phase 4 */}
-            <GlassCard className="p-6 opacity-50">
-              <Zap className="w-8 h-8 mx-auto mb-3 text-gray-500" />
+            {/* ChatGPT Prompt - WORKING */}
+            <button
+              onClick={handleChatGPTExport}
+              disabled={!personas || personas.length === 0 || isLoadingPersonas}
+              aria-label={
+                personas && personas.length > 0
+                  ? `Copy ${personas.length} buyer personas as ChatGPT research prompt`
+                  : "Generate your ICP first to copy ChatGPT prompt"
+              }
+              aria-disabled={!personas || personas.length === 0 || isLoadingPersonas}
+              className={`
+                p-6 rounded-lg border-2 transition-all
+                ${!personas || personas.length === 0 || isLoadingPersonas
+                  ? 'opacity-50 cursor-not-allowed border-gray-700 bg-gray-900'
+                  : 'border-cyan-500 bg-cyan-900/20 hover:bg-cyan-900/40 hover:scale-105 cursor-pointer'
+                }
+              `}
+            >
+              <Zap className="w-8 h-8 mx-auto mb-3" style={{ color: personas?.length ? '#06b6d4' : '#6b7280' }} />
               <h4 className="heading-4 mb-2">
-                AI Prompts
+                ChatGPT Prompt
               </h4>
               <p className="body-small text-text-secondary">
-                Claude, ChatGPT, Perplexity
+                Extend research with ChatGPT
               </p>
-              <span className="text-xs text-gray-500 mt-2 inline-block">
-                Coming in Phase 4
-              </span>
-            </GlassCard>
+              {!personas || personas.length === 0 ? (
+                <span className="text-sm text-yellow-500 mt-2 inline-block">
+                  Generate ICP first
+                </span>
+              ) : (
+                <span className="text-sm text-green-500 mt-2 inline-block">
+                  ✓ Ready to copy
+                </span>
+              )}
+            </button>
+
+            {/* Claude Prompt - WORKING */}
+            <button
+              onClick={handleClaudeExport}
+              disabled={!personas || personas.length === 0 || isLoadingPersonas}
+              aria-label={
+                personas && personas.length > 0
+                  ? `Copy ${personas.length} buyer personas as Claude research prompt`
+                  : "Generate your ICP first to copy Claude prompt"
+              }
+              aria-disabled={!personas || personas.length === 0 || isLoadingPersonas}
+              className={`
+                p-6 rounded-lg border-2 transition-all
+                ${!personas || personas.length === 0 || isLoadingPersonas
+                  ? 'opacity-50 cursor-not-allowed border-gray-700 bg-gray-900'
+                  : 'border-orange-500 bg-orange-900/20 hover:bg-orange-900/40 hover:scale-105 cursor-pointer'
+                }
+              `}
+            >
+              <Brain className="w-8 h-8 mx-auto mb-3" style={{ color: personas?.length ? '#f97316' : '#6b7280' }} />
+              <h4 className="heading-4 mb-2">
+                Claude Prompt
+              </h4>
+              <p className="body-small text-text-secondary">
+                Extend research with Claude
+              </p>
+              {!personas || personas.length === 0 ? (
+                <span className="text-sm text-yellow-500 mt-2 inline-block">
+                  Generate ICP first
+                </span>
+              ) : (
+                <span className="text-sm text-green-500 mt-2 inline-block">
+                  ✓ Ready to copy
+                </span>
+              )}
+            </button>
+
+            {/* Gemini Prompt - WORKING */}
+            <button
+              onClick={handleGeminiExport}
+              disabled={!personas || personas.length === 0 || isLoadingPersonas}
+              aria-label={
+                personas && personas.length > 0
+                  ? `Copy ${personas.length} buyer personas as Gemini research prompt`
+                  : "Generate your ICP first to copy Gemini prompt"
+              }
+              aria-disabled={!personas || personas.length === 0 || isLoadingPersonas}
+              className={`
+                p-6 rounded-lg border-2 transition-all
+                ${!personas || personas.length === 0 || isLoadingPersonas
+                  ? 'opacity-50 cursor-not-allowed border-gray-700 bg-gray-900'
+                  : 'border-indigo-500 bg-indigo-900/20 hover:bg-indigo-900/40 hover:scale-105 cursor-pointer'
+                }
+              `}
+            >
+              <Sparkles className="w-8 h-8 mx-auto mb-3" style={{ color: personas?.length ? '#6366f1' : '#6b7280' }} />
+              <h4 className="heading-4 mb-2">
+                Gemini Prompt
+              </h4>
+              <p className="body-small text-text-secondary">
+                Extend research with Gemini
+              </p>
+              {!personas || personas.length === 0 ? (
+                <span className="text-sm text-yellow-500 mt-2 inline-block">
+                  Generate ICP first
+                </span>
+              ) : (
+                <span className="text-sm text-green-500 mt-2 inline-block">
+                  ✓ Ready to copy
+                </span>
+              )}
+            </button>
           </div>
         </div>
       </GlassModal>

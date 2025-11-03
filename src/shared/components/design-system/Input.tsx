@@ -1,5 +1,5 @@
 /**
- * H&S Revenue Intelligence Platform - Design System Input Component
+ * Andru Revenue Intelligence - Design System Input Component
  * Assets-App Design System Implementation
  * 
  * SURGICAL IMPLEMENTATION:

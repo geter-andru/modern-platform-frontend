@@ -9,14 +9,17 @@ import BuyerPersonasWidget from '../../../src/features/icp-analysis/widgets/Buye
 import MyICPOverviewWidget from '../../../src/features/icp-analysis/widgets/MyICPOverviewWidget';
 import { exportICPToPDF } from '@/app/lib/utils/pdf-export';
 import toast, { Toaster } from 'react-hot-toast';
-import demoData from '../../../../data/demo-icp-devtool.json';
+import demoData from '../../../data/demo-icp-devtool.json';
+import DemoGenerationModal from './components/DemoGenerationModal';
 import '../../../src/shared/styles/component-patterns.css';
+import { BRAND_IDENTITY } from '@/app/lib/constants/brand-identity';
 
 export default function ICPDemoPage() {
   const [activeTab, setActiveTab] = useState<'personas' | 'overview'>('personas');
   const [showExportModal, setShowExportModal] = useState(false);
+  const [showGenerationModal, setShowGenerationModal] = useState(false);
 
-  const handlePDFExport = () => {
+  const handlePDFExport = async () => {
     toast.loading('Generating demo PDF...', { id: 'pdf-export' });
 
     // Prepare export data from demo JSON
@@ -27,9 +30,9 @@ export default function ICPDemoPage() {
       generatedAt: demoData.generatedAt
     };
 
-    // Export with demo watermark
-    const result = exportICPToPDF(exportData, {
-      includeFreeWatermark: true,
+    // Export with demo watermark (diagonal overlay on all pages)
+    const result = await exportICPToPDF(exportData, {
+      includeDemoWatermark: true,
       companyName: exportData.companyName,
       productName: exportData.productName
     });
@@ -62,20 +65,36 @@ export default function ICPDemoPage() {
             className="mb-8"
           >
             <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20">
-                  <Sparkles className="w-4 h-4 text-blue-400" />
-                  <span className="text-sm font-medium text-blue-400">Demo Mode</span>
+              <div>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20">
+                    <Sparkles className="w-4 h-4 text-blue-400" />
+                    <span className="text-sm font-medium text-blue-400">Demo Mode</span>
+                  </div>
+                  <h1 className="heading-1">ICP Tool Demo</h1>
                 </div>
-                <h1 className="heading-1">ICP Tool Demo</h1>
+                <div className="flex items-center gap-2 text-sm text-text-muted pl-1">
+                  <span>Built by {BRAND_IDENTITY.FOUNDER.NAME}, {BRAND_IDENTITY.FOUNDER.BIO_SHORT}</span>
+                  <span className="text-text-subtle">•</span>
+                  <span>Powered by advanced AI (sub-3s ICP generation)</span>
+                </div>
               </div>
-              <Link
-                href="/signup"
-                className="btn btn-primary flex items-center gap-2"
-              >
-                Try with Your Product
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowGenerationModal(true)}
+                  className="btn btn-primary flex items-center gap-2"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Generate Live ICP
+                </button>
+                <Link
+                  href="/signup"
+                  className="btn btn-secondary flex items-center gap-2"
+                >
+                  Sign Up Free
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
 
             <p className="body-large text-text-muted max-w-3xl">
@@ -196,10 +215,11 @@ export default function ICPDemoPage() {
                 borderColor: 'var(--glass-border)'
               }}
             >
-              <h3 className="heading-2 mb-3">Ready to Generate Your ICP?</h3>
+              <h3 className="heading-2 mb-3">You've Seen the Demo. Now Generate Your Real ICP.</h3>
               <p className="body-large text-text-muted mb-6 max-w-2xl mx-auto">
-                Join 100 founding members getting exclusive access to Andru's AI-powered ICP tool.
-                Generate detailed buyer personas for your product in under 5 minutes.
+                This is what Andru can do for <strong>YOUR product</strong>.
+                Join 100 founding members getting <strong>$149/mo locked-in pricing</strong>
+                (launching at $297/mo in March 2025).
               </p>
               <div className="flex gap-4 justify-center">
                 <Link
@@ -246,7 +266,9 @@ export default function ICPDemoPage() {
           >
             <h3 className="heading-3 mb-4">Export Demo ICP</h3>
             <p className="body text-text-muted mb-6">
-              Export this demo analysis to see how Andru formats your ICP data.
+              See how Andru formats your ICP analysis. All exports include
+              <strong> DEMO watermarks</strong>—sign up to save your real analysis
+              and get watermark-free exports.
             </p>
 
             <div className="space-y-3">
@@ -283,9 +305,27 @@ export default function ICPDemoPage() {
             >
               Cancel
             </button>
+
+            <p className="text-sm text-text-muted text-center mt-6 pt-6 border-t" style={{ borderColor: 'var(--glass-border)' }}>
+              Founding members get unlimited exports in all formats.
+              <Link href="/founding-members" className="text-blue-400 hover:underline ml-1">
+                Learn more →
+              </Link>
+            </p>
           </motion.div>
         </motion.div>
       )}
+
+      {/* Demo Generation Modal */}
+      <DemoGenerationModal
+        isOpen={showGenerationModal}
+        onClose={() => setShowGenerationModal(false)}
+        onSuccess={(result) => {
+          toast.success('ICP generated successfully! View it below.');
+          setShowGenerationModal(false);
+          // Could optionally update the page to show the new result
+        }}
+      />
     </EnterpriseNavigationV2>
   );
 }

@@ -44,19 +44,19 @@ export default function PaymentCancelPage() {
               <svg className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <circle cx="10" cy="10" r="8" />
               </svg>
-              3-day free trial with full platform access
+              Free access during beta (Dec 2025 - Feb 2025)
             </li>
             <li className="flex items-start">
               <svg className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <circle cx="10" cy="10" r="8" />
               </svg>
-              Cancel anytime before trial ends - no charge
+              Lock in $149/month lifetime pricing (50% off forever)
             </li>
             <li className="flex items-start">
               <svg className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <circle cx="10" cy="10" r="8" />
               </svg>
-              Only $99/month after trial
+              100 founding member spots available
             </li>
           </ul>
         </div>

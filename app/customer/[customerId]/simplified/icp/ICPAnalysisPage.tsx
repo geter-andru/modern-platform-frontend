@@ -175,7 +175,7 @@ export default function ICPAnalysisPage() {
             </div>
             
             <p className="text-gray-400 text-sm">
-              H&S Revenue Intelligence Platform • Enterprise Customer Profiling System
+              Andru Revenue Intelligence • Enterprise ICP Analysis Platform
             </p>
           </div>
         </div>

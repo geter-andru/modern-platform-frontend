@@ -63,6 +63,9 @@ const GlassModal: React.FC<GlassModalProps> = ({
           
           {/* Modal */}
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={title ? "modal-title" : undefined}
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -82,11 +85,12 @@ const GlassModal: React.FC<GlassModalProps> = ({
             {/* Header */}
             {title && (
               <div className="flex items-center justify-between p-6 border-b border-white/10">
-                <h2 className="text-xl font-semibold text-white">
+                <h2 id="modal-title" className="text-xl font-semibold text-white">
                   {title}
                 </h2>
                 <button
                   onClick={onClose}
+                  aria-label="Close modal"
                   className="p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors"
                 >
                   <X className="w-5 h-5" />

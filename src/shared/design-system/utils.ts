@@ -1,5 +1,5 @@
 /**
- * H&S Revenue Intelligence Platform - Design System Utilities
+ * Andru Revenue Intelligence - Design System Utilities
  * Utility functions for token management and DOM manipulation
  * 
  * SURGICAL IMPLEMENTATION:

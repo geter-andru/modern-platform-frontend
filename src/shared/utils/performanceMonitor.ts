@@ -1,5 +1,5 @@
 /**
- * Enterprise Performance Monitoring for H&S Revenue Intelligence Platform
+ * Enterprise Performance Monitoring for Andru Revenue Intelligence
  * Tracks key performance metrics for Series A founder experience optimization
  */
 

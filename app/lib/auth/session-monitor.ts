@@ -264,3 +264,4 @@ if (typeof window !== 'undefined') {
 }
 
 export default sessionMonitor;
+

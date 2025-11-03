@@ -80,7 +80,7 @@ export default function ModernPlatformDashboard() {
       <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 flex items-center justify-center">
         <div className="text-center">
           <div className="text-4xl mb-4">🚀</div>
-          <h1 className="text-xl font-semibold text-gray-200 mb-2">Initializing Revenue Intelligence Platform</h1>
+          <h1 className="text-xl font-semibold text-gray-200 mb-2">Initializing Andru Revenue Intelligence</h1>
           <p className="text-gray-400">Loading your professional dashboard...</p>
           <div className="mt-4">
             <div className="w-8 h-8 border-4 border-gray-600 border-t-blue-500 rounded-full animate-spin mx-auto"></div>

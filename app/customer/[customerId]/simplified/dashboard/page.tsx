@@ -16,7 +16,7 @@ export default function SimplifiedDashboardPage() {
       <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 flex items-center justify-center">
         <div className="text-center">
           <div className="text-4xl mb-4">🚀</div>
-          <h1 className="text-xl font-semibold text-gray-200 mb-2">Loading H&S Revenue Intelligence Platform</h1>
+          <h1 className="text-xl font-semibold text-gray-200 mb-2">Loading Andru Revenue Intelligence</h1>
           <p className="text-text-secondary">Initializing your professional dashboard...</p>
         </div>
       </div>

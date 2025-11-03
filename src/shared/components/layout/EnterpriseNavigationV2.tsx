@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 // import { useTheme } from '@/src/shared/components/theme/ThemeProvider'; // TODO: Create ThemeProvider component
 import { useAuth } from '@/app/lib/auth';
+import { BRAND_IDENTITY } from '@/app/lib/constants/brand-identity';
 
 interface EnterpriseNavigationV2Props {
   children: React.ReactNode;
@@ -209,11 +210,11 @@ export function EnterpriseNavigationV2({ children }: EnterpriseNavigationV2Props
           <div className="flex items-center justify-between">
             <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : ''}`}>
               <div className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-accent rounded-lg flex items-center justify-center">
-                <span className="text-text-primary font-bold text-sm">H&S</span>
+                <span className="text-text-primary font-bold text-sm">A</span>
               </div>
               {!sidebarCollapsed && (
                 <div className="ml-3">
-                  <h1 className="text-text-primary font-semibold text-sm">Platform</h1>
+                  <h1 className="text-text-primary font-semibold text-sm">{BRAND_IDENTITY.SHORT_NAME}</h1>
                   <p className="text-text-muted text-xs">Revenue Intelligence</p>
                 </div>
               )}

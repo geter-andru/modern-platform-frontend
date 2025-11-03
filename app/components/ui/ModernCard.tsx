@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
 
@@ -16,7 +16,7 @@ import { LucideIcon } from 'lucide-react';
  */
 
 type CardSize = 'small' | 'medium' | 'large' | 'auto';
-type CardVariant = 'default' | 'highlighted' | 'success' | 'warning' | 'glass';
+type CardVariant = 'default' | 'highlighted' | 'success' | 'warning' | 'glass' | 'glow';
 type CardPadding = 'none' | 'compact' | 'default' | 'spacious';
 
 interface ModernCardProps {
@@ -36,6 +36,39 @@ const ModernCard: React.FC<ModernCardProps> = ({
   interactive = true,
   padding = 'default'
 }) => {
+  // Mouse tracking for glow effect
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    if (variant !== 'glow') return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!cardRef.current) return;
+      const rect = cardRef.current.getBoundingClientRect();
+      setMousePosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    };
+
+    const card = cardRef.current;
+    if (card) {
+      card.addEventListener('mousemove', handleMouseMove);
+      card.addEventListener('mouseenter', () => setIsHovered(true));
+      card.addEventListener('mouseleave', () => setIsHovered(false));
+    }
+
+    return () => {
+      if (card) {
+        card.removeEventListener('mousemove', handleMouseMove);
+        card.removeEventListener('mouseenter', () => setIsHovered(true));
+        card.removeEventListener('mouseleave', () => setIsHovered(false));
+      }
+    };
+  }, [variant]);
+
   // Size configurations with responsive adjustments
   const sizeClasses: Record<CardSize, string> = {
     small: 'min-h-[180px] sm:min-h-[200px]',
@@ -58,7 +91,8 @@ const ModernCard: React.FC<ModernCardProps> = ({
     highlighted: 'bg-[#1a1a1a] border-transparent ring-1 ring-purple-500/20',
     success: 'bg-[#1a1a1a] border-transparent ring-1 ring-green-500/20',
     warning: 'bg-[#1a1a1a] border-transparent ring-1 ring-orange-500/20',
-    glass: 'bg-gray-900/50 border-transparent backdrop-blur-sm'
+    glass: 'bg-gray-900/50 border-transparent backdrop-blur-sm',
+    glow: 'bg-[#1a1a1a] border-transparent'
   };
 
   // Interactive states
@@ -75,9 +109,17 @@ const ModernCard: React.FC<ModernCardProps> = ({
     ${className}
   `.trim();
 
+  // Glow effect styles
+  const glowStyle = variant === 'glow' && isHovered ? {
+    '--mouse-x': `${mousePosition.x}px`,
+    '--mouse-y': `${mousePosition.y}px`,
+  } as React.CSSProperties : {};
+
   return (
     <motion.div
-      className={baseClasses}
+      ref={cardRef}
+      className={`${baseClasses} ${variant === 'glow' ? 'glow-card' : ''}`}
+      style={glowStyle}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -87,6 +129,29 @@ const ModernCard: React.FC<ModernCardProps> = ({
       } : {}}
     >
       {children}
+      <style jsx>{`
+        .glow-card::before {
+          content: '';
+          position: absolute;
+          inset: -2px;
+          border-radius: inherit;
+          padding: 2px;
+          background: conic-gradient(
+            from 0deg at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            transparent 0deg,
+            #3b82f6 60deg,
+            #8b5cf6 120deg,
+            transparent 180deg
+          );
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          opacity: ${isHovered ? '0.8' : '0'};
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+          z-index: -1;
+        }
+      `}</style>
     </motion.div>
   );
 };

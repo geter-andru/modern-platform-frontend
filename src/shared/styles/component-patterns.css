@@ -1,5 +1,5 @@
 /**
- * H&S Revenue Intelligence Platform - Component Patterns
+ * Andru Revenue Intelligence - Component Patterns
  * Professional component implementations for Late Seed - Early Series A Technical Founders
  *
  * TARGET BUYER ALIGNMENT:
@@ -40,6 +40,13 @@
   opacity: 0.5;
   cursor: not-allowed;
   transform: none !important;
+}
+
+/* Universal focus-visible for accessibility - all button elements */
+button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  box-shadow: var(--shadow-focus);
 }
 
 /* Primary Button - Strategic Actions */

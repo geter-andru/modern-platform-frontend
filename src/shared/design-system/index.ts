@@ -1,7 +1,7 @@
 /**
- * H&S Revenue Intelligence Platform - Design System
+ * Andru Revenue Intelligence - Design System
  * Global design system exports
- * 
+ *
  * SURGICAL IMPLEMENTATION:
  * - Clean, organized exports
  * - Type-safe interfaces

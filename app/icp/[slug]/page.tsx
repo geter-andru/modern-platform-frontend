@@ -39,22 +39,40 @@ export default async function ICPScenarioPage({ params }: { params: Promise<{ sl
   }
 
   return (
-    <div className="icp-scenario-page">
-      <div className="min-h-screen">
+    <>
+      <div className="min-h-screen" style={{
+        fontFamily: '"Red Hat Display", sans-serif',
+        background: 'linear-gradient(135deg, #000000 0%, #0a0a0a 100%)',
+        color: '#ffffff'
+      }}>
         <div className="max-w-4xl mx-auto px-6 py-12">
 
           {/* CTA Header */}
           <div className="mb-8">
-            <div className="glass-card rounded-2xl shadow-xl p-8 text-center">
-              <h3 className="text-2xl font-bold gradient-text mb-3">
+            <div className="rounded-2xl shadow-xl p-8 text-center" style={{
+              background: 'rgba(255, 255, 255, 0.03)',
+              backdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.08)'
+            }}>
+              <h3 className="text-2xl font-bold mb-3" style={{
+                background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>
                 This is how your product can delight your customers, according to Andru
               </h3>
-              <p className="text-lg mb-6" style={{ color: 'var(--color-text-muted)' }}>
+              <p className="text-lg mb-6" style={{ color: '#a3a3a3' }}>
                 Deep customer insight that makes your product value crystal clear
               </p>
               <a
                 href="https://calendly.com/humusnshore/discovery-60-min?back=1&month=2025-10"
-                className="btn-primary inline-block text-white font-bold px-8 py-3 rounded-lg"
+                className="inline-block text-white font-bold px-8 py-3 rounded-lg hover:-translate-y-0.5 hover:shadow-xl"
+                style={{
+                  background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                  transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                  boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                }}
               >
                 Learn More About Andru
               </a>
@@ -83,7 +101,11 @@ export default async function ICPScenarioPage({ params }: { params: Promise<{ sl
           </div>
 
           {/* Scenario Content */}
-          <div className="glass-card rounded-2xl shadow-xl p-8 md:p-12 space-y-8">
+          <div className="rounded-2xl shadow-xl p-8 md:p-12 space-y-8" style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            backdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.08)'
+          }}>
 
             {/* The Scenario */}
             <section>
@@ -111,7 +133,11 @@ export default async function ICPScenarioPage({ params }: { params: Promise<{ sl
                 <section key={index} className="relative">
                   <div className="flex items-start gap-6">
                     {/* Timeline marker */}
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-white font-bold shadow-lg btn-primary">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-white font-bold shadow-lg" style={{
+                      background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                      transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                      boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                    }}>
                       {index + 1}
                     </div>
 
@@ -178,7 +204,11 @@ export default async function ICPScenarioPage({ params }: { params: Promise<{ sl
 
                       {/* Quote */}
                       {timestamp.quote && (
-                        <div className="glass-card rounded-lg p-4 mt-4">
+                        <div className="rounded-lg p-4 mt-4" style={{
+                          background: 'rgba(255, 255, 255, 0.03)',
+                          backdropFilter: 'blur(16px)',
+                          border: '1px solid rgba(255, 255, 255, 0.08)'
+                        }}>
                           <p className="italic" style={{ color: 'var(--color-text-secondary)' }}>
                             "{timestamp.quote}"
                           </p>
@@ -201,16 +231,30 @@ export default async function ICPScenarioPage({ params }: { params: Promise<{ sl
 
           {/* CTA Footer */}
           <div className="mt-12 text-center">
-            <div className="glass-card rounded-2xl shadow-xl p-8">
-              <h3 className="text-2xl font-bold gradient-text mb-3">
+            <div className="rounded-2xl shadow-xl p-8" style={{
+              background: 'rgba(255, 255, 255, 0.03)',
+              backdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.08)'
+            }}>
+              <h3 className="text-2xl font-bold mb-3" style={{
+                background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>
                 This is how your product can delight your customers, according to Andru
               </h3>
-              <p className="text-lg mb-6" style={{ color: 'var(--color-text-muted)' }}>
+              <p className="text-lg mb-6" style={{ color: '#a3a3a3' }}>
                 Deep customer insight that makes your product value crystal clear
               </p>
               <a
                 href="https://calendly.com/humusnshore/discovery-60-min?back=1&month=2025-10"
-                className="btn-primary inline-block text-white font-bold px-8 py-3 rounded-lg"
+                className="inline-block text-white font-bold px-8 py-3 rounded-lg hover:-translate-y-0.5 hover:shadow-xl"
+                style={{
+                  background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                  transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                  boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                }}
               >
                 Learn More About Andru
               </a>
@@ -218,6 +262,6 @@ export default async function ICPScenarioPage({ params }: { params: Promise<{ sl
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

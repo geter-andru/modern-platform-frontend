@@ -37,10 +37,10 @@ export default function TestLayoutsPage() {
             companyName="Acme Corp"
             sidebarContent={
               <div className="space-y-4">
-                <ModernCard size="small" variant="highlighted" padding="compact">
-                  <h3 className="text-sm font-semibold text-white mb-2">Quick Tips</h3>
+                <ModernCard size="small" variant="glow" padding="compact">
+                  <h3 className="text-sm font-semibold text-white mb-2">Quick Tips (with Glow!)</h3>
                   <p className="text-xs text-text-secondary">
-                    This sidebar content is sticky on desktop and slides up on mobile.
+                    Hover over this card to see the new glowing border effect!
                   </p>
                 </ModernCard>
                 <ModernCard size="small" variant="default" padding="compact">
@@ -106,25 +106,25 @@ export default function TestLayoutsPage() {
               </ModernCard>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <ModernCard size="small">
-                  <h3 className="text-lg font-semibold text-white mb-2">Try It</h3>
+                <ModernCard size="small" variant="glow">
+                  <h3 className="text-lg font-semibold text-white mb-2">Try It (Glow Effect!)</h3>
                   <p className="text-sm text-text-secondary mb-3">
-                    Click the collapse button in the sidebar to see the 72px collapsed state.
+                    Hover to see the glowing border follow your cursor!
                   </p>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-purple-400">Interactive sidebar</span>
+                    <span className="text-xs text-purple-400">Interactive glow</span>
                   </div>
                 </ModernCard>
 
-                <ModernCard size="small" variant="highlighted">
-                  <h3 className="text-lg font-semibold text-white mb-2">Mobile Test</h3>
+                <ModernCard size="small" variant="glow">
+                  <h3 className="text-lg font-semibold text-white mb-2">Mobile Test (Glow!)</h3>
                   <p className="text-sm text-text-secondary mb-3">
-                    Resize your browser to mobile width to see the overlay menu.
+                    The glow effect works on mobile too!
                   </p>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-green-400">Responsive design</span>
+                    <span className="text-xs text-green-400">Responsive glow</span>
                   </div>
                 </ModernCard>
               </div>

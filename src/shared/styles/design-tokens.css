@@ -1,5 +1,5 @@
 /**
- * H&S Revenue Intelligence Platform - Design Tokens
+ * Andru Revenue Intelligence - Design Tokens
  * Single Source of Truth for Design System
  *
  * TARGET: Late Seed - Early Series A Technical Founders (INTJ/ENTJ)
@@ -78,12 +78,12 @@
   --color-danger: #ef4444;     /* Red 500 - Critical issues, risks */
   --color-info: #06b6d4;       /* Cyan 500 - Information, insights */
 
-  /* Text Hierarchy - Professional Readability (Expert Requirement) */
-  --text-primary: #e0e0e0;         /* Off-white - Primary text (expert: #E0E0E0, not #ffffff) */
-  --text-secondary: #e0e0e0;       /* Off-white - Body text (expert: #E0E0E0 for high contrast) */
-  --text-muted: #a0a0a0;           /* Light Gray - Labels, metadata (expert: #A0A0A0 for less important info) */
-  --text-subtle: #737373;          /* Subtle gray - Disabled, helper text */
-  --text-disabled: #525252;        /* Disabled state */
+  /* Text Hierarchy - Professional Readability (5-Level Opacity System) */
+  --text-primary: #ffffff;         /* 100% opacity - Hero headlines, KPI numbers */
+  --text-secondary: #e0e0e0;       /* 88% opacity - Body text, card headings */
+  --text-muted: #a0a0a0;           /* 63% opacity - Labels, captions */
+  --text-subtle: #737373;          /* 45% opacity - Helper text, timestamps */
+  --text-disabled: #525252;        /* 32% opacity - Disabled elements */
 
   /* Interactive State Colors */
   --color-hover: rgba(59, 130, 246, 0.08);   /* Blue hover overlay */
@@ -241,16 +241,24 @@
      Z-INDEX SCALE - Layering System
      ============================================================================ */
 
-  --z-base: 0;
-  --z-dropdown: 1000;
-  --z-sticky: 1020;
-  --z-fixed: 1030;
-  --z-modal-backdrop: 1040;
-  --z-modal: 1050;
-  --z-popover: 1060;
-  --z-tooltip: 1070;
-  --z-toast: 1080;
-  --z-supreme: 9999;
+  /* CONTENT LAYERS - Content hierarchy (0-50) */
+  --z-background: -1;           /* Background decorative elements */
+  --z-base: 0;                  /* Page canvas */
+  --z-content-base: 1;          /* Standard content cards, widgets */
+  --z-content-elevated: 10;     /* Hero cards, primary features */
+  --z-content-floating: 20;     /* Floating action buttons, key CTAs */
+  --z-overlay: 50;              /* Inline overlays, banners */
+
+  /* SYSTEM LAYERS - UI system elements (1000+) */
+  --z-dropdown: 1000;           /* Dropdown menus */
+  --z-sticky: 1020;             /* Sticky headers */
+  --z-fixed: 1030;              /* Fixed position elements */
+  --z-modal-backdrop: 1040;     /* Modal backdrop */
+  --z-modal: 1050;              /* Modal dialogs */
+  --z-popover: 1060;            /* Popovers */
+  --z-tooltip: 1070;            /* Tooltips */
+  --z-toast: 1080;              /* Toast notifications */
+  --z-supreme: 9999;            /* Emergency only */
 
   /* ============================================================================
      COMPONENT-SPECIFIC TOKENS

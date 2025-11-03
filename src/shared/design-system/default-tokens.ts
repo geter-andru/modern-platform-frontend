@@ -1,5 +1,5 @@
 /**
- * H&S Revenue Intelligence Platform - Default Design Tokens
+ * Andru Revenue Intelligence - Default Design Tokens
  * Default values that map exactly to design-tokens.css
  * 
  * SURGICAL IMPLEMENTATION:

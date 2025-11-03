@@ -51,14 +51,14 @@ export default function PaymentSuccessPage() {
 
         {/* Success Message */}
         <h1 className="text-3xl font-bold text-center text-gray-900 mb-4">
-          Trial Started Successfully!
+          Welcome to Andru Beta!
         </h1>
 
         <p className="text-center text-gray-600 mb-6">
-          Your 3-day free trial has begun. You now have full access to all platform features.
+          You're one of our 100 founding members. You now have full access to all platform features during the beta period.
         </p>
 
-        {/* Trial Details */}
+        {/* Beta Details */}
         <div className="bg-blue-50 rounded-lg p-4 mb-6">
           <h3 className="font-semibold text-gray-900 mb-2">What's Next:</h3>
           <ul className="text-sm text-gray-700 space-y-2">
@@ -66,19 +66,19 @@ export default function PaymentSuccessPage() {
               <svg className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <circle cx="10" cy="10" r="8" />
               </svg>
-              Access all features for the next 3 days
+              Free access during beta (Dec 2025 - Feb 2025)
             </li>
             <li className="flex items-start">
               <svg className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <circle cx="10" cy="10" r="8" />
               </svg>
-              We'll charge $99/month after trial ends
+              Lock in $149/month lifetime pricing (50% off forever)
             </li>
             <li className="flex items-start">
               <svg className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <circle cx="10" cy="10" r="8" />
               </svg>
-              Cancel anytime before trial ends - no charge
+              Direct Slack access with founders for feedback
             </li>
           </ul>
         </div>

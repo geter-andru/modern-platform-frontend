@@ -46,7 +46,7 @@ interface GeneratedResources {
   isReal?: boolean;
 }
 
-type ActiveTab = 'generate' | 'rating-framework' | 'rate-companies' | 'resources' | 'technical-translation' | 'stakeholder-arsenal';
+type ActiveTab = 'generate' | 'rating-framework' | 'rate-companies' | 'resources';
 
 const IntegratedICPTool: React.FC<IntegratedICPToolProps> = ({ customerId }) => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('generate');
@@ -374,42 +374,30 @@ ${researchData.real ?
   };
 
   const tabs = [
-    { 
-      id: 'generate' as ActiveTab, 
-      label: 'Generate ICP', 
+    {
+      id: 'generate' as ActiveTab,
+      label: 'Generate ICP',
       icon: Brain,
       description: 'AI-powered customer profiling with real market research'
     },
-    { 
-      id: 'rating-framework' as ActiveTab, 
-      label: 'Create Framework', 
+    {
+      id: 'rating-framework' as ActiveTab,
+      label: 'Create Framework',
       icon: Target,
       description: 'Build comprehensive prospect scoring system'
     },
-    { 
-      id: 'rate-companies' as ActiveTab, 
-      label: 'Rate Companies', 
+    {
+      id: 'rate-companies' as ActiveTab,
+      label: 'Rate Companies',
       icon: Calculator,
       description: 'Score prospects against your ICP framework'
     },
-    { 
-      id: 'resources' as ActiveTab, 
-      label: 'Resources Library', 
+    {
+      id: 'resources' as ActiveTab,
+      label: 'Resources Library',
       icon: FileText,
       description: 'Access generated customer intelligence resources',
       badge: generatedResources ? (generatedResources.isReal ? 'REAL DATA' : 'Generated') : null
-    },
-    { 
-      id: 'technical-translation' as ActiveTab, 
-      label: 'Technical Translation', 
-      icon: Zap,
-      description: 'Convert features into business value'
-    },
-    { 
-      id: 'stakeholder-arsenal' as ActiveTab, 
-      label: 'Stakeholder Arsenal', 
-      icon: Users,
-      description: 'Executive briefings and decision-maker resources'
     }
   ];
 
@@ -670,14 +658,6 @@ ${researchData.real ?
                           Create Rating Framework
                           <ArrowRight className="w-4 h-4 ml-2" />
                         </button>
-                        
-                        <button
-                          onClick={() => setActiveTab('technical-translation')}
-                          className="flex items-center px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-all"
-                        >
-                          <Zap className="w-5 h-5 mr-2" />
-                          Technical Translation
-                        </button>
                       </div>
                     </div>
                   ) : (
@@ -698,46 +678,6 @@ ${researchData.real ?
                   )}
                 </ModernCard>
               </div>
-            )}
-
-            {activeTab === 'technical-translation' && (
-              <ModernCard className="p-8">
-                <div className="text-center mb-8">
-                  <Zap className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
-                  <h2 className="text-2xl font-bold text-white mb-2">Technical Translation Hub</h2>
-                  <p className="text-slate-400">
-                    Convert complex technical features into compelling business value propositions
-                  </p>
-                </div>
-                
-                <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-xl p-6 text-center">
-                  <h3 className="text-lg font-semibold text-white mb-2">Coming Soon</h3>
-                  <p className="text-slate-400">
-                    Advanced technical translation tools are being developed to help you communicate 
-                    complex features in business language your prospects understand.
-                  </p>
-                </div>
-              </ModernCard>
-            )}
-
-            {activeTab === 'stakeholder-arsenal' && (
-              <ModernCard className="p-8">
-                <div className="text-center mb-8">
-                  <Users className="w-12 h-12 text-indigo-400 mx-auto mb-4" />
-                  <h2 className="text-2xl font-bold text-white mb-2">Stakeholder Arsenal</h2>
-                  <p className="text-slate-400">
-                    Executive briefings, decision-maker resources, and stakeholder communication tools
-                  </p>
-                </div>
-                
-                <div className="bg-indigo-900/20 border border-indigo-500/30 rounded-xl p-6 text-center">
-                  <h3 className="text-lg font-semibold text-white mb-2">Executive Resources Hub</h3>
-                  <p className="text-slate-400">
-                    Comprehensive stakeholder communication tools and executive briefing materials 
-                    are being finalized for your sales and marketing teams.
-                  </p>
-                </div>
-              </ModernCard>
             )}
           </motion.div>
         </AnimatePresence>

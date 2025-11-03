@@ -19,13 +19,15 @@ import {
   Calendar,
   Zap,
   Brain,
-  ArrowRight
+  ArrowRight,
+  Sparkles
 } from 'lucide-react'
 import { useAuth } from '@/app/lib/auth'
 import { buildICPRequestData, validateProductData } from '../utils/icp-prompt-builder'
 import { useJobStatus } from '@/app/hooks/useJobStatus'
 import { authenticatedFetch } from '@/app/lib/middleware/api-auth'
 import { API_CONFIG } from '@/app/lib/config/api'
+import { supabase } from '@/app/lib/supabase/client'
 import toast from 'react-hot-toast'
 
 interface ProductDetails {
@@ -48,6 +50,7 @@ interface FormData {
   productDescription: string
   distinguishingFeature: string
   businessModel: 'b2b-subscription' | 'b2b-one-time'
+  companyWebsite?: string // Optional - for brand extraction
 }
 
 interface FormErrors {
@@ -55,6 +58,7 @@ interface FormErrors {
   productDescription?: string
   distinguishingFeature?: string
   businessModel?: string
+  companyWebsite?: string // Add companyWebsite to match FormData
   general?: string
 }
 
@@ -64,6 +68,7 @@ interface ProductHistoryItem {
   productDescription: string
   distinguishingFeature?: string
   businessModel: 'b2b-subscription' | 'b2b-one-time'
+  companyWebsite?: string
   createdAt: string
 }
 
@@ -80,7 +85,8 @@ export default function ProductDetailsWidget({
     productName: '',
     productDescription: '',
     distinguishingFeature: '',
-    businessModel: 'b2b-subscription'
+    businessModel: 'b2b-subscription',
+    companyWebsite: ''
   })
   const [errors, setErrors] = useState<FormErrors>({})
   const [productHistory, setProductHistory] = useState<ProductHistoryItem[]>([])
@@ -88,6 +94,7 @@ export default function ProductDetailsWidget({
   const [generationProgress, setGenerationProgress] = useState(0)
   const [generationStage, setGenerationStage] = useState('')
   const [jobId, setJobId] = useState<string | null>(null)
+  const [isExtractingBrand, setIsExtractingBrand] = useState(false)
 
   // Ref to store progress interval for cleanup
   const progressIntervalRef = React.useRef<NodeJS.Timeout | null>(null)
@@ -243,6 +250,219 @@ export default function ProductDetailsWidget({
   useEffect(() => {
     handleRefresh()
   }, [])
+
+  // Check for onboarding data and pre-fill form (runs once on mount)
+  useEffect(() => {
+    async function checkOnboardingData() {
+      if (!user?.id) return;
+
+      try {
+        console.log('[OnboardingData] Checking for onboarding data...');
+
+        // Fetch user profile to check for onboarding_data
+        const { data: profile, error } = await supabase
+          .from('user_profiles')
+          .select('onboarding_data')
+          .eq('id', user.id)
+          .single();
+
+        if (error) {
+          console.error('[OnboardingData] Error fetching profile:', error);
+          return;
+        }
+
+        // Check if onboarding_data exists
+        const onboardingData = profile?.onboarding_data;
+        if (!onboardingData) {
+          console.log('[OnboardingData] No onboarding data found');
+          return;
+        }
+
+        console.log('[OnboardingData] Found onboarding data:', onboardingData);
+
+        // Pre-fill form with onboarding data
+        setFormData({
+          productName: onboardingData.productName || '',
+          productDescription: onboardingData.productDescription || '',
+          distinguishingFeature: onboardingData.targetAudience
+            ? `Target Audience: ${onboardingData.targetAudience}`
+            : '',
+          businessModel: 'b2b-subscription', // Default for onboarded users
+          companyWebsite: ''
+        });
+
+        toast.success('✨ Your product info from onboarding has been loaded!', {
+          duration: 5000,
+          icon: '🎉'
+        });
+
+        // Clear onboarding_data from profile (one-time use)
+        await supabase
+          .from('user_profiles')
+          .update({ onboarding_data: null })
+          .eq('id', user.id);
+
+        console.log('[OnboardingData] Form pre-filled and onboarding data cleared');
+      } catch (error) {
+        console.error('[OnboardingData] Error checking onboarding data:', error);
+        // Silent failure - user can fill form manually
+      }
+    }
+
+    checkOnboardingData();
+  }, [user]);
+
+  // Auto-extract product details from user's company domain on component mount
+  useEffect(() => {
+    async function autoExtractProductDetails() {
+      if (!user?.email) return
+
+      try {
+        console.log('[ProductExtraction] Triggering auto-extraction for:', user.email)
+
+        // 1. Trigger extraction job
+        const triggerResponse = await authenticatedFetch('/api/product-extraction/trigger', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            customerId: user.id,
+            email: user.email
+          })
+        })
+
+        if (!triggerResponse.ok) {
+          console.log('[ProductExtraction] Trigger failed, user will fill manually')
+          return
+        }
+
+        const triggerData = await triggerResponse.json()
+
+        // Skip if free email domain (Gmail, Yahoo, etc.)
+        if (triggerData.data?.freeEmail) {
+          console.log('[ProductExtraction] Free email detected, skipping extraction')
+          return
+        }
+
+        const jobId = triggerData.data?.jobId
+        if (!jobId) {
+          console.log('[ProductExtraction] No job ID received')
+          return
+        }
+
+        console.log('[ProductExtraction] Job queued:', jobId)
+
+        // 2. Poll job status (wait up to 60 seconds)
+        let attempts = 0
+        const maxAttempts = 30 // 60 seconds (2 sec intervals)
+
+        while (attempts < maxAttempts) {
+          await new Promise(resolve => setTimeout(resolve, 2000))
+
+          const statusResponse = await authenticatedFetch(`/api/product-extraction/status/${jobId}`)
+          if (!statusResponse.ok) break
+
+          const statusData = await statusResponse.json()
+          const status = statusData.data?.status
+
+          console.log(`[ProductExtraction] Status check ${attempts + 1}/${maxAttempts}:`, status)
+
+          if (status === 'completed') {
+            console.log('[ProductExtraction] Job completed, fetching product details')
+
+            // 3. Fetch product details
+            const detailsResponse = await authenticatedFetch(`/api/product-extraction/${user.id}`)
+            if (!detailsResponse.ok) break
+
+            const detailsData = await detailsResponse.json()
+            const productDetails = detailsData.data?.productDetails
+
+            // 4. Auto-fill form if extraction successful
+            if (productDetails && !productDetails.fallback) {
+              console.log('[ProductExtraction] Auto-filling form with:', productDetails)
+
+              // Validate business model (must be one of the two allowed values)
+              const validBusinessModels: Array<'b2b-subscription' | 'b2b-one-time'> = ['b2b-subscription', 'b2b-one-time']
+              const businessModel = validBusinessModels.includes(productDetails.businessModel as any)
+                ? productDetails.businessModel as 'b2b-subscription' | 'b2b-one-time'
+                : 'b2b-subscription' // Default to subscription
+
+              setFormData({
+                productName: productDetails.productName || '',
+                productDescription: productDetails.description || '',
+                distinguishingFeature: productDetails.distinguishingFeature || '',
+                businessModel: businessModel,
+                companyWebsite: productDetails.sourceUrl || ''
+              })
+
+              toast.success('✨ Product details auto-filled from your website!', {
+                duration: 5000,
+                icon: '🎉'
+              })
+            } else {
+              console.log('[ProductExtraction] Extraction returned fallback, user will fill manually')
+            }
+            break
+          }
+
+          if (status === 'failed') {
+            console.log('[ProductExtraction] Job failed, user will fill manually')
+            break
+          }
+
+          attempts++
+        }
+
+        if (attempts >= maxAttempts) {
+          console.log('[ProductExtraction] Polling timeout, user will fill manually')
+        }
+      } catch (error) {
+        console.error('[ProductExtraction] Auto-extraction error:', error)
+        // Silent failure - user fills form manually
+      }
+    }
+
+    autoExtractProductDetails()
+  }, [user])
+
+  const handleExtractBrand = async () => {
+    if (!formData.companyWebsite || !formData.companyWebsite.trim()) {
+      toast.error('Please enter a company website URL first')
+      return
+    }
+
+    if (!user) {
+      toast.error('You must be logged in to extract brand assets')
+      return
+    }
+
+    setIsExtractingBrand(true)
+    toast.loading('Extracting brand assets...', { id: 'brand-extract' })
+
+    try {
+      const response = await authenticatedFetch('/api/brand-extraction', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          websiteUrl: formData.companyWebsite,
+          customerId: user.id
+        })
+      })
+
+      const data = await response.json()
+
+      if (data.success && data.brandAssets) {
+        toast.success('Brand assets extracted successfully!', { id: 'brand-extract' })
+        console.log('✅ Brand assets:', data.brandAssets)
+      } else {
+        toast.error(data.error || 'Brand extraction failed', { id: 'brand-extract' })
+      }
+    } catch (error) {
+      console.error('❌ Brand extraction error:', error)
+      toast.error('Brand extraction failed', { id: 'brand-extract' })
+    } finally {
+      setIsExtractingBrand(false)
+    }
+  }
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -514,7 +734,7 @@ export default function ProductDetailsWidget({
           <div className="flex items-center gap-3">
             <Package className="w-6 h-6" style={{ color: 'var(--color-brand-primary)' }} />
             <div>
-              <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>My Product Details</h2>
+              <h2 className="heading-3" style={{ color: 'var(--text-primary)' }}>My Product Details</h2>
               <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                 {productDetails ? 'Product configured - ready for ICP analysis' : 'Define your product to generate accurate ICP analysis'}
               </p>
@@ -552,7 +772,7 @@ export default function ProductDetailsWidget({
             <div className="space-y-6">
               
               <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+                <label className="form-label">
                   Product Name *
                 </label>
                 <input
@@ -573,7 +793,7 @@ export default function ProductDetailsWidget({
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+                <label className="form-label">
                   Product Description *
                 </label>
                 <textarea
@@ -594,7 +814,7 @@ export default function ProductDetailsWidget({
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+                <label className="form-label">
                   Distinguishing Feature *
                 </label>
                 <textarea
@@ -615,7 +835,7 @@ export default function ProductDetailsWidget({
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+                <label className="form-label">
                   Business Model *
                 </label>
                 <select
@@ -636,9 +856,46 @@ export default function ProductDetailsWidget({
                   <p className="text-sm mt-1" style={{ color: 'var(--color-accent-danger)' }}>{errors.businessModel}</p>
                 )}
               </div>
+
+              {/* Company Website - For Brand Extraction */}
+              <div>
+                <label className="form-label">
+                  Company Website (Optional)
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="url"
+                    value={formData.companyWebsite || ''}
+                    onChange={(e) => handleInputChange('companyWebsite', e.target.value)}
+                    className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2"
+                    style={{
+                      backgroundColor: 'var(--color-surface)',
+                      borderColor: 'var(--border-standard)',
+                      color: 'var(--text-primary)'
+                    } as React.CSSProperties}
+                    placeholder="https://example.com"
+                  />
+                  <button
+                    onClick={handleExtractBrand}
+                    disabled={isExtractingBrand || !formData.companyWebsite}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    style={{
+                      backgroundColor: 'var(--color-brand-primary)',
+                      color: 'white'
+                    }}
+                    title="Extract logo and brand colors for branded PDF exports"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    {isExtractingBrand ? 'Extracting...' : 'Extract Brand'}
+                  </button>
+                </div>
+                <p className="text-xs mt-1" style={{ color: 'var(--text-tertiary)' }}>
+                  We'll extract your logo and brand colors for beautiful branded PDF exports
+                </p>
+              </div>
             </div>
 
-            <div className="mt-8 pt-6 border-t" style={{ borderColor: 'var(--border-standard)' }}>
+            <div className="mt-8 pt-8 border-t" style={{ borderColor: 'var(--border-standard)' }}>
               {errors.general && (
                 <div className="mb-4 p-3 rounded-lg" style={{ 
                   backgroundColor: 'rgba(239, 68, 68, 0.1)', 
@@ -663,7 +920,7 @@ export default function ProductDetailsWidget({
                 disabled={isProcessing}
                 whileHover={{ scale: isProcessing ? 1 : 1.02 }}
                 whileTap={{ scale: isProcessing ? 1 : 0.98 }}
-                className="flex items-center gap-3 px-6 py-3 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-3 px-6 py-2 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ 
                   backgroundColor: 'var(--color-brand-primary)',
                   color: 'var(--text-primary)'

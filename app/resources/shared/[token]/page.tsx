@@ -199,7 +199,7 @@ export default function SharedResourcePage() {
           <div className="mt-8 pt-6 border-t border-gray-200">
             <div className="flex items-center justify-between text-sm text-gray-500">
               <div>
-                Shared from <span className="font-medium text-gray-700">H&S Revenue Intelligence Platform</span>
+                Shared from <span className="font-medium text-gray-700">Andru Revenue Intelligence</span>
               </div>
               <div>
                 This link expires on {expiresDate}

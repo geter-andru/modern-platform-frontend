@@ -1,5 +1,5 @@
 /**
- * H&S Revenue Intelligence Platform - Design System Test Component
+ * Andru Revenue Intelligence - Design System Test Component
  * Simple test component to verify design system functionality
  * 
  * SURGICAL IMPLEMENTATION:

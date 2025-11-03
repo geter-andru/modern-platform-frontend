@@ -33,20 +33,6 @@ const costFeatures: CostFeature[] = [
     href: '/cost/business-case'
   },
   {
-    id: 'roi-analyzer',
-    title: 'ROI Analyzer',
-    description: 'Analyze return on investment and financial impact',
-    icon: TrendingUp,
-    status: 'coming-soon'
-  },
-  {
-    id: 'budget-planner',
-    title: 'Budget Planner',
-    description: 'Plan and allocate budgets for ICP implementation',
-    icon: Target,
-    status: 'coming-soon'
-  },
-  {
     id: 'cost-comparison',
     title: 'Cost Comparison',
     description: 'Compare costs across different implementation approaches',
@@ -95,20 +81,14 @@ export default function CostPage() {
     <div className="min-h-screen bg-background-primary">
       <div className="bg-background-elevated shadow-sm border-b border-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-text-primary flex items-center gap-3">
-                <DollarSign className="w-8 h-8 text-brand-accent" />
-                Cost Calculator & Business Case
-              </h1>
-              <p className="mt-2 text-text-muted">
-                Calculate costs, build business cases, and analyze ROI for your ICP implementation
-              </p>
-            </div>
-            <div className="flex items-center gap-2 text-accent-warning">
-              <Clock className="w-5 h-5" />
-              <span className="text-sm font-medium">Coming Soon</span>
-            </div>
+          <div>
+            <h1 className="text-3xl font-bold text-text-primary flex items-center gap-3">
+              <DollarSign className="w-8 h-8 text-brand-accent" />
+              Cost Calculator & Business Case
+            </h1>
+            <p className="mt-2 text-text-muted">
+              Calculate costs, build business cases, and analyze ROI for your ICP implementation
+            </p>
           </div>
         </div>
       </div>

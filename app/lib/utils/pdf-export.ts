@@ -92,17 +92,51 @@ export interface ICPExportData {
 
 export interface PDFExportOptions {
   includeFreeWatermark?: boolean;
+  includeDemoWatermark?: boolean;  // More prominent watermark for demo exports
   companyName?: string;
   productName?: string;
+  brandAssets?: {
+    logo?: string;  // URL to logo image
+    colors?: {
+      primary?: string;   // Hex color (e.g., "#3b82f6")
+      secondary?: string; // Hex color
+    };
+    fallback?: boolean;  // If true, using default Andru branding
+  };
+}
+
+/**
+ * Helper function to load image as base64 for PDF embedding
+ */
+async function loadImageAsBase64(url: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous'; // Handle CORS
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('Could not get canvas context'));
+        return;
+      }
+      ctx.drawImage(img, 0, 0);
+      const dataURL = canvas.toDataURL('image/png');
+      resolve(dataURL);
+    };
+    img.onerror = () => reject(new Error('Failed to load image'));
+    img.src = url;
+  });
 }
 
 /**
  * Generate a professional PDF from ICP data
  */
-export function generateICPPDF(
+export async function generateICPPDF(
   data: ICPExportData,
   options: PDFExportOptions = {}
-): jsPDF {
+): Promise<jsPDF> {
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
@@ -114,10 +148,10 @@ export function generateICPPDF(
   const margin = 20;
   let yPosition = margin;
 
-  // Color scheme
-  const primaryColor = '#3B82F6'; // Blue
-  const secondaryColor = '#6B7280'; // Gray
-  const accentColor = '#10B981'; // Green
+  // Color scheme - Use brand colors if available, otherwise default Andru colors
+  const primaryColor = options.brandAssets?.colors?.primary || '#3B82F6'; // Brand primary or Andru blue
+  const secondaryColor = options.brandAssets?.colors?.secondary || '#6B7280'; // Brand secondary or gray
+  const accentColor = '#10B981'; // Green - keep for success/positive indicators
 
   // Helper function to add page if needed
   const checkPageBreak = (neededSpace: number) => {
@@ -129,7 +163,19 @@ export function generateICPPDF(
     return false;
   };
 
-  // HEADER
+  // HEADER WITH LOGO (if brand assets available)
+  if (options.brandAssets?.logo && !options.brandAssets?.fallback) {
+    try {
+      const logoBase64 = await loadImageAsBase64(options.brandAssets.logo);
+      // Add logo to top-left corner (40mm wide, auto height, max 20mm)
+      doc.addImage(logoBase64, 'PNG', margin, yPosition, 40, 0); // 0 = auto height
+      yPosition += 25; // Space for logo + padding
+    } catch (error) {
+      console.warn('Failed to load logo, continuing without it:', error);
+      // Continue without logo if it fails to load
+    }
+  }
+
   doc.setFontSize(24);
   doc.setTextColor(primaryColor);
   doc.setFont('helvetica', 'bold');
@@ -362,6 +408,57 @@ export function generateICPPDF(
   for (let i = 1; i <= totalPages; i++) {
     doc.setPage(i);
 
+    // DEMO WATERMARK - Diagonal overlay on each page (more prominent than free tier)
+    if (options.includeDemoWatermark) {
+      doc.saveGraphicsState();
+
+      // Set transparency for watermark (30% opacity)
+      doc.setGState(new doc.GState({ opacity: 0.3 }));
+
+      // Position in center of page
+      const centerX = pageWidth / 2;
+      const centerY = pageHeight / 2;
+
+      // Rotate 45 degrees for diagonal watermark
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(40);
+      doc.setTextColor(220, 38, 38); // Red color for demo watermark
+
+      // Calculate rotation point and draw rotated text
+      const angle = -45;
+      const rad = angle * (Math.PI / 180);
+
+      // Translate to center, rotate, then draw text
+      const watermarkText = 'DEMO VERSION';
+      const textWidth = doc.getTextWidth(watermarkText);
+
+      doc.text(
+        watermarkText,
+        centerX,
+        centerY,
+        {
+          angle: angle,
+          align: 'center',
+          baseline: 'middle'
+        }
+      );
+
+      // Add smaller text below with CTA
+      doc.setFontSize(14);
+      doc.text(
+        'Sign up at andru.com to remove watermarks',
+        centerX,
+        centerY + 15,
+        {
+          angle: angle,
+          align: 'center',
+          baseline: 'middle'
+        }
+      );
+
+      doc.restoreGraphicsState();
+    }
+
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
     doc.setFont('helvetica', 'normal');
@@ -396,11 +493,11 @@ export function downloadPDF(doc: jsPDF, filename: string = 'ICP-Analysis.pdf'): 
 /**
  * All-in-one function: Generate and download PDF with error handling
  */
-export function exportICPToPDF(
+export async function exportICPToPDF(
   data: ICPExportData,
   options: PDFExportOptions = {},
   filename?: string
-): {success: boolean; error?: string} {
+): Promise<{success: boolean; error?: string}> {
   try {
     // Validation
     if (!data || !data.personas || data.personas.length === 0) {
@@ -410,8 +507,8 @@ export function exportICPToPDF(
       };
     }
 
-    // Generate PDF
-    const pdf = generateICPPDF(data, options);
+    // Generate PDF (now async to support logo loading)
+    const pdf = await generateICPPDF(data, options);
 
     // Generate filename
     const finalFilename = filename || `ICP-${data.companyName || 'Analysis'}-${new Date().getTime()}.pdf`;

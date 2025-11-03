@@ -27,7 +27,7 @@ export const LazyDashboard = withLazyLoading(
 
 export const LazyRevenueIntelligence = withLazyLoading(
   () => import('@/src/features/dashboard/RevenueIntelligenceDashboard'),
-  <LoadingSpinner size="xl" text="Loading Revenue Intelligence..." />
+  <LoadingSpinner size="xl" text="Loading Andru..." />
 );
 
 export const LazySystematicScaling = withLazyLoading(

@@ -1,5 +1,5 @@
 /**
- * H&S Revenue Intelligence Platform - Design System Types
+ * Andru Revenue Intelligence - Design System Types
  * Type-safe interfaces for the global design system
  * 
  * SURGICAL IMPLEMENTATION:
