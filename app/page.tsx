@@ -45,9 +45,9 @@ export default function HomePage() {
       color: 'var(--color-text-primary, #ffffff)',
       fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
     }}>
-      {/* Design System Test Component - Only show in development */}
-      {process.env.NODE_ENV === 'development' && <DesignSystemTest />}
-      
+      {/* Design System Test Component - Automatically hidden in production */}
+      <DesignSystemTest />
+
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center" style={{
         background: 'var(--color-background-primary, #000000)'

@@ -6,19 +6,27 @@ import { useDesignSystem } from './DesignSystemProvider';
 export function DesignSystemTest() {
   const { tokens, theme, brand, setTheme, setBrand, getToken } = useDesignSystem();
   const [isVisible, setIsVisible] = useState(false);
+  const [isDevelopment, setIsDevelopment] = useState(false);
 
-  // Only show in development mode
-  if (process.env.NODE_ENV === 'production') {
-    return null;
-  }
-
+  // Check if we're in development mode - must happen client-side to be accurate
   useEffect(() => {
-    // Show the test component after a short delay
-    const timer = setTimeout(() => setIsVisible(true), 1000);
-    return () => clearTimeout(timer);
+    const isLocalhost = window.location.hostname === 'localhost' ||
+                       window.location.hostname === '127.0.0.1' ||
+                       window.location.hostname.startsWith('192.168.') ||
+                       window.location.hostname.startsWith('10.0.');
+
+    const isDev = process.env.NODE_ENV === 'development' || isLocalhost;
+    setIsDevelopment(isDev);
+
+    // Only set visible if in development
+    if (isDev) {
+      const timer = setTimeout(() => setIsVisible(true), 1000);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
-  if (!isVisible) return null;
+  // Don't render at all if not in development or not visible yet
+  if (!isDevelopment || !isVisible) return null;
 
   return (
     <div style={{
