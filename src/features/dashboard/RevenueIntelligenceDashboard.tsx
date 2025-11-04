@@ -491,7 +491,7 @@ const RevenueIntelligenceDashboard: React.FC<RevenueIntelligenceDashboardProps> 
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="bg-black">
       {/* Achievement Notifications */}
       <ProfessionalAchievementNotification
         achievements={achievements}

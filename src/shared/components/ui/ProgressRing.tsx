@@ -103,19 +103,25 @@ export function ProgressRing({
         
         {/* Center label */}
         {showLabel && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <motion.span
+          <div
+            className="flex items-center justify-center"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0
+            }}
+          >
+            <span
               className="text-text-primary font-medium"
-              style={{ 
+              style={{
                 fontSize: size * 0.22,
                 color: '#E0E0E0' // Expert requirement: #E0E0E0 text
               }}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.3, duration: 0.3 }}
             >
               {label || `${Math.round(percentage)}%`}
-            </motion.span>
+            </span>
           </div>
         )}
       </div>

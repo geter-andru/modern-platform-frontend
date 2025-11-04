@@ -58,8 +58,8 @@ export function generateMarkdown(data: ICPExportData, options: DataExportOptions
 
   // Add personas
   personas.forEach((persona, index) => {
-    markdown += `## ${index + 1}. ${persona.name}\n\n`;
-    markdown += `**Title:** ${persona.title}\n`;
+    markdown += `## ${index + 1}. ${persona.title}\n\n`;
+    // Note: No separate name field - we use title as the persona identifier
 
     if (persona.role) {
       markdown += `**Role:** ${persona.role}\n`;
@@ -177,7 +177,6 @@ export function generateCSV(data: ICPExportData, options: DataExportOptions = {}
 
   // CSV Headers
   const headers = [
-    'Persona Name',
     'Title',
     'Role',
     'Company',
@@ -200,8 +199,7 @@ export function generateCSV(data: ICPExportData, options: DataExportOptions = {}
   personas.forEach(persona => {
     const row: string[] = [];
 
-    // Basic info
-    row.push(escapeCSV(persona.name));
+    // Basic info (no name - we don't use named personas)
     row.push(escapeCSV(persona.title));
     row.push(escapeCSV(persona.role || ''));
     row.push(escapeCSV(persona.company || ''));

@@ -226,16 +226,25 @@
 
   /* Custom Professional Curves */
   --ease-professional: cubic-bezier(0.4, 0, 0.2, 1);        /* Material Design */
-  --ease-elegant: cubic-bezier(0.16, 1, 0.3, 1);            /* Smooth elegant */
-  --ease-sophisticated: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Sophisticated */
-  --ease-satisfaction: cubic-bezier(0.34, 1.56, 0.64, 1);   /* Slight bounce */
+  --ease-elegant: cubic-bezier(0.16, 1, 0.3, 1);            /* Smooth elegant spring */
+  --ease-sophisticated: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Sophisticated glide */
+  --ease-satisfaction: cubic-bezier(0.34, 1.56, 0.64, 1);   /* Playful bounce (156% overshoot) */
   --ease-executive: cubic-bezier(0.65, 0, 0.35, 1);         /* Sharp executive */
+  --ease-dramatic: cubic-bezier(0.68, -0.55, 0.265, 1.55);  /* Dramatic entrance (back overshoot) */
+
+  /* Semantic Duration Aliases - Emotional intent */
+  --duration-quick: var(--duration-fast);              /* 150ms - Immediate feedback */
+  --duration-smooth: var(--duration-medium);           /* 400ms - Comfortable transition */
+  --duration-elegant: var(--duration-slow);            /* 600ms - Sophisticated reveal */
+  --duration-dramatic: var(--duration-slower);         /* 800ms - Statement moment */
+  --duration-satisfaction: var(--duration-slowest);    /* 1200ms - Celebration/milestone */
 
   /* Named Transitions - Common Patterns */
   --transition-fast: var(--duration-fast) var(--ease-professional);
   --transition-normal: var(--duration-normal) var(--ease-professional);
-  --transition-elegant: var(--duration-medium) var(--ease-elegant);
-  --transition-sophisticated: var(--duration-medium) var(--ease-sophisticated);
+  --transition-elegant: var(--duration-elegant) var(--ease-elegant);
+  --transition-sophisticated: var(--duration-smooth) var(--ease-sophisticated);
+  --transition-satisfaction: var(--duration-satisfaction) var(--ease-satisfaction);
 
   /* ============================================================================
      Z-INDEX SCALE - Layering System

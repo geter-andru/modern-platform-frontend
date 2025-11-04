@@ -13,6 +13,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/app/lib/supabase/client';
+import Image from 'next/image';
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -102,11 +103,33 @@ export default function OnboardingFlow({
     // STEP 1: Tell Us About Your Product
     {
       id: 'product-info',
-      title: "Let's Generate Your First ICP",
+      title: "Let's Set Up Your First ICP",
       description: 'Tell us about your product and Andru will identify your ideal buyers in under 3 minutes.',
       icon: '🎯',
       content: (
         <div className="space-y-6">
+          {/* Brandon Geter Trust Signal */}
+          <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-lg">
+            <div className="flex-shrink-0">
+              <Image
+                src="/images/brandon-geter.jpg"
+                alt="Brandon Geter"
+                width={48}
+                height={48}
+                className="rounded-full object-cover"
+                priority
+              />
+            </div>
+            <div>
+              <p className="text-sm text-gray-200 font-medium">
+                Built by <span className="text-blue-400">Brandon Geter</span>, former VP Revenue at Series A SaaS
+              </p>
+              <p className="text-xs text-gray-400 mt-0.5">
+                Used by 100+ founding members to close enterprise deals faster
+              </p>
+            </div>
+          </div>
+
           {/* Product Name Field */}
           <div>
             <label htmlFor="productName" className="block text-sm font-medium text-gray-200 mb-2">
@@ -177,7 +200,7 @@ export default function OnboardingFlow({
           </div>
         </div>
       ),
-      actionLabel: 'Generate My ICP'
+      actionLabel: 'Set Up My ICP'
     },
 
     // STEP 2: Understanding Your ICP Analysis

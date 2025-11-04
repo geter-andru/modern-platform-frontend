@@ -310,49 +310,69 @@ ${researchData.real ?
           <head>
             <title>${resource.title}</title>
             <style>
-              body { 
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-                max-width: 800px; 
-                margin: 40px auto; 
-                padding: 20px; 
-                background: #0f0f0f; 
-                color: #e5e5e5; 
+              :root {
+                /* Design token values */
+                --space-1: 0.25rem;
+                --space-2: 0.5rem;
+                --space-3: 0.75rem;
+                --space-4: 1rem;
+                --space-5: 1.25rem;
+                --space-10: 2.5rem;
+                --radius-sm: 0.5rem;
+                --radius-md: 0.75rem;
+                --radius-lg: 1rem;
+                --text-xs: 0.75rem;
+                --text-sm: 0.875rem;
+              }
+
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                max-width: 800px;
+                margin: var(--space-10) auto;
+                padding: var(--space-5);
+                background: #0f0f0f;
+                color: #e5e5e5;
                 line-height: 1.6;
               }
+
               h1, h2, h3 { color: #e0e0e0; } /* Expert requirement: #E0E0E0, not #ffffff */
-              pre { 
-                background: #1a1a1a; 
-                padding: 20px; 
-                border-radius: 8px; 
-                overflow-x: auto; 
+
+              pre {
+                background: #1a1a1a;
+                padding: var(--space-5);
+                border-radius: var(--radius-md);
+                overflow-x: auto;
                 white-space: pre-wrap;
                 border-left: 4px solid #8b5cf6;
               }
+
               .confidence {
                 background: linear-gradient(135deg, #8b5cf6, #3b82f6);
                 color: white;
-                padding: 6px 16px;
-                border-radius: 20px;
-                font-size: 12px;
+                padding: var(--space-1) var(--space-4);
+                border-radius: var(--radius-lg);
+                font-size: var(--text-xs);
                 font-weight: bold;
-                margin: 10px 0;
+                margin: var(--space-2) 0;
                 display: inline-block;
               }
+
               .meta {
                 background: #1a1a1a;
-                padding: 16px;
-                border-radius: 8px;
-                margin: 20px 0;
+                padding: var(--space-4);
+                border-radius: var(--radius-md);
+                margin: var(--space-5) 0;
                 border: 1px solid #333;
               }
+
               .real-data {
                 background: linear-gradient(135deg, #10b981, #059669);
                 color: white;
-                padding: 4px 12px;
-                border-radius: 12px;
-                font-size: 11px;
+                padding: var(--space-1) var(--space-3);
+                border-radius: var(--radius-sm);
+                font-size: var(--text-xs);
                 font-weight: bold;
-                margin-left: 10px;
+                margin-left: var(--space-2);
               }
             </style>
           </head>
@@ -402,7 +422,7 @@ ${researchData.real ?
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">

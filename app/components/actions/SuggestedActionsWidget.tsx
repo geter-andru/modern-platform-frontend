@@ -324,7 +324,6 @@ const SuggestedActionsWidget: React.FC<SuggestedActionsWidgetProps> = ({
                           <span className="flex items-center space-x-1">
                             <Award className="w-3 h-3" />
                             <span className="text-green-400 font-medium">+{action.potentialPoints}</span>
-                            <span>points</span>
                           </span>
                           <span>•</span>
                           <span>{action.timeEstimate}</span>

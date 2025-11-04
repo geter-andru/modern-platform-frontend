@@ -1,7 +1,7 @@
 'use client';
 
 import { useRequireAuth } from '@/app/lib/auth';
-import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
+import { ModernSidebarLayout } from '../../src/shared/components/layout/ModernSidebarLayout';
 import { AdvancedAnalyticsDashboard } from '../../src/shared/components/analytics/AdvancedAnalyticsDashboard';
 
 export default function AnalyticsPage() {
@@ -16,7 +16,7 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <EnterpriseNavigationV2>
+    <ModernSidebarLayout>
       <div className="space-y-6">
         {/* Header with AI Gradient */}
         <div className="mb-8">
@@ -31,6 +31,6 @@ export default function AnalyticsPage() {
         {/* Analytics Dashboard */}
         {user?.id && <AdvancedAnalyticsDashboard customerId={user.id} />}
       </div>
-    </EnterpriseNavigationV2>
+    </ModernSidebarLayout>
   );
 }

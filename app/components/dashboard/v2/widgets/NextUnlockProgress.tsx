@@ -136,7 +136,6 @@ export const NextUnlockProgress: React.FC<NextUnlockProgressProps> = ({
           <div className="text-purple-200 text-xs uppercase tracking-wide">Progress Needed</div>
           <div className={`text-lg font-bold ${isNearUnlock ? 'text-amber-400' : 'text-white'}`}>
             {pointsNeeded > 0 ? `${pointsNeeded}` : '0'}
-            <span className="text-sm font-normal ml-1">points</span>
           </div>
         </div>
       </div>
@@ -174,7 +173,7 @@ export const NextUnlockProgress: React.FC<NextUnlockProgressProps> = ({
         {/* Progress Labels */}
         <div className="flex justify-between mt-2 text-xs">
           <span className="text-purple-300">
-            {currentProgress} / {requiredProgress} points
+            {currentProgress} / {requiredProgress}
           </span>
           <span className={isNearUnlock ? 'text-amber-400 font-medium' : 'text-purple-300'}>
             {Math.round(progressPercentage)}% complete

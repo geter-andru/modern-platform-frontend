@@ -8,7 +8,7 @@ import { Brain, Target, Users, FileText, Zap, BarChart3 } from 'lucide-react';
 import { useRequireAuth } from '@/app/lib/auth';
 import { useCustomer, useCustomerICP, useTrackAction } from '@/app/lib/hooks/useAPI';
 import { usePersonasCache } from '@/app/lib/hooks/cache';
-import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
+import { ModernSidebarLayout } from '../../src/shared/components/layout/ModernSidebarLayout';
 import { GlassCard, GlassButton, GlassModal } from '../../src/shared/components/design-system';
 import { exportICPToPDF } from '@/app/lib/utils/pdf-export';
 import { exportToMarkdown, exportToCSV } from '@/app/lib/utils/data-export';
@@ -427,7 +427,7 @@ export default function ICPPage() {
   }
 
   return (
-    <EnterpriseNavigationV2>
+    <ModernSidebarLayout>
       <div className="min-h-screen py-8" style={{ background: 'var(--bg-primary)' }}>
       <div className="container-wide">
         <div className="mb-8">
@@ -484,7 +484,7 @@ export default function ICPPage() {
                       {widget.title}
                     </span>
                     {!isAvailable && (
-                      <span className="badge badge-secondary text-xs ml-2">
+                      <span className="badge badge-secondary body-small ml-2">
                         Coming Soon
                       </span>
                     )}
@@ -664,11 +664,11 @@ export default function ICPPage() {
                 Comprehensive ICP analysis document
               </p>
               {!personas || personas.length === 0 ? (
-                <span className="text-sm text-yellow-500 mt-2 inline-block">
+                <span className="body-small text-yellow-500 mt-2 inline-block">
                   Generate ICP first
                 </span>
               ) : (
-                <span className="text-sm text-green-500 mt-2 inline-block">
+                <span className="body-small text-green-500 mt-2 inline-block">
                   ✓ Ready to export
                 </span>
               )}
@@ -700,11 +700,11 @@ export default function ICPPage() {
                 Markdown format for Notion, Obsidian
               </p>
               {!personas || personas.length === 0 ? (
-                <span className="text-sm text-yellow-500 mt-2 inline-block">
+                <span className="body-small text-yellow-500 mt-2 inline-block">
                   Generate ICP first
                 </span>
               ) : (
-                <span className="text-sm text-green-500 mt-2 inline-block">
+                <span className="body-small text-green-500 mt-2 inline-block">
                   ✓ Ready to copy
                 </span>
               )}
@@ -736,11 +736,11 @@ export default function ICPPage() {
                 Spreadsheet with all persona details
               </p>
               {!personas || personas.length === 0 ? (
-                <span className="text-sm text-yellow-500 mt-2 inline-block">
+                <span className="body-small text-yellow-500 mt-2 inline-block">
                   Generate ICP first
                 </span>
               ) : (
-                <span className="text-sm text-green-500 mt-2 inline-block">
+                <span className="body-small text-green-500 mt-2 inline-block">
                   ✓ Ready to download
                 </span>
               )}
@@ -772,11 +772,11 @@ export default function ICPPage() {
                 Extend research with ChatGPT
               </p>
               {!personas || personas.length === 0 ? (
-                <span className="text-sm text-yellow-500 mt-2 inline-block">
+                <span className="body-small text-yellow-500 mt-2 inline-block">
                   Generate ICP first
                 </span>
               ) : (
-                <span className="text-sm text-green-500 mt-2 inline-block">
+                <span className="body-small text-green-500 mt-2 inline-block">
                   ✓ Ready to copy
                 </span>
               )}
@@ -808,11 +808,11 @@ export default function ICPPage() {
                 Extend research with Claude
               </p>
               {!personas || personas.length === 0 ? (
-                <span className="text-sm text-yellow-500 mt-2 inline-block">
+                <span className="body-small text-yellow-500 mt-2 inline-block">
                   Generate ICP first
                 </span>
               ) : (
-                <span className="text-sm text-green-500 mt-2 inline-block">
+                <span className="body-small text-green-500 mt-2 inline-block">
                   ✓ Ready to copy
                 </span>
               )}
@@ -844,11 +844,11 @@ export default function ICPPage() {
                 Extend research with Gemini
               </p>
               {!personas || personas.length === 0 ? (
-                <span className="text-sm text-yellow-500 mt-2 inline-block">
+                <span className="body-small text-yellow-500 mt-2 inline-block">
                   Generate ICP first
                 </span>
               ) : (
-                <span className="text-sm text-green-500 mt-2 inline-block">
+                <span className="body-small text-green-500 mt-2 inline-block">
                   ✓ Ready to copy
                 </span>
               )}
@@ -857,6 +857,6 @@ export default function ICPPage() {
         </div>
       </GlassModal>
       </div>
-    </EnterpriseNavigationV2>
+    </ModernSidebarLayout>
   );
 }

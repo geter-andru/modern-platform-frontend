@@ -29,6 +29,7 @@ import { authenticatedFetch } from '@/app/lib/middleware/api-auth'
 import { API_CONFIG } from '@/app/lib/config/api'
 import { supabase } from '@/app/lib/supabase/client'
 import toast from 'react-hot-toast'
+import { ICPGenerationProgress } from '@/src/shared/components/ui/ICPGenerationProgress'
 
 interface ProductDetails {
   name: string
@@ -598,92 +599,12 @@ export default function ProductDetailsWidget({
 
   return (
     <div className={`bg-background-secondary border border-transparent rounded-xl overflow-hidden ${className}`}>
-      {/* Loading Overlay - Modern & Sophisticated */}
-      {isProcessing && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            backdropFilter: 'blur(8px)'
-          }}
-        >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 shadow-2xl max-w-md w-full mx-4"
-            style={{
-              border: '1px solid rgba(124, 77, 255, 0.3)',
-              boxShadow: '0 0 60px rgba(124, 77, 255, 0.2)'
-            }}
-          >
-            {/* Animated Brain Icon */}
-            <div className="flex justify-center mb-6">
-              <motion.div
-                animate={{
-                  scale: [1, 1.1, 1],
-                  rotate: [0, 5, -5, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                <Brain className="w-16 h-16" style={{ color: 'var(--color-brand-primary)' }} />
-              </motion.div>
-            </div>
-
-            {/* Stage Text */}
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
-                {generationStage}
-              </h3>
-              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-                Andru is analyzing your product...
-              </p>
-            </div>
-
-            {/* Progress Bar */}
-            <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden mb-4">
-              <motion.div
-                className="absolute inset-y-0 left-0 rounded-full"
-                style={{
-                  background: 'linear-gradient(90deg, var(--color-brand-primary), var(--color-brand-secondary))',
-                  width: `${generationProgress}%`
-                }}
-                initial={{ width: '0%' }}
-                animate={{ width: `${generationProgress}%` }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-              />
-            </div>
-
-            {/* Progress Percentage */}
-            <div className="text-center">
-              <span className="text-sm font-mono" style={{ color: 'var(--text-secondary)' }}>
-                {Math.round(generationProgress)}%
-              </span>
-            </div>
-
-            {/* Witty Messages */}
-            <motion.div
-              key={generationStage}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center mt-4"
-            >
-              <p className="text-xs italic" style={{ color: 'var(--text-tertiary)' }}>
-                {generationProgress < 30 && "Warming up the neural networks..."}
-                {generationProgress >= 30 && generationProgress < 60 && "Crunching the numbers with style..."}
-                {generationProgress >= 60 && generationProgress < 90 && "Almost there! Making it perfect..."}
-                {generationProgress >= 90 && "Putting on the finishing touches..."}
-              </p>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-      )}
+      {/* Enhanced Multi-Stage Progress Indicator */}
+      <ICPGenerationProgress
+        currentProgress={generationProgress}
+        currentStage={generationStage}
+        isOpen={isProcessing}
+      />
 
       {/* Success Banner */}
       {showSuccessBanner && (

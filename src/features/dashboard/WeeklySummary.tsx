@@ -298,13 +298,15 @@ const WeeklySummary: React.FC<WeeklySummaryProps> = ({
         
         {/* Weekly Summary Action */}
         <div className="mt-6 pt-4 border-t border-gray-700">
-          <button className="w-full group bg-gradient-to-r from-blue-600/20 to-purple-600/20 hover:from-blue-600/30 hover:to-purple-600/30 border border-blue-500/30 hover:border-blue-500/50 rounded-lg py-3 px-4 transition-all duration-200 flex items-center justify-center space-x-2">
-            <TrendingUp size={16} className="text-blue-400 group-hover:text-blue-300" />
-            <span className="text-sm font-medium text-white group-hover:text-blue-100">
-              View Detailed Analytics
-            </span>
-            <ChevronRight size={16} className="text-gray-400 group-hover:text-blue-300 group-hover:translate-x-1 transition-all duration-200" />
-          </button>
+          <div className="max-w-md mx-auto">
+            <button className="w-full group bg-gradient-to-r from-blue-600/20 to-purple-600/20 hover:from-blue-600/30 hover:to-purple-600/30 border border-blue-500/30 hover:border-blue-500/50 rounded-lg py-3 px-4 transition-all duration-200 flex items-center justify-center space-x-2">
+              <TrendingUp size={16} className="text-blue-400 group-hover:text-blue-300" />
+              <span className="text-sm font-medium text-white group-hover:text-blue-100">
+                View Detailed Analytics
+              </span>
+              <ChevronRight size={16} className="text-gray-400 group-hover:text-blue-300 group-hover:translate-x-1 transition-all duration-200" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

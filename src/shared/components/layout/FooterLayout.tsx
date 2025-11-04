@@ -67,10 +67,10 @@ export interface FooterLayoutProps {
   customContent?: React.ReactNode;
 }
 
-const FooterLayout: React.FC<FooterLayoutProps> = ({
+export const FooterLayout: React.FC<FooterLayoutProps> = ({
   variant = 'standard',
   theme = 'dark',
-  brandName = 'H&S Revenue Intelligence',
+  brandName = 'Andru Revenue Intelligence',
   brandLogo,
   tagline = 'Transforming Revenue Operations with AI-Powered Intelligence',
   sections = [],
@@ -355,7 +355,7 @@ const FooterLayout: React.FC<FooterLayoutProps> = ({
               <span className="flex items-center space-x-1 text-gray-500">
                 <span>Made with</span>
                 <Heart className="w-3 h-3 text-red-500" />
-                <span>by H&S Team</span>
+                <span>by Andru</span>
               </span>
             </div>
 
@@ -405,7 +405,7 @@ export interface SimpleFooterProps {
 }
 
 export const SimpleFooter: React.FC<SimpleFooterProps> = ({
-  brandName = 'H&S Revenue Intelligence',
+  brandName = 'Andru Revenue Intelligence',
   year = new Date().getFullYear(),
   links = [],
   className = ''

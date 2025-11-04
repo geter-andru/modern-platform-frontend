@@ -6,6 +6,11 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    // Auth page utilities that JIT mode isn't detecting
+    'w-5', 'h-5', 'w-full', 'mr-2', 'px-2', 'py-2', 'py-3', 'px-3', 'px-4',
+    'rounded-full', 'border-b-2', 'animate-spin'
+  ],
   darkMode: 'class',
   theme: {
     extend: {

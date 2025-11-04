@@ -16,7 +16,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import Link from 'next/link';
-import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
+import { ModernSidebarLayout } from '../../src/shared/components/layout/ModernSidebarLayout';
 import toast, { Toaster } from 'react-hot-toast';
 import '../../src/shared/styles/component-patterns.css';
 
@@ -194,25 +194,25 @@ export default function FoundingMembersPage() {
   const getSpotsRemainingBadge = () => {
     if (spotsRemaining > 50) {
       return (
-        <span className="badge badge-success text-sm px-4 py-2">
+        <span className="badge badge-success body-small px-4 py-2">
           {spotsRemaining} of 100 Spots Remaining
         </span>
       );
     } else if (spotsRemaining > 20) {
       return (
-        <span className="badge badge-warning text-sm px-4 py-2">
+        <span className="badge badge-warning body-small px-4 py-2">
           {spotsRemaining} of 100 Spots Remaining
         </span>
       );
     } else if (spotsRemaining > 0) {
       return (
-        <span className="badge badge-error text-sm px-4 py-2">
+        <span className="badge badge-error body-small px-4 py-2">
           Only {spotsRemaining} of 100 Spots Remaining!
         </span>
       );
     } else {
       return (
-        <span className="badge badge-secondary text-sm px-4 py-2">
+        <span className="badge badge-secondary body-small px-4 py-2">
           Waitlist Full
         </span>
       );
@@ -224,7 +224,7 @@ export default function FoundingMembersPage() {
 
   if (submitted) {
     return (
-      <EnterpriseNavigationV2>
+      <ModernSidebarLayout>
         <Toaster position="top-right" />
         <div className="min-h-screen py-20" style={{ background: 'var(--bg-primary)' }}>
           <div className="container max-w-2xl mx-auto px-4">
@@ -250,19 +250,19 @@ export default function FoundingMembersPage() {
               <div className="space-y-4 mb-8 text-left max-w-md mx-auto">
                 <div className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-success text-sm font-bold">1</span>
+                    <span className="text-success body-small" style={{ fontWeight: 700 }}>1</span>
                   </div>
                   <p className="body text-text-primary">Check your email for confirmation</p>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-success text-sm font-bold">2</span>
+                    <span className="text-success body-small" style={{ fontWeight: 700 }}>2</span>
                   </div>
                   <p className="body text-text-primary">Join our Slack channel (link sent via email)</p>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-success text-sm font-bold">3</span>
+                    <span className="text-success body-small" style={{ fontWeight: 700 }}>3</span>
                   </div>
                   <p className="body text-text-primary">Beta access begins December 1, 2025</p>
                 </div>
@@ -278,12 +278,12 @@ export default function FoundingMembersPage() {
             </motion.div>
           </div>
         </div>
-      </EnterpriseNavigationV2>
+      </ModernSidebarLayout>
     );
   }
 
   return (
-    <EnterpriseNavigationV2>
+    <ModernSidebarLayout>
       <Toaster position="top-right" />
       <div className="min-h-screen py-12" style={{ background: 'var(--bg-primary)' }}>
         <div className="container max-w-4xl mx-auto px-4">
@@ -295,7 +295,7 @@ export default function FoundingMembersPage() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 mb-6">
               <Sparkles className="w-4 h-4 text-blue-400" />
-              <span className="text-sm font-medium text-blue-400">
+              <span className="body-small text-blue-400" style={{ fontWeight: 500 }}>
                 🚀 FREE BETA LAUNCHING DECEMBER 1, 2025
               </span>
             </div>
@@ -387,7 +387,7 @@ export default function FoundingMembersPage() {
                       />
                     </div>
                     {errors.fullName && (
-                      <p className="text-error text-sm mt-1 flex items-center gap-1">
+                      <p className="text-error body-small mt-1 flex items-center gap-1">
                         <AlertCircle className="w-4 h-4" />
                         {errors.fullName}
                       </p>
@@ -412,7 +412,7 @@ export default function FoundingMembersPage() {
                       />
                     </div>
                     {errors.email && (
-                      <p className="text-error text-sm mt-1 flex items-center gap-1">
+                      <p className="text-error body-small mt-1 flex items-center gap-1">
                         <AlertCircle className="w-4 h-4" />
                         {errors.email}
                       </p>
@@ -437,7 +437,7 @@ export default function FoundingMembersPage() {
                       />
                     </div>
                     {errors.company && (
-                      <p className="text-error text-sm mt-1 flex items-center gap-1">
+                      <p className="text-error body-small mt-1 flex items-center gap-1">
                         <AlertCircle className="w-4 h-4" />
                         {errors.company}
                       </p>
@@ -462,7 +462,7 @@ export default function FoundingMembersPage() {
                       />
                     </div>
                     {errors.jobTitle && (
-                      <p className="text-error text-sm mt-1 flex items-center gap-1">
+                      <p className="text-error body-small mt-1 flex items-center gap-1">
                         <AlertCircle className="w-4 h-4" />
                         {errors.jobTitle}
                       </p>
@@ -496,7 +496,7 @@ export default function FoundingMembersPage() {
                     ) : (
                       <span></span>
                     )}
-                    <span className={`text-sm ${characterCountColor}`}>
+                    <span className={`body-small ${characterCountColor}`}>
                       {characterCount}/500
                     </span>
                   </div>
@@ -523,7 +523,7 @@ export default function FoundingMembersPage() {
                     <option value="Other">Other</option>
                   </select>
                   {errors.referralSource && (
-                    <p className="text-error text-sm mt-1 flex items-center gap-1">
+                    <p className="text-error body-small mt-1 flex items-center gap-1">
                       <AlertCircle className="w-4 h-4" />
                       {errors.referralSource}
                     </p>
@@ -548,7 +548,7 @@ export default function FoundingMembersPage() {
                     />
                   </div>
                   {errors.linkedinProfile && (
-                    <p className="text-error text-sm mt-1 flex items-center gap-1">
+                    <p className="text-error body-small mt-1 flex items-center gap-1">
                       <AlertCircle className="w-4 h-4" />
                       {errors.linkedinProfile}
                     </p>
@@ -580,6 +580,6 @@ export default function FoundingMembersPage() {
           </motion.div>
         </div>
       </div>
-    </EnterpriseNavigationV2>
+    </ModernSidebarLayout>
   );
 }

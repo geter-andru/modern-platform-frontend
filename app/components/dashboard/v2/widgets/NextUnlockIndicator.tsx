@@ -121,7 +121,6 @@ export const NextUnlockIndicator: React.FC<NextUnlockIndicatorProps> = ({
         {/* Points Needed Badge */}
         <div className="text-right ml-4">
           <div className="text-blue-300 font-bold text-xl">{pointsNeeded}</div>
-          <div className="text-blue-400 text-xs">points needed</div>
         </div>
       </div>
 

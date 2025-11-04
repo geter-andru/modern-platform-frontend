@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRequireAuth } from '@/app/lib/auth';
-import { EnterpriseNavigationV2 } from '../../../src/shared/components/layout/EnterpriseNavigationV2';
+import { ModernSidebarLayout } from '../../../src/shared/components/layout/ModernSidebarLayout';
 import { DashboardViewToggle } from '@/app/components/dashboard/v2/DashboardViewToggle';
 import { UnifiedDashboard } from '@/app/components/dashboard/v2/UnifiedDashboard';
 import { CompetencyDevelopmentView } from '@/app/components/dashboard/v2/CompetencyDevelopmentView';
@@ -27,16 +27,16 @@ export default function DashboardV2Page() {
   // Loading state
   if (loading) {
     return (
-      <EnterpriseNavigationV2>
+      <ModernSidebarLayout>
         <div className="flex items-center justify-center h-64">
           <div className="text-text-muted">Loading dashboard...</div>
         </div>
-      </EnterpriseNavigationV2>
+      </ModernSidebarLayout>
     );
   }
 
   return (
-    <EnterpriseNavigationV2>
+    <ModernSidebarLayout>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -86,6 +86,6 @@ export default function DashboardV2Page() {
           </p>
         </div>
       </div>
-    </EnterpriseNavigationV2>
+    </ModernSidebarLayout>
   );
 }

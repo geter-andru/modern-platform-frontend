@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import ModernSidebarLayout from '@/src/shared/components/layout/ModernSidebarLayout';
+import { ModernSidebarLayout } from '@/src/shared/components/layout/ModernSidebarLayout';
 import { SystematicScalingProvider } from '@/src/shared/contexts/SystematicScalingContext';
 
 // Dynamic import of ResourceLibrary to reduce initial bundle size
@@ -92,7 +92,7 @@ export default function ResourcesClient({ customerId, token }: ResourcesClientPr
 
   return (
     <SystematicScalingProvider founderId={customerId}>
-      <ModernSidebarLayout customerId={customerId} activeRoute="resources">
+      <ModernSidebarLayout>
         <ResourceLibrary customerId={customerId} customerData={customerData} />
       </ModernSidebarLayout>
     </SystematicScalingProvider>

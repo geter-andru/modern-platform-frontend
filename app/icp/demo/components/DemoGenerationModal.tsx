@@ -54,6 +54,7 @@ export default function DemoGenerationModal({
   const [generatedResult, setGeneratedResult] = useState<any>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [rateLimitInfo, setRateLimitInfo] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false); // Protect from HMR during submission
 
   // Loading messages that rotate every 3 seconds
   const loadingMessages = [
@@ -75,8 +76,11 @@ export default function DemoGenerationModal({
 
   // Reset state when modal closes
   useEffect(() => {
-    if (!isOpen) {
+    console.log('👁️ [PLAYBOOK] isOpen changed to:', isOpen, 'isSubmitting:', isSubmitting);
+    if (!isOpen && !isSubmitting) { // Don't reset during form submission
+      console.log('🚪 [PLAYBOOK] Modal is closed, scheduling state reset in 300ms');
       setTimeout(() => {
+        console.log('🔄 [PLAYBOOK] Resetting modal state to form');
         setModalState('form');
         setFormData({ productName: '', description: '', businessModel: '' });
         setFormErrors({});
@@ -85,8 +89,10 @@ export default function DemoGenerationModal({
         setErrorMessage('');
         setRateLimitInfo(null);
       }, 300); // Wait for exit animation
+    } else if (isSubmitting) {
+      console.log('🔒 [PLAYBOOK] Skipping reset - form submission in progress');
     }
-  }, [isOpen]);
+  }, [isOpen, isSubmitting]); // CRITICAL: Check both isOpen and isSubmitting
 
   // Form validation
   const validateForm = (): boolean => {
@@ -123,15 +129,29 @@ export default function DemoGenerationModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Protect from HMR-triggered state reset
+    setIsSubmitting(true);
+
+    console.log('🚀 [PLAYBOOK] handleSubmit called - Form submission started');
+    console.log('📝 [PLAYBOOK] Form data:', formData);
+    console.log('🔍 [PLAYBOOK] Current modal state:', modalState);
+    console.log('🔍 [PLAYBOOK] isOpen prop:', isOpen);
+    console.log('🔒 [PLAYBOOK] isSubmitting set to: true');
+
     if (!validateForm()) {
+      console.log('❌ [PLAYBOOK] Validation failed, returning early');
+      setIsSubmitting(false);
       return;
     }
 
+    console.log('✅ [PLAYBOOK] Validation passed, setting loading state');
     setModalState('loading');
     setLoadingMessageIndex(0);
+    console.log('🔄 [PLAYBOOK] Modal state changed to: loading');
 
     try {
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+      console.log('📡 [PLAYBOOK] About to call backend API:', `${backendUrl}/api/demo/generate-icp`);
       const response = await fetch(`${backendUrl}/api/demo/generate-icp`, {
         method: 'POST',
         headers: {
@@ -144,32 +164,49 @@ export default function DemoGenerationModal({
         })
       });
 
+      console.log('📦 [PLAYBOOK] Response received, status:', response.status, 'ok:', response.ok);
       const data = await response.json();
+      console.log('📦 [PLAYBOOK] Data parsed:', data);
 
       if (!response.ok) {
+        console.log('❌ [PLAYBOOK] Response not OK');
         // Handle rate limiting
         if (response.status === 429) {
+          console.log('⏱️ [PLAYBOOK] Rate limited, setting rate-limited state');
           setModalState('rate-limited');
           setRateLimitInfo(data);
           return;
         }
 
         // Handle other errors
+        console.log('❌ [PLAYBOOK] Other error, throwing:', data.error);
         throw new Error(data.error || 'Failed to generate ICP');
       }
 
       // Success
+      console.log('✅ [PLAYBOOK] Success! Setting generated result');
       setGeneratedResult(data);
+      console.log('🔄 [PLAYBOOK] Setting modal state to: success');
       setModalState('success');
+      console.log('✅ [PLAYBOOK] Modal state is now: success');
 
       if (onSuccess) {
+        console.log('📞 [PLAYBOOK] Calling onSuccess callback');
         onSuccess(data);
+        console.log('✅ [PLAYBOOK] onSuccess callback completed');
+      } else {
+        console.log('ℹ️ [PLAYBOOK] No onSuccess callback provided');
       }
 
     } catch (error: any) {
-      console.error('Demo generation error:', error);
+      console.error('❌ [PLAYBOOK] Exception caught:', error);
       setErrorMessage(error.message || 'Something went wrong. Please try again.');
       setModalState('error');
+      console.log('🔄 [PLAYBOOK] Modal state changed to: error');
+    } finally {
+      // Release submission lock after async operations complete
+      setIsSubmitting(false);
+      console.log('🔓 [PLAYBOOK] isSubmitting set to: false');
     }
   };
 
@@ -185,10 +222,16 @@ export default function DemoGenerationModal({
 
   // Handle export actions with demo watermarks
   const handleExport = async (format: 'pdf' | 'markdown' | 'csv') => {
+    console.log('🔍 [EXPORT DEBUG] handleExport called!', format);
+    console.log('🔍 [EXPORT DEBUG] generatedResult:', generatedResult);
+
     if (!generatedResult || !generatedResult.personas) {
+      console.log('🔍 [EXPORT DEBUG] Early return - no data available');
       toast.error('No data available to export');
       return;
     }
+
+    console.log('🔍 [EXPORT DEBUG] Proceeding with export...');
 
     // Prepare export data
     const exportData = {
@@ -198,40 +241,51 @@ export default function DemoGenerationModal({
       generatedAt: generatedResult.metadata?.generatedAt || new Date().toISOString()
     };
 
-    if (format === 'pdf') {
-      toast.loading('Generating demo PDF...', { id: 'demo-export' });
+    try {
+      if (format === 'pdf') {
+        toast.loading('Generating demo PDF...', { id: 'demo-export' });
 
-      const result = await exportICPToPDF(exportData, {
-        includeDemoWatermark: true,
-        companyName: exportData.companyName,
-        productName: exportData.productName
-      });
+        const result = await exportICPToPDF(exportData, {
+          includeDemoWatermark: true,
+          companyName: exportData.companyName,
+          productName: exportData.productName
+        });
 
-      if (result.success) {
-        toast.success('Demo PDF exported! Contains watermarks - sign up to remove.', { id: 'demo-export' });
+        console.log('📦 [EXPORT DEBUG] PDF result:', result);
+
+        if (result.success) {
+          toast.success('Demo PDF exported! Contains watermarks - sign up to remove.', { id: 'demo-export' });
+        } else {
+          toast.error(result.error || 'Failed to export PDF', { id: 'demo-export' });
+        }
+      } else if (format === 'markdown') {
+        toast.loading('Copying demo Markdown...', { id: 'demo-export' });
+
+        const result = await exportToMarkdown(exportData, { includeDemoWatermark: true });
+
+        console.log('📦 [EXPORT DEBUG] Markdown result:', result);
+
+        if (result.success) {
+          toast.success('Demo Markdown copied to clipboard! Contains watermarks - sign up to remove.', { id: 'demo-export' });
+        } else {
+          toast.error(result.error || 'Failed to export Markdown', { id: 'demo-export' });
+        }
       } else {
-        toast.error(result.error || 'Failed to export PDF', { id: 'demo-export' });
+        toast.loading('Generating demo CSV...', { id: 'demo-export' });
+
+        const result = exportToCSV(exportData, { includeDemoWatermark: true });
+
+        console.log('📦 [EXPORT DEBUG] CSV result:', result);
+
+        if (result.success) {
+          toast.success('Demo CSV exported! Contains watermarks - sign up to remove.', { id: 'demo-export' });
+        } else {
+          toast.error(result.error || 'Failed to export CSV', { id: 'demo-export' });
+        }
       }
-    } else if (format === 'markdown') {
-      toast.loading('Copying demo Markdown...', { id: 'demo-export' });
-
-      const result = await exportToMarkdown(exportData, { includeDemoWatermark: true });
-
-      if (result.success) {
-        toast.success('Demo Markdown copied to clipboard! Contains watermarks - sign up to remove.', { id: 'demo-export' });
-      } else {
-        toast.error(result.error || 'Failed to export Markdown', { id: 'demo-export' });
-      }
-    } else {
-      toast.loading('Generating demo CSV...', { id: 'demo-export' });
-
-      const result = exportToCSV(exportData, { includeDemoWatermark: true });
-
-      if (result.success) {
-        toast.success('Demo CSV exported! Contains watermarks - sign up to remove.', { id: 'demo-export' });
-      } else {
-        toast.error(result.error || 'Failed to export CSV', { id: 'demo-export' });
-      }
+    } catch (error: any) {
+      console.error('❌ [EXPORT DEBUG] Export error:', error);
+      toast.error(error.message || `Failed to export ${format.toUpperCase()}`, { id: 'demo-export' });
     }
   };
 

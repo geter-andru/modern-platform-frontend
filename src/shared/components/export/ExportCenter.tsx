@@ -334,9 +334,11 @@ export function ExportCenter({ customerId, onExport }: ExportCenterProps) {
 
       {/* Bulk Export */}
       <div className="mt-6">
-        <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
-          Download Complete Sales Kit
-        </button>
+        <div className="max-w-md mx-auto">
+          <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+            Download Complete Sales Kit
+          </button>
+        </div>
       </div>
     </div>
   );

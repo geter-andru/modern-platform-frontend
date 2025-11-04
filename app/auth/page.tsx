@@ -10,8 +10,13 @@ const AuthPage: React.FC = () => {
   const redirectTo = searchParams.get('redirect') || '/dashboard';
 
   return (
-    <div className="min-h-screen bg-gray-950">
-      <SupabaseAuth redirectTo={redirectTo} />
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{ background: 'var(--background-primary)' }}
+    >
+      <div className="w-full max-w-md">
+        <SupabaseAuth redirectTo={redirectTo} />
+      </div>
     </div>
   );
 };

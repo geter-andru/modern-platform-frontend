@@ -74,7 +74,7 @@ export default function PlatformHeader({
               </div>
               <div>
                 <h1 className="text-xl font-bold text-text-primary">
-                  H&S Platform
+                  Andru
                 </h1>
                 <p className="text-xs text-text-muted">
                   Revenue Intelligence

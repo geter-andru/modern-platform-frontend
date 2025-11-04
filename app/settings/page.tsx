@@ -10,34 +10,36 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen p-8" style={{ background: 'var(--background-primary)' }}>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-text-primary mb-6">Settings</h1>
+        <h1 className="heading-2 text-text-primary mb-6">Settings</h1>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="rounded-lg shadow p-6" style={{ background: 'var(--surface)' }}>
           <div className="border-b pb-4 mb-4">
-            <h2 className="text-xl font-semibold text-gray-800">Account Settings</h2>
-            <p className="text-text-muted mt-1">Manage your account preferences</p>
+            <h2 className="heading-3 text-text-primary">Account Settings</h2>
+            <p className="body text-text-muted mt-1">Manage your account preferences</p>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <label className="block form-label text-text-primary mb-1">Email</label>
               <input
                 type="email"
                 value={user.email || ''}
                 disabled
-                className="w-full px-3 py-2 border border-surface rounded-md bg-gray-50 text-text-muted"
+                className="w-full px-3 py-2 border rounded-md text-text-muted"
+                style={{ borderColor: 'var(--border-subtle)', background: 'var(--background-secondary)' }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">User ID</label>
+              <label className="block form-label text-text-primary mb-1">User ID</label>
               <input
                 type="text"
                 value={user.id}
                 disabled
-                className="w-full px-3 py-2 border border-surface rounded-md bg-gray-50 text-text-muted font-mono text-sm"
+                className="w-full px-3 py-2 border rounded-md text-text-muted font-mono body-small"
+                style={{ borderColor: 'var(--border-subtle)', background: 'var(--background-secondary)' }}
               />
             </div>
           </div>

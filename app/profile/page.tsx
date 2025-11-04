@@ -138,10 +138,10 @@ export default function ProfilePage() {
 
   if (loading || isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--background-primary)' }}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-text-muted">Loading profile...</p>
+          <div className="animate-spin rounded-full border-b-2 mx-auto" style={{ width: '48px', height: '48px', borderColor: 'var(--color-brand-primary)' }}></div>
+          <p className="body mt-4 text-text-muted">Loading profile...</p>
         </div>
       </div>
     );
@@ -149,10 +149,10 @@ export default function ProfilePage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--background-primary)' }}>
         <div className="text-center">
-          <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-          <p className="text-text-muted">Please sign in to view your profile.</p>
+          <AlertCircle className="mx-auto mb-4" style={{ width: '48px', height: '48px', color: 'var(--color-accent-danger)' }} />
+          <p className="body text-text-muted">Please sign in to view your profile.</p>
         </div>
       </div>
     );
@@ -160,13 +160,14 @@ export default function ProfilePage() {
 
   if (error && !profile) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--background-primary)' }}>
         <div className="text-center">
-          <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-          <p className="text-red-600 mb-4">{error}</p>
-          <button 
+          <AlertCircle className="mx-auto mb-4" style={{ width: '48px', height: '48px', color: 'var(--color-accent-danger)' }} />
+          <p className="body mb-4" style={{ color: 'var(--color-accent-danger)' }}>{error}</p>
+          <button
             onClick={fetchProfile}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            className="body-small text-white px-4 py-2 rounded-lg"
+            style={{ background: 'var(--color-brand-primary)' }}
           >
             Retry
           </button>
@@ -176,12 +177,12 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ background: 'var(--background-primary)' }}>
       <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-text-primary">Profile Settings</h1>
-          <p className="mt-2 text-text-muted">
+          <h1 className="heading-2 text-text-primary">Profile Settings</h1>
+          <p className="body mt-2 text-text-muted">
             Manage your account settings and preferences
           </p>
         </div>

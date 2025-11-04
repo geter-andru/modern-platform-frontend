@@ -31,6 +31,7 @@
 /* Import Brand System CSS Files */
 @import '../src/shared/styles/design-tokens.css';
 @import '../src/shared/styles/component-patterns.css';
+@import '../src/shared/styles/animations.css';
 @import '../src/shared/styles/token-bridge.css';
 
 @layer base {
@@ -61,11 +62,11 @@
     --color-hover: rgba(59, 130, 246, 0.08);
     --color-focus: rgba(59, 130, 246, 0.2);
     --color-active: rgba(59, 130, 246, 0.12);
-    
+
     /* Typography */
     --font-family-primary: 'Red Hat Display', sans-serif;
     --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
-    
+
     --font-size-xs: 11px;
     --font-size-sm: 13px;
     --font-size-base: 15px;

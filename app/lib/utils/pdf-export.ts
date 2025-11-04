@@ -4,16 +4,16 @@
  * Generates professional PDF reports for ICP analysis data.
  * Supports free tier watermarking and comprehensive persona formatting.
  *
- * Uses jsPDF for PDF generation (already installed in package.json)
+ * Uses jsPDF for PDF generation (dynamically imported for client-side compatibility)
  */
 
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+// Dynamic imports for client-side only libraries
+// jsPDF and jspdf-autotable must be loaded at runtime in Next.js
 
 // Flexible persona type that handles multiple schema versions
 export interface PersonaForPDF {
   id: string;
-  name: string;
+  name?: string;  // Optional - we don't use named personas, only title
   title: string;
   role?: string;  // Optional for backward compatibility
   company?: string;  // From cache schema
@@ -136,7 +136,20 @@ async function loadImageAsBase64(url: string): Promise<string> {
 export async function generateICPPDF(
   data: ICPExportData,
   options: PDFExportOptions = {}
-): Promise<jsPDF> {
+): Promise<any> {
+  // Dynamically import jsPDF for client-side compatibility
+  // Webpack magic comments ensure proper chunk generation
+  const { default: jsPDF } = await import(
+    /* webpackChunkName: "jspdf" */
+    /* webpackMode: "lazy" */
+    'jspdf'
+  );
+  await import(
+    /* webpackChunkName: "jspdf-autotable" */
+    /* webpackMode: "lazy" */
+    'jspdf-autotable'
+  ); // Import for side effects (adds autoTable to jsPDF)
+
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
@@ -242,7 +255,7 @@ export async function generateICPPDF(
     doc.setFontSize(14);
     doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica', 'bold');
-    doc.text(`${index + 1}. ${persona.name}`, margin + 3, yPosition + 7);
+    doc.text(`${index + 1}. ${persona.title}`, margin + 3, yPosition + 7);
     yPosition += 12;
 
     // Title & Role/Company
@@ -486,7 +499,7 @@ export async function generateICPPDF(
 /**
  * Download PDF file to user's device
  */
-export function downloadPDF(doc: jsPDF, filename: string = 'ICP-Analysis.pdf'): void {
+export function downloadPDF(doc: any, filename: string = 'ICP-Analysis.pdf'): void {
   doc.save(filename);
 }
 

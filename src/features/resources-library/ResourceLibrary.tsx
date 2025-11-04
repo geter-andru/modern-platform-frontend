@@ -437,7 +437,7 @@ const ResourceLibrary: React.FC<ResourceLibraryProps> = ({ customerId, customerD
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 p-6">
+    <div className="bg-slate-950 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header with Systematic Scaling Status */}
         <div className="mb-6 p-4 bg-gradient-to-r from-purple-900/20 to-blue-900/20 rounded-lg border border-purple-800/30">
@@ -505,8 +505,8 @@ const ResourceLibrary: React.FC<ResourceLibraryProps> = ({ customerId, customerD
                 {/* Resource Header */}
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
-                    <div className={`p-2 rounded-lg bg-${color}-900/20 border border-${color}-700/50`}>
-                      <Icon className={`w-5 h-5 text-${color}-400`} />
+                    <div className={`p-2 rounded-lg ${color === 'purple' ? 'bg-purple-900/20 border border-purple-700/50' : color === 'blue' ? 'bg-blue-900/20 border border-blue-700/50' : color === 'emerald' ? 'bg-emerald-900/20 border border-emerald-700/50' : 'bg-slate-900/20 border border-slate-700/50'}`}>
+                      <Icon className={`w-5 h-5 ${color === 'purple' ? 'text-purple-400' : color === 'blue' ? 'text-blue-400' : color === 'emerald' ? 'text-emerald-400' : 'text-slate-400'}`} />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-white">{resource.title}</h3>
@@ -528,8 +528,8 @@ const ResourceLibrary: React.FC<ResourceLibraryProps> = ({ customerId, customerD
                       <span className="text-xs text-white font-semibold">{resource.quality}%</span>
                     </div>
                     <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-                      <div 
-                        className={`h-full bg-gradient-to-r from-${color}-500 to-${color}-600 rounded-full transition-all duration-1000`}
+                      <div
+                        className={`h-full rounded-full transition-all duration-1000 ${color === 'purple' ? 'bg-gradient-to-r from-purple-500 to-purple-600' : color === 'blue' ? 'bg-gradient-to-r from-blue-500 to-blue-600' : color === 'emerald' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600' : 'bg-gradient-to-r from-slate-500 to-slate-600'}`}
                         style={{ width: `${resource.quality}%` }}
                       />
                     </div>

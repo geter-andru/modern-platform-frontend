@@ -175,9 +175,11 @@ export function InsightsPanel({ insights, isLoading }: InsightsPanelProps) {
 
       {/* Refresh insights */}
       <div className="mt-6 pt-4 border-t border-gray-200">
-        <button className="w-full text-sm text-gray-600 hover:text-gray-800 font-medium">
-          Refresh Insights
-        </button>
+        <div className="max-w-sm mx-auto">
+          <button className="w-full text-sm text-gray-600 hover:text-gray-800 font-medium">
+            Refresh Insights
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -199,7 +199,7 @@ const SystematicScalingDashboard: React.FC<SystematicScalingDashboardProps> = ({
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 p-6">
+    <div className="bg-slate-950 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header with Systematic Scaling Status */}
         <div className="text-center mb-8">
@@ -304,7 +304,7 @@ const SystematicScalingDashboard: React.FC<SystematicScalingDashboardProps> = ({
                     <p className="text-xs text-slate-400">Level {comp.level}</p>
                   </div>
                   <div className="text-right">
-                    <div className={`text-${comp.color}-400 font-bold text-lg`}>
+                    <div className={`${comp.color === 'purple' ? 'text-purple-400' : comp.color === 'blue' ? 'text-blue-400' : 'text-green-400'} font-bold text-lg`}>
                       {Math.round(comp.progress)}%
                     </div>
                   </div>
@@ -338,8 +338,8 @@ const SystematicScalingDashboard: React.FC<SystematicScalingDashboardProps> = ({
                   onClick={() => handleToolNavigation(tool.id, tool.route)}
                 >
                   <div className="flex items-center space-x-3 mb-4">
-                    <div className={`p-2 rounded-lg bg-${tool.color}-900/20 border border-${tool.color}-700/50`}>
-                      <Icon className={`w-5 h-5 text-${tool.color}-400`} />
+                    <div className={`p-2 rounded-lg ${tool.color === 'purple' ? 'bg-purple-900/20 border border-purple-700/50' : tool.color === 'blue' ? 'bg-blue-900/20 border border-blue-700/50' : 'bg-green-900/20 border border-green-700/50'}`}>
+                      <Icon className={`w-5 h-5 ${tool.color === 'purple' ? 'text-purple-400' : tool.color === 'blue' ? 'text-blue-400' : 'text-green-400'}`} />
                     </div>
                     <div className="flex-1">
                       <h4 className="text-white font-semibold">{tool.title}</h4>

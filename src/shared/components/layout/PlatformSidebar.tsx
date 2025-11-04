@@ -130,7 +130,7 @@ export default function PlatformSidebar({
               </div>
               <div>
                 <h2 className="text-lg font-bold text-text-primary">
-                  H&S Platform
+                  Andru
                 </h2>
                 <p className="text-sm text-text-muted">
                   Revenue Intelligence

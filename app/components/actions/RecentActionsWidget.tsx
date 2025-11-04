@@ -289,7 +289,6 @@ const RecentActionsWidget: React.FC<RecentActionsWidgetProps> = ({
                         {/* Points Awarded */}
                         <div className="flex items-center space-x-1">
                           <span className="text-yellow-400 font-medium">+{action.points}</span>
-                          <span className="text-gray-400">points</span>
                         </div>
 
                         {/* Category Badge */}

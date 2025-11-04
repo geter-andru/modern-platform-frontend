@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRequireAuth } from '@/app/lib/auth';
-import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
+import { ModernSidebarLayout } from '../../src/shared/components/layout/ModernSidebarLayout';
 import { motion } from 'framer-motion';
 import { 
   FileText, 
@@ -175,15 +175,15 @@ export default function ResourcesPage() {
   // Show loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--background-primary)' }}>
+        <div className="animate-spin rounded-full border-b-2" style={{ width: '32px', height: '32px', borderColor: 'var(--color-brand-primary)' }}></div>
       </div>
     );
   }
 
   return (
-    <EnterpriseNavigationV2>
-      <div className="min-h-screen bg-gray-50">
+    <ModernSidebarLayout>
+      <div className="min-h-screen" style={{ background: 'var(--background-primary)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div
@@ -193,10 +193,10 @@ export default function ResourcesPage() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-text-primary mb-2">
+              <h1 className="heading-2 text-text-primary mb-2">
                 Resources Library
               </h1>
-              <p className="text-text-muted">
+              <p className="body text-text-muted">
                 AI-powered resources to accelerate your revenue growth
               </p>
             </div>
@@ -232,6 +232,6 @@ export default function ResourcesPage() {
         />
         </div>
       </div>
-    </EnterpriseNavigationV2>
+    </ModernSidebarLayout>
   );
 }

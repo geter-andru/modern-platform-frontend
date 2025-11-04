@@ -813,6 +813,110 @@ button:focus-visible {
 }
 
 /* ============================================================================
+   SHIMMER HOVER EFFECTS - Kinetic Delight
+   ============================================================================ */
+
+/**
+ * Shimmer Hover System - Pseudo-element sweep animations
+ *
+ * Creates kinetic delight on hover without disrupting content.
+ * Based on archived platform's shimmer patterns.
+ *
+ * Usage:
+ * <div className="hover-shimmer">...</div>
+ * <div className="hover-shimmer hover-shimmer-blue">...</div>
+ */
+
+/* Base Shimmer Pattern */
+.hover-shimmer {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate; /* Create stacking context for z-index control */
+}
+
+.hover-shimmer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform var(--duration-elegant) var(--ease-elegant);
+  z-index: 1;
+  pointer-events: none; /* Don't interfere with clicks */
+}
+
+.hover-shimmer:hover::before {
+  transform: translateX(100%);
+}
+
+/* Shimmer Variants - Color themes */
+.hover-shimmer-blue::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(59, 130, 246, 0.15),
+    transparent
+  );
+}
+
+.hover-shimmer-purple::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(139, 92, 246, 0.15),
+    transparent
+  );
+}
+
+.hover-shimmer-green::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(16, 185, 129, 0.15),
+    transparent
+  );
+}
+
+.hover-shimmer-subtle::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+}
+
+/* Diagonal Shimmer - More dynamic */
+.hover-shimmer-diagonal::before {
+  background: linear-gradient(
+    135deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+}
+
+/* Slow Shimmer - More elegant */
+.hover-shimmer-slow::before {
+  transition: transform var(--duration-dramatic) var(--ease-elegant);
+}
+
+/* Fast Shimmer - More energetic */
+.hover-shimmer-fast::before {
+  transition: transform var(--duration-smooth) var(--ease-elegant);
+}
+
+/* Shimmer with Blur - Softer effect */
+.hover-shimmer-blur::before {
+  filter: blur(20px);
+}
+
+/* ============================================================================
    PRINT STYLES - Executive Reports
    ============================================================================ */
 

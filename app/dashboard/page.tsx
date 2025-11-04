@@ -5,7 +5,7 @@ import { useState } from 'react';
 // Force dynamic rendering (no static generation) for authenticated pages
 export const dynamic = 'force-dynamic';
 import { useRequireAuth } from '@/app/lib/auth';
-import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
+import { ModernSidebarLayout } from '../../src/shared/components/layout/ModernSidebarLayout';
 import { ProgressOverview } from '../../src/shared/components/dashboard/ProgressOverview';
 import { MilestonesCard } from '../../src/shared/components/dashboard/MilestonesCard';
 import { QuickActions } from '../../src/shared/components/dashboard/QuickActions';
@@ -89,7 +89,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <EnterpriseNavigationV2>
+      <ModernSidebarLayout>
         <div className="space-y-6">
           {/* Header skeleton */}
           <div className="flex justify-between items-center">
@@ -113,22 +113,22 @@ export default function DashboardPage() {
             <SkeletonCard animation="shimmer" />
           </div>
         </div>
-      </EnterpriseNavigationV2>
+      </ModernSidebarLayout>
     );
   }
 
   const isLoading = customerLoading || progressLoading || milestonesLoading || insightsLoading;
 
   return (
-    <EnterpriseNavigationV2>
+    <ModernSidebarLayout>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-text-primary">
+            <h1 className="heading-2 text-text-primary">
               Welcome back{customer?.data?.customerName ? `, ${customer.data.customerName}` : ''}!
             </h1>
-            <p className="text-text-muted mt-1">
+            <p className="body text-text-muted mt-1">
               Here's your revenue intelligence overview
             </p>
           </div>
@@ -141,13 +141,13 @@ export default function DashboardPage() {
                 text-text-muted hover:text-text-primary
                 hover:bg-surface/80 hover:border-white/20
                 transition-all duration-200 ease-elegant
-                text-sm font-medium
+                body-small
               "
             >
-              <kbd className="px-1.5 py-0.5 bg-surface/50 rounded text-xs">⌘K</kbd>
+              <kbd className="px-1.5 py-0.5 bg-surface/50 rounded body-small">⌘K</kbd>
               <span>Command Palette</span>
             </button>
-            <div className="text-sm text-text-subtle">
+            <div className="body-small text-text-subtle">
               User ID: <span className="font-mono bg-surface px-2 py-1 rounded">{user?.id?.slice(0, 8) || 'Unknown'}...</span>
             </div>
           </div>
@@ -192,6 +192,6 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-    </EnterpriseNavigationV2>
+    </ModernSidebarLayout>
   );
 }

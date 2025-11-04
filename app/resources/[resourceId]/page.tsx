@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRequireAuth } from '@/app/lib/auth';
-import { EnterpriseNavigationV2 } from '../../../src/shared/components/layout/EnterpriseNavigationV2';
+import { ModernSidebarLayout } from '../../../src/shared/components/layout/ModernSidebarLayout';
 import { ResourceModal } from '../../../src/features/resources-library/widgets/ResourceModal';
 import { ResourceExport } from '../../../src/features/resources-library/widgets/ResourceExport';
 
@@ -45,11 +45,11 @@ export default function ResourcePage({ params }: ResourcePageProps) {
 
   if (authLoading || isLoading) {
     return (
-      <EnterpriseNavigationV2>
+      <ModernSidebarLayout>
         <div className="flex items-center justify-center h-64">
           <div className="text-text-muted">Loading resource...</div>
         </div>
-      </EnterpriseNavigationV2>
+      </ModernSidebarLayout>
     );
   }
 
@@ -58,7 +58,7 @@ export default function ResourcePage({ params }: ResourcePageProps) {
   }
 
   return (
-    <EnterpriseNavigationV2>
+    <ModernSidebarLayout>
       <div className="min-h-screen bg-gray-50">
         <ResourceModal
           resource={resource}
@@ -74,6 +74,6 @@ export default function ResourcePage({ params }: ResourcePageProps) {
           }}
         />
       </div>
-    </EnterpriseNavigationV2>
+    </ModernSidebarLayout>
   );
 }

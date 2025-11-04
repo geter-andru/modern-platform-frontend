@@ -4,6 +4,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, ArrowRight, Sparkles, Users, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { GradientButton } from '../../../src/shared/components/ui/GradientButton';
+import { FooterLayout } from '../../../src/shared/components/layout/FooterLayout';
 
 /**
  * Pricing Page - Free Beta Launch
@@ -59,10 +61,11 @@ export default function PricingPage() {
                 boxShadow: '0 4px 16px rgba(59, 130, 246, 0.2)'
               }}>
                 <Sparkles className="w-5 h-5" style={{ color: '#3b82f6' }} />
-                <span className="text-sm font-bold" style={{
+                <span className="body-small" style={{
                   color: '#3b82f6',
                   fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                  letterSpacing: '0.5px'
+                  letterSpacing: '0.5px',
+                  fontWeight: 700
                 }}>
                   FREE BETA LAUNCHING DECEMBER 1, 2025
                 </span>
@@ -118,7 +121,7 @@ export default function PricingPage() {
                   background: '#10b981',
                   boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
                 }}>
-                  <p className="text-sm font-bold text-white flex items-center gap-2">
+                  <p className="body-small text-white flex items-center gap-2" style={{ fontWeight: 700 }}>
                     <Users className="w-4 h-4" />
                     100 Spots Available
                   </p>
@@ -126,15 +129,13 @@ export default function PricingPage() {
               </div>
 
               <div className="mb-8">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{
-                  color: '#FFFFFF',
-                  fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+                <h2 className="heading-2 mb-4" style={{
+                  color: '#FFFFFF'
                 }}>
                   Free Beta Access
                 </h2>
-                <p className="text-lg" style={{
-                  color: '#E0E0E0',
-                  fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+                <p className="body" style={{
+                  color: '#E0E0E0'
                 }}>
                   Help us build the best ICP tool for technical founders
                 </p>
@@ -152,9 +153,8 @@ export default function PricingPage() {
                 ].map((benefit, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <Check className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: '#10b981' }} />
-                    <span className="text-base" style={{
-                      color: '#E0E0E0',
-                      fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+                    <span className="body" style={{
+                      color: '#E0E0E0'
                     }}>
                       {benefit}
                     </span>
@@ -163,25 +163,19 @@ export default function PricingPage() {
               </div>
 
               {/* CTA Button */}
-              <Link
+              <GradientButton
                 href="/founding-members"
-                className="inline-flex items-center justify-center gap-3 px-10 py-5 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
-                style={{
-                  background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-                  color: '#FFFFFF',
-                  fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                  boxShadow: '0 8px 24px rgba(59, 130, 246, 0.4)'
-                }}
+                leftIcon={Zap}
+                rightIcon={ArrowRight}
+                size="lg"
+                ariaLabel="Apply for founding member access"
               >
-                <Zap className="w-6 h-6" />
                 Apply for Founding Member Access
-                <ArrowRight className="w-5 h-5" />
-              </Link>
+              </GradientButton>
 
               {/* Trust Signal */}
-              <p className="mt-6 text-sm" style={{
-                color: '#E0E0E0',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+              <p className="mt-6 body-small" style={{
+                color: '#E0E0E0'
               }}>
                 Beta launches December 1, 2025 • Limited to 100 founding members
               </p>
@@ -193,9 +187,8 @@ export default function PricingPage() {
                 background: 'rgba(255, 255, 255, 0.03)',
                 border: '1px solid rgba(255, 255, 255, 0.08)'
               }}>
-                <h3 className="text-2xl font-bold mb-6" style={{
-                  color: '#FFFFFF',
-                  fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+                <h3 className="heading-3 mb-6" style={{
+                  color: '#FFFFFF'
                 }}>
                   What Happens After Beta?
                 </h3>
@@ -207,22 +200,22 @@ export default function PricingPage() {
                     border: '1px solid rgba(59, 130, 246, 0.3)'
                   }}>
                     <div className="mb-4">
-                      <span className="px-3 py-1 rounded-full text-sm font-bold" style={{
+                      <span className="px-3 py-1 rounded-full body-small" style={{
                         background: 'rgba(59, 130, 246, 0.2)',
-                        color: '#3b82f6'
+                        color: '#3b82f6',
+                        fontWeight: 700
                       }}>
                         For You (Founding Members)
                       </span>
                     </div>
                     <p className="text-3xl font-bold mb-2" style={{ color: '#3b82f6' }}>
-                      $149<span className="text-lg font-normal" style={{ color: '#E0E0E0' }}>/month</span>
+                      $149<span className="body font-normal" style={{ color: '#E0E0E0' }}>/month</span>
                     </p>
-                    <p className="text-sm mb-4" style={{ color: '#10b981' }}>
+                    <p className="body-small mb-4" style={{ color: '#10b981' }}>
                       50% off forever • Locked for life
                     </p>
-                    <p className="text-sm" style={{
+                    <p className="body-small" style={{
                       color: '#E0E0E0',
-                      fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
                       lineHeight: '1.6'
                     }}>
                       As a thank you for helping us build the product, you'll get 50% off our standard pricing—forever. No price increases. Ever.
@@ -235,22 +228,22 @@ export default function PricingPage() {
                     border: '1px solid rgba(255, 255, 255, 0.08)'
                   }}>
                     <div className="mb-4">
-                      <span className="px-3 py-1 rounded-full text-sm font-bold" style={{
+                      <span className="px-3 py-1 rounded-full body-small" style={{
                         background: 'rgba(255, 255, 255, 0.1)',
-                        color: '#E0E0E0'
+                        color: '#E0E0E0',
+                        fontWeight: 700
                       }}>
                         New Users (After March 2025)
                       </span>
                     </div>
                     <p className="text-3xl font-bold mb-2" style={{ color: '#FFFFFF' }}>
-                      $297<span className="text-lg font-normal" style={{ color: '#E0E0E0' }}>/month</span>
+                      $297<span className="body font-normal" style={{ color: '#E0E0E0' }}>/month</span>
                     </p>
-                    <p className="text-sm mb-4" style={{ color: '#E0E0E0' }}>
+                    <p className="body-small mb-4" style={{ color: '#E0E0E0' }}>
                       Standard pricing + 14-day free trial
                     </p>
-                    <p className="text-sm" style={{
+                    <p className="body-small" style={{
                       color: '#E0E0E0',
-                      fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
                       lineHeight: '1.6'
                     }}>
                       Users who join after the beta period will pay standard pricing. That's why being a founding member is such a good deal.
@@ -274,10 +267,9 @@ export default function PricingPage() {
           >
             <motion.h2
               variants={fadeInUp}
-              className="text-4xl font-bold mb-12 text-center"
+              className="heading-2 mb-12 text-center"
               style={{
-                color: '#FFFFFF',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+                color: '#FFFFFF'
               }}
             >
               Frequently Asked Questions
@@ -319,9 +311,8 @@ export default function PricingPage() {
                     border: '1px solid rgba(255, 255, 255, 0.08)'
                   }}
                 >
-                  <h3 className="text-lg font-bold mb-3" style={{
-                    color: '#FFFFFF',
-                    fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+                  <h3 className="heading-4 mb-3" style={{
+                    color: '#FFFFFF'
                   }}>
                     {faq.q}
                   </h3>
@@ -360,34 +351,31 @@ export default function PricingPage() {
             </motion.h2>
             <motion.p
               variants={fadeInUp}
-              className="text-xl mb-10"
+              className="body-large mb-10"
               style={{
                 color: '#E0E0E0',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
                 lineHeight: '1.7'
               }}
             >
               100 spots. Free beta access. 50% lifetime discount. Apply now.
             </motion.p>
             <motion.div variants={fadeInUp}>
-              <Link
+              <GradientButton
                 href="/founding-members"
-                className="inline-flex items-center justify-center gap-3 px-10 py-5 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
-                style={{
-                  background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-                  color: '#FFFFFF',
-                  fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                  boxShadow: '0 8px 24px rgba(59, 130, 246, 0.4)'
-                }}
+                leftIcon={Zap}
+                rightIcon={ArrowRight}
+                size="lg"
+                ariaLabel="Apply for founding member access"
               >
-                <Zap className="w-6 h-6" />
                 Apply for Founding Member Access
-                <ArrowRight className="w-5 h-5" />
-              </Link>
+              </GradientButton>
             </motion.div>
           </motion.div>
         </div>
       </section>
+
+      {/* Footer */}
+      <FooterLayout variant="standard" theme="dark" />
     </div>
   );
 }

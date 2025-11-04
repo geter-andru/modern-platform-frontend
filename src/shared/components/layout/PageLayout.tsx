@@ -112,11 +112,11 @@ const PageLayout: React.FC<PageLayoutProps> = ({
   const getLayoutClasses = () => {
     switch (variant) {
       case 'centered':
-        return 'flex flex-col items-center justify-center min-h-screen text-center';
+        return 'flex flex-col items-center justify-center text-center';
       case 'full-width':
         return 'w-full';
       case 'dashboard':
-        return 'min-h-screen bg-gray-900';
+        return 'bg-gray-900';
       case 'sidebar':
         return 'flex flex-col lg:flex-row';
       default:
@@ -147,7 +147,7 @@ const PageLayout: React.FC<PageLayoutProps> = ({
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 p-6">
+      <div className="bg-gray-900 p-6">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Header skeleton */}
           <div className="space-y-3">
@@ -169,7 +169,7 @@ const PageLayout: React.FC<PageLayoutProps> = ({
   // Error state
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+      <div className="flex items-center justify-center bg-gray-900">
         <div className="text-center space-y-4 max-w-md">
           <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto">
             <svg className="w-8 h-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

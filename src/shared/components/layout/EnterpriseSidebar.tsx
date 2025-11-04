@@ -160,10 +160,10 @@ export function EnterpriseSidebar({ isOpen, onClose, collapsed = false, onToggle
             {!collapsed && (
               <div className="flex items-center">
                 <div className="h-10 w-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">H&S</span>
+                  <span className="text-white font-bold text-lg">A</span>
                 </div>
                 <div className="ml-3">
-                  <div className="text-white font-semibold text-lg">Platform</div>
+                  <div className="text-white font-semibold text-lg">Andru</div>
                   <div className="text-gray-400 text-xs">Revenue Intelligence</div>
                 </div>
               </div>

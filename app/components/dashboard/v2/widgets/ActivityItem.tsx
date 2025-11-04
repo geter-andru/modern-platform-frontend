@@ -274,7 +274,6 @@ export const ActivityItem: React.FC<ActivityItemProps> = ({
               <div className="text-lg font-semibold text-green-400">
                 +{pointsEarned}
               </div>
-              <div className="text-xs text-gray-400">points</div>
             </div>
           </div>
 

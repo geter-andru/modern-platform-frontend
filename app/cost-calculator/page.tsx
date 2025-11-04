@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRequireAuth } from '@/app/lib/auth';
-import { EnterpriseNavigationV2 } from '../../src/shared/components/layout/EnterpriseNavigationV2';
+import { ModernSidebarLayout } from '../../src/shared/components/layout/ModernSidebarLayout';
 import { CostCalculatorForm } from '../../src/shared/components/cost-calculator/CostCalculatorForm';
 import { CostResults } from '../../src/shared/components/cost-calculator/CostResults';
 import { CostHistory } from '../../src/shared/components/cost-calculator/CostHistory';
@@ -64,14 +64,14 @@ export default function CostCalculatorPage() {
   };
 
   return (
-    <EnterpriseNavigationV2>
+    <ModernSidebarLayout>
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-text-primary">
+          <h1 className="heading-2 text-text-primary">
             Cost of Inaction Calculator
           </h1>
-          <p className="text-text-muted mt-2">
+          <p className="body text-text-muted mt-2">
             Calculate the true financial impact of delayed decision-making and missed opportunities
           </p>
         </div>
@@ -83,7 +83,7 @@ export default function CostCalculatorPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`py-4 px-1 border-b-2 font-medium body-small transition-colors ${
                   activeTab === tab.id
                     ? 'border-brand-primary text-brand-primary'
                     : 'border-transparent text-text-muted hover:text-text-secondary hover:border-surface'
@@ -91,7 +91,7 @@ export default function CostCalculatorPage() {
               >
                 <div>
                   <div>{tab.name}</div>
-                  <div className="text-xs text-text-secondary mt-1">{tab.description}</div>
+                  <div className="body-small text-text-secondary mt-1">{tab.description}</div>
                 </div>
               </button>
             ))}
@@ -125,6 +125,6 @@ export default function CostCalculatorPage() {
           )}
         </div>
       </div>
-    </EnterpriseNavigationV2>
+    </ModernSidebarLayout>
   );
 }

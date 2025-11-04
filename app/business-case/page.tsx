@@ -8,10 +8,10 @@ export default function BusinessCasePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--background-primary)' }}>
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-green-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-text-secondary">Loading business case builder...</p>
+          <div className="border-2 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ width: '32px', height: '32px', borderColor: 'var(--color-brand-primary)', borderTopColor: 'transparent' }}></div>
+          <p className="body text-text-secondary">Loading business case builder...</p>
         </div>
       </div>
     );

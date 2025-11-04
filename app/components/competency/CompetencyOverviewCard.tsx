@@ -269,7 +269,7 @@ const CompetencyOverviewCard: React.FC<CompetencyOverviewCardProps> = ({
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-medium text-gray-300">Next Advancement Progress</h3>
             <span className="text-xs text-gray-500">
-              {overview.progressToNext}/{overview.nextLevelThreshold} points
+              {overview.progressToNext}/{overview.nextLevelThreshold}
             </span>
           </div>
           <div className="w-full bg-gray-700 rounded-full h-3">

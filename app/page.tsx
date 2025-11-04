@@ -7,6 +7,9 @@ import { supabase } from './lib/supabase/client-rewrite';
 import { motion } from 'framer-motion';
 import { Eye, Target, Calculator, BarChart3, Share2 } from 'lucide-react';
 import { DesignSystemTest } from '../src/shared/design-system/DesignSystemTest';
+import { GradientButton } from '../src/shared/components/ui/GradientButton';
+import { FeatureCard } from '../src/shared/components/ui/FeatureCard';
+import { FooterLayout } from '../src/shared/components/layout/FooterLayout';
 
 export default function HomePage() {
   const router = useRouter();
@@ -42,8 +45,8 @@ export default function HomePage() {
       color: 'var(--color-text-primary, #ffffff)',
       fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
     }}>
-      {/* Design System Test Component */}
-      <DesignSystemTest />
+      {/* Design System Test Component - Only show in development */}
+      {process.env.NODE_ENV === 'development' && <DesignSystemTest />}
       
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center" style={{
@@ -93,12 +96,12 @@ export default function HomePage() {
                 textShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
               }}
             >
-              Stop Guessing Who Your Buyers Are
+              Revenue Intelligence Infrastructure
               <span className="block mt-4 text-4xl sm:text-5xl md:text-6xl" style={{
                 color: 'var(--color-brand-primary, #3b82f6)',
                 fontWeight: 'var(--font-weight-semibold, 600)'
               }}>
-                Start Building Revenue on Signal, Not Hope
+                Build Revenue Where You're Essential, Not Optional
               </span>
             </motion.h1>
 
@@ -114,7 +117,7 @@ export default function HomePage() {
                 textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
               }}
             >
-              Identify ideal customers, calculate ROI with precision, and build compelling business cases—all in one intelligent platform designed for executive decision-making.
+              Discover markets where you're essential & convert buyers into customer evangelists through systematic intelligence.
             </motion.p>
 
             {/* Executive CTA Buttons with Glass Morphism */}
@@ -125,37 +128,21 @@ export default function HomePage() {
               {!loading && (
                 <>
                   {isAuthenticated ? (
-                    <Link
+                    <GradientButton
                       href="/dashboard"
-                      className="group relative overflow-hidden px-12 py-6 rounded-2xl font-semibold text-lg min-w-[240px] text-center transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
-                      style={{
-                        background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-                        color: '#ffffff',
-                        fontFamily: '"Inter", sans-serif',
-                        fontWeight: '600',
-                        boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)'
-                      }}
+                      size="xl"
+                      ariaLabel="Go to your dashboard"
                     >
-                      <span className="relative z-10">Go to Dashboard</span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                    </Link>
+                      Go to Dashboard
+                    </GradientButton>
                   ) : (
-                    <Link
+                    <GradientButton
                       href="/founding-members"
-                      className="group relative overflow-hidden px-12 py-6 rounded-2xl font-semibold text-lg min-w-[240px] text-center transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
-                      style={{
-                        background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-                        color: '#ffffff',
-                        fontFamily: '"Inter", sans-serif',
-                        fontWeight: '600',
-                        boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)'
-                      }}
+                      size="xl"
+                      ariaLabel="Join free beta program"
                     >
-                      <span className="relative z-10">Join Free Beta</span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                    </Link>
+                      Join Free Beta
+                    </GradientButton>
                   )}
 
                   <Link
@@ -186,10 +173,11 @@ export default function HomePage() {
                 border: '1px solid rgba(59, 130, 246, 0.3)',
                 boxShadow: '0 8px 32px rgba(59, 130, 246, 0.2)'
               }}>
-                <p className="text-sm font-medium" style={{
+                <p className="body-small" style={{
                   color: '#3b82f6',
                   fontFamily: '"Inter", sans-serif',
-                  letterSpacing: '0.5px'
+                  letterSpacing: '0.5px',
+                  fontWeight: 500
                 }}>
                   🚀 Free Beta • 100 Founding Member Spots • December 1, 2025
                 </p>
@@ -258,331 +246,61 @@ export default function HomePage() {
           {/* Grid Layout: Hero (2x2) + 3 standard cards - Agent 4 Visual Hierarchy */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 gap-8">
             {/* Hero Feature: ICP Analysis (2x2 Grid - Elevated z: 10) - Agent 4 Spec */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="group relative p-12 rounded-3xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] md:col-span-2 md:row-span-2"
-              style={{
-                zIndex: 'var(--z-content-elevated)',
-                background: 'var(--glass-bg-emphasis)',
-                backdropFilter: 'var(--glass-blur-lg)',
-                border: '2px solid var(--glass-border-emphasis)',
-                boxShadow: 'var(--shadow-elegant)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.11)'; // +0.03
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.17)'; // +0.05
-                e.currentTarget.style.boxShadow = 'var(--shadow-premium)'; // Upgrade shadow
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'var(--glass-bg-emphasis)';
-                e.currentTarget.style.borderColor = 'var(--glass-border-emphasis)';
-                e.currentTarget.style.boxShadow = 'var(--shadow-elegant)';
-              }}
-            >
-              {/* Gradient overlay for depth */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none rounded-3xl" />
-
-              <div className="relative z-10">
-                <div className="w-20 h-20 mb-8 rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300" style={{
-                  background: 'rgba(59, 130, 246, 0.15)',
-                  border: '2px solid rgba(59, 130, 246, 0.3)',
-                  boxShadow: 'var(--shadow-glow-primary)'
-                }}>
-                  <Target className="w-10 h-10" style={{ color: 'var(--color-primary)' }} />
-                </div>
-                <h3 className="text-4xl font-bold mb-6" style={{
-                  color: 'var(--text-primary)',
-                  fontFamily: 'var(--font-family-primary)',
-                  fontWeight: 'var(--font-weight-bold)',
-                  textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-                }}>
-                  ICP Analysis
-                </h3>
-                <p className="text-xl leading-relaxed mb-8" style={{
-                  color: 'var(--text-secondary)',
-                  fontFamily: 'var(--font-family-primary)',
-                  fontWeight: 'var(--font-weight-normal)',
-                  lineHeight: 'var(--line-height-relaxed)'
-                }}>
-                  Generate detailed buyer personas for your product in under 3 minutes. AI-powered insights identify decision-makers, pain points, and buying triggers.
-                </p>
-                <Link
-                  href="/icp"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg transition-all duration-300"
-                  style={{
-                    background: 'var(--color-primary)',
-                    color: 'white',
-                    boxShadow: 'var(--shadow-glow-primary)',
-                    fontWeight: 'var(--font-weight-semibold)'
-                  }}
-                >
-                  Try Demo
-                  <Target className="w-4 h-4" />
-                </Link>
-              </div>
-            </motion.div>
+            <FeatureCard
+              icon={Target}
+              title="ICP Analysis"
+              description="Generate detailed buyer personas for your product in under 3 minutes. AI-powered insights identify decision-makers, pain points, and buying triggers."
+              variant="featured"
+              iconColor="var(--color-primary)"
+              iconBgColor="rgba(59, 130, 246, 0.15)"
+              iconBorderColor="rgba(59, 130, 246, 0.3)"
+              animationDelay={0.1}
+              href="/icp"
+              ctaText="Try Demo"
+              className="md:col-span-2 md:row-span-2"
+            />
 
             {/* Standard Feature 2: Cost Calculator (z: 1) - Agent 4 Spec */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="group relative p-8 rounded-3xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105"
-              style={{
-                zIndex: 'var(--z-content-base)',
-                background: 'var(--glass-bg-standard)',
-                backdropFilter: 'var(--glass-blur-md)',
-                border: '1px solid var(--glass-border-standard)',
-                boxShadow: 'var(--shadow-subtle)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'; // +0.03
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.13)'; // +0.05
-                e.currentTarget.style.boxShadow = 'var(--shadow-elegant)'; // Upgrade shadow
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'var(--glass-bg-standard)';
-                e.currentTarget.style.borderColor = 'var(--glass-border-standard)';
-                e.currentTarget.style.boxShadow = 'var(--shadow-subtle)';
-              }}
-            >
-              <div className="w-16 h-16 mb-6 rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300" style={{
-                background: 'rgba(16, 185, 129, 0.1)',
-                border: '1px solid rgba(16, 185, 129, 0.2)',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
-              }}>
-                <Calculator className="w-8 h-8 text-emerald-400" />
-              </div>
-              <h3 className="text-2xl font-bold mb-4" style={{
-                color: 'var(--color-text-primary, #ffffff)',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                fontWeight: 'var(--font-weight-bold, 700)',
-                textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-              }}>
-                Cost Calculator
-              </h3>
-              <p className="text-lg leading-relaxed" style={{
-                color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                fontWeight: 'var(--font-weight-normal, 400)',
-                lineHeight: 'var(--line-height-relaxed, 1.6)'
-              }}>
-                Calculate ROI and total cost of ownership with precision. Make data-backed investment decisions.
-              </p>
-            </motion.div>
+            <FeatureCard
+              icon={Calculator}
+              title="Cost Calculator"
+              description="Calculate ROI and total cost of ownership with precision. Make data-backed investment decisions."
+              variant="standard"
+              iconColor="rgb(52, 211, 153)"
+              iconBgColor="rgba(16, 185, 129, 0.1)"
+              iconBorderColor="rgba(16, 185, 129, 0.2)"
+              animationDelay={0.2}
+            />
 
             {/* Standard Feature 3: Business Case Generator (z: 1) - Agent 4 Spec */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="group relative p-8 rounded-3xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105"
-              style={{
-                zIndex: 'var(--z-content-base)',
-                background: 'var(--glass-bg-standard)',
-                backdropFilter: 'var(--glass-blur-md)',
-                border: '1px solid var(--glass-border-standard)',
-                boxShadow: 'var(--shadow-subtle)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'; // +0.03
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.13)'; // +0.05
-                e.currentTarget.style.boxShadow = 'var(--shadow-elegant)'; // Upgrade shadow
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'var(--glass-bg-standard)';
-                e.currentTarget.style.borderColor = 'var(--glass-border-standard)';
-                e.currentTarget.style.boxShadow = 'var(--shadow-subtle)';
-              }}
-            >
-              <div className="w-16 h-16 mb-6 rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300" style={{
-                background: 'rgba(139, 92, 246, 0.1)',
-                border: '1px solid rgba(139, 92, 246, 0.2)',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
-              }}>
-                <BarChart3 className="w-8 h-8 text-purple-400" />
-              </div>
-              <h3 className="text-2xl font-bold mb-4" style={{
-                color: 'var(--color-text-primary, #ffffff)',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                fontWeight: 'var(--font-weight-bold, 700)',
-                textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-              }}>
-                Business Case Generator
-              </h3>
-              <p className="text-lg leading-relaxed" style={{
-                color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                fontWeight: 'var(--font-weight-normal, 400)',
-                lineHeight: 'var(--line-height-relaxed, 1.6)'
-              }}>
-                Create compelling business cases automatically with comprehensive financial models and projections.
-              </p>
-            </motion.div>
+            <FeatureCard
+              icon={BarChart3}
+              title="Business Case Generator"
+              description="Create compelling business cases automatically with comprehensive financial models and projections."
+              variant="standard"
+              iconColor="rgb(192, 132, 252)"
+              iconBgColor="rgba(139, 92, 246, 0.1)"
+              iconBorderColor="rgba(139, 92, 246, 0.2)"
+              animationDelay={0.3}
+            />
 
             {/* Standard Feature 4: Export & Share (z: 1) - Agent 4 Spec */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="group relative p-8 rounded-3xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105"
-              style={{
-                zIndex: 'var(--z-content-base)',
-                background: 'var(--glass-bg-standard)',
-                backdropFilter: 'var(--glass-blur-md)',
-                border: '1px solid var(--glass-border-standard)',
-                boxShadow: 'var(--shadow-subtle)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'; // +0.03
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.13)'; // +0.05
-                e.currentTarget.style.boxShadow = 'var(--shadow-elegant)'; // Upgrade shadow
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'var(--glass-bg-standard)';
-                e.currentTarget.style.borderColor = 'var(--glass-border-standard)';
-                e.currentTarget.style.boxShadow = 'var(--shadow-subtle)';
-              }}
-            >
-              <div className="w-16 h-16 mb-6 rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300" style={{
-                background: 'rgba(6, 182, 212, 0.1)',
-                border: '1px solid rgba(6, 182, 212, 0.2)',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
-              }}>
-                <Share2 className="w-8 h-8 text-cyan-400" />
-              </div>
-              <h3 className="text-2xl font-bold mb-4" style={{
-                color: 'var(--color-text-primary, #ffffff)',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                fontWeight: 'var(--font-weight-bold, 700)',
-                textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-              }}>
-                Export & Collaborate
-              </h3>
-              <p className="text-lg leading-relaxed" style={{
-                color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                fontWeight: 'var(--font-weight-normal, 400)',
-                lineHeight: 'var(--line-height-relaxed, 1.6)'
-              }}>
-                Export your ICP analysis to PDF, Markdown, CSV, or AI prompt templates. Share insights with your team and extend research with ChatGPT, Claude, or Gemini.
-              </p>
-            </motion.div>
+            <FeatureCard
+              icon={Share2}
+              title="Export & Collaborate"
+              description="Export your ICP analysis to PDF, Markdown, CSV, or AI prompt templates. Share insights with your team and extend research with ChatGPT, Claude, or Gemini."
+              variant="standard"
+              iconColor="rgb(34, 211, 238)"
+              iconBgColor="rgba(6, 182, 212, 0.1)"
+              iconBorderColor="rgba(6, 182, 212, 0.2)"
+              animationDelay={0.4}
+            />
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t" style={{
-        borderColor: 'var(--glass-border, rgba(255, 255, 255, 0.08))',
-        background: 'var(--color-background-secondary, #0a0a0a)'
-      }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            {/* Company Info */}
-            <div className="md:col-span-2">
-              <h3 className="text-xl font-bold mb-4" style={{
-                color: 'var(--color-brand-primary, #3b82f6)',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                fontWeight: 'var(--font-weight-bold, 700)'
-              }}>
-                Andru Revenue Intelligence
-              </h3>
-              <p className="leading-relaxed max-w-md" style={{
-                color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                fontWeight: 'var(--font-weight-normal, 400)',
-                lineHeight: 'var(--line-height-relaxed, 1.6)'
-              }}>
-                Transform your revenue strategy with AI-powered intelligence. Identify ideal customers, calculate ROI, and build compelling business cases.
-              </p>
-            </div>
-
-            {/* Product Links */}
-            <div>
-              <h4 className="font-semibold mb-4" style={{
-                color: 'var(--color-text-primary, #ffffff)',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                fontWeight: 'var(--font-weight-semibold, 600)'
-              }}>Product</h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="/icp/demo" className="transition-colors" style={{
-                    color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))'
-                  }}>
-                    Try Demo
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/pricing" className="transition-colors" style={{
-                    color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))'
-                  }}>
-                    Pricing
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/dashboard" className="transition-colors" style={{
-                    color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))'
-                  }}>
-                    Dashboard
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Company Links */}
-            <div>
-              <h4 className="font-semibold mb-4" style={{
-                color: 'var(--color-text-primary, #ffffff)',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                fontWeight: 'var(--font-weight-semibold, 600)'
-              }}>Company</h4>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="transition-colors" style={{
-                    color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))'
-                  }}>
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="transition-colors" style={{
-                    color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))'
-                  }}>
-                    Terms of Service
-                  </a>
-                </li>
-                <li>
-                  <a href="mailto:support@hs-platform.com" className="transition-colors" style={{
-                    color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))'
-                  }}>
-                    Contact Support
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Copyright */}
-          <div className="pt-8 border-t" style={{
-            borderColor: 'var(--glass-border, rgba(255, 255, 255, 0.08))'
-          }}>
-            <p className="text-center text-sm" style={{
-              color: 'var(--color-text-subtle, rgba(255, 255, 255, 0.5))',
-              fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-              fontWeight: 'var(--font-weight-normal, 400)'
-            }}>
-              © {new Date().getFullYear()} Andru Revenue Intelligence. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <FooterLayout variant="standard" theme="dark" />
     </div>
   );
 }

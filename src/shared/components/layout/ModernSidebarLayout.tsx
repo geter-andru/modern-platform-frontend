@@ -1,619 +1,712 @@
-'use client'
+'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Home, 
-  BarChart3, 
-  Target, 
-  Calculator, 
-  FileText, 
-  Settings,
-  ChevronLeft,
-  ChevronRight,
-  User,
-  Bell,
-  Search,
-  Menu,
-  X,
-  ClipboardCheck,
-  Lock
+import {
+  Search as MagnifyingGlassIcon,
+  Plus as PlusIcon,
+  BarChart3 as ChartBarIcon,
+  Calculator as CalculatorIcon,
+  TrendingUp as ArrowTrendingUpIcon,
+  Download as ArrowDownTrayIcon,
+  Users as UserGroupIcon,
+  Clock as ClockIcon,
+  Zap as BoltIcon,
+  Bell as BellIcon,
+  Settings as Cog6ToothIcon,
+  UserCircle as UserCircleIcon,
+  ChevronRight as ChevronRightIcon,
+  ChevronLeft as ChevronLeftIcon,
+  Home as HomeIcon,
+  FileText as DocumentTextIcon,
+  PieChart as ChartPieIcon,
+  Menu as MenuIcon,
+  X as XMarkIcon,
 } from 'lucide-react';
+import { useAuth } from '@/app/lib/auth';
+import { BRAND_IDENTITY } from '@/app/lib/constants/brand-identity';
+import { useCompoundHover } from '../../utils/compound-hover';
+import { MilestoneTrackerWidget } from '../sidebar/MilestoneTrackerWidget';
+import { QuickActionsWidget } from '../sidebar/QuickActionsWidget';
+import { StaggeredEntrance } from '../../utils/staggered-entrance';
 
-// TypeScript interfaces
+/**
+ * ModernSidebarLayout - Phase 2.1 Implementation
+ *
+ * Sidebar-first architecture with Phase 1 animation system integration:
+ * - Compound hover effects on all interactive elements
+ * - Staggered entrance animations for nav items
+ * - Shimmer effects on hover
+ * - Smooth collapse/expand with custom easing
+ * - Widget slots for Phase 2.3 (milestone tracker + quick actions)
+ * - Mobile-responsive hamburger menu
+ *
+ * ARCHITECTURAL IMPROVEMENTS:
+ * ✅ Uses new AuthProvider (@/app/lib/auth)
+ * ✅ Phase 1 animation system (compound hover, staggered entrance, shimmer)
+ * ✅ Modern design tokens (--text-primary, --surface-hover, etc.)
+ * ✅ Custom easing curves (--ease-sophisticated)
+ * ✅ Widget architecture for Phase 2.3
+ * ✅ Responsive mobile menu with spring animations
+ */
+
 interface ModernSidebarLayoutProps {
   children: React.ReactNode;
-  customerId: string;
-  activeRoute?: string;
-}
-
-interface CustomerData {
-  customerName?: string;
-  paymentStatus?: string;
-  isAdmin?: boolean;
 }
 
 interface NavigationItem {
   id: string;
   label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  route: string;
-  description: string;
-  isPremium?: boolean;
-  iconColor: string;
-  isLocked: boolean;
-  lockReason?: string;
+  description?: string;
+  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  href: string;
+  badge?: string | null;
 }
 
-/**
- * ModernSidebarLayout - Professional SaaS interface with fixed sidebar navigation
- * 
- * Features:
- * - Fixed 260px left sidebar with dark background (#1a1a1a)
- * - Main content area with fluid width and proper padding
- * - CSS Grid layout: grid-template-columns: 260px 1fr
- * - Persistent sidebar across all routes
- * - Modern header with 60px height
- * - Professional dark theme color scheme
- */
-
-const ModernSidebarLayout: React.FC<ModernSidebarLayoutProps> = ({ 
-  children, 
-  customerId, 
-  activeRoute = 'dashboard' 
-}) => {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [customerData, setCustomerData] = useState<CustomerData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch customer data from Airtable
-  useEffect(() => {
-    const fetchCustomerData = async () => {
-      if (!customerId) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        // For now, use mock customer data since the services are not fully implemented
-        // TODO: Implement proper customer data fetching when services are ready
-        const mockCustomerData: CustomerData = {
-          customerName: customerId === 'dru78DR9789SDF862' ? 'Geter' : 
-                       customerId === 'dru9K2L7M8N4P5Q6' ? 'Alex' : 'User',
-          paymentStatus: customerId === 'dru78DR9789SDF862' ? 'Completed' : 'Pending',
-          isAdmin: customerId === 'dru78DR9789SDF862'
-        };
-        setCustomerData(mockCustomerData);
-      } catch (error) {
-        console.error('Error fetching customer data:', error);
-        setCustomerData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCustomerData();
-  }, [customerId]);
-
-  // Extract first name from full customer name
-  const getFirstName = (fullName?: string) => {
-    if (!fullName) return 'User';
-    return fullName.split(' ')[0];
-  };
-
-  // Get user first name (from Airtable or fallback)
-  const getUserFirstName = () => {
-    if (customerData?.customerName) {
-      return getFirstName(customerData.customerName);
-    }
-    
-    // Fallback to hardcoded names if Airtable data unavailable
-    const fallbackMap: Record<string, string> = {
-      'dru78DR9789SDF862': 'Geter',
-      'dru9K2L7M8N4P5Q6': 'Alex'
-    };
-    return fallbackMap[customerId] || 'User';
-  };
-
-  // Dynamic greeting that rotates based on time and customer ID
-  const getDynamicGreeting = (customerId: string) => {
-    const greetings = ['Hey there', 'Hi', 'Nice to see you again'];
-    const hour = new Date().getHours();
-    const customerIndex = customerId ? parseInt(customerId.replace('CUST_', '')) : 1;
-    
-    // Create a semi-random index based on hour and customer ID for variety
-    const greetingIndex = (hour + customerIndex) % greetings.length;
-    return greetings[greetingIndex];
-  };
-
-  const firstName = getUserFirstName();
-  const greeting = getDynamicGreeting(customerId);
-
-  // Check if user has completed payment (access control)
-  const hasCompletedPayment = () => {
-    // Admin users always have access
-    if (customerId === 'dru78DR9789SDF862') {
-      return true;
-    }
-    return customerData?.paymentStatus === 'Completed';
-  };
-
-  // Navigation items with access control based on payment status
-  const navigationItems: NavigationItem[] = [
+// Navigation structure - organized by sections
+const navigationItems: {
+  main: NavigationItem[];
+  salesTools: NavigationItem[];
+  quickActions: NavigationItem[];
+  development: NavigationItem[];
+} = {
+  main: [
     {
       id: 'dashboard',
       label: 'Dashboard',
-      icon: Home,
-      route: '/customer/' + customerId + '/simplified/dashboard',
-      description: 'Revenue Intelligence Overview',
-      isPremium: true,
-      iconColor: hasCompletedPayment() ? 'text-purple-400' : 'text-gray-500',
-      isLocked: !hasCompletedPayment(),
-      lockReason: 'Requires payment to access full dashboard'
-    },
-    {
-      id: 'assessment',
-      label: 'Assessment Results',
-      icon: ClipboardCheck,
-      route: '/customer/' + customerId + '/simplified/assessment',
-      description: 'Revenue Readiness Analysis',
-      iconColor: 'text-cyan-400', // Always accessible for assessment takers
-      isLocked: false, // Always unlocked for assessment takers
-      lockReason: undefined
-    },
+      description: 'Overview and insights',
+      icon: HomeIcon,
+      href: '/dashboard',
+      badge: null
+    }
+  ],
+  salesTools: [
     {
       id: 'icp',
       label: 'ICP Analysis',
-      icon: Target,
-      route: '/customer/' + customerId + '/simplified/icp',
-      description: 'Ideal Customer Profiling',
-      iconColor: hasCompletedPayment() ? 'text-blue-400' : 'text-gray-500',
-      isLocked: !hasCompletedPayment(),
-      lockReason: 'Upgrade to access ICP Analysis tools'
+      description: 'AI-powered buyer persona generation',
+      icon: UserGroupIcon,
+      href: '/icp',
+      badge: null
     },
     {
-      id: 'financial',
-      label: 'Financial Impact',
-      icon: Calculator,
-      route: '/customer/' + customerId + '/simplified/financial',
-      description: 'ROI & Cost Analysis',
-      iconColor: hasCompletedPayment() ? 'text-green-400' : 'text-gray-500',
-      isLocked: !hasCompletedPayment(),
-      lockReason: 'Upgrade to access Cost Calculator'
+      id: 'business-case',
+      label: 'Business Case',
+      description: 'Data-driven value proposition builder',
+      icon: ChartPieIcon,
+      href: '/business-case',
+      badge: null
     },
+    {
+      id: 'cost-calculator',
+      label: 'Cost Calculator',
+      description: 'ROI and total cost analysis',
+      icon: CalculatorIcon,
+      href: '/cost-calculator',
+      badge: null
+    }
+  ],
+  quickActions: [],
+  development: [
     {
       id: 'resources',
-      label: 'Resource Library',
-      icon: FileText,
-      route: '/customer/' + customerId + '/simplified/resources',
-      description: 'Templates & Documentation',
-      iconColor: hasCompletedPayment() ? 'text-orange-400' : 'text-gray-500',
-      isLocked: !hasCompletedPayment(),
-      lockReason: 'Upgrade to access Resource Library'
+      label: 'Resources',
+      description: 'Documentation and guides',
+      icon: DocumentTextIcon,
+      href: '/resources',
+      badge: null
+    },
+    {
+      id: 'assessment',
+      label: 'Assessment',
+      description: 'Sales competency evaluation',
+      icon: ChartBarIcon,
+      href: '/assessment',
+      badge: null
     }
-  ];
+  ]
+};
 
-  const sidebarWidth = sidebarCollapsed ? '72px' : '260px';
+// Flatten for pathname checking
+const allItems = [
+  ...navigationItems.main,
+  ...navigationItems.salesTools,
+  ...navigationItems.quickActions,
+  ...navigationItems.development
+];
 
-  // Handle mobile responsive behavior
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setSidebarCollapsed(false); // Always show full sidebar on mobile (when open)
-        setMobileMenuOpen(false); // Close mobile menu on resize
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Dynamic components that will be imported
-  const [QuickActionsGrid, setQuickActionsGrid] = useState<React.ComponentType<any> | null>(null);
-  const [MilestoneTrackerWidget, setMilestoneTrackerWidget] = useState<React.ComponentType<any> | null>(null);
-
-  // Load dynamic components
-  useEffect(() => {
-    const loadComponents = async () => {
-      try {
-        // TODO: Re-enable when QuickActionsGrid and MilestoneTrackerWidget are implemented
-        // const [quickActions, milestones] = await Promise.all([
-        //   import('../../simplified/cards/QuickActionsGrid'),
-        //   import('../../simplified/cards/MilestoneTrackerWidget')
-        // ]);
-        // setQuickActionsGrid(() => quickActions.default);
-        // setMilestoneTrackerWidget(() => milestones.default);
-        console.log('Dynamic sidebar components disabled for build');
-      } catch (error) {
-        console.error('Failed to load dynamic components:', error);
-      }
-    };
-
-    loadComponents();
-  }, []);
+/**
+ * NavItem - Individual navigation item with Phase 1 enhancements
+ */
+const NavItem = ({
+  item,
+  isActive,
+  onClick,
+  collapsed
+}: {
+  item: NavigationItem;
+  isActive: boolean;
+  onClick: (id: string) => void;
+  collapsed: boolean;
+}) => {
+  const Icon = item.icon;
+  const itemHover = useCompoundHover('subtle');
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] text-white">
-      {/* Mobile Layout */}
-      <div className="md:hidden">
-        {/* Mobile Header */}
-        <header className="h-16 bg-[#1a1a1a] border-b border-transparent flex items-center justify-between px-4">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg hover:bg-gray-700 transition-colors"
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6 text-white" />
-            ) : (
-              <Menu className="w-6 h-6 text-white" />
-            )}
-          </button>
-          
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg flex items-center justify-center">
-              <BarChart3 className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              {loading ? (
-                <div className="animate-pulse bg-gray-700 h-4 w-20 rounded mb-1"></div>
-              ) : (
-                <div className="text-sm font-semibold text-white">{greeting} {firstName}!</div>
-              )}
-              <div className="text-xs text-gray-400">H&S Revenue</div>
-            </div>
-          </div>
+    <Link
+      href={item.href}
+      onClick={() => onClick(item.id)}
+      onMouseEnter={itemHover.handleMouseEnter}
+      onMouseLeave={itemHover.handleMouseLeave}
+      className={`
+        w-full group relative flex items-center px-3 py-3 rounded-lg
+        transition-all duration-200
+        ${collapsed ? 'justify-center' : ''}
+        ${isActive
+          ? 'text-text-primary bg-surface-hover/50'
+          : 'text-text-secondary hover:text-text-primary hover:bg-surface-hover'
+        }
+      `}
+    >
+      {/* Active state: Electric Teal accent */}
+      {isActive && (
+        <motion.div
+          className="absolute left-0 top-0 bottom-0 w-1 bg-[#00CED1] rounded-r-full"
+          layoutId="activeIndicator"
+          transition={{
+            type: "spring",
+            stiffness: 380,
+            damping: 30
+          }}
+        />
+      )}
 
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center">
-            <span className="text-sm font-semibold text-white">
-              {customerId ? customerId.charAt(customerId.length - 1) : 'U'}
-            </span>
-          </div>
-        </header>
+      <div className={`
+        flex items-center justify-center w-8 h-8 rounded-md
+        transition-colors duration-200
+        ${isActive
+          ? 'text-text-primary'
+          : 'text-text-muted group-hover:text-text-primary'
+        }
+      `}>
+        <Icon className="w-5 h-5" strokeWidth={1.5} />
+      </div>
 
-        {/* Mobile Overlay Menu */}
+      {!collapsed && (
         <AnimatePresence>
-          {mobileMenuOpen && (
-            <>
-              {/* Backdrop */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/50 z-40"
-                onClick={() => setMobileMenuOpen(false)}
-              />
-              
-              {/* Mobile Sidebar */}
-              <motion.div
-                initial={{ x: -300 }}
-                animate={{ x: 0 }}
-                exit={{ x: -300 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                className="fixed top-16 left-0 bottom-0 w-80 bg-[#1a1a1a] border-r border-transparent z-50 overflow-y-auto"
-              >
-                <nav className="p-4 space-y-2">
-                  {navigationItems.map((item) => {
-                    const Icon = item.icon;
-                    const isActive = activeRoute === item.id;
-                    
-                    return (
-                      <a
-                        key={item.id}
-                        href={item.route}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className={`
-                          block px-4 py-3 rounded-lg transition-all duration-200
-                          ${isActive 
-                            ? 'bg-purple-600/20 border border-purple-500/30 text-purple-300' 
-                            : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
-                          }
-                        `}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <Icon className={`w-5 h-5 ${isActive ? 'text-purple-400' : item.iconColor || 'text-gray-400'}`} />
-                          <div>
-                            <div className="flex items-center space-x-2">
-                              <span className="font-medium">{item.label}</span>
-                              {item.isPremium && (
-                                <span className="px-2 py-0.5 text-xs bg-gradient-to-r from-purple-500 to-blue-500 rounded text-white font-medium">
-                                  PRO
-                                </span>
-                              )}
-                            </div>
-                            <div className="text-sm text-gray-500 mt-0.5">
-                              {item.description}
-                            </div>
-                          </div>
-                        </div>
-                      </a>
-                    );
-                  })}
-                </nav>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-
-        {/* Mobile Main Content */}
-        <main className="p-4">
-          {children}
-        </main>
-      </div>
-
-      {/* Desktop Layout */}
-      <div className="hidden md:grid min-h-screen" style={{
-        gridTemplateColumns: `${sidebarWidth} 1fr`,
-        transition: 'grid-template-columns 0.3s ease'
-      }}>
-        {/* Fixed Left Sidebar */}
-        <motion.aside 
-          className="bg-[#1a1a1a] border-r border-transparent flex flex-col"
-          initial={{ width: sidebarCollapsed ? 72 : 260 }}
-          animate={{ width: sidebarCollapsed ? 72 : 260 }}
-          transition={{ duration: 0.3, ease: 'easeInOut' }}
-        >
-          {/* Sidebar Header */}
-          <div className="h-16 flex items-center justify-between px-4 border-b border-transparent">
-            {!sidebarCollapsed && (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex items-center space-x-2"
-              >
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg flex items-center justify-center">
-                  <BarChart3 className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-white">H&S Revenue</div>
-                  <div className="text-xs text-gray-400">Intelligence</div>
-                </div>
-              </motion.div>
-            )}
-            
-            <button
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="p-1.5 rounded-lg hover:bg-gray-700 transition-colors"
-            >
-              {sidebarCollapsed ? (
-                <ChevronRight className="w-4 h-4 text-gray-400" />
-              ) : (
-                <ChevronLeft className="w-4 h-4 text-gray-400" />
-              )}
-            </button>
-          </div>
-
-          {/* Navigation Items */}
-          <nav className="py-4 space-y-4">
-            {/* Dashboard - standalone */}
-            {navigationItems.filter(item => item.id === 'dashboard').map((item) => {
-              const Icon = item.icon;
-              const isActive = activeRoute === item.id;
-              
-              return (
-                <motion.div
-                  key={item.id}
-                  className={`
-                    mx-2 px-3 py-2.5 rounded-lg flex items-center space-x-3 transition-all duration-200 relative
-                    ${isActive 
-                      ? 'bg-purple-600/20 border border-purple-500/30 text-purple-300' 
-                      : item.isLocked 
-                        ? 'text-gray-500 cursor-not-allowed opacity-60' 
-                        : 'text-gray-300 hover:bg-gray-700/50 hover:text-white cursor-pointer'
-                    }
-                    ${sidebarCollapsed ? 'justify-center' : ''}
-                    ${item.isLocked ? 'grayscale' : ''}
-                  `}
-                  whileHover={item.isLocked ? {} : { scale: 1.02 }}
-                  whileTap={item.isLocked ? {} : { scale: 0.98 }}
-                  onClick={(e) => {
-                    if (item.isLocked) {
-                      e.preventDefault();
-                      // You could show a tooltip or modal here
-                    } else {
-                      window.location.href = item.route;
-                    }
-                  }}
-                >
-                  <Icon className={`w-5 h-5 ${isActive ? 'text-purple-400' : item.iconColor || 'text-gray-400'}`} />
-                  
-                  {!sidebarCollapsed && (
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm font-medium truncate">{item.label}</span>
-                        {item.isPremium && !item.isLocked && (
-                          <span className="px-1.5 py-0.5 text-xs bg-gradient-to-r from-purple-500 to-blue-500 rounded text-white font-medium">
-                            PRO
-                          </span>
-                        )}
-                        {item.isLocked && (
-                          <Lock className="w-3 h-3 text-gray-500" />
-                        )}
-                      </div>
-                      <div className="text-xs text-gray-500 truncate mt-0.5">
-                        {item.isLocked ? item.lockReason : item.description}
-                      </div>
-                    </div>
-                  )}
-                </motion.div>
-              );
-            })}
-            
-            {/* Customer Intelligence Tools section */}
-            {!sidebarCollapsed && (
-              <div className="px-4">
-                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
-                  Customer Intelligence Tools
-                </h3>
-              </div>
-            )}
-            
-            <div className={sidebarCollapsed ? '' : 'space-y-1'}>
-              {navigationItems.filter(item => item.id !== 'dashboard').map((item) => {
-                const Icon = item.icon;
-                const isActive = activeRoute === item.id;
-                
-                return (
-                  <motion.div
-                    key={item.id}
-                    className={`
-                      mx-2 px-3 py-2.5 rounded-lg flex items-center space-x-3 transition-all duration-200 relative
-                      ${isActive 
-                        ? 'bg-purple-600/20 border border-purple-500/30 text-purple-300' 
-                        : item.isLocked 
-                          ? 'text-gray-500 cursor-not-allowed opacity-60' 
-                          : 'text-gray-300 hover:bg-gray-700/50 hover:text-white cursor-pointer'
-                      }
-                      ${sidebarCollapsed ? 'justify-center' : ''}
-                      ${item.isLocked ? 'grayscale' : ''}
-                    `}
-                    whileHover={item.isLocked ? {} : { scale: 1.02 }}
-                    whileTap={item.isLocked ? {} : { scale: 0.98 }}
-                    onClick={(e) => {
-                      if (item.isLocked) {
-                        e.preventDefault();
-                        // You could show a tooltip or modal here
-                      } else {
-                        window.location.href = item.route;
-                      }
-                    }}
-                  >
-                    <Icon className={`w-5 h-5 ${isActive ? 'text-purple-400' : item.iconColor || 'text-gray-400'}`} />
-                    
-                    {!sidebarCollapsed && (
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm font-medium truncate">{item.label}</span>
-                          {item.isPremium && !item.isLocked && (
-                            <span className="px-1.5 py-0.5 text-xs bg-gradient-to-r from-purple-500 to-blue-500 rounded text-white font-medium">
-                              PRO
-                            </span>
-                          )}
-                          {item.isLocked && (
-                            <Lock className="w-3 h-3 text-gray-500" />
-                          )}
-                        </div>
-                        <div className="text-xs text-gray-500 truncate mt-0.5">
-                          {item.isLocked ? item.lockReason : item.description}
-                        </div>
-                      </div>
-                    )}
-                  </motion.div>
-                );
-              })}
-            </div>
-          </nav>
-
-          {/* Milestone Tracker Section - positioned right after navigation */}
-          {!sidebarCollapsed && MilestoneTrackerWidget && (
-            <div className="px-4 pb-4 border-b border-transparent">
-              <div className="mb-3">
-                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
-                  Progress Tracking
-                </h3>
-              </div>
-              <div className="max-h-60 overflow-y-auto">
-                <MilestoneTrackerWidget />
-              </div>
-            </div>
-          )}
-
-          {/* Quick Actions Section - positioned right after milestone tracker */}
-          {!sidebarCollapsed && QuickActionsGrid && (
-            <div className="px-4 pb-4 border-b border-transparent">
-              <div className="mb-3">
-                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
-                  Quick Actions
-                </h3>
-              </div>
-              <div className="max-h-80 overflow-y-auto">
-                <QuickActionsGrid className="space-y-1" />
-              </div>
-            </div>
-          )}
-
-          {/* Flexible spacer to push footer to bottom */}
-          <div className="flex-1"></div>
-
-          {/* Sidebar Footer */}
-          <div className="p-4 border-t border-transparent">
-            {!sidebarCollapsed ? (
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
-                  <User className="w-4 h-4 text-gray-300" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-white truncate">Customer {customerId}</div>
-                  <div className="text-xs text-gray-400">Premium Access</div>
-                </div>
-                <button className="p-1 rounded hover:bg-gray-700 transition-colors">
-                  <Settings className="w-4 h-4 text-gray-400" />
-                </button>
-              </div>
-            ) : (
-              <button className="w-full p-2 rounded-lg hover:bg-gray-700 transition-colors flex justify-center">
-                <User className="w-5 h-5 text-gray-400" />
-              </button>
-            )}
-          </div>
-        </motion.aside>
-
-        {/* Main Content Area */}
-        <div className="flex flex-col min-h-screen">
-          {/* Clean Header - 60px height */}
-          <header className="h-16 bg-[#1a1a1a] border-b border-transparent flex items-center justify-between px-6">
-            {/* Personalized Greeting */}
-            <div className="flex items-center space-x-4">
-              <div>
-                {loading ? (
-                  <div className="flex items-center space-x-2">
-                    <div className="animate-pulse bg-gray-700 h-5 w-24 rounded"></div>
-                  </div>
-                ) : (
-                  <h1 className="text-lg font-semibold text-white">{greeting} {firstName}!</h1>
-                )}
-                <p className="text-xs text-gray-400">Revenue Intelligence Dashboard</p>
-              </div>
-            </div>
-
-            {/* Search and Quick Actions */}
-            <div className="flex items-center space-x-4 flex-1 justify-center">
-              <div className="relative max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search intelligence..."
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-4 py-2 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                />
-              </div>
-            </div>
-
-            {/* Header Actions */}
-            <div className="flex items-center space-x-4">
-              <button className="relative p-2 rounded-lg hover:bg-gray-700 transition-colors">
-                <Bell className="w-5 h-5 text-gray-400" />
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-purple-500 rounded-full"></div>
-              </button>
-              
-              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center">
-                <span className="text-sm font-semibold text-white">
-                  {customerId ? customerId.charAt(customerId.length - 1) : 'U'}
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ duration: 0.2 }}
+            className="ml-3 flex-1 min-w-0"
+          >
+            <div className="flex items-center gap-2">
+              <span className={`
+                text-sm font-medium truncate
+                ${isActive ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'}
+              `}>
+                {item.label}
+              </span>
+              {item.badge && (
+                <span className="px-1.5 py-0.5 text-xs font-medium rounded bg-[#00CED1]/20 text-[#00CED1]">
+                  {item.badge}
                 </span>
-              </div>
+              )}
             </div>
-          </header>
+            {item.description && (
+              <p className="text-xs mt-0.5 truncate text-text-muted">
+                {item.description}
+              </p>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      )}
+    </Link>
+  );
+};
 
-          {/* Main Content with Fluid Width and Proper Padding */}
-          <main className="flex-1 bg-[#0f0f0f] p-6">
-            <div className="max-w-none mx-auto h-full">
-              {children}
-            </div>
-          </main>
-        </div>
-      </div>
+/**
+ * SectionHeader - Collapsible section header
+ */
+const SectionHeader = ({ title, collapsed }: { title: string; collapsed: boolean }) => {
+  if (collapsed) return null;
+
+  return (
+    <div className="px-3 py-2 mb-2">
+      <h3 className="text-xs font-semibold tracking-wider uppercase text-text-muted">
+        {title}
+      </h3>
     </div>
   );
 };
 
-export default ModernSidebarLayout;
+/**
+ * WidgetSlot - Placeholder for Phase 2.3 widgets
+ */
+const WidgetSlot = ({
+  collapsed,
+  children
+}: {
+  collapsed: boolean;
+  children?: React.ReactNode;
+}) => {
+  if (collapsed || !children) return null;
+
+  return (
+    <div className="px-4 py-3">
+      {children}
+    </div>
+  );
+};
+
+/**
+ * ModernSidebarLayout - Main component
+ */
+export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { user, signOut } = useAuth();
+  const [activeItem, setActiveItem] = useState('dashboard');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+
+  // Compound hover effects
+  const collapseButtonHover = useCompoundHover('medium');
+  const quickActionHover = useCompoundHover('strong');
+  const settingsHover = useCompoundHover('subtle');
+
+  // Set active item based on current path
+  useEffect(() => {
+    const currentItem = allItems.find(item => item.href === pathname);
+    if (currentItem) {
+      setActiveItem(currentItem.id);
+    }
+  }, [pathname]);
+
+  const handleLogout = async () => {
+    await signOut();
+    router.push('/login');
+  };
+
+  // Sidebar animation variants
+  const sidebarVariants = {
+    expanded: {
+      width: '288px',
+      transition: {
+        duration: 0.4,
+        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] // --ease-sophisticated
+      }
+    },
+    collapsed: {
+      width: '64px',
+      transition: {
+        duration: 0.4,
+        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number]
+      }
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-background-primary overflow-hidden">
+      {/* Desktop Sidebar */}
+      <motion.div
+        className="hidden md:flex bg-background-secondary border-r border-surface/20 flex-col"
+        variants={sidebarVariants}
+        animate={sidebarCollapsed ? 'collapsed' : 'expanded'}
+        initial={false}
+      >
+        {/* Header */}
+        <div className="p-4 border-b border-surface/20">
+          <div className="flex items-center justify-between">
+            <div className={`flex items-center ${sidebarCollapsed ? 'justify-center w-full' : ''}`}>
+              <div className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-accent rounded-lg flex items-center justify-center shadow-medium">
+                <span className="text-text-primary font-bold text-sm">A</span>
+              </div>
+              {!sidebarCollapsed && (
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  className="ml-3"
+                >
+                  <h1 className="text-text-primary font-semibold text-sm">{BRAND_IDENTITY.SHORT_NAME}</h1>
+                  <p className="text-text-muted text-xs">Revenue Intelligence</p>
+                </motion.div>
+              )}
+            </div>
+            {!sidebarCollapsed && (
+              <button
+                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                onMouseEnter={collapseButtonHover.handleMouseEnter}
+                onMouseLeave={collapseButtonHover.handleMouseLeave}
+                className="p-1.5 rounded-md text-text-muted hover:text-text-primary hover:bg-surface-hover transition-colors"
+              >
+                <ChevronLeftIcon className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+
+          {!sidebarCollapsed && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4"
+            >
+              <div className="relative">
+                <MagnifyingGlassIcon className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted" />
+                <input
+                  type="text"
+                  placeholder="Search materials, data..."
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-background-elevated border border-surface/30 rounded-lg text-text-primary text-sm placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary transition-all hover-shimmer-subtle"
+                />
+              </div>
+            </motion.div>
+          )}
+
+          {sidebarCollapsed && (
+            <button
+              onClick={() => setSidebarCollapsed(false)}
+              onMouseEnter={collapseButtonHover.handleMouseEnter}
+              onMouseLeave={collapseButtonHover.handleMouseLeave}
+              className="mt-4 p-2 rounded-md text-text-muted hover:text-text-primary hover:bg-surface-hover transition-colors w-full flex justify-center"
+            >
+              <ChevronRightIcon className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        {/* Navigation - With staggered entrance on mount */}
+        <div className="flex-1 overflow-y-auto py-4 custom-scrollbar">
+          <nav className="space-y-6">
+            {/* MAIN Section */}
+            {navigationItems.main.length > 0 && (
+              <div className="space-y-1 px-2">
+                <SectionHeader title="MAIN" collapsed={sidebarCollapsed} />
+                <StaggeredEntrance delay={0.05} animation="fade">
+                  {navigationItems.main.map((item) => (
+                    <NavItem
+                      key={item.id}
+                      item={item}
+                      isActive={activeItem === item.id}
+                      onClick={setActiveItem}
+                      collapsed={sidebarCollapsed}
+                    />
+                  ))}
+                </StaggeredEntrance>
+              </div>
+            )}
+
+            {/* SALES TOOLS Section */}
+            {navigationItems.salesTools.length > 0 && (
+              <div className="space-y-1 px-2">
+                <SectionHeader title="SALES TOOLS" collapsed={sidebarCollapsed} />
+                <StaggeredEntrance delay={0.05} animation="fade">
+                  {navigationItems.salesTools.map((item) => (
+                    <NavItem
+                      key={item.id}
+                      item={item}
+                      isActive={activeItem === item.id}
+                      onClick={setActiveItem}
+                      collapsed={sidebarCollapsed}
+                    />
+                  ))}
+                </StaggeredEntrance>
+              </div>
+            )}
+
+            {/* Widget Slot 1: Milestone Tracker */}
+            <WidgetSlot collapsed={sidebarCollapsed}>
+              <MilestoneTrackerWidget collapsed={sidebarCollapsed} />
+            </WidgetSlot>
+
+            {/* QUICK ACTIONS Section */}
+            {navigationItems.quickActions.length > 0 && (
+              <div className="space-y-1 px-2">
+                <SectionHeader title="QUICK ACTIONS" collapsed={sidebarCollapsed} />
+                <StaggeredEntrance delay={0.05} animation="fade">
+                  {navigationItems.quickActions.map((item) => (
+                    <NavItem
+                      key={item.id}
+                      item={item}
+                      isActive={activeItem === item.id}
+                      onClick={setActiveItem}
+                      collapsed={sidebarCollapsed}
+                    />
+                  ))}
+                </StaggeredEntrance>
+              </div>
+            )}
+
+            {/* DEVELOPMENT Section */}
+            {navigationItems.development.length > 0 && (
+              <div className="space-y-1 px-2">
+                <SectionHeader title="DEVELOPMENT" collapsed={sidebarCollapsed} />
+                <StaggeredEntrance delay={0.05} animation="fade">
+                  {navigationItems.development.map((item) => (
+                    <NavItem
+                      key={item.id}
+                      item={item}
+                      isActive={activeItem === item.id}
+                      onClick={setActiveItem}
+                      collapsed={sidebarCollapsed}
+                    />
+                  ))}
+                </StaggeredEntrance>
+              </div>
+            )}
+
+            {/* Widget Slot 2: Quick Actions Widget */}
+            <WidgetSlot collapsed={sidebarCollapsed}>
+              <QuickActionsWidget collapsed={sidebarCollapsed} />
+            </WidgetSlot>
+          </nav>
+        </div>
+
+        {/* Footer */}
+        {!sidebarCollapsed && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-4 border-t border-surface/20"
+          >
+            <div className="flex items-center justify-between text-xs text-text-muted mb-3">
+              <span>Customer ID: {user?.id ? user.id.slice(0, 8) + '...' : 'Loading...'}</span>
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-accent-success rounded-full mr-1 animate-pulse"></div>
+                <span className="text-text-primary">Live</span>
+              </div>
+            </div>
+            <div className="space-y-1">
+              <Link
+                href="/settings"
+                onMouseEnter={settingsHover.handleMouseEnter}
+                onMouseLeave={settingsHover.handleMouseLeave}
+                className="flex items-center px-3 py-2 text-sm font-medium text-text-secondary rounded-lg hover:bg-surface-hover hover:text-text-primary transition-all hover-shimmer-subtle"
+              >
+                <Cog6ToothIcon className="h-4 w-4 mr-3 text-text-muted" />
+                Settings
+              </Link>
+              <button
+                onClick={handleLogout}
+                onMouseEnter={settingsHover.handleMouseEnter}
+                onMouseLeave={settingsHover.handleMouseLeave}
+                className="w-full flex items-center px-3 py-2 text-sm font-medium text-text-secondary rounded-lg hover:bg-surface-hover hover:text-text-primary transition-all hover-shimmer-subtle"
+              >
+                <UserCircleIcon className="h-4 w-4 mr-3 text-text-muted" />
+                Logout
+              </button>
+            </div>
+          </motion.div>
+        )}
+
+        {sidebarCollapsed && (
+          <div className="p-2 border-t border-surface/20">
+            <Link
+              href="/settings"
+              className="flex justify-center p-2 text-text-muted hover:text-text-primary hover:bg-surface-hover rounded-lg transition-colors"
+            >
+              <Cog6ToothIcon className="h-5 w-5" />
+            </Link>
+          </div>
+        )}
+      </motion.div>
+
+      {/* Mobile Menu Button */}
+      <div className="md:hidden fixed top-4 left-4 z-50">
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          onMouseEnter={quickActionHover.handleMouseEnter}
+          onMouseLeave={quickActionHover.handleMouseLeave}
+          className="p-3 bg-background-secondary border border-surface/20 rounded-lg text-text-primary shadow-medium"
+        >
+          {mobileMenuOpen ? <XMarkIcon className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}
+        </button>
+      </div>
+
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="md:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="md:hidden fixed left-0 top-0 bottom-0 w-80 bg-background-secondary border-r border-surface/20 z-40 overflow-y-auto"
+            >
+              {/* Mobile navigation - same content as desktop */}
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-accent rounded-lg flex items-center justify-center">
+                      <span className="text-text-primary font-bold text-sm">A</span>
+                    </div>
+                    <div className="ml-3">
+                      <h1 className="text-text-primary font-semibold text-sm">{BRAND_IDENTITY.SHORT_NAME}</h1>
+                      <p className="text-text-muted text-xs">Revenue Intelligence</p>
+                    </div>
+                  </div>
+                </div>
+
+                <nav className="space-y-6 mt-6">
+                  {/* Render all navigation sections */}
+                  {navigationItems.main.length > 0 && (
+                    <div className="space-y-1">
+                      <SectionHeader title="MAIN" collapsed={false} />
+                      {navigationItems.main.map((item) => (
+                        <NavItem
+                          key={item.id}
+                          item={item}
+                          isActive={activeItem === item.id}
+                          onClick={(id) => {
+                            setActiveItem(id);
+                            setMobileMenuOpen(false);
+                          }}
+                          collapsed={false}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {navigationItems.salesTools.length > 0 && (
+                    <div className="space-y-1">
+                      <SectionHeader title="SALES TOOLS" collapsed={false} />
+                      {navigationItems.salesTools.map((item) => (
+                        <NavItem
+                          key={item.id}
+                          item={item}
+                          isActive={activeItem === item.id}
+                          onClick={(id) => {
+                            setActiveItem(id);
+                            setMobileMenuOpen(false);
+                          }}
+                          collapsed={false}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {navigationItems.development.length > 0 && (
+                    <div className="space-y-1">
+                      <SectionHeader title="DEVELOPMENT" collapsed={false} />
+                      {navigationItems.development.map((item) => (
+                        <NavItem
+                          key={item.id}
+                          item={item}
+                          isActive={activeItem === item.id}
+                          onClick={(id) => {
+                            setActiveItem(id);
+                            setMobileMenuOpen(false);
+                          }}
+                          collapsed={false}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </nav>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top Header */}
+        <header className="bg-background-elevated border-b border-surface/20 px-6 py-4 relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-primary/5 via-brand-accent/5 to-brand-secondary/5"></div>
+          <div className="relative">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center flex-1">
+                <h1 className="text-xl font-semibold text-text-primary mr-8">Revenue Intelligence</h1>
+                <div className="hidden md:block max-w-md w-full">
+                  <div className="relative">
+                    <MagnifyingGlassIcon className="w-4.5 h-4.5 absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted" />
+                    <input
+                      type="text"
+                      placeholder="Search materials, customers, data..."
+                      className="w-full pl-10 pr-4 py-2.5 border border-surface/30 bg-background-elevated rounded-lg text-text-primary text-sm placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary transition-all hover-shimmer-subtle"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-4">
+                <button
+                  onMouseEnter={quickActionHover.handleMouseEnter}
+                  onMouseLeave={quickActionHover.handleMouseLeave}
+                  className="hidden md:flex px-4 py-2 bg-brand-primary text-text-primary text-sm font-medium rounded-lg transition-all items-center shadow-medium hover-shimmer-blue"
+                >
+                  <PlusIcon className="w-4 h-4 mr-2" />
+                  Quick Actions
+                </button>
+
+                <button className="relative p-2 text-text-secondary hover:text-text-primary transition-colors">
+                  <BellIcon className="w-5 h-5" />
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent-danger text-text-primary text-xs rounded-full flex items-center justify-center">
+                    3
+                  </span>
+                </button>
+
+                <button className="hidden md:block p-2 text-text-secondary hover:text-text-primary transition-colors">
+                  <Cog6ToothIcon className="w-5 h-5" />
+                </button>
+
+                <div className="hidden md:flex items-center space-x-3 pl-4 border-l border-surface/20">
+                  <div className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-accent rounded-full flex items-center justify-center">
+                    <UserCircleIcon className="w-4 h-4 text-text-primary" />
+                  </div>
+                  <span className="text-sm font-medium text-text-primary">
+                    {user?.email ? user.email.split('@')[0] : 'User'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Main Content - Scrollable */}
+        <main className="flex-1 bg-background-primary overflow-y-auto custom-scrollbar">
+          {children}
+        </main>
+      </div>
+
+      <style jsx global>{`
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: var(--color-surface) transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background-color: var(--color-surface);
+          border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background-color: var(--color-surface-hover);
+        }
+      `}</style>
+    </div>
+  );
+}

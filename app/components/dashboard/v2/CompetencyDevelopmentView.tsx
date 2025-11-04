@@ -479,7 +479,7 @@ export const CompetencyDevelopmentView: React.FC<CompetencyDevelopmentViewProps>
                   </div>
                   <div className="mt-4 text-center">
                     <span className="text-sm text-blue-400">
-                      ~{nextUnlock.pointsNeeded} points needed to unlock
+                      ~{nextUnlock.pointsNeeded}
                     </span>
                   </div>
                 </div>
@@ -584,7 +584,7 @@ export const CompetencyDevelopmentView: React.FC<CompetencyDevelopmentViewProps>
                             Target: {rec.competencyTarget}
                           </span>
                           <span className="text-green-400">
-                            +{rec.estimatedPoints} points
+                            +{rec.estimatedPoints}
                           </span>
                         </div>
                       </div>

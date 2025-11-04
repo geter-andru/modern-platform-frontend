@@ -1,0 +1,285 @@
+/**
+ * Named Animation Library - Professional Micro-Interactions
+ *
+ * Use these for milestone moments, loading states, and celebrations.
+ * All animations respect prefers-reduced-motion.
+ *
+ * Usage:
+ * - Apply utility classes (.animate-glow, .animate-celebration, etc.)
+ * - Or use in custom CSS: animation: sophisticatedGlow 2s var(--ease-satisfaction) infinite;
+ */
+
+/* ============================================================================
+   SOPHISTICATED GLOW - Pulsing Emphasis
+   ============================================================================ */
+
+/**
+ * Sophisticated Glow - Pulsing shadow animation
+ * Use for: Primary CTAs, milestone indicators, attention-drawing elements
+ * Duration: 2s infinite alternate
+ */
+@keyframes sophisticatedGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 40px rgba(59, 130, 246, 0.5),
+      0 0 80px rgba(139, 92, 246, 0.2);
+  }
+}
+
+/* ============================================================================
+   MILESTONE CELEBRATION - Asymmetric Bounce
+   ============================================================================ */
+
+/**
+ * Milestone Celebration - Asymmetric bounce with brightness
+ * Use for: Achievement badges, completed tasks, milestone moments
+ * Duration: 1200ms (--duration-satisfaction)
+ * Combines: scale + rotate + brightness for organic celebration
+ */
+@keyframes milestoneCelebration {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1);
+  }
+  20% {
+    transform: scale(1.1) rotate(2deg);
+    filter: brightness(1.2);
+  }
+  40% {
+    transform: scale(1.05) rotate(-1deg);
+    filter: brightness(1.1);
+  }
+  60% {
+    transform: scale(1.08) rotate(1deg);
+    filter: brightness(1.15);
+  }
+  80% {
+    transform: scale(1.02) rotate(-0.5deg);
+    filter: brightness(1.05);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1);
+  }
+}
+
+/* ============================================================================
+   ENTRANCE ANIMATIONS - Page/Section Reveals
+   ============================================================================ */
+
+/**
+ * Elegant Slide In - Entrance from below
+ * Use for: Section reveals, staggered content entrance
+ * Duration: 600ms (--duration-elegant)
+ */
+@keyframes elegantSlideIn {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/**
+ * Sophisticated Scale In - Zoom entrance
+ * Use for: Modal entrances, card reveals, tier previews
+ * Duration: 400ms (--duration-smooth)
+ */
+@keyframes sophisticatedScaleIn {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   ATTENTION DRAWS - Gentle Emphasis
+   ============================================================================ */
+
+/**
+ * Professional Pulse - Gentle attention draw
+ * Use for: Loading indicators, "new" badges, pending actions
+ * Duration: 1200ms infinite (--duration-satisfaction)
+ */
+@keyframes professionalPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.03);
+    opacity: 0.9;
+  }
+}
+
+/**
+ * Subtle Breathing - Very gentle pulse
+ * Use for: Background elements, ambient emphasis
+ * Duration: 2000ms infinite
+ */
+@keyframes subtleBreathing {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   PROGRESS ANIMATIONS - Loading & Completion
+   ============================================================================ */
+
+/**
+ * Progress Fill - Animated progress bar
+ * Use for: Loading states, completion indicators
+ * Duration: Custom per use case
+ */
+@keyframes progressFill {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+/**
+ * Shimmer Sweep - Shine effect (use with pseudo-element)
+ * Use for: Card hovers, loading skeletons
+ * Duration: 600ms (--duration-elegant)
+ */
+@keyframes shimmerSweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ============================================================================
+   UTILITY CLASSES - Quick Application
+   ============================================================================ */
+
+/* Glow Effects */
+.animate-glow {
+  animation: sophisticatedGlow 2s var(--ease-satisfaction) infinite alternate;
+}
+
+.animate-glow-fast {
+  animation: sophisticatedGlow 1s var(--ease-satisfaction) infinite alternate;
+}
+
+/* Celebration Effects */
+.animate-celebration {
+  animation: milestoneCelebration var(--duration-satisfaction) var(--ease-satisfaction);
+}
+
+.animate-celebration-repeat {
+  animation: milestoneCelebration var(--duration-satisfaction) var(--ease-satisfaction) infinite;
+}
+
+/* Entrance Effects */
+.animate-slide-in {
+  animation: elegantSlideIn var(--duration-elegant) var(--ease-elegant);
+}
+
+.animate-scale-in {
+  animation: sophisticatedScaleIn var(--duration-smooth) var(--ease-sophisticated);
+}
+
+.animate-slide-in-slow {
+  animation: elegantSlideIn var(--duration-dramatic) var(--ease-elegant);
+}
+
+/* Attention Draws */
+.animate-pulse {
+  animation: professionalPulse var(--duration-satisfaction) var(--ease-satisfaction) infinite;
+}
+
+.animate-breathing {
+  animation: subtleBreathing 2000ms ease-in-out infinite;
+}
+
+/* Progress Indicators */
+.animate-progress {
+  animation: progressFill var(--duration-elegant) var(--ease-elegant) forwards;
+}
+
+/* ============================================================================
+   ACCESSIBILITY - Reduced Motion
+   ============================================================================ */
+
+/**
+ * Respect user's motion preferences
+ * Disable all animations if user prefers reduced motion
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Completely disable infinite animations */
+  .animate-glow,
+  .animate-glow-fast,
+  .animate-celebration-repeat,
+  .animate-pulse,
+  .animate-breathing {
+    animation: none !important;
+  }
+}
+
+/* ============================================================================
+   PRINT STYLES - Remove Animations
+   ============================================================================ */
+
+@media print {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .animate-glow,
+  .animate-celebration,
+  .animate-pulse,
+  .animate-breathing {
+    animation: none !important;
+  }
+}
+
+/* ============================================================================
+   HIGH CONTRAST MODE - Simplify Animations
+   ============================================================================ */
+
+@media (prefers-contrast: high) {
+  /* Disable glow effects in high contrast */
+  .animate-glow,
+  .animate-glow-fast {
+    animation: none;
+  }
+
+  /* Keep functional animations but reduce intensity */
+  @keyframes milestoneCelebration {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+}

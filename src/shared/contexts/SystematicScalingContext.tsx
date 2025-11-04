@@ -11,6 +11,14 @@ import customerValueOrchestrator from '@/app/lib/services/customerValueOrchestra
 import { competencyService } from '@/app/lib/services/competencyService';
 import { behavioralIntelligenceService } from '@/app/lib/services/behavioralIntelligenceService';
 import { agentOrchestrationService } from '@/app/lib/services/agentOrchestrationService';
+import {
+  behaviorTrackingService,
+  type EventType,
+  type ToolId,
+  type BusinessImpact,
+  type CompetencyArea as BehaviorCompetencyArea,
+  type GrowthStage
+} from '@/app/lib/services/behaviorTrackingService';
 // Types that may not be exported yet - using any for now
 type FounderProfile = any;
 type FounderScalingStatus = any;
