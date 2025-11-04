@@ -16,6 +16,7 @@ import { getBrandName } from '@/app/lib/constants/brand-identity';
 import toast from 'react-hot-toast';
 import { exportICPToPDF } from '@/app/lib/utils/pdf-export';
 import { exportToMarkdown, exportToCSV } from '@/app/lib/utils/data-export';
+import { ICPGenerationProgress } from '../../../../src/shared/components/ui/ICPGenerationProgress';
 
 interface DemoGenerationModalProps {
   isOpen: boolean;
@@ -56,6 +57,10 @@ export default function DemoGenerationModal({
   const [rateLimitInfo, setRateLimitInfo] = useState<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false); // Protect from HMR during submission
 
+  // Progress tracking for enhanced progress indicator
+  const [generationProgress, setGenerationProgress] = useState(0);
+  const [currentStage, setCurrentStage] = useState('');
+
   // Loading messages that rotate every 3 seconds
   const loadingMessages = [
     '🤔 Reading your product description...',
@@ -64,13 +69,41 @@ export default function DemoGenerationModal({
     '✨ Almost there...'
   ];
 
-  // Rotate loading messages every 3 seconds
+  // Rotate loading messages every 3 seconds and simulate progress
   useEffect(() => {
     if (modalState === 'loading') {
-      const interval = setInterval(() => {
+      // Reset progress when loading starts
+      setGenerationProgress(0);
+      setCurrentStage('Analyzing product details and market context');
+
+      const messageInterval = setInterval(() => {
         setLoadingMessageIndex((prev) => (prev + 1) % loadingMessages.length);
       }, 3000);
-      return () => clearInterval(interval);
+
+      // Simulate progressive loading over 45 seconds (4 stages)
+      const progressInterval = setInterval(() => {
+        setGenerationProgress((prev) => {
+          const next = Math.min(prev + (100 / 450), 100); // Increment every 100ms to reach 100% in 45s
+
+          // Update stage based on progress
+          if (next < 25) {
+            setCurrentStage('Analyzing product details and market context');
+          } else if (next < 50) {
+            setCurrentStage('Identifying decision-makers and influencers');
+          } else if (next < 75) {
+            setCurrentStage('Extracting pain points and buying triggers');
+          } else {
+            setCurrentStage('Generating comprehensive ICP analysis');
+          }
+
+          return next;
+        });
+      }, 100);
+
+      return () => {
+        clearInterval(messageInterval);
+        clearInterval(progressInterval);
+      };
     }
   }, [modalState]);
 
@@ -434,48 +467,8 @@ export default function DemoGenerationModal({
             </motion.div>
           )}
 
-          {/* Loading State */}
-          {modalState === 'loading' && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center py-12"
-            >
-              <div className="flex justify-center mb-6">
-                <Loader2 className="w-12 h-12 text-blue-400 animate-spin" />
-              </div>
-
-              <h3 className="heading-3 mb-3">
-                Analyzing your product with {getBrandName('short')}'s advanced AI...
-              </h3>
-
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={loadingMessageIndex}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="body-large text-text-muted"
-                >
-                  {loadingMessages[loadingMessageIndex]}
-                </motion.p>
-              </AnimatePresence>
-
-              <div className="mt-8 max-w-md mx-auto">
-                <div className="h-2 bg-surface-secondary rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
-                    initial={{ width: '0%' }}
-                    animate={{ width: '100%' }}
-                    transition={{ duration: 45, ease: 'linear' }}
-                  />
-                </div>
-                <p className="text-sm text-text-muted mt-2">
-                  This usually takes about 45 seconds...
-                </p>
-              </div>
-            </motion.div>
-          )}
+          {/* Loading State - Enhanced Multi-Stage Progress Indicator */}
+          {modalState === 'loading' && null /* Hidden - progress shown in overlay */}
 
           {/* Success State */}
           {modalState === 'success' && generatedResult && (
@@ -620,6 +613,13 @@ export default function DemoGenerationModal({
           )}
         </motion.div>
       </motion.div>
+
+      {/* Enhanced Progress Indicator Overlay - Only shows during loading */}
+      <ICPGenerationProgress
+        currentProgress={generationProgress}
+        currentStage={currentStage}
+        isOpen={modalState === 'loading'}
+      />
     </AnimatePresence>
   );
 }

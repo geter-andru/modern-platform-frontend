@@ -3,6 +3,8 @@ import '../../../shared/styles/design-tokens.css';
 
 import { motion, AnimatePresence } from 'framer-motion'
 import Tooltip from '../../../shared/components/ui/Tooltip'
+import ConfidenceBadge, { getConfidenceLevel } from '../../../shared/components/ui/ConfidenceBadge'
+import { DataPointsIndicator } from '../../../shared/components/ui/IntelligenceSignal'
 import {
   RefreshCw,
   ExternalLink,
@@ -425,10 +427,21 @@ export default function BuyerPersonasWidget({
               {transformedPersonas.map((persona, index) => {
                 const isExpanded = expandedPersona === persona.id;
                 const IconComponent = getPersonaIcon(persona.role);
-                
+
+                // Calculate confidence based on data completeness
+                const hasGoals = persona.goals && persona.goals.length > 0;
+                const hasPainPoints = persona.painPoints && persona.painPoints.length > 0;
+                const hasObjections = persona.objections && persona.objections.length > 0;
+                const hasDemographics = persona.demographics && Object.keys(persona.demographics).length > 0;
+                const hasPsychographics = persona.psychographics && Object.keys(persona.psychographics).length > 0;
+
+                const dataPoints = [hasGoals, hasPainPoints, hasObjections, hasDemographics, hasPsychographics];
+                const collectedPoints = dataPoints.filter(Boolean).length;
+                const confidence = Math.round((collectedPoints / dataPoints.length) * 100);
+
                 return (
                   <div key={persona.id} className="bg-background-tertiary rounded-lg overflow-hidden">
-                    
+
                     <button
                       onClick={() => togglePersona(persona.id)}
                       className="w-full px-6 py-4 flex items-center justify-between hover:bg-surface-hover transition-colors"
@@ -446,10 +459,19 @@ export default function BuyerPersonasWidget({
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor('high')}`}>
-                          High Priority
-                        </span>
+                      <div className="flex items-center gap-3">
+                        <ConfidenceBadge
+                          level={getConfidenceLevel(confidence)}
+                          score={confidence}
+                          showScore={true}
+                          size="sm"
+                          context={`Based on ${collectedPoints} of ${dataPoints.length} key data points collected`}
+                        />
+                        <DataPointsIndicator
+                          collected={collectedPoints}
+                          total={dataPoints.length}
+                          size="sm"
+                        />
                         {isExpanded ? (
                           <EyeOff className="w-4 h-4 text-text-muted" />
                         ) : (

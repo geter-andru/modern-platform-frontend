@@ -7,6 +7,11 @@ export function DesignSystemTest() {
   const { tokens, theme, brand, setTheme, setBrand, getToken } = useDesignSystem();
   const [isVisible, setIsVisible] = useState(false);
 
+  // Only show in development mode
+  if (process.env.NODE_ENV === 'production') {
+    return null;
+  }
+
   useEffect(() => {
     // Show the test component after a short delay
     const timer = setTimeout(() => setIsVisible(true), 1000);

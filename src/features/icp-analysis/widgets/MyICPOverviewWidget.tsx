@@ -4,15 +4,17 @@ import '../../../shared/styles/component-patterns.css';
 
 import { motion, AnimatePresence } from 'framer-motion'
 import Tooltip from '../../../shared/components/ui/Tooltip'
-import { 
-  RefreshCw, 
-  Download, 
-  Edit, 
-  Target, 
-  TrendingUp, 
-  Users, 
-  DollarSign, 
-  CheckCircle, 
+import ConfidenceBadge, { getConfidenceLevel } from '../../../shared/components/ui/ConfidenceBadge'
+import { IntelligenceSignal, CoverageRing } from '../../../shared/components/ui/IntelligenceSignal'
+import {
+  RefreshCw,
+  Download,
+  Edit,
+  Target,
+  TrendingUp,
+  Users,
+  DollarSign,
+  CheckCircle,
   AlertTriangle,
   Star,
   Award,
@@ -347,20 +349,26 @@ export default function MyICPOverviewWidget({
     <div className={`card-executive overflow-hidden ${className}`}>
       <div className="card-padding-md" style={{ background: 'var(--bg-elevated)' }}>
         <div className="flex items-center justify-between">
-          <div>
-            <h2 className="heading-3">My ICP Overview</h2>
-            <p className="body-small text-text-muted">
-              {isLoading ? 'Loading ICP data...' :
-               error ? 'Error loading ICP data' :
-               icpData ? `${icpData.title} • ${icpData.confidence}% confidence` :
-               'No ICP data available - generate an analysis first'}
-            </p>
+          <div className="flex items-center gap-4">
+            <div>
+              <h2 className="heading-3">My ICP Overview</h2>
+              <p className="body-small text-text-muted">
+                {isLoading ? 'Loading ICP data...' :
+                 error ? 'Error loading ICP data' :
+                 icpData ? icpData.title :
+                 'No ICP data available - generate an analysis first'}
+              </p>
+            </div>
+            {currentIcpData && !isLoading && !error && (
+              <CoverageRing
+                coverage={currentIcpData.confidence || 0}
+                size={60}
+                strokeWidth={5}
+                showPercentage={true}
+              />
+            )}
           </div>
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 caption text-text-muted">
-              <CheckCircle className="w-4 h-4" style={{ color: 'var(--color-primary)' }} />
-              {currentIcpData?.confidence || 0}% match
-            </div>
             <button
               onClick={onRefresh}
               className="btn-secondary"
@@ -480,20 +488,13 @@ export default function MyICPOverviewWidget({
                             </span>
 
                           <div className="flex items-center gap-2">
-                          <span className={`badge ${
-                            section.confidence >= 90
-                              ? 'badge-success'
-                              : section.confidence >= 80
-                              ? 'badge-primary'
-                              : section.confidence >= 70
-                              ? 'badge-warning'
-                              : 'badge-danger'
-                          }`}>
-                            {section.confidence}%
-                          </span>
-                          <span className="caption text-text-muted italic">
-                            {section.confidenceReasoning}
-                          </span>
+                          <ConfidenceBadge
+                            level={getConfidenceLevel(section.confidence)}
+                            score={section.confidence}
+                            showScore={true}
+                            context={section.confidenceReasoning}
+                            size="md"
+                          />
                         </div>
                         {isExpanded ? (
                           <ChevronUp className="w-5 h-5 text-text-muted ml-auto" />
