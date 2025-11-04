@@ -134,7 +134,8 @@ export default function ICPDemoPage() {
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowGenerationModal(true)}
-                  {...primaryButtonHover}
+                  onMouseEnter={primaryButtonHover.handleMouseEnter}
+                  onMouseLeave={primaryButtonHover.handleMouseLeave}
                   className="btn btn-primary flex items-center gap-2"
                   style={{
                     boxShadow: '0 4px 16px rgba(59, 130, 246, 0.3)'
@@ -200,7 +201,8 @@ export default function ICPDemoPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => setShowExportModal(true)}
-                    {...secondaryButtonHover}
+                    onMouseEnter={secondaryButtonHover.handleMouseEnter}
+                    onMouseLeave={secondaryButtonHover.handleMouseLeave}
                     className="btn btn-secondary flex items-center gap-2"
                   >
                     <Download className="w-4 h-4" />

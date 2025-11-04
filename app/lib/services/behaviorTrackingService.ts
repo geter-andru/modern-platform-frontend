@@ -313,7 +313,7 @@ class BehaviorTrackingService {
     try {
       const { error } = await supabase
         .from('behavior_events')
-        .insert(eventsToFlush);
+        .insert(eventsToFlush as any);
 
       if (error) {
         console.error('Failed to track behavior events:', error);
@@ -346,8 +346,8 @@ class BehaviorTrackingService {
 
     // Update session end time in database
     try {
-      await supabase
-        .from('behavior_sessions')
+      await (supabase
+        .from('behavior_sessions') as any)
         .update({
           ended_at: new Date().toISOString(),
           duration_seconds: Math.floor(this.getSessionDuration() / 1000),
@@ -429,7 +429,7 @@ class BehaviorTrackingService {
         referrer_source: deviceInfo?.referrer,
         events_count: 0,
         tools_accessed: [],
-      });
+      } as any);
     } catch (error) {
       console.error('Failed to initialize session in DB:', error);
     }

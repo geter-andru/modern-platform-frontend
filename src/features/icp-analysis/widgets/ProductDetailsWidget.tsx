@@ -273,7 +273,7 @@ export default function ProductDetailsWidget({
         }
 
         // Check if onboarding_data exists
-        const onboardingData = profile?.onboarding_data;
+        const onboardingData = (profile as any)?.onboarding_data;
         if (!onboardingData) {
           console.log('[OnboardingData] No onboarding data found');
           return;
@@ -298,8 +298,8 @@ export default function ProductDetailsWidget({
         });
 
         // Clear onboarding_data from profile (one-time use)
-        await supabase
-          .from('user_profiles')
+        await (supabase
+          .from('user_profiles') as any)
           .update({ onboarding_data: null })
           .eq('id', user.id);
 

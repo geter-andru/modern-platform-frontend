@@ -426,7 +426,7 @@ export async function generateICPPDF(
       doc.saveGraphicsState();
 
       // Set transparency for watermark (30% opacity)
-      doc.setGState(new doc.GState({ opacity: 0.3 }));
+      doc.setGState({ opacity: 0.3 } as any);
 
       // Position in center of page
       const centerX = pageWidth / 2;

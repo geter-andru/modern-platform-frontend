@@ -4,8 +4,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, ArrowRight, Sparkles, Users, Zap } from 'lucide-react';
 import Link from 'next/link';
-import { GradientButton } from '../../../src/shared/components/ui/GradientButton';
-import { FooterLayout } from '../../../src/shared/components/layout/FooterLayout';
+import { GradientButton } from '../../src/shared/components/ui/GradientButton';
+import { FooterLayout } from '../../src/shared/components/layout/FooterLayout';
 
 /**
  * Pricing Page - Free Beta Launch

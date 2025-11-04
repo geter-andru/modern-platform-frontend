@@ -356,10 +356,83 @@ export const SystematicScalingProvider: React.FC<SystematicScalingProviderProps>
   const isHighPerformer = professionalCredibilityScore >= 85;
   const canAccessAdvancedFeatures = isHighPerformer && businessImpactGenerated >= 100;
 
-  // Missing method implementations
-  const trackBehavior = useCallback((action: string, data?: any) => {
-    console.log('Tracking behavior:', action, data);
-  }, []);
+  // Real behavior tracking implementation
+  const trackBehavior = useCallback(async (action: string, data?: any) => {
+    if (!founderId) return;
+
+    try {
+      // Parse data if it's a JSON string
+      const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+
+      // Map competency area from context to behavior tracking format
+      const mapCompetencyArea = (area?: string): BehaviorCompetencyArea | undefined => {
+        const mapping: Record<string, BehaviorCompetencyArea> = {
+          'customer_intelligence': 'customer_intelligence',
+          'value_communication': 'value_communication',
+          'sales_execution': 'sales_execution',
+          'systematic_optimization': 'systematic_optimization',
+        };
+        return area ? mapping[area] : undefined;
+      };
+
+      // Route to appropriate tracking method based on action
+      if (action.includes('tool_usage') || action.includes('tool_')) {
+        await behaviorTrackingService.trackToolUsage({
+          customer_id: founderId,
+          tool_id: (parsedData?.toolId || parsedData?.tool_id) as ToolId,
+          tool_section: parsedData?.toolSection || parsedData?.section,
+          business_impact: (parsedData?.businessImpact || 'medium') as BusinessImpact,
+          competency_area: mapCompetencyArea(parsedData?.competencyArea),
+          metadata: parsedData?.metadata || parsedData,
+          scaling_context: {
+            current_arr: scalingStatus?.currentARR,
+            target_arr: scalingStatus?.targetARR,
+            growth_stage: (scalingStatus?.growthStage as GrowthStage) || 'rapid_scaling',
+          },
+        });
+      } else if (action.includes('export') || action.includes('download')) {
+        await behaviorTrackingService.trackExport({
+          customer_id: founderId,
+          tool_id: (parsedData?.toolId || 'icp-analysis') as ToolId,
+          export_type: parsedData?.exportType || parsedData?.format || 'pdf',
+          business_impact: (parsedData?.businessImpact || 'high') as BusinessImpact,
+          metadata: parsedData?.metadata || parsedData,
+        });
+      } else if (action.includes('milestone') || action.includes('competency')) {
+        await behaviorTrackingService.trackCompetencyMilestone({
+          customer_id: founderId,
+          competency_area: mapCompetencyArea(parsedData?.competencyArea) || 'customer_intelligence',
+          milestone_description: parsedData?.description || action,
+          professional_credibility: parsedData?.credibility || parsedData?.points || 10,
+          business_impact: (parsedData?.businessImpact || 'high') as BusinessImpact,
+        });
+      } else if (action.includes('navigation') || action.includes('navigate')) {
+        await behaviorTrackingService.trackNavigation({
+          customer_id: founderId,
+          from_page: parsedData?.from,
+          to_page: parsedData?.to || window.location.pathname,
+          tool_id: parsedData?.toolId as ToolId,
+        });
+      } else {
+        // Generic event tracking
+        await behaviorTrackingService.trackEvent({
+          customer_id: founderId,
+          event_type: (parsedData?.eventType || 'professional_action') as EventType,
+          tool_id: parsedData?.toolId as ToolId,
+          business_impact: (parsedData?.businessImpact || 'medium') as BusinessImpact,
+          competency_area: mapCompetencyArea(parsedData?.competencyArea),
+          event_metadata: parsedData?.metadata || parsedData,
+          current_arr: scalingStatus?.currentARR,
+          target_arr: scalingStatus?.targetARR,
+          growth_stage: (scalingStatus?.growthStage as GrowthStage) || 'rapid_scaling',
+          systematic_approach: true,
+        });
+      }
+    } catch (error) {
+      console.error('Failed to track behavior:', error);
+      // Fail silently - don't break user experience for tracking failures
+    }
+  }, [founderId, scalingStatus]);
 
   const awardPoints = useCallback((points: number, reason: string) => {
     console.log('Awarding points:', points, reason);

@@ -17,7 +17,10 @@
 
 import { chromium } from '@playwright/test';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const AUTH_STATE_PATH = path.join(__dirname, 'playwright-auth-state.json');
 const BASE_URL = 'http://localhost:3002';
 
@@ -37,6 +40,7 @@ async function captureAuthState() {
   });
 
   const context = await browser.newContext();
+  context.setDefaultTimeout(300000); // 5 minutes timeout
   const page = await context.newPage();
 
   // Navigate to home page
@@ -48,18 +52,17 @@ async function captureAuthState() {
 
   try {
     // Wait for successful authentication
-    // We'll detect this by waiting for URL to NOT be the login page
-    // and localStorage to have auth tokens
+    // We'll detect this by checking for Supabase auth token in localStorage
     await page.waitForFunction(
       () => {
         // Check if we have Supabase auth token in localStorage
-        const hasAuthToken = localStorage.getItem('sb-qqsghcdmqzjpjkdcyamb-auth-token') !== null;
+        // Try common Supabase auth key patterns
+        const keys = Object.keys(localStorage);
+        const hasAuthKey = keys.some(key =>
+          key.includes('sb-') && key.includes('auth-token')
+        );
 
-        // Or check if we're on an authenticated page (not root)
-        const isAuthenticated = window.location.pathname !== '/' &&
-                                window.location.pathname !== '/login';
-
-        return hasAuthToken || isAuthenticated;
+        return hasAuthKey;
       },
       { timeout: 300000 } // 5 minutes
     );

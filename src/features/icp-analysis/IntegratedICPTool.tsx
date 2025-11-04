@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
+import {
   Target,
   Users,
   Heart,
@@ -30,6 +30,7 @@ import ICPRatingFrameworkGenerator from './ICPRatingFrameworkGenerator';
 import CompanyRatingInterface from './CompanyRatingInterface';
 import webResearchService from '@/app/lib/services/webResearchService';
 import claudeAIService from '@/app/lib/services/claudeAIService';
+import { useBehaviorTracking, useToolTracking } from '@/src/shared/hooks/useBehaviorTracking';
 
 interface IntegratedICPToolProps {
   customerId: string;
@@ -49,6 +50,17 @@ interface GeneratedResources {
 type ActiveTab = 'generate' | 'rating-framework' | 'rate-companies' | 'resources';
 
 const IntegratedICPTool: React.FC<IntegratedICPToolProps> = ({ customerId }) => {
+  // Initialize behavior tracking
+  const { trackToolUsage, trackExport, trackResourceGeneration, trackClick } = useBehaviorTracking({
+    customerId,
+    currentARR: '$2M+',
+    targetARR: '$10M',
+    growthStage: 'rapid_scaling'
+  });
+
+  // Auto-track tool entry/exit
+  useToolTracking(customerId, 'icp-analysis');
+
   const [activeTab, setActiveTab] = useState<ActiveTab>('generate');
   const [generatedResources, setGeneratedResources] = useState<GeneratedResources | null>(null);
   const [isGeneratingReal, setIsGeneratingReal] = useState(false);
@@ -80,6 +92,19 @@ const IntegratedICPTool: React.FC<IntegratedICPToolProps> = ({ customerId }) => 
     setGenerationProgress(0);
     setGenerationStep('Initializing web research...');
 
+    // Track resource generation start
+    await trackToolUsage({
+      toolId: 'icp-analysis',
+      toolSection: 'resource-generation',
+      businessImpact: 'high',
+      competencyArea: 'customer_intelligence',
+      metadata: {
+        action: 'generation_started',
+        productName: productData.productName,
+        businessType: productData.businessType
+      }
+    });
+
     try {
       // Step 1: Start web research
       setGenerationProgress(10);
@@ -102,14 +127,37 @@ const IntegratedICPTool: React.FC<IntegratedICPToolProps> = ({ customerId }) => 
 
       setGenerationProgress(100);
       setGenerationStep('Complete! Resources generated with Claude AI + real market data.');
-      
+
       setGeneratedResources(resources);
       localStorage.setItem('generatedResources', JSON.stringify(resources));
-      setActiveTab('resources');
+      await handleTabChange('resources');
+
+      // Track successful resource generation
+      await trackResourceGeneration({
+        toolId: 'icp-analysis',
+        resourceType: 'icp-comprehensive-analysis',
+        businessImpact: 'high',
+        metadata: {
+          productName: productData.productName,
+          resourceTypes: Object.keys(resources.data || {}),
+          isRealData: resources.isReal
+        }
+      });
 
     } catch (error) {
       console.error('Real resource generation failed:', error);
       setGenerationStep(`Failed to generate resources: ${error instanceof Error ? error.message : 'Unknown error'}`);
+
+      // Track generation failure
+      await trackToolUsage({
+        toolId: 'icp-analysis',
+        toolSection: 'resource-generation',
+        businessImpact: 'medium',
+        metadata: {
+          action: 'generation_failed',
+          error: error instanceof Error ? error.message : 'Unknown error'
+        }
+      });
     } finally {
       setIsGeneratingReal(false);
     }
@@ -393,6 +441,23 @@ ${researchData.real ?
     }
   };
 
+  // Handle tab change with tracking
+  const handleTabChange = async (newTab: ActiveTab) => {
+    if (newTab !== activeTab) {
+      await trackToolUsage({
+        toolId: 'icp-analysis',
+        toolSection: newTab,
+        businessImpact: 'low',
+        metadata: {
+          action: 'tab_navigation',
+          from_tab: activeTab,
+          to_tab: newTab
+        }
+      });
+      setActiveTab(newTab);
+    }
+  };
+
   const tabs = [
     {
       id: 'generate' as ActiveTab,
@@ -443,7 +508,7 @@ ${researchData.real ?
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => handleTabChange(tab.id)}
                 className={`relative flex items-center px-4 py-3 rounded-xl transition-all duration-200 group ${
                   isActive
                     ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'

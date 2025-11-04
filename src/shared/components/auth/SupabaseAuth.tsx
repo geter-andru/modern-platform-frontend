@@ -29,7 +29,7 @@ const SupabaseAuth: React.FC<SupabaseAuthProps> = ({ redirectTo = '/icp' }) => {
       }
 
       // If onboarding not completed, redirect to onboarding
-      if (data && !data.onboarding_completed) {
+      if (data && !(data as any).onboarding_completed) {
         return '/onboarding';
       }
 
