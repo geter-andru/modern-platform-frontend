@@ -108,7 +108,7 @@ export default function HomePage() {
             {/* Executive Subheadline */}
             <motion.p
               variants={fadeInUp}
-              className="text-xl sm:text-2xl max-w-4xl mx-auto mb-16 leading-relaxed"
+              className="text-xl sm:text-2xl max-w-4xl mx-auto mb-8 leading-relaxed"
               style={{
                 color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
                 fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
@@ -119,6 +119,29 @@ export default function HomePage() {
             >
               Discover markets where you're essential & convert buyers into customer evangelists through systematic intelligence.
             </motion.p>
+
+            {/* Try Demo CTA - Above the Fold */}
+            <motion.div
+              variants={fadeInUp}
+              className="mb-16"
+            >
+              <Link
+                href="/icp/demo"
+                className="inline-flex items-center justify-center gap-2 px-12 py-6 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#ffffff',
+                  fontFamily: '"Inter", sans-serif',
+                  fontWeight: '600',
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2), 0 8px 16px rgba(0, 0, 0, 0.1)'
+                }}
+              >
+                <Eye className="w-5 h-5" />
+                See Live Demo
+              </Link>
+            </motion.div>
 
             {/* Executive CTA Buttons with Glass Morphism */}
             <motion.div
@@ -192,8 +215,6 @@ export default function HomePage() {
                   fontFamily: '"Inter", sans-serif'
                 }}
               >
-                <span>Used by 50+ B2B SaaS founding teams</span>
-                <span style={{ color: 'var(--color-text-subtle, rgba(255, 255, 255, 0.4))' }}>•</span>
                 <span>AI-powered ICP analysis</span>
                 <span style={{ color: 'var(--color-text-subtle, rgba(255, 255, 255, 0.4))' }}>•</span>
                 <span>Sub-3s generation</span>
