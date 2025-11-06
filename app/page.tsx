@@ -255,7 +255,7 @@ export default function HomePage() {
               iconBgColor="rgba(59, 130, 246, 0.15)"
               iconBorderColor="rgba(59, 130, 246, 0.3)"
               animationDelay={0.1}
-              href="/icp"
+              href="/icp/demo-xtract"
               ctaText="Try Demo"
               className="md:col-span-2 md:row-span-2"
             />
