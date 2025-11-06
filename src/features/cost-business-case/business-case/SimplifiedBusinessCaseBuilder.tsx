@@ -126,7 +126,7 @@ const SimplifiedBusinessCaseBuilder: React.FC<SimplifiedBusinessCaseBuilderProps
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, index) => (
               <ModernCard key={index} className="animate-pulse">
-                <div className="h-48 bg-slate-700 rounded-lg"></div>
+                <div className="h-48 bg-surface rounded-lg"></div>
               </ModernCard>
             ))}
           </div>
@@ -175,14 +175,14 @@ const SimplifiedBusinessCaseBuilder: React.FC<SimplifiedBusinessCaseBuilderProps
         <div className="text-center mb-8">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl opacity-10"></div>
-            <div className="relative p-6 rounded-2xl border border-slate-700">
+            <div className="relative p-6 rounded-2xl border border-surface">
               <div className="flex items-center justify-center space-x-3 mb-4">
                 <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-pulse"></div>
                 <h1 className="text-3xl font-bold text-white">
                   Business Case Builder
                 </h1>
               </div>
-              <p className="text-slate-300 mb-4">
+              <p className="text-text-secondary mb-4">
                 AI-powered ROI analysis and stakeholder presentation
               </p>
               
@@ -211,21 +211,21 @@ const SimplifiedBusinessCaseBuilder: React.FC<SimplifiedBusinessCaseBuilderProps
             <div className="text-5xl font-bold text-emerald-400 mb-4">
               {totalROI > 0 ? '+' : ''}{totalROI.toFixed(0)}%
             </div>
-            <p className="text-slate-400">Expected return on investment within 12 months</p>
+            <p className="text-text-muted">Expected return on investment within 12 months</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <div className="text-2xl font-bold text-emerald-400">${(businessCase.revenueImpact / 1000).toFixed(0)}K</div>
-              <div className="text-slate-400">Revenue Increase</div>
+              <div className="text-text-muted">Revenue Increase</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-red-400">${(businessCase.currentCost / 1000).toFixed(0)}K</div>
-              <div className="text-slate-400">Cost of Delay</div>
+              <div className="text-text-muted">Cost of Delay</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-purple-400">{businessCase.timeToDecision} days</div>
-              <div className="text-slate-400">Decision Timeline</div>
+              <div className="text-text-muted">Decision Timeline</div>
             </div>
           </div>
         </ModernCard>
@@ -245,10 +245,10 @@ const SimplifiedBusinessCaseBuilder: React.FC<SimplifiedBusinessCaseBuilderProps
                   } as any)}
                 />
               </div>
-              
+
               <div className="text-center">
                 <div className="text-2xl font-bold text-white mb-2">{metric.value}</div>
-                <div className="text-sm text-slate-400">{metric.description}</div>
+                <div className="text-sm text-text-muted">{metric.description}</div>
               </div>
             </ModernCard>
           ))}
@@ -267,23 +267,23 @@ const SimplifiedBusinessCaseBuilder: React.FC<SimplifiedBusinessCaseBuilderProps
                 <div className="w-2 h-2 bg-emerald-400 rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <div className="text-white font-medium">Revenue Growth</div>
-                  <div className="text-slate-400 text-sm">Projected ${(businessCase.revenueImpact / 1000).toFixed(0)}K increase in annual revenue through better customer targeting</div>
+                  <div className="text-text-muted text-sm">Projected ${(businessCase.revenueImpact / 1000).toFixed(0)}K increase in annual revenue through better customer targeting</div>
                 </div>
               </div>
-              
+
               <div className="flex items-start space-x-3">
                 <div className="w-2 h-2 bg-purple-400 rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <div className="text-white font-medium">Competitive Edge</div>
-                  <div className="text-slate-400 text-sm">{businessCase.competitorAdvantage}% improvement in market positioning and customer intelligence</div>
+                  <div className="text-text-muted text-sm">{businessCase.competitorAdvantage}% improvement in market positioning and customer intelligence</div>
                 </div>
               </div>
-              
+
               <div className="flex items-start space-x-3">
                 <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <div className="text-white font-medium">Team Efficiency</div>
-                  <div className="text-slate-400 text-sm">{businessCase.teamProductivity}% increase in sales team productivity and conversion rates</div>
+                  <div className="text-text-muted text-sm">{businessCase.teamProductivity}% increase in sales team productivity and conversion rates</div>
                 </div>
               </div>
             </div>
@@ -298,20 +298,20 @@ const SimplifiedBusinessCaseBuilder: React.FC<SimplifiedBusinessCaseBuilderProps
             <div className="space-y-4">
               <div className="p-4 bg-red-900/20 border border-red-700/50 rounded-lg">
                 <div className="text-red-400 font-semibold text-lg">${(businessCase.currentCost / 1000).toFixed(0)}K/month</div>
-                <div className="text-slate-300 text-sm">Lost revenue due to delayed decision making</div>
+                <div className="text-text-secondary text-sm">Lost revenue due to delayed decision making</div>
               </div>
-              
+
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-slate-400">Missed opportunities</span>
+                  <span className="text-text-muted">Missed opportunities</span>
                   <span className="text-red-400">-$15K/month</span>
                 </div>
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-slate-400">Competitive disadvantage</span>
+                  <span className="text-text-muted">Competitive disadvantage</span>
                   <span className="text-red-400">-$8K/month</span>
                 </div>
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-slate-400">Team inefficiency</span>
+                  <span className="text-text-muted">Team inefficiency</span>
                   <span className="text-red-400">-$2K/month</span>
                 </div>
               </div>
@@ -334,14 +334,14 @@ const SimplifiedBusinessCaseBuilder: React.FC<SimplifiedBusinessCaseBuilderProps
               { phase: 'Week 9-12', task: 'Full Deployment', status: 'planned' }
             ].map((item, index) => (
               <div key={index} className={`p-4 rounded-lg border ${
-                item.status === 'ready' 
-                  ? 'bg-emerald-900/20 border-emerald-700/50' 
-                  : 'bg-slate-800 border-slate-700'
+                item.status === 'ready'
+                  ? 'bg-emerald-900/20 border-emerald-700/50'
+                  : 'bg-background-elevated border-surface'
               }`}>
                 <div className="text-white font-medium">{item.phase}</div>
-                <div className="text-slate-400 text-sm">{item.task}</div>
+                <div className="text-text-muted text-sm">{item.task}</div>
                 <div className={`text-xs mt-2 ${
-                  item.status === 'ready' ? 'text-emerald-400' : 'text-slate-500'
+                  item.status === 'ready' ? 'text-emerald-400' : 'text-text-subtle'
                 }`}>
                   {item.status === 'ready' ? 'Ready to start' : 'Planned'}
                 </div>
