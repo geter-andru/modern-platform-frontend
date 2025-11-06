@@ -104,12 +104,8 @@ export default function ICPDemoPage() {
   return (
     <ModernSidebarLayout>
       <Toaster position="top-right" />
-      <div className="min-h-screen" style={{
-        background: 'var(--bg-primary)',
-        paddingTop: 'var(--space-20)',
-        paddingBottom: 'var(--space-20)'
-      }}>
-        <div className="container-wide">
+      <div className="space-y-6">
+        <div className="max-w-6xl mx-auto space-y-8">
           {/* Demo Badge Header */}
           <StaggeredItem
             delay={0}
