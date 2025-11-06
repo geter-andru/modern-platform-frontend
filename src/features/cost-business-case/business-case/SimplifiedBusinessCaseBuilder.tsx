@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { ModernCard } from '@/src/shared/components/ui/ModernCard';
 import { ModernCircularProgress } from '@/src/shared/components/ui/ModernCircularProgress';
 import { useSystematicScaling } from '@/src/shared/contexts/SystematicScalingContext';
+import { GlassButton } from '@/src/shared/components/design-system';
 
 interface BusinessCaseData {
   currentCost: number;
@@ -171,37 +172,30 @@ const SimplifiedBusinessCaseBuilder: React.FC<SimplifiedBusinessCaseBuilderProps
   return (
     <div className="space-y-6">
       <div className="max-w-6xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl opacity-10"></div>
-            <div className="relative p-6 rounded-2xl border border-surface">
-              <div className="flex items-center justify-center space-x-3 mb-4">
-                <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-pulse"></div>
-                <h1 className="text-3xl font-bold text-white">
-                  Business Case Builder
-                </h1>
-              </div>
-              <p className="text-text-secondary mb-4">
-                AI-powered ROI analysis and stakeholder presentation
-              </p>
-              
-              <button
-                onClick={generateBusinessCase}
-                disabled={isGenerating}
-                className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-200 disabled:opacity-50"
-              >
-                {isGenerating ? (
-                  <span className="flex items-center space-x-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Generating...</span>
-                  </span>
-                ) : (
-                  'Generate Business Case'
-                )}
-              </button>
-            </div>
-          </div>
+        {/* Header - Platform Pattern */}
+        <div className="mb-8">
+          <h1 className="heading-2 text-text-primary mb-2">
+            Business Case Builder
+          </h1>
+          <p className="body text-text-muted mb-6">
+            AI-powered ROI analysis and stakeholder presentation
+          </p>
+
+          <GlassButton
+            variant="primary"
+            onClick={generateBusinessCase}
+            disabled={isGenerating}
+            glow
+          >
+            {isGenerating ? (
+              <span className="flex items-center space-x-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Generating...</span>
+              </span>
+            ) : (
+              'Generate Business Case'
+            )}
+          </GlassButton>
         </div>
 
         {/* ROI Overview */}
