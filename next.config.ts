@@ -18,10 +18,6 @@ const nextConfig: NextConfig = {
   // Asset prefix
   assetPrefix: '',
 
-  // Workspace root configuration to prevent lockfile warnings
-  // Points to monorepo root where parent package-lock.json exists
-  outputFileTracingRoot: '/Users/geter/andru/hs-andru-test',
-
   // TypeScript checking ENABLED for production quality
   typescript: {
     ignoreBuildErrors: false  // ✅ Enforce type safety in production builds
