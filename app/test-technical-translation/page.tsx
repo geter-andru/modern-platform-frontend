@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import TechnicalTranslationPanel from '@/app/components/technical-translation/TechnicalTranslationPanel';
-import technicalTranslationService from '@/app/lib/services/TechnicalTranslationService';
-import type { TranslationResult } from '@/app/lib/services/TechnicalTranslationService';
+import technicalTranslationService from '@/src/lib/services/TechnicalTranslationService';
+import type { TranslationResult } from '@/src/lib/services/TechnicalTranslationService';
 
 export default function TechnicalTranslationTestPage() {
   const [translations, setTranslations] = useState<TranslationResult | null>(null);

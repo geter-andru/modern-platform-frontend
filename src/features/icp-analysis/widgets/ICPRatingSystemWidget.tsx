@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import '../../../shared/styles/design-tokens.css';
-
-import { motion, AnimatePresence } from 'framer-motion'
 import Tooltip from '../../../shared/components/ui/Tooltip'
 import { 
   Brain, 
@@ -374,17 +371,17 @@ export default function ICPRatingSystemWidget({
   }
 
   return (
-    <div className={`bg-background-primary border border-surface rounded-xl overflow-hidden ${className}`}>
-      <div className="bg-background-secondary/50 px-6 py-4 border-b border-surface">
+    <div className={`bg-[#1a2332] border border-blue-800/30 rounded-xl overflow-hidden ${className}`}>
+      <div className="bg-gray-800/50 px-6 py-4 border-b border-blue-800/30">
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-bold text-text-primary">ICP Rating System</h2>
+              <h2 className="text-xl font-bold text-white">ICP Rating System</h2>
               {ratingSystem && (
                 <Tooltip
                   content={
                     <div className="max-w-xs">
-                      <p className="text-sm text-text-primary">
+                      <p className="text-sm text-white">
                         🧠 <strong>Cumulative Intelligence:</strong> This rating framework was generated using your Product Description and ICP Analysis as context, creating unmatched personalization for your specific market.
                       </p>
                     </div>
@@ -393,36 +390,36 @@ export default function ICPRatingSystemWidget({
                   trigger="hover"
                 >
                   <span className="inline-flex items-center">
-                    <Info className="w-4 h-4 text-text-muted cursor-help" />
+                    <Info className="w-4 h-4 text-gray-500 cursor-help" />
                   </span>
                 </Tooltip>
               )}
             </div>
-            <p className="text-text-secondary text-sm">
-              {isLoading ? 'Loading rating system...' : 
+            <p className="text-gray-400 text-sm">
+              {isLoading ? 'Loading rating system...' :
                error ? 'Error loading rating system' :
-               ratingSystem ? `${ratingSystem.name} • ${ratingSystem.categories.length} Categories • ${ratingSystem.totalMaxPoints} Point Maximum • ${ratingSystem.tiers.length} Tiers` : 
+               ratingSystem ? `${ratingSystem.name} • ${ratingSystem.categories.length} Categories • ${ratingSystem.totalMaxPoints} Point Maximum • ${ratingSystem.tiers.length} Tiers` :
                'No rating system available'}
             </p>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowMethodology(!showMethodology)}
-              className="p-2 text-text-secondary hover:text-text-primary transition-colors"
+              className="p-2 text-gray-400 hover:text-white transition-colors duration-200"
               title="Show methodology"
             >
               <Brain className="w-4 h-4" />
             </button>
             <button
               onClick={loadRatingSystem}
-              className="p-2 text-text-secondary hover:text-text-primary transition-colors"
+              className="p-2 text-gray-400 hover:text-white transition-colors duration-200"
               title="Refresh system"
             >
               <RefreshCw className="w-4 h-4" />
             </button>
             <button
               onClick={() => copyToClipboard(generateFrameworkSummary(), 'framework-summary')}
-              className="p-2 text-text-secondary hover:text-text-primary transition-colors"
+              className="p-2 text-gray-400 hover:text-white transition-colors duration-200"
               title="Export framework"
             >
               <Download className="w-4 h-4" />
@@ -453,17 +450,17 @@ export default function ICPRatingSystemWidget({
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto mb-4"></div>
-              <p className="text-text-secondary">Loading rating system...</p>
+              <p className="text-gray-400">Loading rating system...</p>
             </div>
           </div>
         ) : !ratingSystem ? (
           <div className="text-center py-12">
-            <Brain className="w-12 h-12 text-text-muted mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-text-primary mb-2">No Rating System Available</h3>
-            <p className="text-text-secondary mb-4">Unable to load the rating system framework.</p>
-            <button 
+            <Brain className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-white mb-2">No Rating System Available</h3>
+            <p className="text-gray-400 mb-4">Unable to load the rating system framework.</p>
+            <button
               onClick={loadRatingSystem}
-              className="px-4 py-2 bg-brand-primary text-text-primary rounded-lg hover:bg-brand-primary/90 transition-colors"
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
             >
               Retry
             </button>
@@ -472,42 +469,34 @@ export default function ICPRatingSystemWidget({
           <>
             {/* Removed blue "Cumulative Intelligence" box - replaced with tooltip icon next to widget title */}
 
-        <AnimatePresence>
-          {showMethodology && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="mb-6 overflow-hidden"
-            >
-              <div className="bg-background-secondary/50 rounded-lg p-4 border border-surface">
-                <h3 className="text-lg font-semibold text-text-primary mb-3 flex items-center gap-2">
-                  <Lightbulb className="w-5 h-5 text-yellow-400" />
-                  How This Rating Was Built
-                </h3>
-                <div className="space-y-3 text-sm text-text-muted">
-                  <div>
-                    <strong className="text-text-primary">Category Selection:</strong> {ratingSystem.methodology.categorySelection}
-                  </div>
-                  <div>
-                    <strong className="text-text-primary">Weighting Rationale:</strong> {ratingSystem.methodology.weightingRationale}
-                  </div>
-                  <div>
-                    <strong className="text-text-primary">Sales Cycle Complexity:</strong> {ratingSystem.methodology.salesCycleComplexity}
-                  </div>
-                  <div>
-                    <strong className="text-text-primary">Solution Type:</strong> {ratingSystem.methodology.solutionType}
-                  </div>
+        {showMethodology && (
+          <div className="mb-6">
+            <div className="bg-gray-800/50 rounded-lg p-4 border border-blue-800/30">
+              <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                <Lightbulb className="w-5 h-5 text-yellow-400" />
+                How This Rating Was Built
+              </h3>
+              <div className="space-y-3 text-sm text-gray-500">
+                <div>
+                  <strong className="text-white">Category Selection:</strong> {ratingSystem.methodology.categorySelection}
+                </div>
+                <div>
+                  <strong className="text-white">Weighting Rationale:</strong> {ratingSystem.methodology.weightingRationale}
+                </div>
+                <div>
+                  <strong className="text-white">Sales Cycle Complexity:</strong> {ratingSystem.methodology.salesCycleComplexity}
+                </div>
+                <div>
+                  <strong className="text-white">Solution Type:</strong> {ratingSystem.methodology.solutionType}
                 </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          </div>
+        )}
 
         <div className="mb-8">
-          <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-brand-primary" />
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <Building2 className="w-5 h-5 text-blue-500" />
             Firmographic Categories (3)
           </h3>
           <div className="space-y-4">
@@ -515,91 +504,80 @@ export default function ICPRatingSystemWidget({
               .filter(criteria => criteria.category === 'firmographic')
               .map((criteria, index) => {
                 const isExpanded = expandedCriteria === criteria.id;
-                
+
                 return (
-                  <motion.div
+                  <div
                     key={criteria.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className="bg-background-secondary/50 rounded-lg border border-surface overflow-hidden"
+                    className="bg-gray-800/50 rounded-lg border border-blue-800/30 overflow-hidden"
                   >
-                    
+
                     <button
                       onClick={() => toggleCriteria(criteria.id)}
-                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-background-tertiary/50 transition-colors"
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-800 transition-colors duration-200"
                     >
                       <div className="flex items-center gap-3">
-                        <span className="text-brand-primary font-semibold">{index + 1}.</span>
+                        <span className="text-blue-500 font-semibold">{index + 1}.</span>
                         <div className="text-left">
-                          <h4 className="text-text-primary font-medium">{criteria.name}</h4>
-                          <p className="text-text-secondary text-sm">{criteria.description}</p>
+                          <h4 className="text-white font-medium">{criteria.name}</h4>
+                          <p className="text-gray-400 text-sm">{criteria.description}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-brand-primary font-semibold">{criteria.weight}%</span>
+                        <span className="text-blue-500 font-semibold">{criteria.weight}%</span>
                         {isExpanded ? (
-                          <ChevronUp className="w-4 h-4 text-text-secondary" />
+                          <ChevronUp className="w-4 h-4 text-gray-400" />
                         ) : (
-                          <ChevronDown className="w-4 h-4 text-text-secondary" />
+                          <ChevronDown className="w-4 h-4 text-gray-400" />
                         )}
                       </div>
                     </button>
 
-                    <AnimatePresence>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="px-4 pb-4 border-t border-surface">
-                            <div className="pt-4 space-y-4">
-                              <div>
-                                <h5 className="text-text-primary font-medium mb-1">Reasoning</h5>
-                                <p className="text-text-secondary text-sm">{criteria.reasoning}</p>
-                              </div>
-                              <div>
-                                <h5 className="text-text-primary font-medium mb-3">Scoring Criteria:</h5>
-                                <div className="space-y-3">
-                                  {criteria.scoringLevels.map((level) => (
-                                    <div key={level.score} className="bg-background-tertiary/30 rounded-lg p-3">
-                                      <div className="flex items-start gap-3">
-                                        <span className="text-brand-primary font-semibold">{level.score} points -</span>
-                                        <div className="flex-1">
-                                          <p className="text-text-primary font-medium mb-1">{level.description}</p>
-                                          <div className="space-y-1 text-sm">
-                                            <p className="text-text-muted">
-                                              <strong>Criteria:</strong> {level.criteria.join(', ')}
-                                            </p>
-                                            <p className="text-text-muted">
-                                              <strong>Examples:</strong> {level.examples.join(', ')}
-                                            </p>
-                                            <p className="text-text-secondary">
-                                              <strong>Data Sources:</strong> {level.dataSources.join(', ')}
-                                            </p>
-                                          </div>
+                    {isExpanded && (
+                      <div className="border-t border-blue-800/30">
+                        <div className="px-4 pb-4">
+                          <div className="pt-4 space-y-4">
+                            <div>
+                              <h5 className="text-white font-medium mb-1">Reasoning</h5>
+                              <p className="text-gray-400 text-sm">{criteria.reasoning}</p>
+                            </div>
+                            <div>
+                              <h5 className="text-white font-medium mb-3">Scoring Criteria:</h5>
+                              <div className="space-y-3">
+                                {criteria.scoringLevels.map((level) => (
+                                  <div key={level.score} className="bg-gray-800/30 rounded-lg p-3">
+                                    <div className="flex items-start gap-3">
+                                      <span className="text-blue-500 font-semibold">{level.score} points -</span>
+                                      <div className="flex-1">
+                                        <p className="text-white font-medium mb-1">{level.description}</p>
+                                        <div className="space-y-1 text-sm">
+                                          <p className="text-gray-500">
+                                            <strong>Criteria:</strong> {level.criteria.join(', ')}
+                                          </p>
+                                          <p className="text-gray-500">
+                                            <strong>Examples:</strong> {level.examples.join(', ')}
+                                          </p>
+                                          <p className="text-gray-400">
+                                            <strong>Data Sources:</strong> {level.dataSources.join(', ')}
+                                          </p>
                                         </div>
                                       </div>
                                     </div>
-                                  ))}
-                                </div>
+                                  </div>
+                                ))}
                               </div>
                             </div>
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 );
               })}
           </div>
         </div>
 
         <div className="mb-8">
-          <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <Users className="w-5 h-5 text-green-400" />
             Behavioral Categories (3)
           </h3>
@@ -608,151 +586,137 @@ export default function ICPRatingSystemWidget({
               .filter(criteria => criteria.category === 'behavioral')
               .map((criteria, index) => {
                 const isExpanded = expandedCriteria === criteria.id;
-                
+
                 return (
-                  <motion.div
+                  <div
                     key={criteria.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className="bg-background-secondary/50 rounded-lg border border-surface overflow-hidden"
+                    className="bg-gray-800/50 rounded-lg border border-blue-800/30 overflow-hidden"
                   >
-                    
+
                     <button
                       onClick={() => toggleCriteria(criteria.id)}
-                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-background-tertiary/50 transition-colors"
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-800 transition-colors duration-200"
                     >
                       <div className="flex items-center gap-3">
                         <span className="text-green-400 font-semibold">{index + 1}.</span>
                         <div className="text-left">
-                          <h4 className="text-text-primary font-medium">{criteria.name}</h4>
-                          <p className="text-text-secondary text-sm">{criteria.description}</p>
+                          <h4 className="text-white font-medium">{criteria.name}</h4>
+                          <p className="text-gray-400 text-sm">{criteria.description}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="text-green-400 font-semibold">{criteria.weight}%</span>
                         {isExpanded ? (
-                          <ChevronUp className="w-4 h-4 text-text-secondary" />
+                          <ChevronUp className="w-4 h-4 text-gray-400" />
                         ) : (
-                          <ChevronDown className="w-4 h-4 text-text-secondary" />
+                          <ChevronDown className="w-4 h-4 text-gray-400" />
                         )}
                       </div>
                     </button>
 
-                    <AnimatePresence>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="px-4 pb-4 border-t border-surface">
-                            <div className="pt-4 space-y-4">
-                              <div>
-                                <h5 className="text-text-primary font-medium mb-1">Reasoning</h5>
-                                <p className="text-text-secondary text-sm">{criteria.reasoning}</p>
-                              </div>
-                              <div>
-                                <h5 className="text-text-primary font-medium mb-3">Scoring Criteria:</h5>
-                                <div className="space-y-3">
-                                  {criteria.scoringLevels.map((level) => (
-                                    <div key={level.score} className="bg-background-tertiary/30 rounded-lg p-3">
-                                      <div className="flex items-start gap-3">
-                                        <span className="text-green-400 font-semibold">{level.score} points -</span>
-                                        <div className="flex-1">
-                                          <p className="text-text-primary font-medium mb-1">{level.description}</p>
-                                          <div className="space-y-1 text-sm">
-                                            <p className="text-text-muted">
-                                              <strong>Criteria:</strong> {level.criteria.join(', ')}
-                                            </p>
-                                            <p className="text-text-muted">
-                                              <strong>Examples:</strong> {level.examples.join(', ')}
-                                            </p>
-                                            <p className="text-text-secondary">
-                                              <strong>Data Sources:</strong> {level.dataSources.join(', ')}
-                                            </p>
-                                          </div>
+                    {isExpanded && (
+                      <div className="border-t border-blue-800/30">
+                        <div className="px-4 pb-4">
+                          <div className="pt-4 space-y-4">
+                            <div>
+                              <h5 className="text-white font-medium mb-1">Reasoning</h5>
+                              <p className="text-gray-400 text-sm">{criteria.reasoning}</p>
+                            </div>
+                            <div>
+                              <h5 className="text-white font-medium mb-3">Scoring Criteria:</h5>
+                              <div className="space-y-3">
+                                {criteria.scoringLevels.map((level) => (
+                                  <div key={level.score} className="bg-gray-800/30 rounded-lg p-3">
+                                    <div className="flex items-start gap-3">
+                                      <span className="text-green-400 font-semibold">{level.score} points -</span>
+                                      <div className="flex-1">
+                                        <p className="text-white font-medium mb-1">{level.description}</p>
+                                        <div className="space-y-1 text-sm">
+                                          <p className="text-gray-500">
+                                            <strong>Criteria:</strong> {level.criteria.join(', ')}
+                                          </p>
+                                          <p className="text-gray-500">
+                                            <strong>Examples:</strong> {level.examples.join(', ')}
+                                          </p>
+                                          <p className="text-gray-400">
+                                            <strong>Data Sources:</strong> {level.dataSources.join(', ')}
+                                          </p>
                                         </div>
                                       </div>
                                     </div>
-                                  ))}
-                                </div>
+                                  </div>
+                                ))}
                               </div>
                             </div>
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 );
               })}
           </div>
         </div>
 
         <div className="mb-8">
-          <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <Award className="w-5 h-5 text-yellow-400" />
             Prospect Rating Tiers
           </h3>
           <div className="grid gap-4">
             {ratingSystem.tiers.map((tier, index) => (
-              <motion.div
+              <div
                 key={tier.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                className="bg-background-secondary/50 rounded-lg p-4 border border-surface"
+                className="bg-gray-800/50 rounded-lg p-4 border border-blue-800/30"
               >
                 <div className="flex items-start gap-3">
-                  <div 
+                  <div
                     className="w-4 h-4 rounded-full mt-1"
                     style={{ backgroundColor: tier.color }}
                   />
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className="text-text-primary font-medium">{tier.name}</h4>
-                      <span className="text-text-secondary text-sm">({tier.minScore}-{tier.maxScore} points)</span>
+                      <h4 className="text-white font-medium">{tier.name}</h4>
+                      <span className="text-gray-400 text-sm">({tier.minScore}-{tier.maxScore} points)</span>
                     </div>
-                    <p className="text-text-secondary text-sm mb-2">{tier.description}</p>
+                    <p className="text-gray-400 text-sm mb-2">{tier.description}</p>
                     <div className="space-y-1 text-sm">
-                      <p className="text-text-muted">
+                      <p className="text-gray-500">
                         <strong>Next Steps:</strong> {tier.nextSteps.join(', ')}
                       </p>
-                      <p className="text-text-muted">
+                      <p className="text-gray-500">
                         <strong>Resource Allocation:</strong> {tier.resourceAllocation}
                       </p>
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
 
         <div className="mb-8">
-          <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <Settings className="w-5 h-5 text-purple-400" />
             Implementation Guidelines
           </h3>
-          <div className="bg-background-secondary/50 rounded-lg p-4 border border-surface">
+          <div className="bg-gray-800/50 rounded-lg p-4 border border-blue-800/30">
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
-                <h4 className="text-text-primary font-medium mb-2">Users & Integration</h4>
-                <p className="text-text-muted mb-1">
+                <h4 className="text-white font-medium mb-2">Users & Integration</h4>
+                <p className="text-gray-500 mb-1">
                   <strong>Users:</strong> {ratingSystem.implementationGuidelines.users.join(', ')}
                 </p>
-                <p className="text-text-muted">
+                <p className="text-gray-500">
                   <strong>Integration:</strong> {ratingSystem.implementationGuidelines.integration.join(', ')}
                 </p>
               </div>
               <div>
-                <h4 className="text-text-primary font-medium mb-2">Training & Edge Cases</h4>
-                <p className="text-text-muted mb-1">
+                <h4 className="text-white font-medium mb-2">Training & Edge Cases</h4>
+                <p className="text-gray-500 mb-1">
                   <strong>Training:</strong> {ratingSystem.implementationGuidelines.training.join(', ')}
                 </p>
-                <p className="text-text-muted">
+                <p className="text-gray-500">
                   <strong>Edge Cases:</strong> {ratingSystem.implementationGuidelines.edgeCases.join(', ')}
                 </p>
               </div>
@@ -763,7 +727,7 @@ export default function ICPRatingSystemWidget({
         <div className="flex gap-3">
           <button
             onClick={() => copyToClipboard(generateFrameworkSummary(), 'framework-summary')}
-            className="flex items-center gap-2 px-4 py-2 bg-background-secondary hover:bg-background-tertiary text-text-primary rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors duration-200"
           >
             {copiedContent === 'framework-summary' ? (
               <Check className="w-4 h-4 text-green-400" />
@@ -774,8 +738,8 @@ export default function ICPRatingSystemWidget({
           </button>
         </div>
 
-            <div className="mt-6 pt-4 border-t border-surface">
-              <div className="flex items-center justify-between text-sm text-text-secondary">
+            <div className="mt-6 pt-4 border-t border-blue-800/30">
+              <div className="flex items-center justify-between text-sm text-gray-400">
                 <span>Last updated: {ratingSystem ? ratingSystem.lastUpdated.toLocaleDateString() : 'N/A'}</span>
                 <span>{ratingSystem ? `${ratingSystem.categories.length} Categories • ${ratingSystem.totalMaxPoints} Point System • ${ratingSystem.tiers.length} Tiers` : 'No data available'}</span>
               </div>

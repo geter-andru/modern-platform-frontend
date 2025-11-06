@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
 import {
   Package,
   Edit,
@@ -608,44 +607,31 @@ export default function ProductDetailsWidget({
 
       {/* Success Banner */}
       {showSuccessBanner && (
-        <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -50 }}
-          className="fixed top-4 right-4 z-50 max-w-md"
-        >
-          <div
-            className="rounded-lg shadow-2xl p-4 border"
-            style={{
-              backgroundColor: 'var(--color-surface)',
-              borderColor: 'var(--color-accent-success)',
-              boxShadow: '0 10px 40px rgba(0, 255, 0, 0.2)'
-            }}
-          >
+        <div className="fixed top-4 right-4 z-50 max-w-md">
+          <div className="rounded-lg shadow-2xl p-4 border bg-gray-800 border-green-500">
             <div className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 flex-shrink-0" style={{ color: 'var(--color-accent-success)' }} />
+              <CheckCircle className="w-6 h-6 flex-shrink-0 text-green-500" />
               <div className="flex-1">
-                <h4 className="font-bold mb-1" style={{ color: 'var(--text-primary)' }}>
+                <h4 className="font-bold mb-1 text-white">
                   ICP Analysis Complete!
                 </h4>
-                <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>
+                <p className="text-sm mb-3 text-gray-400">
                   Your ICP has been generated successfully. Redirecting to overview...
                 </p>
-                <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--color-brand-primary)' }}>
+                <div className="flex items-center gap-2 text-xs text-blue-500">
                   <ArrowRight className="w-4 h-4" />
                   <span>Auto-navigating in 2 seconds</span>
                 </div>
               </div>
               <button
                 onClick={() => setShowSuccessBanner(false)}
-                className="text-sm hover:opacity-70 transition-opacity"
-                style={{ color: 'var(--text-tertiary)' }}
+                className="text-sm hover:opacity-70 transition-opacity text-gray-500"
               >
                 ✕
               </button>
             </div>
           </div>
-        </motion.div>
+        </div>
       )}
 
       <div className="px-6 py-4 border-b border-transparent" style={{ 
@@ -836,18 +822,10 @@ export default function ProductDetailsWidget({
                   </p>
                 </div>
               )}
-              <motion.button
+              <button
                 onClick={handleGenerateICP}
                 disabled={isProcessing}
-                whileHover={{ scale: isProcessing ? 1 : 1.02 }}
-                whileTap={{ scale: isProcessing ? 1 : 0.98 }}
-                className="flex items-center gap-3 px-6 py-2 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ 
-                  backgroundColor: 'var(--color-brand-primary)',
-                  color: 'var(--text-primary)'
-                }}
-                onMouseEnter={(e) => !isProcessing && ((e.target as HTMLElement).style.backgroundColor = 'var(--color-brand-primary-dark)')}
-                onMouseLeave={(e) => !isProcessing && ((e.target as HTMLElement).style.backgroundColor = 'var(--color-brand-primary)')}
+                className="flex items-center gap-3 px-6 py-2 rounded-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] bg-blue-600 text-white hover:bg-blue-700"
               >
                 {isProcessing ? (
                   <>
@@ -861,7 +839,7 @@ export default function ProductDetailsWidget({
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
-              </motion.button>
+              </button>
             </div>
           </div>
         </div>
@@ -884,15 +862,9 @@ export default function ProductDetailsWidget({
           ) : (
             <div className="space-y-3">
               {productHistory.map((product, index) => (
-                <motion.div
+                <div
                   key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="rounded-lg p-4 cursor-pointer transition-colors"
-                  style={{ backgroundColor: 'var(--color-surface)' }}
-                  onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = 'var(--color-surface-hover)'}
-                  onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = 'var(--color-surface)'}
+                  className="rounded-lg p-4 cursor-pointer transition-colors bg-gray-800 hover:bg-gray-700"
                   onClick={() => loadProductFromHistory(product)}
                 >
                   <div className="flex items-start justify-between mb-2">
@@ -916,7 +888,7 @@ export default function ProductDetailsWidget({
                       {product.businessModel === 'b2b-subscription' ? 'Subscription' : 'One-time'}
                     </span>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           )}

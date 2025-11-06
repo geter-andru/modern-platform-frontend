@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import '../../../shared/styles/design-tokens.css';
-
-import { motion, AnimatePresence } from 'framer-motion'
 import Tooltip from '../../../shared/components/ui/Tooltip'
 import ConfidenceBadge, { getConfidenceLevel } from '../../../shared/components/ui/ConfidenceBadge'
 import { DataPointsIndicator } from '../../../shared/components/ui/IntelligenceSignal'
@@ -293,22 +290,22 @@ export default function BuyerPersonasWidget({
       case 'high': return 'bg-red-900/30 text-red-400 border border-red-700/50'
       case 'medium': return 'bg-yellow-900/30 text-yellow-400 border border-yellow-700/50'
       case 'low': return 'bg-green-900/30 text-green-400 border border-green-700/50'
-      default: return 'bg-background-primary/30 text-text-secondary border border-surface/50'
+      default: return 'bg-black/30 text-gray-400 border border-blue-800/30/50'
     }
   }
 
   return (
-    <div className={`bg-background-secondary border border-transparent rounded-xl overflow-hidden ${className}`}>
-      <div className="bg-background-tertiary px-6 py-4">
+    <div className={`bg-[#1a2332] border border-transparent rounded-xl overflow-hidden ${className}`}>
+      <div className="bg-gray-800 px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-bold text-text-primary">Target Buyer Personas</h2>
+              <h2 className="text-xl font-bold text-white">Target Buyer Personas</h2>
               {personas && personas.length > 0 && (
                 <Tooltip
                   content={
                     <div className="max-w-xs">
-                      <p className="text-sm text-text-primary">
+                      <p className="text-sm text-white">
                         Use these personas to tailor your messaging, content, and sales approach. Focus on addressing their specific pain points and speaking their language to increase engagement and conversion rates.
                       </p>
                     </div>
@@ -317,12 +314,12 @@ export default function BuyerPersonasWidget({
                   trigger="hover"
                 >
                   <span className="inline-flex items-center">
-                    <Info className="w-4 h-4 text-text-muted cursor-help" />
+                    <Info className="w-4 h-4 text-gray-500 cursor-help" />
                   </span>
                 </Tooltip>
               )}
             </div>
-            <p className="text-text-muted text-sm">
+            <p className="text-gray-500 text-sm">
               {isGeneratingPersonas ? 'Generating buyer personas...' : 
                hasError ? 'Error generating personas' :
                transformedPersonas.length > 0 ? `${transformedPersonas.length} personas generated • AI-powered with empathy mapping` : 
@@ -332,7 +329,7 @@ export default function BuyerPersonasWidget({
           <div className="flex items-center gap-2">
             <button
               onClick={() => {/* Clear personas - handled by cache hook */}}
-              className="p-2 text-text-muted hover:text-text-primary hover:bg-surface-hover rounded-lg transition-colors"
+              className="p-2 text-gray-500 hover:text-white hover:bg-gray-700 rounded-lg transition-colors"
               title="Clear personas"
             >
               <RefreshCw className="w-4 h-4" />
@@ -340,7 +337,7 @@ export default function BuyerPersonasWidget({
             {transformedPersonas.length > 0 && (
               <button
                 onClick={handleExportPersonas}
-                className="p-2 text-text-muted hover:text-text-primary hover:bg-surface-hover rounded-lg transition-colors"
+                className="p-2 text-gray-500 hover:text-white hover:bg-gray-700 rounded-lg transition-colors"
                 title="Export personas"
               >
                 <ExternalLink className="w-4 h-4" />
@@ -370,19 +367,19 @@ export default function BuyerPersonasWidget({
         
         {transformedPersonas.length === 0 && (
           <div className="text-center py-12">
-            <div className="w-16 h-16 bg-brand-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Users className="w-8 h-8 text-brand-primary" />
+            <div className="w-16 h-16 bg-blue-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Users className="w-8 h-8 text-blue-500" />
             </div>
-            <h3 className="text-lg font-semibold text-text-primary mb-2">
+            <h3 className="text-lg font-semibold text-white mb-2">
               Generate Target Buyer Personas
             </h3>
-            <p className="text-text-muted mb-6 max-w-md mx-auto">
+            <p className="text-gray-500 mb-6 max-w-md mx-auto">
               Create detailed buyer personas with empathy mapping, behavioral insights, and communication preferences based on your ICP data.
             </p>
             <button
               onClick={handleGeneratePersonas}
               disabled={isGeneratingPersonas}
-              className="px-6 py-3 bg-brand-primary hover:bg-brand-primary/90 text-text-primary rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 mx-auto"
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-600/90 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 mx-auto"
             >
               {isGeneratingPersonas ? (
                 <>
@@ -400,14 +397,14 @@ export default function BuyerPersonasWidget({
         )}
 
         {isGeneratingPersonas && (
-          <div className="mb-6 p-4 bg-brand-primary/10 border border-brand-primary/30 rounded-lg">
+          <div className="mb-6 p-4 bg-blue-600/10 border border-brand-primary/30 rounded-lg">
             <div className="flex items-center gap-3">
-              <RefreshCw className="w-5 h-5 text-brand-primary animate-spin" />
+              <RefreshCw className="w-5 h-5 text-blue-500 animate-spin" />
               <div>
-                <h4 className="text-sm font-semibold text-brand-primary">
+                <h4 className="text-sm font-semibold text-blue-500">
                   Generating Buyer Personas
                 </h4>
-                <p className="text-xs text-text-muted mt-1">
+                <p className="text-xs text-gray-500 mt-1">
                   Analyzing your ICP data and creating detailed personas with empathy mapping...
                 </p>
               </div>
@@ -415,15 +412,8 @@ export default function BuyerPersonasWidget({
           </div>
         )}
 
-        <AnimatePresence>
-          {personas && personas.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-6"
-            >
+        {personas && personas.length > 0 && (
+          <div className="space-y-6">
               {transformedPersonas.map((persona, index) => {
                 const isExpanded = expandedPersona === persona.id;
                 const IconComponent = getPersonaIcon(persona.role);
@@ -440,21 +430,21 @@ export default function BuyerPersonasWidget({
                 const confidence = Math.round((collectedPoints / dataPoints.length) * 100);
 
                 return (
-                  <div key={persona.id} className="bg-background-tertiary rounded-lg overflow-hidden">
+                  <div key={persona.id} className="bg-gray-800 rounded-lg overflow-hidden">
 
                     <button
                       onClick={() => togglePersona(persona.id)}
-                      className="w-full px-6 py-4 flex items-center justify-between hover:bg-surface-hover transition-colors"
+                      className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-700 transition-colors"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-brand-primary/20 rounded-lg flex items-center justify-center">
-                          <IconComponent className="w-6 h-6 text-brand-primary" />
+                        <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center">
+                          <IconComponent className="w-6 h-6 text-blue-500" />
                         </div>
                         <div className="text-left">
-                          <h3 className="text-lg font-semibold text-text-primary">
+                          <h3 className="text-lg font-semibold text-white">
                             {persona.name}
                           </h3>
-                          <p className="text-sm text-text-muted">
+                          <p className="text-sm text-gray-500">
                             {persona.title} • {persona.role}
                           </p>
                         </div>
@@ -473,82 +463,75 @@ export default function BuyerPersonasWidget({
                           size="sm"
                         />
                         {isExpanded ? (
-                          <EyeOff className="w-4 h-4 text-text-muted" />
+                          <EyeOff className="w-4 h-4 text-gray-500" />
                         ) : (
-                          <Eye className="w-4 h-4 text-text-muted" />
+                          <Eye className="w-4 h-4 text-gray-500" />
                         )}
                       </div>
                     </button>
 
-                    <AnimatePresence>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="px-6 pb-6 border-t border-transparent">
+                    {isExpanded && (
+                      <div className="border-t border-blue-800/30">
+                        <div className="px-6 pb-6">
                             <div className="pt-6 space-y-6">
                               
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="bg-background-primary rounded-lg p-4">
-                                  <h4 className="text-sm font-semibold text-text-primary mb-3 flex items-center gap-2">
-                                    <User className="w-4 h-4 text-brand-primary" />
+                                <div className="bg-black rounded-lg p-4">
+                                  <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                                    <User className="w-4 h-4 text-blue-500" />
                                     Demographics
                                   </h4>
                                   <div className="space-y-2 text-sm">
                                     <div className="flex justify-between">
-                                      <span className="text-text-muted">Age Range:</span>
-                                      <span className="text-text-primary">{persona.demographics.ageRange}</span>
+                                      <span className="text-gray-500">Age Range:</span>
+                                      <span className="text-white">{persona.demographics.ageRange}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-text-muted">Experience:</span>
-                                      <span className="text-text-primary">{persona.demographics.experience}</span>
+                                      <span className="text-gray-500">Experience:</span>
+                                      <span className="text-white">{persona.demographics.experience}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-text-muted">Education:</span>
-                                      <span className="text-text-primary">{persona.demographics.education}</span>
+                                      <span className="text-gray-500">Education:</span>
+                                      <span className="text-white">{persona.demographics.education}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-text-muted">Location:</span>
-                                      <span className="text-text-primary">{persona.demographics.location}</span>
+                                      <span className="text-gray-500">Location:</span>
+                                      <span className="text-white">{persona.demographics.location}</span>
                                     </div>
                                   </div>
                                 </div>
 
-                                <div className="bg-background-primary rounded-lg p-4">
-                                  <h4 className="text-sm font-semibold text-text-primary mb-3 flex items-center gap-2">
-                                    <Brain className="w-4 h-4 text-brand-primary" />
+                                <div className="bg-black rounded-lg p-4">
+                                  <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                                    <Brain className="w-4 h-4 text-blue-500" />
                                     Psychographics
                                   </h4>
                                   <div className="space-y-2 text-sm">
                                     <div className="flex justify-between">
-                                      <span className="text-text-muted">Values:</span>
-                                      <span className="text-text-primary">{persona.psychographics.values}</span>
+                                      <span className="text-gray-500">Values:</span>
+                                      <span className="text-white">{persona.psychographics.values}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-text-muted">Motivations:</span>
-                                      <span className="text-text-primary">{persona.psychographics.motivations}</span>
+                                      <span className="text-gray-500">Motivations:</span>
+                                      <span className="text-white">{persona.psychographics.motivations}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-text-muted">Fears:</span>
-                                      <span className="text-text-primary">{persona.psychographics.fears}</span>
+                                      <span className="text-gray-500">Fears:</span>
+                                      <span className="text-white">{persona.psychographics.fears}</span>
                                     </div>
                                   </div>
                                 </div>
                               </div>
 
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="bg-background-primary rounded-lg p-4">
-                                  <h4 className="text-sm font-semibold text-text-primary mb-3 flex items-center gap-2">
+                                <div className="bg-black rounded-lg p-4">
+                                  <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
                                     <Target className="w-4 h-4 text-green-400" />
                                     Goals
                                   </h4>
                                   <ul className="space-y-2">
                                     {persona.goals.map((goal, goalIndex) => (
-                                      <li key={goalIndex} className="text-sm text-text-primary flex items-start gap-2">
+                                      <li key={goalIndex} className="text-sm text-white flex items-start gap-2">
                                         <CheckCircle className="w-3 h-3 text-green-400 mt-1 flex-shrink-0" />
                                         {goal}
                                       </li>
@@ -556,14 +539,14 @@ export default function BuyerPersonasWidget({
                                   </ul>
                                 </div>
 
-                                <div className="bg-background-primary rounded-lg p-4">
-                                  <h4 className="text-sm font-semibold text-text-primary mb-3 flex items-center gap-2">
+                                <div className="bg-black rounded-lg p-4">
+                                  <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
                                     <AlertTriangle className="w-4 h-4 text-red-400" />
                                     Pain Points
                                   </h4>
                                   <ul className="space-y-2">
                                     {persona.painPoints.map((painPoint, painIndex) => (
-                                      <li key={painIndex} className="text-sm text-text-primary flex items-start gap-2">
+                                      <li key={painIndex} className="text-sm text-white flex items-start gap-2">
                                         <AlertTriangle className="w-3 h-3 text-red-400 mt-1 flex-shrink-0" />
                                         {painPoint}
                                       </li>
@@ -572,52 +555,52 @@ export default function BuyerPersonasWidget({
                                 </div>
                               </div>
 
-                              <div className="bg-background-primary rounded-lg p-4">
-                                <h4 className="text-sm font-semibold text-text-primary mb-3 flex items-center gap-2">
-                                  <TrendingUp className="w-4 h-4 text-brand-primary" />
+                              <div className="bg-black rounded-lg p-4">
+                                <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                                  <TrendingUp className="w-4 h-4 text-blue-500" />
                                   Buying Behavior
                                 </h4>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                                   <div>
-                                    <span className="text-text-muted">Decision Process:</span>
-                                    <p className="text-text-primary mt-1">{persona.buyingBehavior.decisionProcess}</p>
+                                    <span className="text-gray-500">Decision Process:</span>
+                                    <p className="text-white mt-1">{persona.buyingBehavior.decisionProcess}</p>
                                   </div>
                                   <div>
-                                    <span className="text-text-muted">Timeline:</span>
-                                    <p className="text-text-primary mt-1">{persona.decisionInfluence.timeline}</p>
+                                    <span className="text-gray-500">Timeline:</span>
+                                    <p className="text-white mt-1">{persona.decisionInfluence.timeline}</p>
                                   </div>
                                   <div>
-                                    <span className="text-text-muted">Budget Authority:</span>
-                                    <p className="text-text-primary mt-1">{persona.decisionInfluence.budgetAuthority}</p>
+                                    <span className="text-gray-500">Budget Authority:</span>
+                                    <p className="text-white mt-1">{persona.decisionInfluence.budgetAuthority}</p>
                                   </div>
                                 </div>
                               </div>
 
-                              <div className="bg-background-primary rounded-lg p-4">
-                                <h4 className="text-sm font-semibold text-text-primary mb-3 flex items-center gap-2">
-                                  <MessageSquare className="w-4 h-4 text-brand-primary" />
+                              <div className="bg-black rounded-lg p-4">
+                                <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                                  <MessageSquare className="w-4 h-4 text-blue-500" />
                                   Communication Preferences
                                 </h4>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                                   <div>
-                                    <span className="text-text-muted">Preferred Channels:</span>
-                                    <p className="text-text-primary mt-1">{persona.communicationPreferences.preferredChannels.join(', ')}</p>
+                                    <span className="text-gray-500">Preferred Channels:</span>
+                                    <p className="text-white mt-1">{persona.communicationPreferences.preferredChannels.join(', ')}</p>
                                   </div>
                                   <div>
-                                    <span className="text-text-muted">Tone:</span>
-                                    <p className="text-text-primary mt-1">{persona.communicationPreferences.communicationStyle}</p>
+                                    <span className="text-gray-500">Tone:</span>
+                                    <p className="text-white mt-1">{persona.communicationPreferences.communicationStyle}</p>
                                   </div>
                                 </div>
                               </div>
 
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="bg-background-primary rounded-lg p-4">
-                                  <h4 className="text-sm font-semibold text-text-primary mb-3">
+                                <div className="bg-black rounded-lg p-4">
+                                  <h4 className="text-sm font-semibold text-white mb-3">
                                     Common Objections
                                   </h4>
                                   <ul className="space-y-2">
                                     {persona.objections.map((objection, objIndex) => (
-                                      <li key={objIndex} className="text-sm text-text-primary flex items-start gap-2">
+                                      <li key={objIndex} className="text-sm text-white flex items-start gap-2">
                                         <span className="text-orange-400 mt-1">•</span>
                                         {objection}
                                       </li>
@@ -625,31 +608,29 @@ export default function BuyerPersonasWidget({
                                   </ul>
                                 </div>
 
-                                <div className="bg-background-primary rounded-lg p-4">
-                                  <h4 className="text-sm font-semibold text-text-primary mb-3">
+                                <div className="bg-black rounded-lg p-4">
+                                  <h4 className="text-sm font-semibold text-white mb-3">
                                     Information Sources
                                   </h4>
                                   <ul className="space-y-2">
                                     {persona.informationSources.map((source, srcIndex) => (
-                                      <li key={srcIndex} className="text-sm text-text-primary flex items-start gap-2">
-                                        <span className="text-brand-primary mt-1">•</span>
+                                      <li key={srcIndex} className="text-sm text-white flex items-start gap-2">
+                                        <span className="text-blue-500 mt-1">•</span>
                                         {source}
                                       </li>
                                     ))}
                                   </ul>
                                 </div>
                               </div>
-                            </div>
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
-              })}
-            </motion.div>
-          )}
-        </AnimatePresence>
+            })}
+          </div>
+        )}
 
         {/* Removed blue "Pro Tip" box - replaced with tooltip icon next to widget title */}
       </div>

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import ModernCard from '@/app/components/ui/ModernCard';
 import { Copy, ChevronDown, ChevronUp, Users, UserCheck, Download, ExternalLink } from 'lucide-react';
-import type { TranslationResult, PersonaTranslation, CXOTranslation } from '@/app/lib/services/TechnicalTranslationService';
+import type { TranslationResult, PersonaTranslation, CXOTranslation } from '@/src/lib/services/TechnicalTranslationService';
 
 interface TechnicalTranslationPanelProps {
   technicalFeature: string;

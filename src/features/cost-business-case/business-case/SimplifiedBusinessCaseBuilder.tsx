@@ -121,7 +121,7 @@ const SimplifiedBusinessCaseBuilder: React.FC<SimplifiedBusinessCaseBuilderProps
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 p-6">
+      <div className="space-y-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, index) => (
@@ -169,7 +169,7 @@ const SimplifiedBusinessCaseBuilder: React.FC<SimplifiedBusinessCaseBuilderProps
   const totalROI = ((businessCase.revenueImpact - businessCase.currentCost) / businessCase.currentCost) * 100;
 
   return (
-    <div className="min-h-screen bg-slate-950 p-6">
+    <div className="space-y-6">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center mb-8">

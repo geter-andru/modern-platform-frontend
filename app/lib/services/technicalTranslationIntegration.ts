@@ -4,8 +4,8 @@
  * Priority #3: Two-Level Stakeholder Technical Translation Integration
  */
 
-import technicalTranslationService from './TechnicalTranslationService';
-import type { BuyerPersona, TranslationResult } from './TechnicalTranslationService';
+import technicalTranslationService from '@/src/lib/services/TechnicalTranslationService';
+import type { BuyerPersona, TranslationResult } from '@/src/lib/services/TechnicalTranslationService';
 // Import singleton Supabase client (DO NOT create new instances - causes session conflicts)
 import { supabase } from '@/app/lib/supabase/client';
 

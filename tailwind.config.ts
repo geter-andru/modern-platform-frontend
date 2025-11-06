@@ -7,16 +7,39 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/**/*.{js,ts,jsx,tsx,mdx}",  // ← CRITICAL FIX: Include /src directory for Tailwind scanning
   ],
+  safelist: [
+    // Visual parity fixes - explicit opacity modifier classes
+    // Sidebar active state
+    'bg-purple-600/20',
+    'border-purple-500/30',
+    'text-purple-300',
+    'text-purple-400',
+    // Hover states
+    'hover:bg-gray-700/50',
+    'bg-gray-700/50',
+    // Section tabs
+    'bg-blue-600',
+    'bg-gray-900',
+    'text-gray-400',
+    'text-white',
+    'hover:text-white',
+    // Progress bars
+    'bg-blue-500',
+    // Gradients
+    'bg-gradient-to-br',
+    'from-purple-500',
+    'to-blue-600',
+  ],
   darkMode: 'class',
   theme: {
     extend: {
       colors: {
         // Background Colors (Dark Theme - Expert Requirement)
         background: {
-          primary: '#1a1a1a',      // --color-background-primary (expert: #1A1A1A, not #000000)
-          secondary: '#121212',    // --color-background-secondary (expert: #121212 or #1A1A1A)
-          tertiary: '#111111',     // --color-background-tertiary
-          elevated: '#222222',     // --color-background-elevated
+          primary: '#0a0a0a',      // CORRECTED: Deep black matching assets-app (was #1a1a1a)
+          secondary: '#111111',    // Subtle elevation (corrected from #121212)
+          tertiary: '#1a1a1a',     // Higher elevation (was tertiary)
+          elevated: '#222222',     // Highest elevation
         },
         surface: {
           DEFAULT: '#2a2a2a',      // --color-surface
@@ -96,6 +119,15 @@ const config: Config = {
         '3xl': ['1.875rem', { lineHeight: '1.25' }],   // 30px - --text-3xl
         '4xl': ['2.25rem', { lineHeight: '1.25' }],    // 36px - --text-4xl
         '5xl': ['2.75rem', { lineHeight: '1.25' }],    // 44px - --text-5xl
+
+        // XTRACT DESIGN SYSTEM - Added 2025-11-04
+        'hero': ['70px', { lineHeight: '77px', letterSpacing: '-2.2px' }],           // 70px - Xtract hero
+        'section-heading': ['48px', { lineHeight: '56px', letterSpacing: '-1.5px' }], // 48px - Xtract section
+        'subsection': ['32px', { lineHeight: '40px', letterSpacing: '-0.8px' }],     // 32px - Xtract subsection
+        'body-lg': ['18px', { lineHeight: '27px' }],                                  // 18px - Xtract large body
+        'body': ['16px', { lineHeight: '24px' }],                                     // 16px - Xtract body
+        'body-sm': ['14px', { lineHeight: '21px' }],                                  // 14px - Xtract small body
+        'caption': ['12px', { lineHeight: '18px' }],                                  // 12px - Xtract caption
       },
       
       lineHeight: {
@@ -131,6 +163,12 @@ const config: Config = {
         'lg': '1rem',        // 16px - --radius-lg
         'xl': '1.5rem',      // 24px - --radius-xl
         'full': '50%',       // --radius-full (percentage preserved)
+
+        // XTRACT DESIGN SYSTEM - Added 2025-11-04
+        'xtract-sm': '4px',   // 4px - Xtract small (badges)
+        'xtract': '6px',      // 6px - Xtract default (buttons)
+        'xtract-md': '12px',  // 12px - Xtract medium (small cards)
+        'xtract-lg': '20px',  // 20px - Xtract large (cards, sections)
       },
       
       transitionDuration: {
@@ -149,6 +187,11 @@ const config: Config = {
         'md': '0 4px 12px rgba(0, 0, 0, 0.3)',     // --shadow-md
         'lg': '0 10px 25px rgba(0, 0, 0, 0.4)',    // --shadow-lg
         'xl': '0 20px 40px rgba(0, 0, 0, 0.5)',    // --shadow-xl
+
+        // XTRACT DESIGN SYSTEM - Multi-layer shadows - Added 2025-11-04
+        'xtract-button': '0 2px 8px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.15)',      // Xtract button shadow
+        'xtract-card': '0 4px 16px rgba(0, 0, 0, 0.3)',                                        // Xtract card shadow
+        'xtract-lg': '0 8px 32px rgba(0, 0, 0, 0.4)',                                          // Xtract large shadow (hover)
       },
       
       backdropBlur: {
