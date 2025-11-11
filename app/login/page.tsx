@@ -73,6 +73,26 @@ export default function LoginPage() {
             <SupabaseAuth redirectTo="/dashboard" />
           </div>
 
+          {/* Payment Required Notice */}
+          <div className="mt-6 p-4 rounded-lg" style={{
+            background: 'rgba(234, 179, 8, 0.1)',
+            border: '1px solid rgba(234, 179, 8, 0.3)'
+          }}>
+            <p className="body-small" style={{
+              color: '#eab308',
+              textAlign: 'center'
+            }}>
+              ⚠️ Platform access requires founding member payment.{' '}
+              <Link
+                href="/pricing"
+                className="font-semibold underline"
+                style={{ color: '#eab308' }}
+              >
+                View pricing
+              </Link>
+            </p>
+          </div>
+
           {/* Footer Links */}
           <div className="mt-6 text-center">
             <p className="body-small" style={{
@@ -80,13 +100,13 @@ export default function LoginPage() {
             }}>
               Don't have an account?{' '}
               <Link
-                href="/founding-members"
+                href="/pricing"
                 className="font-semibold transition-colors"
                 style={{
                   color: 'var(--color-primary, #3b82f6)'
                 }}
               >
-                Apply for Beta Access
+                View Founding Member Pricing
               </Link>
             </p>
           </div>

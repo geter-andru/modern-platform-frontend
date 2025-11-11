@@ -64,6 +64,10 @@ interface MyICPOverviewWidgetProps {
 
 // TSX Components to render ICP data (replaces dangerous HTML string generation)
 const ICPOverviewContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
+  const [showAllSegments, setShowAllSegments] = React.useState(false)
+
+  const segmentsToShow = showAllSegments ? icpData.segments : icpData.segments.slice(0, 3)
+
   return (
     <div>
       <p className="body-large mb-6" style={{ color: 'var(--text-primary)' }}>
@@ -74,8 +78,25 @@ const ICPOverviewContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
           Customer Segments
         </h4>
         <div className="flex flex-col gap-3">
-          {icpData.segments.map((segment, idx) => (
-            <div key={idx} className="card-glass hover-lift p-5 rounded-lg">
+          {segmentsToShow.map((segment, idx) => (
+            <div
+              key={idx}
+              className="card-glass p-5 rounded-lg"
+              style={{
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                transition: 'all 250ms cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                e.currentTarget.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.4)';
+                e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+              }}
+            >
               <div className="flex justify-between items-center mb-3">
                 <strong className="heading-4" style={{ color: 'var(--text-primary)' }}>
                   {segment.name}
@@ -99,12 +120,27 @@ const ICPOverviewContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
             </div>
           ))}
         </div>
+        {icpData.segments.length > 3 && (
+          <button
+            onClick={() => setShowAllSegments(!showAllSegments)}
+            className="btn-secondary mt-4"
+            style={{ fontSize: '0.875rem', padding: 'var(--space-1) var(--space-3)' }}
+          >
+            {showAllSegments ? 'Show Less' : `Show ${icpData.segments.length - 3} More Segments (${icpData.segments.length} total)`}
+          </button>
+        )}
       </div>
     </div>
   )
 }
 
 const KeyIndicatorsContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
+  const [showAllIndicators, setShowAllIndicators] = React.useState(false)
+  const [showAllRedFlags, setShowAllRedFlags] = React.useState(false)
+
+  const indicatorsToShow = showAllIndicators ? icpData.keyIndicators : icpData.keyIndicators.slice(0, 5)
+  const redFlagsToShow = showAllRedFlags ? icpData.redFlags : icpData.redFlags?.slice(0, 5)
+
   return (
     <div>
       <div className="card p-5 mb-4">
@@ -112,13 +148,22 @@ const KeyIndicatorsContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
           ✓ Strong Fit Indicators
         </h4>
         <ul className="body list-none pl-0 flex flex-col gap-2">
-          {icpData.keyIndicators.map((indicator, idx) => (
+          {indicatorsToShow.map((indicator, idx) => (
             <li key={idx} className="pl-6 relative" style={{ color: 'var(--text-secondary)' }}>
               <span style={{ position: 'absolute', left: 0, color: 'var(--color-success)', fontWeight: 600 }}>✓</span>
               {indicator}
             </li>
           ))}
         </ul>
+        {icpData.keyIndicators.length > 5 && (
+          <button
+            onClick={() => setShowAllIndicators(!showAllIndicators)}
+            className="btn-secondary mt-3"
+            style={{ fontSize: '0.875rem', padding: 'var(--space-1) var(--space-3)' }}
+          >
+            {showAllIndicators ? 'Show Less' : `Show ${icpData.keyIndicators.length - 5} More Indicators (${icpData.keyIndicators.length} total)`}
+          </button>
+        )}
       </div>
       {icpData.redFlags && icpData.redFlags.length > 0 && (
         <div className="card p-5" style={{ borderLeft: '3px solid var(--color-danger)' }}>
@@ -126,13 +171,22 @@ const KeyIndicatorsContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
             ⚠ Red Flags to Watch
           </h4>
           <ul className="body list-none pl-0 flex flex-col gap-2">
-            {icpData.redFlags.map((flag, idx) => (
+            {redFlagsToShow?.map((flag, idx) => (
               <li key={idx} className="pl-6 relative" style={{ color: 'var(--text-secondary)' }}>
                 <span style={{ position: 'absolute', left: 0, color: 'var(--color-danger)', fontWeight: 600 }}>⚠</span>
                 {flag}
               </li>
             ))}
           </ul>
+          {icpData.redFlags.length > 5 && (
+            <button
+              onClick={() => setShowAllRedFlags(!showAllRedFlags)}
+              className="btn-secondary mt-3"
+              style={{ fontSize: '0.875rem', padding: 'var(--space-1) var(--space-3)' }}
+            >
+              {showAllRedFlags ? 'Show Less' : `Show ${icpData.redFlags.length - 5} More Red Flags (${icpData.redFlags.length} total)`}
+            </button>
+          )}
         </div>
       )}
     </div>
@@ -147,7 +201,24 @@ const RatingCriteriaContent: React.FC<{ icpData: ICPData }> = ({ icpData }) => {
       </p>
       <div className="flex flex-col gap-3">
         {icpData.ratingCriteria.map((criteria, idx) => (
-          <div key={idx} className="card-metric hover-lift p-4">
+          <div
+            key={idx}
+            className="card-metric p-4"
+            style={{
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              transition: 'all 250ms cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+              e.currentTarget.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.4)';
+              e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+            }}
+          >
             <div className="flex justify-between items-center mb-2">
               <strong className="heading-4" style={{ color: 'var(--text-primary)' }}>
                 {criteria.name}
@@ -176,7 +247,7 @@ export default function MyICPOverviewWidget({
   productName,
   isDemo = false
 }: MyICPOverviewWidgetProps) {
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set())
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['icp-overview'])) // Start with first section expanded
   const [copiedSection, setCopiedSection] = useState<string | null>(null)
 
   // Use cache hook instead of manual state management (only if not in demo mode)
@@ -345,6 +416,14 @@ export default function MyICPOverviewWidget({
     }
   }
 
+  const expandAllSections = () => {
+    setExpandedSections(new Set(sectionsWithContent.map(s => s.id)))
+  }
+
+  const collapseAllSections = () => {
+    setExpandedSections(new Set())
+  }
+
   return (
     <div className={`card-executive overflow-hidden ${className}`}>
       <div className="card-padding-md" style={{ background: 'var(--bg-elevated)' }}>
@@ -445,6 +524,28 @@ export default function MyICPOverviewWidget({
           ) : (
             <>
               {/* Removed blue "Action" box - replaced with tooltip icon next to export button */}
+              {sectionsWithContent.length > 0 && (
+                <div className="flex justify-end gap-2 mb-4">
+                  <button
+                    onClick={expandAllSections}
+                    className="btn-secondary flex items-center gap-2"
+                    style={{ fontSize: '0.875rem', padding: 'var(--space-1) var(--space-3)' }}
+                    title="Expand all sections"
+                  >
+                    <ChevronDown className="w-3 h-3" />
+                    Expand All
+                  </button>
+                  <button
+                    onClick={collapseAllSections}
+                    className="btn-secondary flex items-center gap-2"
+                    style={{ fontSize: '0.875rem', padding: 'var(--space-1) var(--space-3)' }}
+                    title="Collapse all sections"
+                  >
+                    <ChevronUp className="w-3 h-3" />
+                    Collapse All
+                  </button>
+                </div>
+              )}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
                 <AnimatePresence>
                   {sectionsWithContent.map((section, index) => {

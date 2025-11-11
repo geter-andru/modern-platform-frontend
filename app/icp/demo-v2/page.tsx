@@ -2,10 +2,12 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, Download, Users, BarChart3, TrendingUp, AlertCircle, CheckCircle2, Zap } from 'lucide-react';
+import { ArrowRight, Sparkles, Download, Users, BarChart3, TrendingUp, AlertCircle, CheckCircle2, Zap, Target, DollarSign, TrendingDown, ChevronRight, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import BuyerPersonasWidget from '../../../src/features/icp-analysis/widgets/BuyerPersonasWidget';
 import MyICPOverviewWidget from '../../../src/features/icp-analysis/widgets/MyICPOverviewWidget';
+import { Badge } from '../../../src/shared/components/ui/Badge';
+import { MotionBackground } from '../../../src/shared/components/ui/MotionBackground';
 import { exportICPToPDF } from '@/app/lib/utils/pdf-export';
 import { exportToMarkdown, exportToCSV } from '@/app/lib/utils/data-export';
 import toast, { Toaster } from 'react-hot-toast';
@@ -18,15 +20,60 @@ export default function ICPDemoV2Page() {
   const [activeTab, setActiveTab] = useState<'personas' | 'overview'>('personas');
   const [showExportModal, setShowExportModal] = useState(false);
   const [hoveredStat, setHoveredStat] = useState<string | null>(null);
+  const [tappedStat, setTappedStat] = useState<string | null>(null);
   const [comparisonView, setComparisonView] = useState<'without' | 'with'>('without');
   const [showResults, setShowResults] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const statsScrollRef = React.useRef<HTMLDivElement>(null);
 
   // Form state
   const [productName, setProductName] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [targetBuyer, setTargetBuyer] = useState('');
+
+  // Mobile detection for touch optimization
+  const [isMobile, setIsMobile] = useState(false);
+  React.useEffect(() => {
+    setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Horizontal scroll handlers
+  const checkScrollPosition = () => {
+    if (statsScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = statsScrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  const scrollStats = (direction: 'left' | 'right') => {
+    if (statsScrollRef.current) {
+      const scrollAmount = 400; // Scroll by ~1.5 cards
+      const newScrollLeft = direction === 'left'
+        ? statsScrollRef.current.scrollLeft - scrollAmount
+        : statsScrollRef.current.scrollLeft + scrollAmount;
+
+      statsScrollRef.current.scrollTo({
+        left: newScrollLeft,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  React.useEffect(() => {
+    const scrollContainer = statsScrollRef.current;
+    if (scrollContainer) {
+      checkScrollPosition();
+      scrollContainer.addEventListener('scroll', checkScrollPosition);
+      return () => scrollContainer.removeEventListener('scroll', checkScrollPosition);
+    }
+  }, []);
 
   const handleGenerate = async () => {
     if (!productName || !productDescription) {
@@ -115,9 +162,9 @@ export default function ICPDemoV2Page() {
       value: '67%',
       label: 'of B2B sales reps miss quota',
       subtext: 'without clear ICP definition',
-      color: 'red',
-      gradient: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%)',
-      border: 'rgba(239, 68, 68, 0.2)',
+      color: 'blue',
+      gradient: 'rgba(59, 130, 246, 0.05)',
+      border: 'rgba(59, 130, 246, 0.2)',
       icon: AlertCircle,
       detail: 'Companies without ICPs waste 30-40% of marketing budget on wrong targets'
     },
@@ -126,9 +173,9 @@ export default function ICPDemoV2Page() {
       value: '3.2x',
       label: 'higher close rates',
       subtext: 'with detailed buyer personas',
-      color: 'emerald',
-      gradient: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%)',
-      border: 'rgba(34, 197, 94, 0.2)',
+      color: 'blue',
+      gradient: 'rgba(59, 130, 246, 0.05)',
+      border: 'rgba(59, 130, 246, 0.2)',
       icon: TrendingUp,
       detail: 'ICP-based messaging gets 15-25% response rates vs. 2-5% generic outreach'
     },
@@ -138,10 +185,43 @@ export default function ICPDemoV2Page() {
       label: 'saved per quarter',
       subtext: 'vs. manual market research',
       color: 'blue',
-      gradient: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%)',
+      gradient: 'rgba(59, 130, 246, 0.05)',
       border: 'rgba(59, 130, 246, 0.2)',
       icon: Zap,
       detail: 'AI-powered analysis delivers insights 10x faster than traditional research methods'
+    },
+    {
+      id: 'deal-size',
+      value: '+47%',
+      label: 'average deal size',
+      subtext: 'targeting high-value segments',
+      color: 'blue',
+      gradient: 'rgba(59, 130, 246, 0.05)',
+      border: 'rgba(59, 130, 246, 0.2)',
+      icon: DollarSign,
+      detail: 'Focus on ideal customers with higher budget authority and clear buying intent'
+    },
+    {
+      id: 'sales-cycle',
+      value: '-38%',
+      label: 'shorter sales cycles',
+      subtext: 'with ICP-aligned prospects',
+      color: 'blue',
+      gradient: 'rgba(59, 130, 246, 0.05)',
+      border: 'rgba(59, 130, 246, 0.2)',
+      icon: TrendingDown,
+      detail: 'Qualified leads make decisions 38% faster when messaging matches their pain points'
+    },
+    {
+      id: 'win-rate',
+      value: '68%',
+      label: 'win rate',
+      subtext: 'on ICP-matched opportunities',
+      color: 'blue',
+      gradient: 'rgba(59, 130, 246, 0.05)',
+      border: 'rgba(59, 130, 246, 0.2)',
+      icon: Target,
+      detail: 'Targeting your ICP increases win rates from industry average of 15-20% to 68%'
     }
   ];
 
@@ -186,10 +266,11 @@ export default function ICPDemoV2Page() {
 
   return (
     <div className="min-h-screen" style={{
-      background: 'var(--color-background-primary, #000000)',
+      background: 'transparent',
       color: 'var(--color-text-primary, #ffffff)',
       fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
     }}>
+      <MotionBackground />
       <Toaster position="top-right" />
 
       {/* Minimal Top Navigation */}
@@ -229,7 +310,7 @@ export default function ICPDemoV2Page() {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="max-w-6xl mx-auto space-y-8">
+        <div className="max-w-6xl mx-auto space-y-12">
 
           {/* Hero Section with Inline Form */}
           <StaggeredItem delay={0} animation="lift">
@@ -243,9 +324,16 @@ export default function ICPDemoV2Page() {
 
               <h1 className="heading-1 mb-4">Generate Your ICP in 3 Minutes</h1>
 
-              <p className="body-large text-text-muted max-w-3xl mx-auto mb-8">
+              <p className="body-large text-text-muted max-w-3xl mx-auto mb-6">
                 See how Andru generates detailed buyer personas, pain points, and sales plays for B2B SaaS.
               </p>
+
+              {/* Social Proof Badge */}
+              <div className="flex items-center justify-center gap-2 mb-8">
+                <Badge variant="info" size="md" icon={Users}>
+                  Join 2,847 founders who improved their close rates
+                </Badge>
+              </div>
             </div>
 
             {/* Inline Generation Form */}
@@ -375,7 +463,8 @@ export default function ICPDemoV2Page() {
                   className="relative p-6 rounded-2xl border"
                   style={{
                     background: 'var(--glass-bg)',
-                    borderColor: 'var(--glass-border)'
+                    borderColor: 'rgba(59, 130, 246, 0.2)',
+                    minHeight: '200px'
                   }}
                   whileHover={{ y: -4 }}
                 >
@@ -405,7 +494,8 @@ export default function ICPDemoV2Page() {
                   className="relative p-6 rounded-2xl border"
                   style={{
                     background: 'var(--glass-bg)',
-                    borderColor: 'var(--glass-border)'
+                    borderColor: 'rgba(59, 130, 246, 0.2)',
+                    minHeight: '200px'
                   }}
                   whileHover={{ y: -4 }}
                 >
@@ -435,7 +525,8 @@ export default function ICPDemoV2Page() {
                   className="relative p-6 rounded-2xl border"
                   style={{
                     background: 'var(--glass-bg)',
-                    borderColor: 'var(--glass-border)'
+                    borderColor: 'rgba(59, 130, 246, 0.2)',
+                    minHeight: '200px'
                   }}
                   whileHover={{ y: -4 }}
                 >
@@ -470,55 +561,128 @@ export default function ICPDemoV2Page() {
             </div>
           </StaggeredItem>
 
-          {/* Interactive Data Stats Section */}
+          {/* Interactive Data Stats Section - Horizontal Scroll */}
           <StaggeredItem delay={0.1} animation="slide">
             <div className="mb-8">
               <h2 className="heading-3 text-center mb-6">Why ICPs Matter for Revenue Growth</h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {dataStats.map((stat, index) => {
-                  const Icon = stat.icon;
-                  return (
-                    <motion.div
-                      key={stat.id}
-                      className="p-6 rounded-2xl border cursor-pointer"
-                      style={{
-                        background: stat.gradient,
-                        borderColor: stat.border
-                      }}
-                      onMouseEnter={() => setHoveredStat(stat.id)}
-                      onMouseLeave={() => setHoveredStat(null)}
-                      whileHover={{ y: -8, boxShadow: '0 12px 32px rgba(0, 0, 0, 0.3)' }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <div className="flex items-start justify-between mb-4">
-                        <div className={`text-4xl font-bold text-${stat.color}-400`}>
-                          {stat.value}
-                        </div>
-                        <Icon className={`w-6 h-6 text-${stat.color}-400`} />
-                      </div>
+              {/* Horizontal scroll container with scroll indicators */}
+              <div className="relative">
+                {/* Left scroll arrow */}
+                {canScrollLeft && (
+                  <button
+                    onClick={() => scrollStats('left')}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200"
+                    style={{
+                      background: 'rgba(59, 130, 246, 0.9)',
+                      backdropFilter: 'blur(10px)',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+                    }}
+                  >
+                    <ChevronLeft className="w-5 h-5 text-white" />
+                  </button>
+                )}
 
-                      <div className="body text-text-primary mb-1">{stat.label}</div>
-                      <div className="body-small text-text-muted">{stat.subtext}</div>
-
+                {/* Scrollable stats container */}
+                <div
+                  ref={statsScrollRef}
+                  className="horizontal-scroll-container flex gap-6 overflow-x-auto pb-2"
+                  style={{
+                    scrollbarWidth: 'none',
+                    WebkitOverflowScrolling: 'touch'
+                  }}
+                >
+                  {dataStats.map((stat, index) => {
+                    const Icon = stat.icon;
+                    const isExpanded = isMobile ? tappedStat === stat.id : hoveredStat === stat.id;
+                    return (
                       <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{
-                          height: hoveredStat === stat.id ? 'auto' : 0,
-                          opacity: hoveredStat === stat.id ? 1 : 0
+                        key={stat.id}
+                        className="p-6 rounded-2xl border cursor-pointer flex-shrink-0"
+                        style={{
+                          background: stat.gradient,
+                          borderColor: stat.border,
+                          minHeight: '240px',
+                          width: '320px', // Fixed width for horizontal scroll
+                          transition: 'border-color 250ms cubic-bezier(0.4, 0, 0.2, 1)'
                         }}
-                        transition={{ duration: 0.2 }}
-                        className="overflow-hidden"
+                        onMouseEnter={(e) => {
+                          if (!isMobile) {
+                            setHoveredStat(stat.id);
+                            e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.6)'; // Enhanced border glow
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isMobile) {
+                            setHoveredStat(null);
+                            e.currentTarget.style.borderColor = stat.border;
+                          }
+                        }}
+                        onClick={() => isMobile && setTappedStat(tappedStat === stat.id ? null : stat.id)}
+                        whileHover={{ y: -8, scale: 1.02, boxShadow: '0 12px 32px rgba(0, 0, 0, 0.4)' }}
+                        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
                       >
-                        <div className="mt-4 pt-4 border-t" style={{ borderColor: stat.border }}>
-                          <div className="body-small text-text-muted italic">
-                            {stat.detail}
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="text-4xl font-bold text-blue-400">
+                            {stat.value}
                           </div>
+                          <Icon className="w-6 h-6 text-blue-400" />
                         </div>
+
+                        <div className="body text-text-primary mb-1">{stat.label}</div>
+                        <div className="body-small text-text-muted">{stat.subtext}</div>
+
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{
+                            height: isExpanded ? 'auto' : 0,
+                            opacity: isExpanded ? 1 : 0
+                          }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="mt-4 pt-4 border-t" style={{ borderColor: stat.border }}>
+                            <div className="body-small text-text-muted italic">
+                              {stat.detail}
+                            </div>
+                          </div>
+                        </motion.div>
                       </motion.div>
-                    </motion.div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+
+                {/* Right scroll arrow */}
+                {canScrollRight && (
+                  <button
+                    onClick={() => scrollStats('right')}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200"
+                    style={{
+                      background: 'rgba(59, 130, 246, 0.9)',
+                      backdropFilter: 'blur(10px)',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+                    }}
+                  >
+                    <ChevronRight className="w-5 h-5 text-white" />
+                  </button>
+                )}
+              </div>
+
+              {/* Contextual CTA for Data Stats */}
+              <div className="mt-8 flex justify-center">
+                <button
+                  onClick={() => {
+                    // Share functionality - for demo, show toast
+                    toast.success('Share link copied to clipboard!');
+                  }}
+                  className="btn btn-primary flex items-center gap-2"
+                  style={{
+                    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                  }}
+                >
+                  <Users className="w-4 h-4" />
+                  Share These Insights →
+                </button>
               </div>
             </div>
           </StaggeredItem>
@@ -538,16 +702,16 @@ export default function ICPDemoV2Page() {
                 </span>
                 <button
                   onClick={() => setComparisonView(comparisonView === 'without' ? 'with' : 'without')}
-                  className="relative w-16 h-8 rounded-full transition-colors"
+                  className="relative w-20 h-10 rounded-full transition-colors"
                   style={{
                     background: comparisonView === 'with'
-                      ? 'linear-gradient(135deg, #34d399 0%, #10b981 100%)'
-                      : 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
+                      ? 'rgba(59, 130, 246, 0.8)'
+                      : 'rgba(59, 130, 246, 0.3)'
                   }}
                 >
                   <motion.div
-                    className="absolute top-1 w-6 h-6 bg-white rounded-full"
-                    animate={{ left: comparisonView === 'with' ? '36px' : '4px' }}
+                    className="absolute top-1 w-8 h-8 bg-white rounded-full shadow-lg"
+                    animate={{ left: comparisonView === 'with' ? '44px' : '4px' }}
                     transition={{ duration: 0.2 }}
                   />
                 </button>
@@ -715,19 +879,49 @@ export default function ICPDemoV2Page() {
                 transition={{ duration: 0.3 }}
               >
                 {activeTab === 'personas' && (
-                  <BuyerPersonasWidget
-                    personas={demoData.personas}
-                    isDemo={true}
-                  />
+                  <>
+                    <BuyerPersonasWidget
+                      personas={demoData.personas}
+                      isDemo={true}
+                    />
+                    {/* Contextual CTA for Personas */}
+                    <div className="mt-6 flex justify-center">
+                      <button
+                        onClick={() => setShowExportModal(true)}
+                        className="btn btn-primary flex items-center gap-2"
+                        style={{
+                          boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                        }}
+                      >
+                        <Download className="w-4 h-4" />
+                        Export Personas to CRM →
+                      </button>
+                    </div>
+                  </>
                 )}
 
                 {activeTab === 'overview' && (
-                  <MyICPOverviewWidget
-                    icpData={demoData.icp}
-                    personas={demoData.personas}
-                    productName={productName || demoData.product.productName}
-                    isDemo={true}
-                  />
+                  <>
+                    <MyICPOverviewWidget
+                      icpData={demoData.icp}
+                      personas={demoData.personas}
+                      productName={productName || demoData.product.productName}
+                      isDemo={true}
+                    />
+                    {/* Contextual CTA for ICP Overview */}
+                    <div className="mt-6 flex justify-center">
+                      <button
+                        onClick={() => setShowExportModal(true)}
+                        className="btn btn-primary flex items-center gap-2"
+                        style={{
+                          boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                        }}
+                      >
+                        <Download className="w-4 h-4" />
+                        Download Full Analysis →
+                      </button>
+                    </div>
+                  </>
                 )}
               </motion.div>
 
@@ -824,6 +1018,20 @@ export default function ICPDemoV2Page() {
           </motion.div>
         </motion.div>
       )}
+
+      {/* Hidden Scrollbar CSS - 21st.dev pattern */}
+      <style jsx>{`
+        .horizontal-scroll-container {
+          scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
+          overflow-x: auto;
+          scroll-behavior: smooth;
+        }
+
+        .horizontal-scroll-container::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   );
 }

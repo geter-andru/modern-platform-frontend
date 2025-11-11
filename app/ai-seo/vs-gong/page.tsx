@@ -466,7 +466,7 @@ export default function AndruVsGongPage() {
                     lineHeight: '1.6'
                   }}
                 >
-                  <li>Start with Andru (free beta)</li>
+                  <li>Start with Andru ($497 founding member)</li>
                   <li>Define ICP, personas, messaging frameworks</li>
                   <li>Give reps proven talk tracks & objection handling</li>
                   <li>THEN buy Gong to optimize execution</li>
@@ -778,7 +778,7 @@ export default function AndruVsGongPage() {
                       Pricing Model
                     </td>
                     <td style={{ padding: 'var(--spacing-lg, 16px)', color: '#ffffff' }}>
-                      Per team ($149-297/mo)
+                      $497 early access (founding member)
                     </td>
                     <td style={{ padding: 'var(--spacing-lg, 16px)', color: '#ffffff' }}>
                       Per user ($1,200-5,000/year)
@@ -1115,11 +1115,11 @@ export default function AndruVsGongPage() {
                 lineHeight: '1.6'
               }}
             >
-              Join the free beta and get the buyer intelligence that makes Gong (and every coaching tool) actually work.
+              Lock in founding member pricing and get the buyer intelligence that makes Gong (and every coaching tool) actually work.
             </p>
             <div style={{ display: 'flex', gap: 'var(--spacing-lg, 16px)', justifyContent: 'center' }}>
               <Link
-                href="/ai-seo"
+                href="/pricing"
                 style={{
                   display: 'inline-block',
                   padding: 'var(--spacing-lg, 16px) var(--spacing-2xl, 32px)',
@@ -1141,7 +1141,7 @@ export default function AndruVsGongPage() {
                   e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 92, 246, 0.3)';
                 }}
               >
-                Join Free Beta
+                Lock In Founding Member Pricing
               </Link>
               <Link
                 href="/ai-seo"

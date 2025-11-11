@@ -54,6 +54,13 @@ export {
   useAuthError,
 } from './auth-hooks';
 
+// Payment Verification Hooks
+export {
+  useRequirePayment,
+  usePaymentStatus,
+} from './useRequirePayment';
+export type { PaymentStatus } from './useRequirePayment';
+
 // Service (for advanced usage)
 export { authService } from './auth-service';
 export type { AuthUser, AuthSession } from './auth-service';

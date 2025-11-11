@@ -465,7 +465,7 @@ export default function AndruVsZoominfoPage() {
                     lineHeight: '1.6'
                   }}
                 >
-                  <li>Start with Andru (free beta)</li>
+                  <li>Start with Andru ($497 founding member)</li>
                   <li>Define exact ICP & qualification criteria</li>
                   <li>Get detailed buyer personas</li>
                   <li>THEN buy Zoominfo to find those people</li>
@@ -777,7 +777,7 @@ export default function AndruVsZoominfoPage() {
                       Starting Price
                     </td>
                     <td style={{ padding: 'var(--spacing-lg, 16px)', color: '#ffffff' }}>
-                      Free (beta), then $149/mo
+                      $497 early access (founding member)
                     </td>
                     <td style={{ padding: 'var(--spacing-lg, 16px)', color: '#ffffff' }}>
                       $15-25K/year
@@ -1112,11 +1112,11 @@ export default function AndruVsZoominfoPage() {
                 lineHeight: '1.6'
               }}
             >
-              Join the free beta and get the buyer intelligence that makes Zoominfo (and every contact database) actually work.
+              Lock in founding member pricing and get the buyer intelligence that makes Zoominfo (and every contact database) actually work.
             </p>
             <div style={{ display: 'flex', gap: 'var(--spacing-lg, 16px)', justifyContent: 'center' }}>
               <Link
-                href="/ai-seo"
+                href="/pricing"
                 style={{
                   display: 'inline-block',
                   padding: 'var(--spacing-lg, 16px) var(--spacing-2xl, 32px)',
@@ -1138,7 +1138,7 @@ export default function AndruVsZoominfoPage() {
                   e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 92, 246, 0.3)';
                 }}
               >
-                Join Free Beta
+                Lock In Founding Member Pricing
               </Link>
               <Link
                 href="/ai-seo"

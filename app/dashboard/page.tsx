@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 // Force dynamic rendering (no static generation) for authenticated pages
 export const dynamic = 'force-dynamic';
-import { useRequireAuth } from '@/app/lib/auth';
+import { useRequireAuth, useRequirePayment } from '@/app/lib/auth';
 import { ModernSidebarLayout } from '../../src/shared/components/layout/ModernSidebarLayout';
 import { ProgressOverview } from '../../src/shared/components/dashboard/ProgressOverview';
 import { MilestonesCard } from '../../src/shared/components/dashboard/MilestonesCard';
@@ -80,6 +80,7 @@ function transformInsightsToArray(backendInsights: any): Insight[] | undefined {
 
 export default function DashboardPage() {
   const { user, loading } = useRequireAuth(); // Auto-redirects if not authenticated
+  const { hasPaid, loading: paymentLoading } = useRequirePayment(); // Verifies payment before access
   const { openPalette } = useCommandPalette();
 
   const { data: customer, isLoading: customerLoading } = useCustomer(user?.id);
@@ -87,7 +88,8 @@ export default function DashboardPage() {
   const { data: milestones, isLoading: milestonesLoading } = useMilestones(user?.id);
   const { data: insights, isLoading: insightsLoading } = useProgressInsights(user?.id);
 
-  if (loading) {
+  // Show loading state while checking auth AND payment
+  if (loading || paymentLoading) {
     return (
       <ModernSidebarLayout>
         <div className="space-y-6">

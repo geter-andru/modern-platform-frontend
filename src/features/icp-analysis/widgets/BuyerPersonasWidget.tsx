@@ -276,6 +276,31 @@ export default function BuyerPersonasWidget({
 
   // Personas are automatically loaded by the cache hook
 
+  // Categorize personas by buying committee role
+  const categorizePersonas = (personas: BuyerPersona[]) => {
+    const economicBuyers: BuyerPersona[] = []
+    const technicalBuyers: BuyerPersona[] = []
+    const endUsers: BuyerPersona[] = []
+
+    personas.forEach(persona => {
+      const roleText = persona.role.toLowerCase()
+      if (roleText.includes('economic buyer') || roleText.includes('decision maker') || roleText.includes('roi')) {
+        economicBuyers.push(persona)
+      } else if (roleText.includes('technical') || roleText.includes('validator') || roleText.includes('advocate') || roleText.includes('stakeholder')) {
+        technicalBuyers.push(persona)
+      } else if (roleText.includes('end user') || roleText.includes('champion')) {
+        endUsers.push(persona)
+      } else {
+        // Default to technical buyers if unclear
+        technicalBuyers.push(persona)
+      }
+    })
+
+    return { economicBuyers, technicalBuyers, endUsers }
+  }
+
+  const { economicBuyers, technicalBuyers, endUsers} = categorizePersonas(transformedPersonas)
+
   const getPersonaIcon = (role: string) => {
     switch (role.toLowerCase()) {
       case 'technical decision maker': return Brain
@@ -292,6 +317,114 @@ export default function BuyerPersonasWidget({
       case 'low': return 'bg-green-900/30 text-green-400 border border-green-700/50'
       default: return 'bg-black/30 text-gray-400 border border-blue-800/30/50'
     }
+  }
+
+  // Render a persona card (reusable for all categories)
+  const renderPersonaCard = (persona: BuyerPersona, index: number) => {
+    const isExpanded = expandedPersona === persona.id;
+    const IconComponent = getPersonaIcon(persona.role);
+
+    // Calculate confidence based on data completeness
+    const hasGoals = persona.goals && persona.goals.length > 0;
+    const hasPainPoints = persona.painPoints && persona.painPoints.length > 0;
+    const hasObjections = persona.objections && persona.objections.length > 0;
+    const hasDemographics = persona.demographics && Object.keys(persona.demographics).length > 0;
+    const hasPsychographics = persona.psychographics && Object.keys(persona.psychographics).length > 0;
+
+    const dataPoints = [hasGoals, hasPainPoints, hasObjections, hasDemographics, hasPsychographics];
+    const collectedPoints = dataPoints.filter(Boolean).length;
+    const confidence = Math.round((collectedPoints / dataPoints.length) * 100);
+
+    return (
+      <div
+        key={persona.id}
+        className="bg-gray-800 rounded-lg overflow-hidden flex-shrink-0"
+        style={{
+          width: '400px',
+          border: '1px solid rgba(255, 255, 255, 0.05)',
+          transition: 'all 250ms cubic-bezier(0.4, 0, 0.2, 1)'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+          e.currentTarget.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.4)';
+          e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'translateY(0) scale(1)';
+          e.currentTarget.style.boxShadow = 'none';
+          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+        }}
+      >
+        <button
+          onClick={() => togglePersona(persona.id)}
+          className="w-full px-6 py-4 flex items-center justify-between transition-colors"
+        >
+          <div className="flex items-center gap-4 flex-1 min-w-0">
+            <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <IconComponent className="w-6 h-6 text-blue-500" />
+            </div>
+            <div className="text-left flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="text-lg font-semibold text-white truncate">
+                  {persona.name}
+                </h3>
+                <ConfidenceBadge level={getConfidenceLevel(confidence)} score={confidence} size="sm" />
+              </div>
+              <p className="text-sm text-gray-500 truncate">
+                {persona.title}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 flex-shrink-0 ml-2">
+            {isExpanded ? (
+              <EyeOff className="w-4 h-4 text-gray-500" />
+            ) : (
+              <Eye className="w-4 h-4 text-gray-500" />
+            )}
+          </div>
+        </button>
+
+        {isExpanded && (
+          <div className="border-t border-blue-800/30">
+            <div className="px-6 pb-6">
+              <div className="pt-6 space-y-6">
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="bg-black rounded-lg p-4">
+                    <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                      <Target className="w-4 h-4 text-green-400" />
+                      Key Goals
+                    </h4>
+                    <ul className="space-y-2">
+                      {persona.goals.slice(0, 3).map((goal, goalIndex) => (
+                        <li key={goalIndex} className="text-sm text-white flex items-start gap-2">
+                          <CheckCircle className="w-3 h-3 text-green-400 mt-1 flex-shrink-0" />
+                          {goal}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="bg-black rounded-lg p-4">
+                    <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4 text-red-400" />
+                      Pain Points
+                    </h4>
+                    <ul className="space-y-2">
+                      {persona.painPoints.slice(0, 3).map((painPoint, painIndex) => (
+                        <li key={painIndex} className="text-sm text-white flex items-start gap-2">
+                          <AlertTriangle className="w-3 h-3 text-red-400 mt-1 flex-shrink-0" />
+                          {painPoint}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
   }
 
   return (
@@ -413,6 +546,77 @@ export default function BuyerPersonasWidget({
         )}
 
         {personas && personas.length > 0 && (
+          <div className="space-y-10">
+            {/* Economic Buyers Section */}
+            {economicBuyers.length > 0 && (
+              <div>
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                    <Target className="w-5 h-5 text-blue-400" />
+                    💼 Economic Buyers ({economicBuyers.length})
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    C-level executives with budget authority and final purchasing decisions
+                  </p>
+                </div>
+                <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+                  {economicBuyers.map((persona, index) => renderPersonaCard(persona, index))}
+                </div>
+              </div>
+            )}
+
+            {/* Technical Buyers Section */}
+            {technicalBuyers.length > 0 && (
+              <div>
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                    <Brain className="w-5 h-5 text-purple-400" />
+                    🔧 Technical Buyers ({technicalBuyers.length})
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    VPs and directors who evaluate technical fit, integration, and quality standards
+                  </p>
+                </div>
+                <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+                  {technicalBuyers.map((persona, index) => renderPersonaCard(persona, index))}
+                </div>
+              </div>
+            )}
+
+            {/* End Users Section */}
+            {endUsers.length > 0 && (
+              <div>
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                    <User className="w-5 h-5 text-green-400" />
+                    👥 End Users ({endUsers.length})
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Daily users who become champions or blockers based on product experience
+                  </p>
+                </div>
+                <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+                  {endUsers.map((persona, index) => renderPersonaCard(persona, index))}
+                </div>
+              </div>
+            )}
+
+            {/* Fallback: If no personas fit categories, show all */}
+            {economicBuyers.length === 0 && technicalBuyers.length === 0 && endUsers.length === 0 && (
+              <div>
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold text-white">All Buyer Personas</h3>
+                </div>
+                <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+                  {transformedPersonas.map((persona, index) => renderPersonaCard(persona, index))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* OLD CODE - keeping for reference if categorization fails */}
+        {false && personas && personas!.length > 0 && (
           <div className="space-y-6">
               {transformedPersonas.map((persona, index) => {
                 const isExpanded = expandedPersona === persona.id;

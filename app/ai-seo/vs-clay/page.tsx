@@ -466,7 +466,7 @@ export default function AndruVsClayPage() {
                     lineHeight: '1.6'
                   }}
                 >
-                  <li>Start with Andru (free beta)</li>
+                  <li>Start with Andru ($497 founding member)</li>
                   <li>Define exact ICP & qualification signals</li>
                   <li>Get precise targeting criteria</li>
                   <li>THEN buy Clay to find those people</li>
@@ -779,7 +779,7 @@ export default function AndruVsClayPage() {
                       Starting Price
                     </td>
                     <td style={{ padding: 'var(--spacing-lg, 16px)', color: '#ffffff' }}>
-                      Free (beta), then $149/mo
+                      $497 early access (founding member)
                     </td>
                     <td style={{ padding: 'var(--spacing-lg, 16px)', color: '#ffffff' }}>
                       $149-349/mo (Starter-Pro)
@@ -1115,11 +1115,11 @@ export default function AndruVsClayPage() {
                 lineHeight: '1.6'
               }}
             >
-              Join the free beta and get the buyer intelligence that makes Clay (and every enrichment tool) actually work.
+              Lock in founding member pricing and get the buyer intelligence that makes Clay (and every enrichment tool) actually work.
             </p>
             <div style={{ display: 'flex', gap: 'var(--spacing-lg, 16px)', justifyContent: 'center' }}>
               <Link
-                href="/ai-seo"
+                href="/pricing"
                 style={{
                   display: 'inline-block',
                   padding: 'var(--spacing-lg, 16px) var(--spacing-2xl, 32px)',
@@ -1141,7 +1141,7 @@ export default function AndruVsClayPage() {
                   e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 92, 246, 0.3)';
                 }}
               >
-                Join Free Beta
+                Lock In Founding Member Pricing
               </Link>
               <Link
                 href="/ai-seo"

@@ -2,20 +2,22 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, ArrowRight, Sparkles, Users, Zap } from 'lucide-react';
+import { Check, ArrowRight, Sparkles, Users, Zap, DollarSign, Calendar, TrendingDown, Award, Shield } from 'lucide-react';
 import Link from 'next/link';
 import { GradientButton } from '../../src/shared/components/ui/GradientButton';
 import { FooterLayout } from '../../src/shared/components/layout/FooterLayout';
 
 /**
- * Pricing Page - Free Beta Launch
+ * Pricing Page - Paid Waitlist Launch
  *
- * STAGED LAUNCH STRATEGY:
- * - Stage 1: Free Beta (Dec 2025 - Feb 2025) - 100 Founding Members
- * - Stage 2: Paid Launch (March 2025) - Founding: $149/mo, Standard: $297/mo
+ * FOUNDING MEMBER PRICING STRATEGY:
+ * - Early Access: $497/month (Dec 1, 2025 - Full Platform Launch)
+ * - Forever Lock: $750/month (Full Platform onwards - NEVER increases)
+ * - Standard: $1,250/month (for non-founding members)
+ * - Savings: $6,000/year forever vs. standard pricing
  *
  * Routes: /pricing
- * Last Updated: 2025-11-01 (Updated for Free Beta Launch)
+ * Last Updated: 2025-11-10 (Updated for Paid Waitlist Launch)
  */
 
 export default function PricingPage() {
@@ -27,7 +29,7 @@ export default function PricingPage() {
 
   const staggerChildren = {
     animate: {
-      transition: {
+     transition: {
         staggerChildren: 0.1
       }
     }
@@ -53,7 +55,7 @@ export default function PricingPage() {
             animate="animate"
             variants={staggerChildren}
           >
-            {/* Beta Badge */}
+            {/* Waitlist Badge */}
             <motion.div variants={fadeInUp} className="mb-8">
               <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full" style={{
                 background: 'rgba(59, 130, 246, 0.1)',
@@ -67,7 +69,7 @@ export default function PricingPage() {
                   letterSpacing: '0.5px',
                   fontWeight: 700
                 }}>
-                  FREE BETA LAUNCHING DECEMBER 1, 2025
+                  PAID WAITLIST • DECEMBER 1, 2025 ACCESS
                 </span>
               </div>
             </motion.div>
@@ -75,7 +77,7 @@ export default function PricingPage() {
             {/* Main Headline */}
             <motion.h1
               variants={fadeInUp}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 leading-tight"
               style={{
                 color: '#FFFFFF',
                 fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
@@ -83,175 +85,347 @@ export default function PricingPage() {
                 letterSpacing: '-0.02em'
               }}
             >
-              Join 100 Founding Members
-              <span className="block mt-4 text-4xl sm:text-5xl md:text-6xl" style={{
-                color: '#3b82f6',
-                fontWeight: 600
-              }}>
-                Shape the Future of ICP Tools
-              </span>
+              Lock in $750/month Forever
             </motion.h1>
 
             {/* Subheadline */}
+            <motion.div
+              variants={fadeInUp}
+              className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6"
+              style={{
+                color: '#3b82f6',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                fontWeight: 600,
+                letterSpacing: '-0.01em'
+              }}
+            >
+              vs. $1,250 Standard Price
+            </motion.div>
+
+            {/* Value Proposition */}
             <motion.p
               variants={fadeInUp}
-              className="text-xl sm:text-2xl max-w-4xl mx-auto mb-16 leading-relaxed"
+              className="text-xl sm:text-2xl max-w-4xl mx-auto mb-4 leading-relaxed"
               style={{
                 color: '#E0E0E0',
                 fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
                 lineHeight: '1.7'
               }}
             >
-              Full access to the ICP tool. No credit card required. Lock in 50% lifetime discount when we launch paid tiers.
+              Pay $497/month during early access, then $750/month forever.
             </motion.p>
 
-            {/* Main CTA Card */}
-            <motion.div
+            <motion.p
               variants={fadeInUp}
-              className="max-w-3xl mx-auto mb-16 p-10 rounded-2xl relative"
+              className="text-2xl sm:text-3xl max-w-3xl mx-auto mb-16 leading-relaxed font-bold"
               style={{
-                background: '#1A1A1A',
-                border: '2px solid rgba(59, 130, 246, 0.3)',
-                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.2)'
+                color: '#10b981',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                lineHeight: '1.6'
               }}
             >
-              {/* Spots Remaining Badge */}
-              <div className="absolute -top-4 right-8">
-                <div className="px-4 py-2 rounded-full" style={{
-                  background: '#10b981',
-                  boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
-                }}>
-                  <p className="body-small text-white flex items-center gap-2" style={{ fontWeight: 700 }}>
-                    <Users className="w-4 h-4" />
-                    100 Spots Available
+              Save $6,000/year. Every year. Forever.
+            </motion.p>
+
+            {/* Pricing Cards Grid */}
+            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
+
+              {/* Founding Member Card */}
+              <motion.div
+                variants={fadeInUp}
+                className="relative p-10 rounded-2xl"
+                style={{
+                  background: '#1A1A1A',
+                  border: '2px solid rgba(59, 130, 246, 0.4)',
+                  boxShadow: '0 8px 32px rgba(59, 130, 246, 0.3)'
+                }}
+              >
+                {/* Recommended Badge */}
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <div className="px-6 py-2 rounded-full" style={{
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)'
+                  }}>
+                    <p className="body-small text-white flex items-center gap-2" style={{ fontWeight: 700 }}>
+                      <Award className="w-4 h-4" />
+                      100 Founding Member Spots
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mb-8 mt-4">
+                  <h2 className="heading-2 mb-3" style={{ color: '#FFFFFF' }}>
+                    Founding Member
+                  </h2>
+                  <p className="body text-center" style={{ color: '#E0E0E0' }}>
+                    Forever price lock + immediate value
                   </p>
                 </div>
-              </div>
 
-              <div className="mb-8">
-                <h2 className="heading-2 mb-4" style={{
-                  color: '#FFFFFF'
-                }}>
-                  Free Beta Access
-                </h2>
-                <p className="body" style={{
-                  color: '#E0E0E0'
-                }}>
-                  Help us build the best ICP tool for technical founders
-                </p>
-              </div>
-
-              {/* Benefits Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 text-left">
-                {[
-                  'Full access to ICP tool',
-                  'All export formats (PDF, Markdown, CSV)',
-                  'Direct Slack channel with founders',
-                  'No credit card required',
-                  'Weekly feedback sessions',
-                  'Lock in 50% lifetime discount'
-                ].map((benefit, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: '#10b981' }} />
-                    <span className="body" style={{
-                      color: '#E0E0E0'
-                    }}>
-                      {benefit}
+                {/* Pricing Display */}
+                <div className="mb-6 text-center">
+                  <div className="flex items-baseline justify-center gap-2 mb-2">
+                    <span className="text-5xl font-bold" style={{ color: '#FFFFFF' }}>$497</span>
+                    <span className="text-xl" style={{ color: '#E0E0E0' }}>/month</span>
+                  </div>
+                  <div className="text-lg mb-4" style={{ color: '#8b5cf6', fontWeight: 600 }}>
+                    During early access period
+                  </div>
+                  <div className="flex items-center justify-center gap-2 p-4 rounded-lg" style={{
+                    background: 'rgba(16, 185, 129, 0.1)',
+                    border: '1px solid rgba(16, 185, 129, 0.3)'
+                  }}>
+                    <ArrowRight className="w-5 h-5" style={{ color: '#10b981' }} />
+                    <span style={{ color: '#10b981', fontWeight: 600, fontSize: '1.1rem' }}>
+                      Then $750/month forever when full platform launches
                     </span>
                   </div>
-                ))}
-              </div>
+                </div>
 
-              {/* CTA Button */}
-              <GradientButton
-                href="/founding-members"
-                leftIcon={Zap}
-                rightIcon={ArrowRight}
-                size="lg"
-                ariaLabel="Apply for founding member access"
+                {/* Savings Highlight */}
+                <div className="mb-6 p-4 rounded-lg text-center" style={{
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  border: '1px solid rgba(16, 185, 129, 0.3)'
+                }}>
+                  <div className="text-sm mb-1" style={{ color: '#E0E0E0' }}>Your Forever Savings</div>
+                  <div className="text-3xl font-bold" style={{ color: '#10b981' }}>
+                    $6,000/year
+                  </div>
+                  <div className="text-sm" style={{ color: '#E0E0E0' }}>vs. $1,250 standard pricing</div>
+                </div>
+
+                {/* Benefits */}
+                <div className="space-y-3 mb-8 text-left">
+                  {[
+                    '2 hours of 1:1 founder strategy sessions ($1,000+ value)',
+                    'Immediate ICP Analysis Package delivery',
+                    'Early access to each tool as it rolls out',
+                    'Private Slack community access',
+                    'Forever price lock at $750/month',
+                    'Priority support and feature requests'
+                  ].map((benefit, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: '#10b981' }} />
+                      <span className="body" style={{ color: '#E0E0E0' }}>
+                        {benefit}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA Button */}
+                <a
+                  href="https://buy.stripe.com/6oU9AVgJn4y78iqdU6bsc0n"
+                  className="block w-full px-8 py-5 rounded-xl font-bold text-lg text-center transition-all transform hover:-translate-y-1"
+                  style={{
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                    color: '#FFFFFF',
+                    boxShadow: '0 8px 24px rgba(59, 130, 246, 0.4)',
+                    border: 'none'
+                  }}
+                >
+                  Join Waitlist - $497/month
+                </a>
+
+                {/* Trust Signal */}
+                <p className="mt-4 body-small text-center" style={{ color: '#E0E0E0' }}>
+                  Access unlocks December 1, 2025 • Cancel anytime
+                </p>
+              </motion.div>
+
+              {/* Urgent Assistance Card */}
+              <motion.div
+                variants={fadeInUp}
+                className="p-10 rounded-2xl"
+                style={{
+                  background: '#1A1A1A',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)'
+                }}
               >
-                Apply for Founding Member Access
-              </GradientButton>
+                <div className="mb-8">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Zap className="w-6 h-6" style={{ color: '#f59e0b' }} />
+                    <h2 className="heading-2" style={{ color: '#FFFFFF' }}>
+                      Urgent Assistance
+                    </h2>
+                  </div>
+                  <p className="body text-center" style={{ color: '#E0E0E0' }}>
+                    Need help NOW? Get immediate support.
+                  </p>
+                </div>
 
-              {/* Trust Signal */}
-              <p className="mt-6 body-small" style={{
-                color: '#E0E0E0'
+                {/* Pricing */}
+                <div className="mb-6 text-center">
+                  <div className="flex items-baseline justify-center gap-2 mb-2">
+                    <span className="text-5xl font-bold" style={{ color: '#FFFFFF' }}>$350</span>
+                    <span className="text-xl" style={{ color: '#E0E0E0' }}>one-time</span>
+                  </div>
+                  <div className="text-lg" style={{ color: '#f59e0b', fontWeight: 600 }}>
+                    90-minute strategy session
+                  </div>
+                </div>
+
+                {/* What's Included */}
+                <div className="space-y-3 mb-8 text-left">
+                  {[
+                    'Active deal assistance - close deals THIS WEEK',
+                    'Sales hiring strategy - build your team right',
+                    'Sales onboarding guidance - ramp new hires faster',
+                    'Immediate action plan you can execute today',
+                    'Can be applied to founding membership within 7 days'
+                  ].map((benefit, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: '#f59e0b' }} />
+                      <span className="body" style={{ color: '#E0E0E0' }}>
+                        {benefit}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA Button */}
+                <a
+                  href="https://calendly.com/humusnshore/urgent-assistance"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full px-8 py-5 rounded-xl font-bold text-lg text-center transition-all transform hover:-translate-y-1"
+                  style={{
+                    background: 'rgba(245, 158, 11, 0.1)',
+                    border: '2px solid rgba(245, 158, 11, 0.4)',
+                    color: '#f59e0b',
+                    boxShadow: '0 4px 16px rgba(245, 158, 11, 0.2)'
+                  }}
+                >
+                  Book Session - $350
+                </a>
+
+                <p className="mt-4 body-small text-center" style={{ color: '#E0E0E0' }}>
+                  Available immediately • Book your preferred time
+                </p>
+              </motion.div>
+
+            </div>
+
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Comparison Table Section */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={staggerChildren}
+          >
+            <motion.h2
+              variants={fadeInUp}
+              className="heading-2 mb-4 text-center"
+              style={{ color: '#FFFFFF' }}
+            >
+              Compare Your Options
+            </motion.h2>
+            <motion.p
+              variants={fadeInUp}
+              className="text-xl text-center mb-12 max-w-3xl mx-auto"
+              style={{ color: '#E0E0E0' }}
+            >
+              Andru founding members get 10x better ROI than traditional sales solutions
+            </motion.p>
+
+            {/* Comparison Table */}
+            <motion.div variants={fadeInUp} className="overflow-x-auto">
+              <table className="w-full border-collapse" style={{
+                background: '#1A1A1A',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '16px'
               }}>
-                Beta launches December 1, 2025 • Limited to 100 founding members
+                <thead>
+                  <tr style={{ borderBottom: '2px solid rgba(59, 130, 246, 0.3)' }}>
+                    <th className="p-4 text-left" style={{ color: '#FFFFFF', fontWeight: 700 }}>Solution</th>
+                    <th className="p-4 text-left" style={{ color: '#FFFFFF', fontWeight: 700 }}>Monthly Cost</th>
+                    <th className="p-4 text-left" style={{ color: '#FFFFFF', fontWeight: 700 }}>Annual Cost</th>
+                    <th className="p-4 text-left" style={{ color: '#FFFFFF', fontWeight: 700 }}>3-Year Total</th>
+                    <th className="p-4 text-left" style={{ color: '#FFFFFF', fontWeight: 700 }}>vs. Andru</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* Andru Founding Member */}
+                  <tr style={{
+                    background: 'rgba(59, 130, 246, 0.1)',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
+                  }}>
+                    <td className="p-4">
+                      <div className="flex items-center gap-2">
+                        <Shield className="w-5 h-5" style={{ color: '#3b82f6' }} />
+                        <span style={{ color: '#FFFFFF', fontWeight: 700 }}>Andru Founding Member</span>
+                      </div>
+                    </td>
+                    <td className="p-4" style={{ color: '#10b981', fontWeight: 700 }}>$497 → $750</td>
+                    <td className="p-4" style={{ color: '#10b981', fontWeight: 700 }}>$9,000</td>
+                    <td className="p-4" style={{ color: '#10b981', fontWeight: 700 }}>~$26,000</td>
+                    <td className="p-4" style={{ color: '#10b981', fontWeight: 700 }}>Baseline</td>
+                  </tr>
+
+                  {/* Andru Standard */}
+                  <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>Andru Standard</td>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>$1,250</td>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>$15,000</td>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>$45,000</td>
+                    <td className="p-4" style={{ color: '#ef4444', fontWeight: 700 }}>-$19,000</td>
+                  </tr>
+
+                  {/* Fractional VP Sales */}
+                  <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>Fractional VP Sales</td>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>$8K - $15K</td>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>$96K - $180K</td>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>$288K - $540K</td>
+                    <td className="p-4" style={{ color: '#ef4444', fontWeight: 700 }}>-$262K - $514K</td>
+                  </tr>
+
+                  {/* Full-Time Sales Hire */}
+                  <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>Full-Time Sales Hire</td>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>$12K - $20K</td>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>$144K - $240K</td>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>$432K - $720K</td>
+                    <td className="p-4" style={{ color: '#ef4444', fontWeight: 700 }}>-$406K - $694K</td>
+                  </tr>
+
+                  {/* DIY Tools */}
+                  <tr>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>DIY Tools + Your Time</td>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>$2K - $5K</td>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>$24K - $60K</td>
+                    <td className="p-4" style={{ color: '#E0E0E0' }}>$72K - $180K</td>
+                    <td className="p-4" style={{ color: '#ef4444', fontWeight: 700 }}>-$46K - $154K</td>
+                  </tr>
+                </tbody>
+              </table>
+            </motion.div>
+
+            {/* Key Insight */}
+            <motion.div
+              variants={fadeInUp}
+              className="mt-8 p-6 rounded-xl text-center"
+              style={{
+                background: 'rgba(16, 185, 129, 0.1)',
+                border: '1px solid rgba(16, 185, 129, 0.3)'
+              }}
+            >
+              <TrendingDown className="w-8 h-8 mx-auto mb-3" style={{ color: '#10b981' }} />
+              <p className="text-xl font-bold mb-2" style={{ color: '#10b981' }}>
+                10-50x More Affordable Than Alternatives
+              </p>
+              <p style={{ color: '#E0E0E0' }}>
+                Same systematic revenue outcomes at a fraction of the cost
               </p>
             </motion.div>
 
-            {/* What Happens After Beta */}
-            <motion.div variants={fadeInUp} className="max-w-4xl mx-auto">
-              <div className="p-8 rounded-xl" style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.08)'
-              }}>
-                <h3 className="heading-3 mb-6" style={{
-                  color: '#FFFFFF'
-                }}>
-                  What Happens After Beta?
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-                  {/* Founding Members */}
-                  <div className="p-6 rounded-lg" style={{
-                    background: '#1A1A1A',
-                    border: '1px solid rgba(59, 130, 246, 0.3)'
-                  }}>
-                    <div className="mb-4">
-                      <span className="px-3 py-1 rounded-full body-small" style={{
-                        background: 'rgba(59, 130, 246, 0.2)',
-                        color: '#3b82f6',
-                        fontWeight: 700
-                      }}>
-                        For You (Founding Members)
-                      </span>
-                    </div>
-                    <p className="text-3xl font-bold mb-2" style={{ color: '#3b82f6' }}>
-                      $149<span className="body font-normal" style={{ color: '#E0E0E0' }}>/month</span>
-                    </p>
-                    <p className="body-small mb-4" style={{ color: '#10b981' }}>
-                      50% off forever • Locked for life
-                    </p>
-                    <p className="body-small" style={{
-                      color: '#E0E0E0',
-                      lineHeight: '1.6'
-                    }}>
-                      As a thank you for helping us build the product, you'll get 50% off our standard pricing—forever. No price increases. Ever.
-                    </p>
-                  </div>
-
-                  {/* New Users */}
-                  <div className="p-6 rounded-lg" style={{
-                    background: '#1A1A1A',
-                    border: '1px solid rgba(255, 255, 255, 0.08)'
-                  }}>
-                    <div className="mb-4">
-                      <span className="px-3 py-1 rounded-full body-small" style={{
-                        background: 'rgba(255, 255, 255, 0.1)',
-                        color: '#E0E0E0',
-                        fontWeight: 700
-                      }}>
-                        New Users (After March 2025)
-                      </span>
-                    </div>
-                    <p className="text-3xl font-bold mb-2" style={{ color: '#FFFFFF' }}>
-                      $297<span className="body font-normal" style={{ color: '#E0E0E0' }}>/month</span>
-                    </p>
-                    <p className="body-small mb-4" style={{ color: '#E0E0E0' }}>
-                      Standard pricing + 14-day free trial
-                    </p>
-                    <p className="body-small" style={{
-                      color: '#E0E0E0',
-                      lineHeight: '1.6'
-                    }}>
-                      Users who join after the beta period will pay standard pricing. That's why being a founding member is such a good deal.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -268,9 +442,7 @@ export default function PricingPage() {
             <motion.h2
               variants={fadeInUp}
               className="heading-2 mb-12 text-center"
-              style={{
-                color: '#FFFFFF'
-              }}
+              style={{ color: '#FFFFFF' }}
             >
               Frequently Asked Questions
             </motion.h2>
@@ -279,27 +451,27 @@ export default function PricingPage() {
               {[
                 {
                   q: 'What do I get as a founding member?',
-                  a: 'Full access to the ICP tool during the 60-90 day beta period, direct Slack channel with our team, weekly feedback sessions, and a 50% lifetime discount when we launch paid tiers in March 2025.'
+                  a: '2 hours of 1:1 strategy sessions with the founder (worth $1,000+), immediate ICP Analysis Package, early access to each tool as it rolls out, private Slack community, priority support, and a forever price lock at $750/month when the full platform launches. Your rate never increases—ever.'
                 },
                 {
-                  q: 'Is this really free? No credit card required?',
-                  a: 'Yes, completely free during the beta period (Dec 2025 - Feb 2025). No credit card required to join. We\'ll only ask for payment in March 2025 if you choose to continue at the founding member rate.'
+                  q: 'How does the forever price lock work?',
+                  a: 'You pay $497/month during early access (Dec 1 - Platform Launch). When the full platform launches, your price changes to $750/month and stays there forever. While new users pay $1,250/month, you\'ll always pay $750/month. That\'s $6,000 saved every year, for as long as you use Andru.'
                 },
                 {
-                  q: 'What\'s the lifetime discount?',
-                  a: 'Founding members pay $149/month forever (50% off the standard $297/month price). Your price will never increase, even as we add more modules and features to the platform.'
+                  q: 'When does my access start?',
+                  a: 'You\'ll get immediate access to your 1:1 strategy sessions, ICP package, and Slack community after payment. Full platform access unlocks on December 1, 2025. We\'ll send you login instructions via email right after you join the waitlist.'
                 },
                 {
-                  q: 'What happens after the beta period?',
-                  a: 'In March 2025, you\'ll have the option to convert to a paying customer at $149/month (50% off) or stop using the product. There\'s no obligation to continue.'
+                  q: 'Can I cancel anytime?',
+                  a: 'Yes, absolutely. You can cancel your subscription at any time with no penalties or fees. However, once you cancel, you lose your forever price lock at $750/month. If you rejoin later, you\'ll pay the standard $1,250/month rate.'
                 },
                 {
-                  q: 'How are the 100 spots selected?',
-                  a: 'We\'re looking for technical founders and product leaders at B2B SaaS companies who will actively use the tool and provide thoughtful feedback. Apply through the founding member form and we\'ll review applications on a rolling basis.'
+                  q: 'How are the 100 founding member spots selected?',
+                  a: 'First come, first served. Once 100 people join the paid waitlist, the founding member offer closes permanently. After that, new users pay $1,250/month with no price lock option.'
                 },
                 {
-                  q: 'When does beta access start?',
-                  a: 'Beta access begins December 1, 2025. We\'ll start approving applications in batches, with the first 20 users getting access within 24 hours of launch.'
+                  q: 'What\'s included in the urgent assistance session?',
+                  a: 'The $350 urgent assistance session is a 90-minute 1:1 strategy call focused on immediate needs: closing active deals, building your sales team, or onboarding new sales hires. You get an actionable plan you can execute the same day. This payment can be applied toward founding membership if you join within 7 days.'
                 }
               ].map((faq, index) => (
                 <motion.div
@@ -311,9 +483,7 @@ export default function PricingPage() {
                     border: '1px solid rgba(255, 255, 255, 0.08)'
                   }}
                 >
-                  <h3 className="heading-4 mb-3" style={{
-                    color: '#FFFFFF'
-                  }}>
+                  <h3 className="heading-4 mb-3" style={{ color: '#FFFFFF' }}>
                     {faq.q}
                   </h3>
                   <p style={{
@@ -347,7 +517,7 @@ export default function PricingPage() {
                 fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
               }}
             >
-              Ready to Join?
+              Lock in $750/month Forever
             </motion.h2>
             <motion.p
               variants={fadeInUp}
@@ -357,18 +527,25 @@ export default function PricingPage() {
                 lineHeight: '1.7'
               }}
             >
-              100 spots. Free beta access. 50% lifetime discount. Apply now.
+              Join 100 founding members saving $6,000/year. Every year. Forever.
             </motion.p>
             <motion.div variants={fadeInUp}>
-              <GradientButton
-                href="/founding-members"
-                leftIcon={Zap}
-                rightIcon={ArrowRight}
-                size="lg"
-                ariaLabel="Apply for founding member access"
+              <a
+                href="https://buy.stripe.com/6oU9AVgJn4y78iqdU6bsc0n"
+                className="inline-flex items-center gap-2 px-12 py-6 rounded-xl font-bold text-xl transition-all transform hover:-translate-y-1"
+                style={{
+                  background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                  color: '#FFFFFF',
+                  boxShadow: '0 8px 24px rgba(59, 130, 246, 0.4)',
+                  border: 'none'
+                }}
               >
-                Apply for Founding Member Access
-              </GradientButton>
+                Join Waitlist - $497/month
+                <ArrowRight className="w-6 h-6" />
+              </a>
+              <p className="mt-6 body-small" style={{ color: '#E0E0E0' }}>
+                Access unlocks December 1, 2025 • 100 spots only • Cancel anytime
+              </p>
             </motion.div>
           </motion.div>
         </div>

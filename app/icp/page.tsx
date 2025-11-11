@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, RefreshCw, Download, FileDown, FileCode, Table, Sparkles } from 'lucide-react';
 import { Brain, Target, Users, FileText, Zap, BarChart3 } from 'lucide-react';
-import { useRequireAuth } from '@/app/lib/auth';
+import { useRequireAuth, useRequirePayment } from '@/app/lib/auth';
 import { useCustomer, useCustomerICP, useTrackAction } from '@/app/lib/hooks/useAPI';
 import { usePersonasCache } from '@/app/lib/hooks/cache';
 import { ModernSidebarLayout } from '../../src/shared/components/layout/ModernSidebarLayout';
@@ -89,6 +89,7 @@ const WIDGETS: Widget[] = [
 export default function ICPPage() {
   const searchParams = useSearchParams();
   const { user, loading: authLoading } = useRequireAuth(); // Auto-redirects if not authenticated
+  const { hasPaid, loading: paymentLoading } = useRequirePayment(); // Verifies payment before access
   const [activeWidget, setActiveWidget] = useState('product-details');
   const [loading, setLoading] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
@@ -126,7 +127,8 @@ export default function ICPPage() {
     enabled: !!user?.id
   });
 
-  if (authLoading) {
+  // Show loading state while checking auth AND payment
+  if (authLoading || paymentLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg-primary)' }}>
         <div className="body text-text-secondary">Loading...</div>

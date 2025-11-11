@@ -271,8 +271,8 @@ function AssessmentContent() {
               <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>
                 {error || 'We couldn\'t load your assessment. The link may be invalid or expired.'}
               </p>
-              <GradientButton href="/founding-members" size="lg" rightIcon={ArrowRight}>
-                Join Founding Members
+              <GradientButton href="/pricing" size="lg" rightIcon={ArrowRight}>
+                View Founding Member Pricing
               </GradientButton>
             </div>
           </ModernCard>
@@ -674,12 +674,12 @@ function AssessmentContent() {
                     Transform This Intelligence Into Revenue
                   </h2>
                   <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
-                    Join 100 founding members getting free access to the full Andru platform.
-                    Turn buyer intelligence insights into systematic revenue growth.
+                    Join 100 founding members locking in $750/month forever pricing (vs. $1,250 standard).
+                    Turn buyer intelligence insights into systematic revenue growth starting December 1, 2025.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
-                    <GradientButton href="/founding-members" size="xl" rightIcon={ArrowRight}>
-                      Join Founding Members Program
+                    <GradientButton href="/pricing" size="xl" rightIcon={ArrowRight}>
+                      Lock In Founding Member Pricing
                     </GradientButton>
                     <button
                       className="px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 transition-all"

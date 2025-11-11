@@ -92,10 +92,12 @@ const SupabaseAuth: React.FC<SupabaseAuthProps> = ({ redirectTo = '/icp' }) => {
       setLoading(true);
       setError(null);
 
+      // ⚠️ SECURITY: Magic links must go through /auth/callback for payment verification
+      // This ensures same server-side payment check as Google OAuth
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}${redirectTo}`
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=${redirectTo}`
         }
       });
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRequireAuth } from '@/app/lib/auth';
+import { useRequireAuth, useRequirePayment } from '@/app/lib/auth';
 import { getBackendUrl } from '@/app/lib/config/api';
 import { motion } from 'framer-motion';
 import { 
@@ -52,6 +52,7 @@ interface UserProfile {
 
 export default function ProfilePage() {
   const { user, isAuthenticated, loading } = useRequireAuth(); // Auto-redirects if not authenticated
+  const { hasPaid, loading: paymentLoading } = useRequirePayment(); // Verifies payment before access
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -136,7 +137,8 @@ export default function ProfilePage() {
     }
   };
 
-  if (loading || isLoading) {
+  // Show loading state while checking auth AND payment
+  if (loading || paymentLoading || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--background-primary)' }}>
         <div className="text-center">
