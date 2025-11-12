@@ -162,13 +162,20 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/pricing"
+                className="text-sm font-medium transition-colors hover:text-blue-400"
+                style={{ color: 'rgba(255, 255, 255, 0.8)' }}
+              >
+                Pricing
+              </Link>
+              <Link
+                href="/login"
                 className="px-6 py-2 rounded-lg font-semibold text-sm transition-all"
                 style={{
                   background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
                   color: '#ffffff'
                 }}
               >
-                Pricing
+                Login
               </Link>
             </div>
 
@@ -262,6 +269,14 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/pricing"
+                className="block py-2 text-sm font-medium"
+                style={{ color: 'rgba(255, 255, 255, 0.8)' }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Pricing
+              </Link>
+              <Link
+                href="/login"
                 className="block px-6 py-2 rounded-lg font-semibold text-sm text-center"
                 style={{
                   background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
@@ -269,7 +284,7 @@ export default function HomePage() {
                 }}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Pricing
+                Login
               </Link>
             </div>
           )}
