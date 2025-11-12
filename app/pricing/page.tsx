@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, ArrowRight, Sparkles, Users, Zap, DollarSign, Calendar, TrendingDown, Award, Shield } from 'lucide-react';
+import { Check, ArrowRight, Sparkles, Users, Zap, DollarSign, Calendar, TrendingDown, Award, Shield, BarChart3, Calculator } from 'lucide-react';
 import Link from 'next/link';
 import { GradientButton } from '../../src/shared/components/ui/GradientButton';
 import { FooterLayout } from '../../src/shared/components/layout/FooterLayout';
