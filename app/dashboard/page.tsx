@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 // Force dynamic rendering (no static generation) for authenticated pages
 export const dynamic = 'force-dynamic';
@@ -79,6 +80,8 @@ function transformInsightsToArray(backendInsights: any): Insight[] | undefined {
 }
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, loading } = useRequireAuth(); // Auto-redirects if not authenticated
   const { hasPaid, loading: paymentLoading } = useRequirePayment(); // Verifies payment before access
   const { openPalette } = useCommandPalette();
@@ -87,6 +90,18 @@ export default function DashboardPage() {
   const { data: progress, isLoading: progressLoading } = useProgress(user?.id);
   const { data: milestones, isLoading: milestonesLoading } = useMilestones(user?.id);
   const { data: insights, isLoading: insightsLoading } = useProgressInsights(user?.id);
+
+  // Clean up OAuth callback parameters from URL (code, next, etc.)
+  useEffect(() => {
+    const code = searchParams.get('code');
+    const next = searchParams.get('next');
+
+    // If OAuth parameters are present, clean the URL
+    if (code || next) {
+      console.log('🧹 Cleaning OAuth parameters from dashboard URL');
+      router.replace('/dashboard');
+    }
+  }, [searchParams, router]);
 
   // Show loading state while checking auth AND payment
   if (loading || paymentLoading) {
