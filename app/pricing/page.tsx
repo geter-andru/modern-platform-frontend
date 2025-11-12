@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Check, ArrowRight, Sparkles, Users, Zap, DollarSign, Calendar, TrendingDown, Award, Shield, BarChart3, Calculator } from 'lucide-react';
 import Link from 'next/link';
@@ -8,6 +8,7 @@ import { GradientButton } from '../../src/shared/components/ui/GradientButton';
 import { FooterLayout } from '../../src/shared/components/layout/FooterLayout';
 import { MotionBackground } from '../../src/shared/components/ui/MotionBackground';
 import { PublicHeader } from '../../src/shared/components/layout/PublicHeader';
+import { initPublicPageTracking, trackCtaClick } from '../lib/analytics/publicPageTracking';
 
 /**
  * Pricing Page - Paid Waitlist Launch
@@ -23,6 +24,20 @@ import { PublicHeader } from '../../src/shared/components/layout/PublicHeader';
  */
 
 export default function PricingPage() {
+  // Initialize public page tracking
+  useEffect(() => {
+    initPublicPageTracking('/pricing', 'Pricing - Lock in $750/month Forever');
+  }, []);
+
+  // CTA click handler
+  const handleCtaClick = (ctaText: string, ctaLocation: string) => {
+    trackCtaClick({
+      ctaText,
+      ctaLocation,
+      pagePath: '/pricing'
+    });
+  };
+
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },

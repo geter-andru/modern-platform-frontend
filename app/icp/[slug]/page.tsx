@@ -1,42 +1,38 @@
-import { notFound } from 'next/navigation';
+'use client';
+
+import { useEffect } from 'react';
+import { notFound, useParams } from 'next/navigation';
 import scenarios from '@/data/scenarios.json';
+import { initPublicPageTracking, trackCtaClick } from '@/app/lib/analytics/publicPageTracking';
 
-// Generate static params for all scenarios
-export async function generateStaticParams() {
-  return scenarios.map((scenario) => ({
-    slug: scenario.slug,
-  }));
-}
-
-// Generate metadata for SEO
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const scenario = scenarios.find((s) => s.slug === slug);
-
-  if (!scenario) {
-    return {
-      title: 'ICP Scenario Not Found',
-    };
-  }
-
-  return {
-    title: `${scenario.company} ICP | ${scenario.title}`,
-    description: scenario.scenario.substring(0, 160),
-    openGraph: {
-      title: `${scenario.company} - ${scenario.title}`,
-      description: scenario.scenario,
-      type: 'article',
-    },
-  };
-}
-
-export default async function ICPScenarioPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+// This component is now client-side to enable tracking
+export default function ICPScenarioPage() {
+  const params = useParams();
+  const slug = params?.slug as string;
   const scenario = scenarios.find((s) => s.slug === slug);
 
   if (!scenario) {
     notFound();
   }
+
+  // Initialize tracking for this ICP page
+  useEffect(() => {
+    if (scenario) {
+      initPublicPageTracking(
+        `/icp/${slug}`,
+        `${scenario.company} ICP | ${scenario.title}`
+      );
+    }
+  }, [slug, scenario]);
+
+  // CTA click handler
+  const handleCtaClick = (ctaText: string, ctaLocation: string) => {
+    trackCtaClick({
+      ctaText,
+      ctaLocation,
+      pagePath: `/icp/${slug}`
+    });
+  };
 
   return (
     <>
@@ -54,28 +50,49 @@ export default async function ICPScenarioPage({ params }: { params: Promise<{ sl
               backdropFilter: 'blur(16px)',
               border: '1px solid rgba(255, 255, 255, 0.08)'
             }}>
-              <h3 className="text-2xl font-bold mb-3" style={{
+              <h3 className="text-2xl md:text-3xl font-bold mb-3" style={{
                 background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
               }}>
-                This is how your product can delight your customers, according to Andru
+                If We Can Map {scenario.company}'s Customer Journey This Well...
               </h3>
-              <p className="text-lg mb-6" style={{ color: '#a3a3a3' }}>
-                Deep customer insight that makes your product value crystal clear
+              <p className="text-lg md:text-xl mb-6" style={{ color: '#e5e5e5' }}>
+                Imagine what we can do for <strong style={{ color: '#ffffff' }}>your</strong> ICP
               </p>
-              <a
-                href="https://calendly.com/humusnshore/discovery-60-min?back=1&month=2025-10"
-                className="inline-block text-white font-bold px-8 py-3 rounded-lg hover:-translate-y-0.5 hover:shadow-xl"
-                style={{
-                  background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-                  transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                  boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
-                }}
-              >
-                Learn More About Andru
-              </a>
+              <p className="text-base mb-8 max-w-2xl mx-auto" style={{ color: '#a3a3a3', lineHeight: '1.6' }}>
+                This customer intelligence took 3 minutes to generate. Most founders spend 3 months (or never figure it out).
+                See how Andru maps buyer journeys, pain points, and moments of value—automatically.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a
+                  href="https://calendly.com/humusnshore/discovery-60-min?back=1&month=2025-10"
+                  onClick={() => handleCtaClick('Book a 15-Min Chat', 'header')}
+                  className="inline-block text-white font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-xl transition-all w-full sm:w-auto"
+                  style={{
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                  }}
+                >
+                  Book a 15-Min Chat
+                </a>
+                <a
+                  href="https://andru-ai.com/"
+                  onClick={() => handleCtaClick(`See ${scenario.company}'s ICP Score`, 'header')}
+                  className="inline-block font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-lg transition-all w-full sm:w-auto"
+                  style={{
+                    background: 'transparent',
+                    border: '2px solid rgba(139, 92, 246, 0.5)',
+                    color: '#ffffff'
+                  }}
+                >
+                  See {scenario.company}'s ICP Score
+                </a>
+              </div>
+              <p className="text-sm mt-4" style={{ color: '#737373' }}>
+                No pitch. Just 3 minutes to see how your ICP clarity compares.
+              </p>
             </div>
           </div>
 
@@ -231,33 +248,53 @@ export default async function ICPScenarioPage({ params }: { params: Promise<{ sl
 
           {/* CTA Footer */}
           <div className="mt-12 text-center">
-            <div className="rounded-2xl shadow-xl p-8" style={{
+            <div className="rounded-2xl shadow-xl p-8 md:p-10" style={{
               background: 'rgba(255, 255, 255, 0.03)',
               backdropFilter: 'blur(16px)',
               border: '1px solid rgba(255, 255, 255, 0.08)'
             }}>
-              <h3 className="text-2xl font-bold mb-3" style={{
+              <h3 className="text-2xl md:text-3xl font-bold mb-3" style={{
                 background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
               }}>
-                This is how your product can delight your customers, according to Andru
+                Want This Level of Customer Intelligence for Your Company?
               </h3>
-              <p className="text-lg mb-6" style={{ color: '#a3a3a3' }}>
-                Deep customer insight that makes your product value crystal clear
+              <p className="text-lg mb-4" style={{ color: '#e5e5e5' }}>
+                See how your ICP clarity compares to other Series A founders
               </p>
-              <a
-                href="https://calendly.com/humusnshore/discovery-60-min?back=1&month=2025-10"
-                className="inline-block text-white font-bold px-8 py-3 rounded-lg hover:-translate-y-0.5 hover:shadow-xl"
-                style={{
-                  background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-                  transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                  boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
-                }}
-              >
-                Learn More About Andru
-              </a>
+              <p className="text-base mb-8 max-w-2xl mx-auto" style={{ color: '#a3a3a3', lineHeight: '1.6' }}>
+                A consultant would charge $5,000 for this analysis. With Andru, you get buyer intelligence like this in 3 minutes—not 3 months.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a
+                  href="https://andru-ai.com/"
+                  onClick={() => handleCtaClick(`See ${scenario.company}'s ICP Score`, 'footer')}
+                  className="inline-block text-white font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-xl transition-all w-full sm:w-auto"
+                  style={{
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                  }}
+                >
+                  See {scenario.company}'s ICP Score
+                </a>
+                <a
+                  href="https://calendly.com/humusnshore/discovery-60-min?back=1&month=2025-10"
+                  onClick={() => handleCtaClick('Talk to the Founder', 'footer')}
+                  className="inline-block font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-lg transition-all w-full sm:w-auto"
+                  style={{
+                    background: 'transparent',
+                    border: '2px solid rgba(139, 92, 246, 0.5)',
+                    color: '#ffffff'
+                  }}
+                >
+                  Talk to the Founder
+                </a>
+              </div>
+              <p className="text-sm mt-4" style={{ color: '#737373' }}>
+                Join 47 founders who figured out their ICP before hiring a VP of Sales
+              </p>
             </div>
           </div>
         </div>

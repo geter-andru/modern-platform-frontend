@@ -4,6 +4,7 @@
 import { supabase } from '@/app/lib/supabase/client';
 import { supabaseAdmin } from '@/app/lib/supabase/admin';
 import type { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
+import { linkAnonymousSessionToUser } from '../analytics/publicPageTracking';
 
 export interface AuthUser {
   id: string;
@@ -118,6 +119,12 @@ class SupabaseAuthService {
         // Ensure user profile exists
         if (session?.user) {
           await this.ensureUserProfile(session.user);
+
+          // Link anonymous session to authenticated user for funnel tracking
+          if (session.access_token) {
+            console.log('🔗 [AuthService] Linking anonymous session to user:', session.user.id);
+            await linkAnonymousSessionToUser(session.user.id, session.access_token);
+          }
         }
         break;
       case 'SIGNED_OUT':

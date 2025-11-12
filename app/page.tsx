@@ -10,6 +10,7 @@ import { GradientButton } from '../src/shared/components/ui/GradientButton';
 import { FeatureCard } from '../src/shared/components/ui/FeatureCard';
 import { FooterLayout } from '../src/shared/components/layout/FooterLayout';
 import { MotionBackground } from '../src/shared/components/ui/MotionBackground';
+import { initPublicPageTracking, trackCtaClick } from './lib/analytics/publicPageTracking';
 
 export default function HomePage() {
   const router = useRouter();
@@ -26,6 +27,20 @@ export default function HomePage() {
     };
     checkAuth();
   }, [supabase]);
+
+  // Initialize public page tracking
+  useEffect(() => {
+    initPublicPageTracking('/', 'Andru Revenue Intelligence - Homepage');
+  }, []);
+
+  // CTA click handler
+  const handleCtaClick = (ctaText: string, ctaLocation: string) => {
+    trackCtaClick({
+      ctaText,
+      ctaLocation,
+      pagePath: '/'
+    });
+  };
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -367,6 +382,7 @@ export default function HomePage() {
             >
               <Link
                 href="/icp/demo-v2"
+                onClick={() => handleCtaClick('See Live Demo', 'hero-above-fold')}
                 className="inline-flex items-center justify-center gap-2 px-12 py-6 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
                 style={{
                   background: 'rgba(255, 255, 255, 0.05)',
@@ -395,6 +411,7 @@ export default function HomePage() {
                       href="/dashboard"
                       size="xl"
                       ariaLabel="Go to your dashboard"
+                      onClick={() => handleCtaClick('Go to Dashboard', 'hero')}
                     >
                       Go to Dashboard
                     </GradientButton>
@@ -403,6 +420,7 @@ export default function HomePage() {
                       href="/pricing"
                       size="xl"
                       ariaLabel="Lock in founding member pricing"
+                      onClick={() => handleCtaClick('Lock In Founding Member Pricing', 'hero')}
                     >
                       Lock In Founding Member Pricing
                     </GradientButton>
@@ -410,6 +428,7 @@ export default function HomePage() {
 
                   <Link
                     href="/icp/demo-v2"
+                    onClick={() => handleCtaClick('See Live Demo', 'hero')}
                     className="group px-12 py-6 rounded-2xl font-semibold text-lg min-w-[240px] text-center transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 flex items-center justify-center gap-2"
                     style={{
                       background: 'rgba(255, 255, 255, 0.05)',

@@ -157,6 +157,7 @@ export const GradientButton: React.FC<GradientButtonProps> = ({
     return (
       <Link
         href={href}
+        onClick={onClick}
         className={baseClasses}
         style={buttonStyle}
         aria-label={ariaLabel}

@@ -6,6 +6,8 @@ import { useAuth } from '@/app/lib/auth';
 import { ModernSidebarLayout } from '../../../src/shared/components/layout/ModernSidebarLayout';
 import { Users, DollarSign, Calendar, Lock, RefreshCw, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { AssessmentAnalyticsSection } from './components/AssessmentAnalyticsSection';
+import { PlatformAnalyticsSection } from './components/PlatformAnalyticsSection';
 
 interface FoundingMember {
   user_id: string;
@@ -22,6 +24,18 @@ interface FoundingMember {
   payment_currency: string;
   founding_member_number: number | null;
   assessment_session_id: string | null;
+  assessmentStatus: {
+    completed: boolean;
+    overallScore: number | null;
+    buyerScore: number | null;
+    completedAt: string | null;
+  };
+  platformStatus: {
+    lastActive: string | null;
+    toolSessions: number;
+    exportsGenerated: number;
+    daysSinceLastActivity: number | null;
+  };
 }
 
 interface AdminData {
@@ -235,6 +249,12 @@ export default function AdminFoundingMembersPage() {
             <p className="text-xs text-orange-400/60 mt-1">Access pending</p>
           </motion.div>
         </div>
+
+        {/* Assessment Analytics Section */}
+        <AssessmentAnalyticsSection />
+
+        {/* Platform Analytics Section */}
+        <PlatformAnalyticsSection />
 
         {/* Members Table */}
         <motion.div
