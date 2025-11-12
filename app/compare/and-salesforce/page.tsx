@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { MotionBackground } from '../../../src/shared/components/ui/MotionBackground';
+import { PublicHeader } from '../../../src/shared/components/layout/PublicHeader';
 
 /**
  * Andru & Salesforce Comparison Page
@@ -32,8 +33,9 @@ export default function AndruVsSalesforcePage() {
       />
 
       <MotionBackground />
+      <PublicHeader />
 
-      <div className="min-h-screen" style={{
+      <div className="min-h-screen pt-32" style={{
         background: 'transparent',
         padding: 'var(--spacing-4xl) var(--spacing-lg)'
       }}>

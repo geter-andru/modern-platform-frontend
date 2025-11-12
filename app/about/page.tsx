@@ -6,6 +6,7 @@ import { Target, Zap, Users, Sparkles, ArrowRight } from 'lucide-react';
 import { GradientButton } from '../../src/shared/components/ui/GradientButton';
 import { FooterLayout } from '../../src/shared/components/layout/FooterLayout';
 import { MotionBackground } from '../../src/shared/components/ui/MotionBackground';
+import { PublicHeader } from '../../src/shared/components/layout/PublicHeader';
 
 export default function AboutPage() {
   const fadeInUp = {
@@ -27,43 +28,10 @@ export default function AboutPage() {
       background: 'transparent'
     }}>
       <MotionBackground />
-
-      {/* Header */}
-      <header className="py-6 px-4 sm:px-6 lg:px-8 border-b" style={{
-        borderColor: 'var(--glass-border, rgba(255, 255, 255, 0.08))'
-      }}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110" style={{
-              background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-              boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)'
-            }}>
-              <Sparkles className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-xl font-bold" style={{
-              color: 'var(--color-text-primary, #ffffff)',
-              fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
-            }}>
-              Andru
-            </span>
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link href="/pricing" className="text-sm font-medium transition-colors" style={{
-              color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))'
-            }}>
-              Pricing
-            </Link>
-            <Link href="/login" className="text-sm font-medium transition-colors" style={{
-              color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))'
-            }}>
-              Sign In
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <PublicHeader />
 
       {/* Hero Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 pt-32">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial="initial"

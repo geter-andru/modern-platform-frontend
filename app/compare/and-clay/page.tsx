@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { MotionBackground } from '../../../src/shared/components/ui/MotionBackground';
+import { PublicHeader } from '../../../src/shared/components/layout/PublicHeader';
 
 export default function AndruVsClayPage() {
   return (
@@ -41,46 +42,28 @@ export default function AndruVsClayPage() {
       />
 
       <MotionBackground />
+      <PublicHeader />
 
       <div
         style={{
           minHeight: '100vh',
           background: 'transparent',
           color: 'var(--color-text-primary, #ffffff)',
-          fontFamily: '"Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+          fontFamily: '"Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)'
         }}
       >
-        {/* Header */}
-        <header
-          style={{
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-            padding: 'var(--spacing-xl, 24px) 0',
-            background: 'var(--color-background-secondary, #0a0a0a)'
-          }}
-        >
-          <div
-            style={{
-              maxWidth: '1200px',
-              margin: '0 auto',
-              padding: '0 var(--spacing-xl, 24px)',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}
-          >
-            <Link
-              href="/ai-seo"
-              style={{
-                fontSize: 'var(--font-size-2xl, 28px)',
-                fontWeight: '700',
-                background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                textDecoration: 'none'
-              }}
-            >
-              Andru
-            </Link>
+        {/* Breadcrumb Navigation */}
+        <div style={{
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          padding: 'var(--spacing-xl, 24px) 0',
+          background: 'var(--color-background-secondary, #0a0a0a)',
+          marginTop: '64px'
+        }}>
+          <div style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 var(--spacing-xl, 24px)'
+          }}>
             <nav style={{
               color: 'var(--color-text-secondary, #a3a3a3)',
               fontSize: 'var(--font-size-sm, 13px)',
@@ -99,7 +82,7 @@ export default function AndruVsClayPage() {
               <span style={{ color: 'var(--color-text-primary, #ffffff)' }}>Andru & Clay</span>
             </nav>
           </div>
-        </header>
+        </div>
 
         {/* Main Content */}
         <main

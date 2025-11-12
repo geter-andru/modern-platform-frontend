@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { MotionBackground } from '../../src/shared/components/ui/MotionBackground';
+import { PublicHeader } from '../../src/shared/components/layout/PublicHeader';
 
 /**
  * AI-SEO Landing Page
@@ -108,8 +109,9 @@ export default function AIToolPage() {
       />
 
       <MotionBackground />
+      <PublicHeader />
 
-      <div className="min-h-screen" style={{
+      <div className="min-h-screen pt-32" style={{
         background: 'transparent',
         padding: 'var(--spacing-4xl) var(--spacing-lg)'
       }}>

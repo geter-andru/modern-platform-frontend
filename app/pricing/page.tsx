@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { GradientButton } from '../../src/shared/components/ui/GradientButton';
 import { FooterLayout } from '../../src/shared/components/layout/FooterLayout';
 import { MotionBackground } from '../../src/shared/components/ui/MotionBackground';
+import { PublicHeader } from '../../src/shared/components/layout/PublicHeader';
 
 /**
  * Pricing Page - Paid Waitlist Launch
@@ -43,9 +44,10 @@ export default function PricingPage() {
       fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
     }}>
       <MotionBackground />
+      <PublicHeader />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden min-h-screen flex items-center px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden min-h-screen flex items-center px-4 sm:px-6 lg:px-8 pt-16">
 
         <div className="relative max-w-6xl mx-auto pt-20 pb-24 sm:pt-24 sm:pb-32">
           <motion.div
