@@ -53,6 +53,13 @@ export async function GET(request: NextRequest) {
         email: data.session.user.email
       })
 
+      // 🔓 ADMIN BYPASS: Allow admin user to access platform without payment
+      if (data.session.user.email === 'geter@humusnshore.org') {
+        console.log('✅ Auth Callback: Admin user detected, bypassing payment check');
+        const next = searchParams.get('next') || '/dashboard';
+        return NextResponse.redirect(`${origin}${next}`);
+      }
+
       // ⚠️ PAYMENT VERIFICATION: Check if user has paid before granting access
       const { data: milestone, error: milestoneError } = await supabase
         .from('user_milestones')

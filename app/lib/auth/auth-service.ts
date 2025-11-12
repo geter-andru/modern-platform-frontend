@@ -151,12 +151,16 @@ class SupabaseAuthService {
 
   private async checkAdminStatus(user: User): Promise<boolean> {
     if (!user.email) return false;
-    
+
     // Check admin criteria
-    const adminEmails = ['admin@andru.ai', 'support@andru.ai'];
+    const adminEmails = [
+      'admin@andru.ai',
+      'support@andru.ai',
+      'geter@humusnshore.org' // Founder admin access
+    ];
     const adminDomains = ['@andru.ai'];
-    
-    return adminEmails.includes(user.email) || 
+
+    return adminEmails.includes(user.email) ||
            adminDomains.some(domain => user.email!.endsWith(domain));
   }
 
