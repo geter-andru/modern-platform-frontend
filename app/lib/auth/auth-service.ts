@@ -267,7 +267,7 @@ class SupabaseAuthService {
         .from('assessment_sessions')
         .update({
           user_id: user.id,
-          status: 'linked_to_user',
+          status: 'linked',
           updated_at: new Date().toISOString()
         })
         .eq('user_email', user.email)
