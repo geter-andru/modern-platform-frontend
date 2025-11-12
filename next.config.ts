@@ -18,6 +18,64 @@ const nextConfig: NextConfig = {
   // Asset prefix
   assetPrefix: '',
 
+  // Redirects for SEO preservation (comparison pages: /ai-seo/ → /compare/)
+  async redirects() {
+    return [
+      // Old "vs" URLs redirect to new "compare/and-" URLs
+      {
+        source: '/ai-seo/vs-clay',
+        destination: '/compare/and-clay',
+        permanent: true
+      },
+      {
+        source: '/ai-seo/vs-gong',
+        destination: '/compare/and-gong',
+        permanent: true
+      },
+      {
+        source: '/ai-seo/vs-hubspot',
+        destination: '/compare/and-hubspot',
+        permanent: true
+      },
+      {
+        source: '/ai-seo/vs-salesforce',
+        destination: '/compare/and-salesforce',
+        permanent: true
+      },
+      {
+        source: '/ai-seo/vs-zoominfo',
+        destination: '/compare/and-zoominfo',
+        permanent: true
+      },
+      // Old "and-" URLs also redirect to new /compare/ location
+      {
+        source: '/ai-seo/and-clay',
+        destination: '/compare/and-clay',
+        permanent: true
+      },
+      {
+        source: '/ai-seo/and-gong',
+        destination: '/compare/and-gong',
+        permanent: true
+      },
+      {
+        source: '/ai-seo/and-hubspot',
+        destination: '/compare/and-hubspot',
+        permanent: true
+      },
+      {
+        source: '/ai-seo/and-salesforce',
+        destination: '/compare/and-salesforce',
+        permanent: true
+      },
+      {
+        source: '/ai-seo/and-zoominfo',
+        destination: '/compare/and-zoominfo',
+        permanent: true
+      }
+    ];
+  },
+
   // TypeScript checking ENABLED for production quality
   typescript: {
     ignoreBuildErrors: false  // ✅ Enforce type safety in production builds

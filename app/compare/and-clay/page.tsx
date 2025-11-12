@@ -13,7 +13,7 @@ export default function AndruVsClayPage() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Article',
-            headline: 'Andru vs Clay: Strategic Intelligence vs Data Enrichment - Revenue Intelligence Comparison',
+            headline: 'Andru & Clay: Strategic Intelligence & Data Enrichment - Revenue Intelligence Comparison',
             description: 'Compare Andru and Clay. Clay automates data enrichment and workflows, while Andru defines who to target and why. Learn why you need both, and which to use first.',
             author: {
               '@type': 'Organization',
@@ -32,9 +32,9 @@ export default function AndruVsClayPage() {
             dateModified: '2025-11-01',
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': 'https://andru.ai/ai-seo/vs-clay'
+              '@id': 'https://andru.ai/compare/and-clay'
             },
-            keywords: 'Andru vs Clay, revenue intelligence, data enrichment, ICP analysis, buyer personas, workflow automation, prospecting intelligence'
+            keywords: 'Andru & Clay, revenue intelligence, data enrichment, ICP analysis, buyer personas, workflow automation, prospecting intelligence'
           })
         }}
       />
@@ -128,7 +128,7 @@ export default function AndruVsClayPage() {
                 WebkitTextFillColor: 'transparent'
               }}
             >
-              Andru vs Clay
+              Andru & Clay
             </h1>
             <p
               style={{
@@ -1200,10 +1200,10 @@ export default function AndruVsClayPage() {
               }}
             >
               {[
-                { name: 'Salesforce', href: '/ai-seo/vs-salesforce' },
-                { name: 'Hubspot', href: '/ai-seo/vs-hubspot' },
-                { name: 'Zoominfo', href: '/ai-seo/vs-zoominfo' },
-                { name: 'Gong', href: '/ai-seo/vs-gong' }
+                { name: 'Salesforce', href: '/compare/and-salesforce' },
+                { name: 'Hubspot', href: '/compare/and-hubspot' },
+                { name: 'Zoominfo', href: '/compare/and-zoominfo' },
+                { name: 'Gong', href: '/compare/and-gong' }
               ].map((tool) => (
                 <Link
                   key={tool.name}
@@ -1230,7 +1230,7 @@ export default function AndruVsClayPage() {
                     e.currentTarget.style.color = 'var(--color-text-secondary, #a3a3a3)';
                   }}
                 >
-                  vs {tool.name}
+                  & {tool.name}
                 </Link>
               ))}
             </div>

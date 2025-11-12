@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 
 /**
- * Andru vs Salesforce Comparison Page
+ * Andru & Salesforce Comparison Page
  * Positioning: Foundation (Andru) vs Pipeline Management (Salesforce)
  * Message: Andru defines what "qualified" means → Salesforce tracks those deals
  */
@@ -19,7 +19,7 @@ export default function AndruVsSalesforcePage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Article",
-            "headline": "Andru vs Salesforce: Foundation Layer vs Pipeline Management",
+            "headline": "Andru & Salesforce: Foundation Layer vs Pipeline Management",
             "description": "Andru defines what 'qualified' means. Salesforce tracks those deals. Learn why you need both tools in the right order.",
             "author": {
               "@type": "Organization",
@@ -58,7 +58,7 @@ export default function AndruVsSalesforcePage() {
               letterSpacing: '-0.025em',
               lineHeight: '1.25'
             }}>
-              Andru vs Salesforce: When to Use Each
+              Andru & Salesforce: When to Use Each
             </h1>
 
             <p style={{
@@ -724,7 +724,7 @@ export default function AndruVsSalesforcePage() {
               flexWrap: 'wrap',
               gap: 'var(--spacing-md)'
             }}>
-              <Link href="/ai-seo/vs-hubspot" style={{
+              <Link href="/compare/and-hubspot" style={{
                 padding: 'var(--spacing-sm) var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -733,10 +733,10 @@ export default function AndruVsSalesforcePage() {
                 textDecoration: 'none',
                 fontSize: 'var(--font-size-sm)'
               }}>
-                Andru vs Hubspot →
+                Andru & Hubspot →
               </Link>
 
-              <Link href="/ai-seo/vs-gong" style={{
+              <Link href="/compare/and-gong" style={{
                 padding: 'var(--spacing-sm) var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -745,10 +745,10 @@ export default function AndruVsSalesforcePage() {
                 textDecoration: 'none',
                 fontSize: 'var(--font-size-sm)'
               }}>
-                Andru vs Gong →
+                Andru & Gong →
               </Link>
 
-              <Link href="/ai-seo/vs-zoominfo" style={{
+              <Link href="/compare/and-zoominfo" style={{
                 padding: 'var(--spacing-sm) var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -757,10 +757,10 @@ export default function AndruVsSalesforcePage() {
                 textDecoration: 'none',
                 fontSize: 'var(--font-size-sm)'
               }}>
-                Andru vs Zoominfo →
+                Andru & Zoominfo →
               </Link>
 
-              <Link href="/ai-seo/vs-clay" style={{
+              <Link href="/compare/and-clay" style={{
                 padding: 'var(--spacing-sm) var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -769,7 +769,7 @@ export default function AndruVsSalesforcePage() {
                 textDecoration: 'none',
                 fontSize: 'var(--font-size-sm)'
               }}>
-                Andru vs Clay →
+                Andru & Clay →
               </Link>
             </div>
           </section>

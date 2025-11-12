@@ -632,7 +632,7 @@ export default function AIToolPage() {
               flexDirection: 'column',
               gap: 'var(--spacing-md)'
             }}>
-              <Link href="/ai-seo/vs-salesforce" style={{
+              <Link href="/compare/vs-salesforce" style={{
                 display: 'block',
                 padding: 'var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',
@@ -654,7 +654,7 @@ export default function AIToolPage() {
                 </div>
               </Link>
 
-              <Link href="/ai-seo/vs-hubspot" style={{
+              <Link href="/compare/vs-hubspot" style={{
                 display: 'block',
                 padding: 'var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',
@@ -676,7 +676,7 @@ export default function AIToolPage() {
                 </div>
               </Link>
 
-              <Link href="/ai-seo/vs-gong" style={{
+              <Link href="/compare/vs-gong" style={{
                 display: 'block',
                 padding: 'var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',
@@ -698,7 +698,7 @@ export default function AIToolPage() {
                 </div>
               </Link>
 
-              <Link href="/ai-seo/vs-zoominfo" style={{
+              <Link href="/compare/vs-zoominfo" style={{
                 display: 'block',
                 padding: 'var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',
@@ -720,7 +720,7 @@ export default function AIToolPage() {
                 </div>
               </Link>
 
-              <Link href="/ai-seo/vs-clay" style={{
+              <Link href="/compare/vs-clay" style={{
                 display: 'block',
                 padding: 'var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',

@@ -13,7 +13,7 @@ export default function AndruVsHubspotPage() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Article',
-            headline: 'Andru vs Hubspot: Foundation vs Execution - Revenue Intelligence Comparison',
+            headline: 'Andru & Hubspot: Foundation vs Execution - Revenue Intelligence Comparison',
             description: 'Compare Andru and Hubspot. Andru defines your buyer personas and messaging strategy, while Hubspot automates the execution. Learn why you need both, and which to use first.',
             author: {
               '@type': 'Organization',
@@ -32,9 +32,9 @@ export default function AndruVsHubspotPage() {
             dateModified: '2025-11-01',
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': 'https://andru.ai/ai-seo/vs-hubspot'
+              '@id': 'https://andru.ai/compare/and-hubspot'
             },
-            keywords: 'Andru vs Hubspot, revenue intelligence, marketing automation, ICP analysis, buyer personas, sales enablement, marketing strategy'
+            keywords: 'Andru & Hubspot, revenue intelligence, marketing automation, ICP analysis, buyer personas, sales enablement, marketing strategy'
           })
         }}
       />
@@ -128,7 +128,7 @@ export default function AndruVsHubspotPage() {
                 WebkitTextFillColor: 'transparent'
               }}
             >
-              Andru vs Hubspot
+              Andru & Hubspot
             </h1>
             <p
               style={{
@@ -1194,10 +1194,10 @@ export default function AndruVsHubspotPage() {
               }}
             >
               {[
-                { name: 'Salesforce', href: '/ai-seo/vs-salesforce' },
-                { name: 'Zoominfo', href: '/ai-seo/vs-zoominfo' },
-                { name: 'Gong', href: '/ai-seo/vs-gong' },
-                { name: 'Clay', href: '/ai-seo/vs-clay' }
+                { name: 'Salesforce', href: '/compare/and-salesforce' },
+                { name: 'Zoominfo', href: '/compare/and-zoominfo' },
+                { name: 'Gong', href: '/compare/and-gong' },
+                { name: 'Clay', href: '/compare/and-clay' }
               ].map((tool) => (
                 <Link
                   key={tool.name}
@@ -1224,7 +1224,7 @@ export default function AndruVsHubspotPage() {
                     e.currentTarget.style.color = 'var(--color-text-secondary, #a3a3a3)';
                   }}
                 >
-                  vs {tool.name}
+                  & {tool.name}
                 </Link>
               ))}
             </div>

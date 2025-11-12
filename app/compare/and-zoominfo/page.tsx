@@ -13,7 +13,7 @@ export default function AndruVsZoominfoPage() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Article',
-            headline: 'Andru vs Zoominfo: Buyer Intelligence vs Contact Data - Revenue Intelligence Comparison',
+            headline: 'Andru & Zoominfo: Buyer Intelligence vs Contact Data - Revenue Intelligence Comparison',
             description: 'Compare Andru and Zoominfo. Zoominfo provides contact data and firmographics, while Andru defines who to target and why. Learn why you need both, and which to use first.',
             author: {
               '@type': 'Organization',
@@ -32,9 +32,9 @@ export default function AndruVsZoominfoPage() {
             dateModified: '2025-11-01',
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': 'https://andru.ai/ai-seo/vs-zoominfo'
+              '@id': 'https://andru.ai/compare/and-zoominfo'
             },
-            keywords: 'Andru vs Zoominfo, revenue intelligence, contact data, ICP analysis, buyer personas, lead qualification, prospecting intelligence'
+            keywords: 'Andru & Zoominfo, revenue intelligence, contact data, ICP analysis, buyer personas, lead qualification, prospecting intelligence'
           })
         }}
       />
@@ -128,7 +128,7 @@ export default function AndruVsZoominfoPage() {
                 WebkitTextFillColor: 'transparent'
               }}
             >
-              Andru vs Zoominfo
+              Andru & Zoominfo
             </h1>
             <p
               style={{
@@ -1197,10 +1197,10 @@ export default function AndruVsZoominfoPage() {
               }}
             >
               {[
-                { name: 'Salesforce', href: '/ai-seo/vs-salesforce' },
-                { name: 'Hubspot', href: '/ai-seo/vs-hubspot' },
-                { name: 'Gong', href: '/ai-seo/vs-gong' },
-                { name: 'Clay', href: '/ai-seo/vs-clay' }
+                { name: 'Salesforce', href: '/compare/and-salesforce' },
+                { name: 'Hubspot', href: '/compare/and-hubspot' },
+                { name: 'Gong', href: '/compare/and-gong' },
+                { name: 'Clay', href: '/compare/and-clay' }
               ].map((tool) => (
                 <Link
                   key={tool.name}
@@ -1227,7 +1227,7 @@ export default function AndruVsZoominfoPage() {
                     e.currentTarget.style.color = 'var(--color-text-secondary, #a3a3a3)';
                   }}
                 >
-                  vs {tool.name}
+                  & {tool.name}
                 </Link>
               ))}
             </div>

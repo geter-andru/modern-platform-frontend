@@ -108,44 +108,44 @@ export default function HomePage() {
                     >
                       <div className="py-2">
                         <Link
-                          href="/ai-seo/vs-clay"
+                          href="/compare/and-clay"
                           className="block px-4 py-2 text-sm transition-colors hover:bg-white/5"
                           style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                           onClick={() => setWhyAndruOpen(false)}
                         >
-                          Andru vs Clay
+                          Andru & Clay
                         </Link>
                         <Link
-                          href="/ai-seo/vs-gong"
+                          href="/compare/and-gong"
                           className="block px-4 py-2 text-sm transition-colors hover:bg-white/5"
                           style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                           onClick={() => setWhyAndruOpen(false)}
                         >
-                          Andru vs Gong
+                          Andru & Gong
                         </Link>
                         <Link
-                          href="/ai-seo/vs-hubspot"
+                          href="/compare/and-hubspot"
                           className="block px-4 py-2 text-sm transition-colors hover:bg-white/5"
                           style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                           onClick={() => setWhyAndruOpen(false)}
                         >
-                          Andru vs HubSpot
+                          Andru & HubSpot
                         </Link>
                         <Link
-                          href="/ai-seo/vs-salesforce"
+                          href="/compare/and-salesforce"
                           className="block px-4 py-2 text-sm transition-colors hover:bg-white/5"
                           style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                           onClick={() => setWhyAndruOpen(false)}
                         >
-                          Andru vs Salesforce
+                          Andru & Salesforce
                         </Link>
                         <Link
-                          href="/ai-seo/vs-zoominfo"
+                          href="/compare/and-zoominfo"
                           className="block px-4 py-2 text-sm transition-colors hover:bg-white/5"
                           style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                           onClick={() => setWhyAndruOpen(false)}
                         >
-                          Andru vs ZoomInfo
+                          Andru & ZoomInfo
                         </Link>
                       </div>
                     </div>
@@ -209,44 +209,44 @@ export default function HomePage() {
                 {whyAndruOpen && (
                   <div className="pl-4 mt-2 space-y-2">
                     <Link
-                      href="/ai-seo/vs-clay"
+                      href="/compare/and-clay"
                       className="block py-2 text-sm"
                       style={{ color: 'rgba(255, 255, 255, 0.6)' }}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Andru vs Clay
+                      Andru & Clay
                     </Link>
                     <Link
-                      href="/ai-seo/vs-gong"
+                      href="/compare/and-gong"
                       className="block py-2 text-sm"
                       style={{ color: 'rgba(255, 255, 255, 0.6)' }}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Andru vs Gong
+                      Andru & Gong
                     </Link>
                     <Link
-                      href="/ai-seo/vs-hubspot"
+                      href="/compare/and-hubspot"
                       className="block py-2 text-sm"
                       style={{ color: 'rgba(255, 255, 255, 0.6)' }}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Andru vs HubSpot
+                      Andru & HubSpot
                     </Link>
                     <Link
-                      href="/ai-seo/vs-salesforce"
+                      href="/compare/and-salesforce"
                       className="block py-2 text-sm"
                       style={{ color: 'rgba(255, 255, 255, 0.6)' }}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Andru vs Salesforce
+                      Andru & Salesforce
                     </Link>
                     <Link
-                      href="/ai-seo/vs-zoominfo"
+                      href="/compare/and-zoominfo"
                       className="block py-2 text-sm"
                       style={{ color: 'rgba(255, 255, 255, 0.6)' }}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Andru vs ZoomInfo
+                      Andru & ZoomInfo
                     </Link>
                   </div>
                 )}

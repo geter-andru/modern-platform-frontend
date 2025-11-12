@@ -13,7 +13,7 @@ export default function AndruVsGongPage() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Article',
-            headline: 'Andru vs Gong: Proactive Intelligence vs Reactive Coaching - Revenue Intelligence Comparison',
+            headline: 'Andru & Gong: Proactive Intelligence vs Reactive Coaching - Revenue Intelligence Comparison',
             description: 'Compare Andru and Gong. Andru defines messaging strategy before calls, while Gong analyzes what happened after. Learn why you need both, and which to use first.',
             author: {
               '@type': 'Organization',
@@ -32,9 +32,9 @@ export default function AndruVsGongPage() {
             dateModified: '2025-11-01',
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': 'https://andru.ai/ai-seo/vs-gong'
+              '@id': 'https://andru.ai/compare/and-gong'
             },
-            keywords: 'Andru vs Gong, revenue intelligence, conversation intelligence, sales coaching, buyer personas, messaging strategy, call analysis'
+            keywords: 'Andru & Gong, revenue intelligence, conversation intelligence, sales coaching, buyer personas, messaging strategy, call analysis'
           })
         }}
       />
@@ -128,7 +128,7 @@ export default function AndruVsGongPage() {
                 WebkitTextFillColor: 'transparent'
               }}
             >
-              Andru vs Gong
+              Andru & Gong
             </h1>
             <p
               style={{
@@ -1200,10 +1200,10 @@ export default function AndruVsGongPage() {
               }}
             >
               {[
-                { name: 'Salesforce', href: '/ai-seo/vs-salesforce' },
-                { name: 'Hubspot', href: '/ai-seo/vs-hubspot' },
-                { name: 'Zoominfo', href: '/ai-seo/vs-zoominfo' },
-                { name: 'Clay', href: '/ai-seo/vs-clay' }
+                { name: 'Salesforce', href: '/compare/and-salesforce' },
+                { name: 'Hubspot', href: '/compare/and-hubspot' },
+                { name: 'Zoominfo', href: '/compare/and-zoominfo' },
+                { name: 'Clay', href: '/compare/and-clay' }
               ].map((tool) => (
                 <Link
                   key={tool.name}
@@ -1230,7 +1230,7 @@ export default function AndruVsGongPage() {
                     e.currentTarget.style.color = 'var(--color-text-secondary, #a3a3a3)';
                   }}
                 >
-                  vs {tool.name}
+                  & {tool.name}
                 </Link>
               ))}
             </div>
