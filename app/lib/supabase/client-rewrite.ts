@@ -738,6 +738,47 @@ export interface Database {
           created_at?: string;
         };
       };
+      assessment_sessions: {
+        Row: {
+          id: string;
+          session_id: string;
+          user_id: string | null;
+          user_email: string | null;
+          overall_score: number | null;
+          buyer_score: number | null;
+          tech_score: number | null;
+          qualification: string | null;
+          status: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          session_id: string;
+          user_id?: string | null;
+          user_email?: string | null;
+          overall_score?: number | null;
+          buyer_score?: number | null;
+          tech_score?: number | null;
+          qualification?: string | null;
+          status?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          session_id?: string;
+          user_id?: string | null;
+          user_email?: string | null;
+          overall_score?: number | null;
+          buyer_score?: number | null;
+          tech_score?: number | null;
+          qualification?: string | null;
+          status?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
     };
     Views: {
       [_ in never]: never;

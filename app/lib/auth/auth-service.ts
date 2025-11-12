@@ -263,8 +263,8 @@ class SupabaseAuthService {
       console.log(`🔗 [AuthService] Found ${assessments.length} assessment(s) to link`);
 
       // Link all matching assessments to the user
-      const { data: updated, error: updateError } = await supabase
-        .from('assessment_sessions')
+      const { data: updated, error: updateError } = await (supabase
+        .from('assessment_sessions') as any)
         .update({
           user_id: user.id,
           status: 'linked',
@@ -273,7 +273,10 @@ class SupabaseAuthService {
         .eq('user_email', user.email)
         .eq('status', 'completed_awaiting_signup')
         .is('user_id', null)
-        .select('id, session_id');
+        .select('id, session_id') as {
+          data: { id: string; session_id: string }[] | null;
+          error: any
+        };
 
       if (updateError) {
         console.error('🔗 [AuthService] ❌ Error linking assessments:', updateError);
