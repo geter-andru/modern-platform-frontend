@@ -146,14 +146,21 @@ class SupabaseAuthService {
 
   private async transformUser(user: User): Promise<AuthUser> {
     const isAdmin = await this.checkAdminStatus(user);
-    
-    return {
+
+    const authUser = {
       id: user.id,
       email: user.email,
       user_metadata: user.user_metadata || {},
       app_metadata: user.app_metadata || {},
       isAdmin
     };
+
+    console.log('🔐 [AuthService] User transformed:', {
+      email: authUser.email,
+      isAdmin: authUser.isAdmin
+    });
+
+    return authUser;
   }
 
   private async checkAdminStatus(user: User): Promise<boolean> {
@@ -167,8 +174,12 @@ class SupabaseAuthService {
     ];
     const adminDomains = ['@andru.ai'];
 
-    return adminEmails.includes(user.email) ||
+    const isAdmin = adminEmails.includes(user.email) ||
            adminDomains.some(domain => user.email!.endsWith(domain));
+
+    console.log(`🔐 [AuthService] Admin check for ${user.email}: ${isAdmin ? '✅ IS ADMIN' : '❌ NOT ADMIN'}`);
+
+    return isAdmin;
   }
 
   private async ensureUserProfile(user: User) {

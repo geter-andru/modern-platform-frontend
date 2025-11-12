@@ -48,23 +48,40 @@ interface AdminData {
 
 export default function AdminFoundingMembersPage() {
   const router = useRouter();
-  const { user, loading: authLoading, session } = useAuth();
+  const { user, loading: authLoading, session, isAdmin } = useAuth();
   const [data, setData] = useState<AdminData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
   useEffect(() => {
-    // Check if user is admin
-    if (authLoading) return;
+    // Check if user is admin using proper auth system
+    if (authLoading) {
+      console.log('🔐 [AdminPage] Auth loading...');
+      return;
+    }
 
-    if (!user || user.email !== 'geter@humusnshore.org') {
+    console.log('🔐 [AdminPage] Auth check:', {
+      hasUser: !!user,
+      email: user?.email,
+      isAdmin: isAdmin
+    });
+
+    if (!user) {
+      console.log('❌ [AdminPage] No user - redirecting to auth');
+      router.push('/auth?redirect=/admin/founding-members');
+      return;
+    }
+
+    if (!isAdmin) {
+      console.log('❌ [AdminPage] User not admin - redirecting to dashboard');
       router.push('/dashboard');
       return;
     }
 
+    console.log('✅ [AdminPage] Admin access granted');
     fetchFoundingMembers();
-  }, [user, authLoading, router]);
+  }, [user, authLoading, isAdmin, router]);
 
   const fetchFoundingMembers = async () => {
     try {
