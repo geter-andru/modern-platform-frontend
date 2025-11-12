@@ -797,12 +797,18 @@ function getSupabaseClient() {
     {
       cookies: {
         get(name: string) {
+          // Only access document in browser context
+          if (typeof document === 'undefined') return undefined;
+
           // Read cookie value from document.cookie
           const value = `; ${document.cookie}`;
           const parts = value.split(`; ${name}=`);
           if (parts.length === 2) return parts.pop()?.split(';').shift();
         },
         set(name: string, value: string, options: any) {
+          // Only access document in browser context
+          if (typeof document === 'undefined') return;
+
           // Set cookie with proper options
           let cookie = `${name}=${value}`;
 
