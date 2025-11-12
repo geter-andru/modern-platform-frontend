@@ -635,7 +635,7 @@ export default function AIToolPage() {
               flexDirection: 'column',
               gap: 'var(--spacing-md)'
             }}>
-              <Link href="/compare/vs-salesforce" style={{
+              <Link href="/compare/and-salesforce" style={{
                 display: 'block',
                 padding: 'var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',
@@ -650,14 +650,14 @@ export default function AIToolPage() {
                   justifyContent: 'space-between',
                   alignItems: 'center'
                 }}>
-                  <span>Andru vs Salesforce →</span>
+                  <span>Andru & Salesforce →</span>
                   <span style={{ fontSize: 'var(--font-size-sm)', color: '#737373' }}>
                     Foundation vs Pipeline Management
                   </span>
                 </div>
               </Link>
 
-              <Link href="/compare/vs-hubspot" style={{
+              <Link href="/compare/and-hubspot" style={{
                 display: 'block',
                 padding: 'var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',
@@ -672,14 +672,14 @@ export default function AIToolPage() {
                   justifyContent: 'space-between',
                   alignItems: 'center'
                 }}>
-                  <span>Andru vs Hubspot →</span>
+                  <span>Andru & HubSpot →</span>
                   <span style={{ fontSize: 'var(--font-size-sm)', color: '#737373' }}>
                     Personas vs Marketing Automation
                   </span>
                 </div>
               </Link>
 
-              <Link href="/compare/vs-gong" style={{
+              <Link href="/compare/and-gong" style={{
                 display: 'block',
                 padding: 'var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',
@@ -694,14 +694,14 @@ export default function AIToolPage() {
                   justifyContent: 'space-between',
                   alignItems: 'center'
                 }}>
-                  <span>Andru vs Gong →</span>
+                  <span>Andru & Gong →</span>
                   <span style={{ fontSize: 'var(--font-size-sm)', color: '#737373' }}>
                     ICP Definition vs Call Optimization
                   </span>
                 </div>
               </Link>
 
-              <Link href="/compare/vs-zoominfo" style={{
+              <Link href="/compare/and-zoominfo" style={{
                 display: 'block',
                 padding: 'var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',
@@ -716,14 +716,14 @@ export default function AIToolPage() {
                   justifyContent: 'space-between',
                   alignItems: 'center'
                 }}>
-                  <span>Andru vs Zoominfo →</span>
+                  <span>Andru & ZoomInfo →</span>
                   <span style={{ fontSize: 'var(--font-size-sm)', color: '#737373' }}>
                     Target Definition vs Contact Database
                   </span>
                 </div>
               </Link>
 
-              <Link href="/compare/vs-clay" style={{
+              <Link href="/compare/and-clay" style={{
                 display: 'block',
                 padding: 'var(--spacing-lg)',
                 background: 'rgba(255, 255, 255, 0.03)',
@@ -738,7 +738,7 @@ export default function AIToolPage() {
                   justifyContent: 'space-between',
                   alignItems: 'center'
                 }}>
-                  <span>Andru vs Clay →</span>
+                  <span>Andru & Clay →</span>
                   <span style={{ fontSize: 'var(--font-size-sm)', color: '#737373' }}>
                     ICP Criteria vs Data Enrichment
                   </span>
