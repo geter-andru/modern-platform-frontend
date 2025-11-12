@@ -43,7 +43,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen" style={{
-      background: 'var(--color-background-primary, #000000)',
+      background: 'transparent',
       color: 'var(--color-text-primary, #ffffff)',
       fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
     }}>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Target, Zap, Users, Sparkles, ArrowRight } from 'lucide-react';
 import { GradientButton } from '../../src/shared/components/ui/GradientButton';
 import { FooterLayout } from '../../src/shared/components/layout/FooterLayout';
+import { MotionBackground } from '../../src/shared/components/ui/MotionBackground';
 
 export default function AboutPage() {
   const fadeInUp = {
@@ -23,8 +24,10 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen" style={{
-      background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)'
+      background: 'transparent'
     }}>
+      <MotionBackground />
+
       {/* Header */}
       <header className="py-6 px-4 sm:px-6 lg:px-8 border-b" style={{
         borderColor: 'var(--glass-border, rgba(255, 255, 255, 0.08))'

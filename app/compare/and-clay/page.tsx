@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { MotionBackground } from '../../../src/shared/components/ui/MotionBackground';
 
 export default function AndruVsClayPage() {
   return (
@@ -39,10 +40,12 @@ export default function AndruVsClayPage() {
         }}
       />
 
+      <MotionBackground />
+
       <div
         style={{
           minHeight: '100vh',
-          background: 'var(--color-background-primary, #000000)',
+          background: 'transparent',
           color: 'var(--color-text-primary, #ffffff)',
           fontFamily: '"Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
         }}

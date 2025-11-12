@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { MotionBackground } from '../../../src/shared/components/ui/MotionBackground';
 
 /**
  * Andru & Salesforce Comparison Page
@@ -30,8 +31,10 @@ export default function AndruVsSalesforcePage() {
         }}
       />
 
+      <MotionBackground />
+
       <div className="min-h-screen" style={{
-        background: 'linear-gradient(135deg, #000000 0%, #0a0a0a 100%)',
+        background: 'transparent',
         padding: 'var(--spacing-4xl) var(--spacing-lg)'
       }}>
         <div style={{ maxWidth: '900px', margin: '0 auto' }}>

@@ -99,6 +99,20 @@ export function useRequirePayment(): PaymentStatus {
      */
     const checkPaymentStatus = async () => {
       try {
+        // Admin bypass - grant full access to admin user
+        if (user.email === 'geter@humusnshore.org') {
+          console.log('✅ useRequirePayment: Admin user detected, bypassing payment check');
+          setPaymentStatus({
+            hasPaid: true,
+            isFoundingMember: true,
+            hasEarlyAccess: true,
+            accessGrantedDate: null,
+            foreverLockPrice: null,
+            loading: false,
+          });
+          return;
+        }
+
         const { data: milestone, error } = await supabase
           .from('user_milestones')
           .select('milestone_type, is_founding_member, has_early_access, access_granted_date, forever_lock_price')
@@ -270,6 +284,19 @@ export function usePaymentStatus(): Omit<PaymentStatus, 'loading'> & { loading: 
 
     const checkPaymentStatus = async () => {
       try {
+        // Admin bypass - grant full access to admin user
+        if (user.email === 'geter@humusnshore.org') {
+          setPaymentStatus({
+            hasPaid: true,
+            isFoundingMember: true,
+            hasEarlyAccess: true,
+            accessGrantedDate: null,
+            foreverLockPrice: null,
+            loading: false,
+          });
+          return;
+        }
+
         const { data: milestone, error } = await supabase
           .from('user_milestones')
           .select('milestone_type, is_founding_member, has_early_access, access_granted_date, forever_lock_price')

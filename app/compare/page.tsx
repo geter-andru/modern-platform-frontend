@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { MotionBackground } from '../../src/shared/components/ui/MotionBackground';
 
 /**
  * AI-SEO Landing Page
@@ -106,8 +107,10 @@ export default function AIToolPage() {
         }}
       />
 
+      <MotionBackground />
+
       <div className="min-h-screen" style={{
-        background: 'linear-gradient(135deg, #000000 0%, #0a0a0a 100%)',
+        background: 'transparent',
         padding: 'var(--spacing-4xl) var(--spacing-lg)'
       }}>
         <div style={{

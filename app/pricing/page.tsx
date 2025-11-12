@@ -6,6 +6,7 @@ import { Check, ArrowRight, Sparkles, Users, Zap, DollarSign, Calendar, Trending
 import Link from 'next/link';
 import { GradientButton } from '../../src/shared/components/ui/GradientButton';
 import { FooterLayout } from '../../src/shared/components/layout/FooterLayout';
+import { MotionBackground } from '../../src/shared/components/ui/MotionBackground';
 
 /**
  * Pricing Page - Paid Waitlist Launch
@@ -37,16 +38,14 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen" style={{
-      background: '#121212',
+      background: 'transparent',
       color: '#E0E0E0',
       fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
     }}>
+      <MotionBackground />
+
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center px-4 sm:px-6 lg:px-8">
-        {/* Background Gradients */}
-        <div className="absolute inset-0" style={{ background: '#121212' }} />
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/10 via-background to-background" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-primary/20 via-transparent to-transparent" />
 
         <div className="relative max-w-6xl mx-auto pt-20 pb-24 sm:pt-24 sm:pb-32">
           <motion.div
