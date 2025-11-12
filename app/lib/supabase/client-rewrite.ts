@@ -793,7 +793,34 @@ function getSupabaseClient() {
 
   _supabaseInstance = createBrowserClient<Database>(
     validatedUrl,
-    validatedKey
+    validatedKey,
+    {
+      cookies: {
+        get(name: string) {
+          // Read cookie value from document.cookie
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop()?.split(';').shift();
+        },
+        set(name: string, value: string, options: any) {
+          // Set cookie with proper options
+          let cookie = `${name}=${value}`;
+
+          // Add cookie options
+          if (options?.maxAge) cookie += `; max-age=${options.maxAge}`;
+          if (options?.domain) cookie += `; domain=${options.domain}`;
+          if (options?.path) cookie += `; path=${options.path || '/'}`;
+          if (options?.sameSite) cookie += `; samesite=${options.sameSite}`;
+          if (options?.secure) cookie += '; secure';
+
+          document.cookie = cookie;
+        },
+        remove(name: string, options: any) {
+          // Remove cookie by setting expiry to past
+          this.set(name, '', { ...options, maxAge: 0 });
+        },
+      },
+    }
   );
 
   // Migrate any orphaned localStorage sessions to new cookie-based storage
