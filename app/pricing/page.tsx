@@ -499,6 +499,95 @@ export default function PricingPage() {
         </div>
       </section>
 
+      {/* Continue Browsing Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 border-t" style={{
+        borderColor: 'rgba(255, 255, 255, 0.08)'
+      }}>
+        <div className="max-w-6xl mx-auto">
+          <h3 className="text-2xl font-bold text-center mb-12" style={{
+            color: '#FFFFFF',
+            fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+          }}>
+            Want to learn more first?
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Link
+              href="/about"
+              className="p-6 rounded-xl transition-all hover:-translate-y-1"
+              style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                textDecoration: 'none'
+              }}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <Users className="w-5 h-5" style={{ color: '#3b82f6' }} />
+                <h4 className="font-semibold" style={{ color: '#FFFFFF' }}>About Us</h4>
+              </div>
+              <p className="text-sm" style={{ color: '#E0E0E0', lineHeight: '1.6' }}>
+                Learn about our mission and story
+              </p>
+            </Link>
+
+            <Link
+              href="/compare"
+              className="p-6 rounded-xl transition-all hover:-translate-y-1"
+              style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                textDecoration: 'none'
+              }}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <BarChart3 className="w-5 h-5" style={{ color: '#3b82f6' }} />
+                <h4 className="font-semibold" style={{ color: '#FFFFFF' }}>Comparisons</h4>
+              </div>
+              <p className="text-sm" style={{ color: '#E0E0E0', lineHeight: '1.6' }}>
+                See how Andru works with other tools
+              </p>
+            </Link>
+
+            <a
+              href="https://andru-ai.com/assessment"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-6 rounded-xl transition-all hover:-translate-y-1"
+              style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                textDecoration: 'none'
+              }}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <Calculator className="w-5 h-5" style={{ color: '#3b82f6' }} />
+                <h4 className="font-semibold" style={{ color: '#FFFFFF' }}>Free Assessment</h4>
+              </div>
+              <p className="text-sm" style={{ color: '#E0E0E0', lineHeight: '1.6' }}>
+                Try our free ICP assessment tool
+              </p>
+            </a>
+
+            <Link
+              href="/"
+              className="p-6 rounded-xl transition-all hover:-translate-y-1"
+              style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                textDecoration: 'none'
+              }}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <Sparkles className="w-5 h-5" style={{ color: '#3b82f6' }} />
+                <h4 className="font-semibold" style={{ color: '#FFFFFF' }}>Homepage</h4>
+              </div>
+              <p className="text-sm" style={{ color: '#E0E0E0', lineHeight: '1.6' }}>
+                Back to the main page
+              </p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Final CTA Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-4xl mx-auto text-center">
