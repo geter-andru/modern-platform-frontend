@@ -39,17 +39,25 @@ export default function AndruVsSalesforcePage() {
       }}>
         <div style={{ maxWidth: '900px', margin: '0 auto' }}>
 
-          {/* Back Link */}
-          <Link href="/ai-seo" style={{
-            display: 'inline-flex',
+          {/* Breadcrumb Navigation */}
+          <nav style={{
+            color: 'var(--color-text-secondary, #a3a3a3)',
+            fontSize: 'var(--font-size-sm, 13px)',
+            display: 'flex',
             alignItems: 'center',
-            color: '#3b82f6',
-            fontSize: 'var(--font-size-sm)',
-            textDecoration: 'none',
+            gap: '8px',
             marginBottom: 'var(--spacing-2xl)'
           }}>
-            ← Back to AI-SEO Hub
-          </Link>
+            <Link href="/" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}>
+              Home
+            </Link>
+            <span>›</span>
+            <Link href="/compare" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}>
+              Compare
+            </Link>
+            <span>›</span>
+            <span style={{ color: 'var(--color-text-primary, #ffffff)' }}>Andru & Salesforce</span>
+          </nav>
 
           {/* Hero */}
           <section style={{ textAlign: 'center', marginBottom: 'var(--spacing-5xl)' }}>

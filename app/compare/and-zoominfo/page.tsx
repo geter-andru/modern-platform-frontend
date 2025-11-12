@@ -81,17 +81,23 @@ export default function AndruVsZoominfoPage() {
             >
               Andru
             </Link>
-            <Link
-              href="/ai-seo"
-              style={{
-                color: 'var(--color-text-secondary, #a3a3a3)',
-                textDecoration: 'none',
-                fontSize: 'var(--font-size-sm, 13px)',
-                transition: 'color 0.2s'
-              }}
-            >
-              ← Back to AI SEO
-            </Link>
+            <nav style={{
+              color: 'var(--color-text-secondary, #a3a3a3)',
+              fontSize: 'var(--font-size-sm, 13px)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              <Link href="/" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}>
+                Home
+              </Link>
+              <span>›</span>
+              <Link href="/compare" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}>
+                Compare
+              </Link>
+              <span>›</span>
+              <span style={{ color: 'var(--color-text-primary, #ffffff)' }}>Andru & ZoomInfo</span>
+            </nav>
           </div>
         </header>
 
