@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, ArrowRight, Sparkles, Users, Zap, DollarSign, Calendar, TrendingDown, Award, Shield, BarChart3, Calculator } from 'lucide-react';
 import Link from 'next/link';
@@ -22,6 +22,297 @@ import { initPublicPageTracking, trackCtaClick } from '../lib/analytics/publicPa
  * Routes: /pricing
  * Last Updated: 2025-11-10 (Updated for Paid Waitlist Launch)
  */
+
+// ROI Calculator Component
+function ROICalculator() {
+  const [dealSize, setDealSize] = useState(50000);
+  const [closeRate, setCloseRate] = useState(20);
+  const [salesCycle, setSalesCycle] = useState(6);
+  const [dealsPerMonth, setDealsPerMonth] = useState(5);
+
+  // Calculations
+  const currentMonthlyRevenue = (dealSize * (closeRate / 100) * dealsPerMonth);
+  const improvedCloseRate = Math.min(closeRate * 1.4, 100); // 40% improvement, capped at 100%
+  const reducedSalesCycle = salesCycle * 0.6; // 40% reduction
+  const increasedDealsPerMonth = dealsPerMonth * (salesCycle / reducedSalesCycle); // More deals in same time
+  const newMonthlyRevenue = (dealSize * (improvedCloseRate / 100) * increasedDealsPerMonth);
+  const monthlyGain = newMonthlyRevenue - currentMonthlyRevenue;
+  const annualGain = monthlyGain * 12;
+  const andruCost = 9000; // $750/month * 12
+  const netAnnualROI = annualGain - andruCost;
+  const roiMultiple = netAnnualROI / andruCost;
+
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+  };
+
+  const staggerChildren = {
+    animate: {
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(value);
+  };
+
+  return (
+    <section className="py-24 px-4 sm:px-6 lg:px-8 relative" style={{
+      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%)'
+    }}>
+      <div className="max-w-5xl mx-auto">
+        <motion.div
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          variants={staggerChildren}
+        >
+          <motion.div variants={fadeInUp} className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4" style={{
+              background: 'rgba(59, 130, 246, 0.1)',
+              border: '1px solid rgba(59, 130, 246, 0.3)'
+            }}>
+              <Calculator className="w-4 h-4" style={{ color: '#3b82f6' }} />
+              <span className="text-sm font-semibold" style={{ color: '#3b82f6' }}>INTERACTIVE ROI CALCULATOR</span>
+            </div>
+            <h2 className="heading-2 mb-4" style={{ color: '#FFFFFF' }}>
+              Calculate Your ROI
+            </h2>
+            <p className="text-xl" style={{ color: '#E0E0E0' }}>
+              See exactly how much revenue you're leaving on the table
+            </p>
+          </motion.div>
+
+          <motion.div variants={fadeInUp} className="grid md:grid-cols-2 gap-8">
+            {/* Input Section */}
+            <div className="p-8 rounded-2xl" style={{
+              background: '#1A1A1A',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
+            }}>
+              <h3 className="text-xl font-bold mb-6" style={{ color: '#FFFFFF' }}>Your Current Metrics</h3>
+              <div className="space-y-6">
+                {/* Average Deal Size */}
+                <div>
+                  <label className="block text-sm font-semibold mb-2" style={{ color: '#E0E0E0' }}>
+                    Average Deal Size
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="range"
+                      min="10000"
+                      max="500000"
+                      step="10000"
+                      value={dealSize}
+                      onChange={(e) => setDealSize(Number(e.target.value))}
+                      className="flex-1"
+                      style={{
+                        accentColor: '#3b82f6'
+                      }}
+                    />
+                    <input
+                      type="number"
+                      value={dealSize}
+                      onChange={(e) => setDealSize(Number(e.target.value))}
+                      className="w-32 px-3 py-2 rounded-lg text-right"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        color: '#FFFFFF'
+                      }}
+                    />
+                  </div>
+                  <p className="text-sm mt-1" style={{ color: '#a3a3a3' }}>{formatCurrency(dealSize)}</p>
+                </div>
+
+                {/* Close Rate */}
+                <div>
+                  <label className="block text-sm font-semibold mb-2" style={{ color: '#E0E0E0' }}>
+                    Current Close Rate (%)
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="range"
+                      min="5"
+                      max="50"
+                      step="5"
+                      value={closeRate}
+                      onChange={(e) => setCloseRate(Number(e.target.value))}
+                      className="flex-1"
+                      style={{
+                        accentColor: '#3b82f6'
+                      }}
+                    />
+                    <input
+                      type="number"
+                      value={closeRate}
+                      onChange={(e) => setCloseRate(Number(e.target.value))}
+                      className="w-32 px-3 py-2 rounded-lg text-right"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        color: '#FFFFFF'
+                      }}
+                    />
+                  </div>
+                  <p className="text-sm mt-1" style={{ color: '#a3a3a3' }}>{closeRate}%</p>
+                </div>
+
+                {/* Sales Cycle */}
+                <div>
+                  <label className="block text-sm font-semibold mb-2" style={{ color: '#E0E0E0' }}>
+                    Average Sales Cycle (months)
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="range"
+                      min="1"
+                      max="12"
+                      step="1"
+                      value={salesCycle}
+                      onChange={(e) => setSalesCycle(Number(e.target.value))}
+                      className="flex-1"
+                      style={{
+                        accentColor: '#3b82f6'
+                      }}
+                    />
+                    <input
+                      type="number"
+                      value={salesCycle}
+                      onChange={(e) => setSalesCycle(Number(e.target.value))}
+                      className="w-32 px-3 py-2 rounded-lg text-right"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        color: '#FFFFFF'
+                      }}
+                    />
+                  </div>
+                  <p className="text-sm mt-1" style={{ color: '#a3a3a3' }}>{salesCycle} months</p>
+                </div>
+
+                {/* Deals Per Month */}
+                <div>
+                  <label className="block text-sm font-semibold mb-2" style={{ color: '#E0E0E0' }}>
+                    New Opportunities per Month
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="range"
+                      min="1"
+                      max="50"
+                      step="1"
+                      value={dealsPerMonth}
+                      onChange={(e) => setDealsPerMonth(Number(e.target.value))}
+                      className="flex-1"
+                      style={{
+                        accentColor: '#3b82f6'
+                      }}
+                    />
+                    <input
+                      type="number"
+                      value={dealsPerMonth}
+                      onChange={(e) => setDealsPerMonth(Number(e.target.value))}
+                      className="w-32 px-3 py-2 rounded-lg text-right"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        color: '#FFFFFF'
+                      }}
+                    />
+                  </div>
+                  <p className="text-sm mt-1" style={{ color: '#a3a3a3' }}>{dealsPerMonth} deals/month</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Results Section */}
+            <div className="p-8 rounded-2xl" style={{
+              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)',
+              border: '1px solid rgba(59, 130, 246, 0.3)'
+            }}>
+              <h3 className="text-xl font-bold mb-6" style={{ color: '#FFFFFF' }}>Your Projected Results with Andru</h3>
+              <div className="space-y-6">
+                {/* Current vs New Monthly Revenue */}
+                <div className="p-4 rounded-xl" style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}>
+                  <p className="text-sm mb-1" style={{ color: '#a3a3a3' }}>Current Monthly Revenue</p>
+                  <p className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>{formatCurrency(currentMonthlyRevenue)}</p>
+                </div>
+
+                <div className="flex items-center justify-center">
+                  <ArrowRight className="w-6 h-6" style={{ color: '#10b981' }} />
+                </div>
+
+                <div className="p-4 rounded-xl" style={{
+                  background: 'rgba(16, 185, 129, 0.1)',
+                  border: '1px solid rgba(16, 185, 129, 0.3)'
+                }}>
+                  <p className="text-sm mb-1" style={{ color: '#a7f3d0' }}>New Monthly Revenue with Andru</p>
+                  <p className="text-2xl font-bold" style={{ color: '#10b981' }}>{formatCurrency(newMonthlyRevenue)}</p>
+                  <div className="mt-3 pt-3 border-t" style={{ borderColor: 'rgba(16, 185, 129, 0.3)' }}>
+                    <p className="text-xs" style={{ color: '#a7f3d0' }}>
+                      ✓ Close rate: {closeRate}% → {improvedCloseRate.toFixed(0)}%<br />
+                      ✓ Sales cycle: {salesCycle} mo → {reducedSalesCycle.toFixed(1)} mo
+                    </p>
+                  </div>
+                </div>
+
+                {/* Monthly Gain */}
+                <div className="p-5 rounded-xl text-center" style={{
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  border: '2px solid rgba(16, 185, 129, 0.4)'
+                }}>
+                  <p className="text-sm mb-1" style={{ color: '#a7f3d0' }}>Additional Revenue Per Month</p>
+                  <p className="text-3xl font-bold" style={{ color: '#10b981' }}>+{formatCurrency(monthlyGain)}</p>
+                </div>
+
+                {/* Annual ROI */}
+                <div className="p-5 rounded-xl text-center" style={{
+                  background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%)',
+                  border: '2px solid rgba(59, 130, 246, 0.5)'
+                }}>
+                  <p className="text-sm mb-1" style={{ color: '#93c5fd' }}>Annual Net ROI</p>
+                  <p className="text-4xl font-bold mb-2" style={{ color: '#3b82f6' }}>{formatCurrency(netAnnualROI)}</p>
+                  <p className="text-sm" style={{ color: '#93c5fd' }}>
+                    {roiMultiple.toFixed(1)}x return on investment
+                  </p>
+                  <p className="text-xs mt-2" style={{ color: '#a3a3a3' }}>
+                    (After Andru's $9,000/year cost)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Bottom Insight */}
+          <motion.div variants={fadeInUp} className="mt-8 p-6 rounded-xl text-center" style={{
+            background: 'rgba(16, 185, 129, 0.1)',
+            border: '1px solid rgba(16, 185, 129, 0.3)'
+          }}>
+            <p className="text-xl font-bold mb-2" style={{ color: '#10b981' }}>
+              You're leaving {formatCurrency(annualGain)} on the table this year
+            </p>
+            <p style={{ color: '#E0E0E0' }}>
+              Based on conservative 40% improvements to close rate and sales cycle that our founding members achieve
+            </p>
+          </motion.div>
+
+        </motion.div>
+      </div>
+    </section>
+  );
+}
 
 export default function PricingPage() {
   // Initialize public page tracking
@@ -61,10 +352,87 @@ export default function PricingPage() {
       <MotionBackground />
       <PublicHeader />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden min-h-screen flex items-center px-4 sm:px-6 lg:px-8 pt-16">
+      {/* Problem-First Opening Section */}
+      <section className="relative overflow-hidden px-4 sm:px-6 lg:px-8 pt-32 pb-16">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial="initial"
+            animate="animate"
+            variants={staggerChildren}
+            className="text-center"
+          >
+            <motion.h2
+              variants={fadeInUp}
+              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6"
+              style={{
+                color: '#FFFFFF',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                lineHeight: '1.2'
+              }}
+            >
+              Before You Hire a $180K VP of Sales...
+            </motion.h2>
+            <motion.p
+              variants={fadeInUp}
+              className="text-xl sm:text-2xl mb-8"
+              style={{
+                color: '#E0E0E0',
+                lineHeight: '1.6'
+              }}
+            >
+              Ask yourself: Do they even know who to sell to?
+            </motion.p>
+            <motion.div
+              variants={fadeInUp}
+              className="max-w-3xl mx-auto space-y-4 mb-12"
+            >
+              {[
+                'Most technical founders hire sales leadership hoping they\'ll "figure out the ICP"',
+                'Reality: They burn 6 months and $90K learning what you should\'ve known on Day 1',
+                'The VP you\'re about to hire will ask: "What\'s our ideal customer profile?"'
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className="p-4 rounded-xl text-left"
+                  style={{
+                    background: 'rgba(239, 68, 68, 0.1)',
+                    border: '1px solid rgba(239, 68, 68, 0.3)'
+                  }}
+                >
+                  <p style={{ color: '#fca5a5', fontSize: '1.1rem', lineHeight: '1.6' }}>
+                    {item}
+                  </p>
+                </div>
+              ))}
+            </motion.div>
+            <motion.p
+              variants={fadeInUp}
+              className="text-2xl sm:text-3xl font-bold mb-4"
+              style={{
+                color: '#3b82f6',
+                lineHeight: '1.4'
+              }}
+            >
+              Get ICP clarity BEFORE you hire sales.
+            </motion.p>
+            <motion.p
+              variants={fadeInUp}
+              className="text-xl mb-12"
+              style={{
+                color: '#E0E0E0',
+                lineHeight: '1.6'
+              }}
+            >
+              Save $90K in wasted ramp time. Start with the answers, not the guesswork.
+            </motion.p>
+          </motion.div>
+        </div>
+      </section>
 
-        <div className="relative max-w-6xl mx-auto pt-20 pb-24 sm:pt-24 sm:pb-32">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden px-4 sm:px-6 lg:px-8 pb-16">
+
+        <div className="relative max-w-6xl mx-auto">
           <motion.div
             className="text-center"
             initial="initial"
@@ -445,6 +813,125 @@ export default function PricingPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Qualification Section: You Need This If... */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={staggerChildren}
+          >
+            <motion.h2
+              variants={fadeInUp}
+              className="heading-2 mb-4 text-center"
+              style={{ color: '#FFFFFF' }}
+            >
+              You Need This If...
+            </motion.h2>
+            <motion.p
+              variants={fadeInUp}
+              className="text-xl text-center mb-12 max-w-3xl mx-auto"
+              style={{ color: '#E0E0E0' }}
+            >
+              Andru is built for technical founders at Series A who are drowning in sales chaos
+            </motion.p>
+
+            {/* YES - You Need This */}
+            <motion.div variants={fadeInUp} className="mb-12">
+              <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: '#10b981' }}>
+                ✓ This Is For You If:
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                {[
+                  'You\'re at $2-10M ARR and pipeline is full but nothing\'s closing',
+                  'You\'re about to hire your first VP of Sales (or just did)',
+                  'Your board is asking "What\'s your ICP?" and you freeze',
+                  'You\'re spending $20K+/month on sales tools nobody actually uses',
+                  'Your sales cycle is 6+ months and you don\'t know why',
+                  'You\'re a technical founder who needs to "figure out sales"',
+                  'You have smart prospects who go silent after the first demo',
+                  'You\'re hiring SDRs but they don\'t know who to call'
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    variants={fadeInUp}
+                    className="flex items-start gap-3 p-4 rounded-xl"
+                    style={{
+                      background: 'rgba(16, 185, 129, 0.1)',
+                      border: '1px solid rgba(16, 185, 129, 0.3)'
+                    }}
+                  >
+                    <Check className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: '#10b981' }} />
+                    <span style={{ color: '#a7f3d0', fontSize: '1rem', lineHeight: '1.6' }}>
+                      {item}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* NO - This Is NOT For You */}
+            <motion.div variants={fadeInUp}>
+              <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: '#ef4444' }}>
+                ✗ This Is NOT For You If:
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                {[
+                  'You already have a high-performing sales team closing 40%+ of pipeline',
+                  'You\'re pre-revenue and still validating product-market fit',
+                  'You\'re selling to consumers (B2C) instead of businesses',
+                  'You just need more leads (not better qualification)',
+                  'Your ACV is under $10K (too small for enterprise sales complexity)',
+                  'You want a CRM or sales automation tool (we\'re buyer intelligence)'
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    variants={fadeInUp}
+                    className="flex items-start gap-3 p-4 rounded-xl"
+                    style={{
+                      background: 'rgba(239, 68, 68, 0.1)',
+                      border: '1px solid rgba(239, 68, 68, 0.3)'
+                    }}
+                  >
+                    <span className="flex-shrink-0 mt-0.5" style={{ color: '#fca5a5', fontSize: '1.2rem', fontWeight: 'bold' }}>
+                      ×
+                    </span>
+                    <span style={{ color: '#fecaca', fontSize: '1rem', lineHeight: '1.6' }}>
+                      {item}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Bottom CTA */}
+            <motion.div variants={fadeInUp} className="mt-12 text-center">
+              <p className="text-xl mb-6" style={{ color: '#E0E0E0' }}>
+                If 3+ items in the "Yes" list sound like you, Andru will save you months of wasted effort.
+              </p>
+              <a
+                href="https://buy.stripe.com/6oU9AVgJn4y78iqdU6bsc0n"
+                onClick={() => handleCtaClick('Join Waitlist from Qualification', 'qualification-section')}
+                className="inline-flex items-center gap-2 px-10 py-5 rounded-xl font-bold text-lg transition-all transform hover:-translate-y-1"
+                style={{
+                  background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                  color: '#FFFFFF',
+                  boxShadow: '0 8px 24px rgba(59, 130, 246, 0.4)'
+                }}
+              >
+                Join Waitlist - $497/month
+                <ArrowRight className="w-5 h-5" />
+              </a>
+            </motion.div>
+
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ROI Calculator Section */}
+      <ROICalculator />
 
       {/* FAQ Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 relative">

@@ -125,6 +125,9 @@ class SupabaseAuthService {
             console.log('🔗 [AuthService] Linking anonymous session to user:', session.user.id);
             await linkAnonymousSessionToUser(session.user.id, session.access_token);
           }
+
+          // Link completed assessment to user account (if any)
+          await this.linkAssessmentToUser(session.user, session.access_token);
         }
         break;
       case 'SIGNED_OUT':
@@ -226,6 +229,65 @@ class SupabaseAuthService {
       }
     } catch (error) {
       console.error('🔐 [AuthService] ❌ Unexpected error ensuring user profile:', error);
+    }
+  }
+
+  private async linkAssessmentToUser(user: User, accessToken: string) {
+    if (!user.email) {
+      console.log('🔗 [AuthService] No email for assessment linking');
+      return;
+    }
+
+    console.log('🔗 [AuthService] Checking for assessment sessions to link:', user.email);
+
+    try {
+      // Check if there's a completed assessment for this email that hasn't been linked yet
+      const { data: assessments, error: selectError } = await supabase
+        .from('assessment_sessions')
+        .select('id, session_id, overall_score, buyer_score, created_at')
+        .eq('user_email', user.email)
+        .eq('status', 'completed_awaiting_signup')
+        .is('user_id', null)
+        .order('created_at', { ascending: false });
+
+      if (selectError) {
+        console.error('🔗 [AuthService] ❌ Error checking assessments:', selectError);
+        return;
+      }
+
+      if (!assessments || assessments.length === 0) {
+        console.log('🔗 [AuthService] No assessment sessions found to link');
+        return;
+      }
+
+      console.log(`🔗 [AuthService] Found ${assessments.length} assessment(s) to link`);
+
+      // Link all matching assessments to the user
+      const { data: updated, error: updateError } = await supabase
+        .from('assessment_sessions')
+        .update({
+          user_id: user.id,
+          status: 'linked_to_user',
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_email', user.email)
+        .eq('status', 'completed_awaiting_signup')
+        .is('user_id', null)
+        .select('id, session_id');
+
+      if (updateError) {
+        console.error('🔗 [AuthService] ❌ Error linking assessments:', updateError);
+        return;
+      }
+
+      console.log('🔗 [AuthService] ✅ Successfully linked assessments to user:', {
+        userId: user.id,
+        email: user.email,
+        linkedCount: updated?.length || 0,
+        sessionIds: updated?.map(a => a.session_id)
+      });
+    } catch (error) {
+      console.error('🔗 [AuthService] ❌ Unexpected error linking assessments:', error);
     }
   }
 

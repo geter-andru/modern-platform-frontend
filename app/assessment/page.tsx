@@ -24,7 +24,8 @@ import {
   Lightbulb,
   BarChart3,
   TrendingUp,
-  Share2
+  Share2,
+  Linkedin
 } from 'lucide-react';
 import { ModernCard } from '@/src/shared/components/ui/ModernCard';
 import { GradientButton } from '@/src/shared/components/ui/GradientButton';
@@ -32,6 +33,7 @@ import { AnimatedCounter } from '@/src/shared/components/ui/AnimatedCounter';
 import { ProgressRing } from '@/src/shared/components/ui/ProgressRing';
 import { useAuth } from '@/app/lib/auth';
 import { ModernSidebarLayout } from '@/src/shared/components/layout/ModernSidebarLayout';
+import { trackCtaClick } from '@/app/lib/analytics/publicPageTracking';
 
 // ============================================================================
 // Types - Based on actual assessment data structure
@@ -641,6 +643,23 @@ function AssessmentContent() {
                     <GradientButton href="/icp" size="xl" rightIcon={ArrowRight}>
                       Explore ICP Tool
                     </GradientButton>
+                    <a
+                      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}&summary=${encodeURIComponent(`Just scored ${overallScore}/100 on my Buyer Intelligence Assessment and discovered ${assessment.insights && assessment.insights.length > 0 ? assessment.insights[0] : 'key insights about my ICP clarity'}.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 transition-all hover:scale-105"
+                      style={{
+                        background: 'linear-gradient(135deg, #0077B5 0%, #00A0DC 100%)',
+                        border: '1px solid rgba(0, 119, 181, 0.3)',
+                        color: '#FFFFFF',
+                        boxShadow: '0 4px 12px rgba(0, 119, 181, 0.3)',
+                        textDecoration: 'none'
+                      }}
+                      onClick={() => trackCtaClick({ ctaText: 'Share to LinkedIn', ctaLocation: 'assessment-authenticated', pagePath: '/assessment' })}
+                    >
+                      <Linkedin className="w-5 h-5" />
+                      Share to LinkedIn
+                    </a>
                     <button
                       className="px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 transition-all"
                       style={{
@@ -671,18 +690,58 @@ function AssessmentContent() {
                 // Public/unauthenticated user CTAs
                 <>
                   <h2 className="text-3xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
-                    Transform This Intelligence Into Revenue
+                    This Report Took 3 Minutes to Generate
                   </h2>
-                  <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
-                    Join 100 founding members locking in $750/month forever pricing (vs. $1,250 standard).
-                    Turn buyer intelligence insights into systematic revenue growth starting December 1, 2025.
+                  <p className="text-xl mb-6" style={{ color: 'var(--text-secondary)' }}>
+                    Imagine Having This Intelligence for Your Entire Sales Process
                   </p>
+
+                  {/* Score Comparison Grid */}
+                  <div className="grid md:grid-cols-3 gap-4 mb-8 max-w-3xl mx-auto">
+                    <div className="p-4 rounded-xl" style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+                      <div className="text-sm mb-1" style={{ color: 'var(--text-muted)' }}>Your Score</div>
+                      <div className="text-3xl font-bold" style={{ color: overallGrade.color }}>{overallScore}/100</div>
+                      <div className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>Grade: {overallGrade.grade}</div>
+                    </div>
+                    <div className="p-4 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                      <div className="text-sm mb-1" style={{ color: 'var(--text-muted)' }}>Average Series A</div>
+                      <div className="text-3xl font-bold" style={{ color: 'var(--text-secondary)' }}>52/100</div>
+                      <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>You're ahead of 68%</div>
+                    </div>
+                    <div className="p-4 rounded-xl" style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+                      <div className="text-sm mb-1" style={{ color: 'var(--text-muted)' }}>Top Performers</div>
+                      <div className="text-3xl font-bold" style={{ color: 'var(--color-accent)' }}>85/100</div>
+                      <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>Close deals 2.3x faster</div>
+                    </div>
+                  </div>
+
+                  <p className="text-base mb-8 max-w-2xl mx-auto" style={{ color: 'var(--text-muted)' }}>
+                    A consultant would charge $5,000 for this analysis. With Andru, you get buyer intelligence like this in 3 minutes—not 3 months.
+                  </p>
+
                   <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
                     <GradientButton href="/pricing" size="xl" rightIcon={ArrowRight}>
                       Lock In Founding Member Pricing
                     </GradientButton>
+                    <a
+                      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}&summary=${encodeURIComponent(`Just scored ${overallScore}/100 on my Buyer Intelligence Assessment and discovered ${assessment.insights && assessment.insights.length > 0 ? assessment.insights[0] : 'key insights about my ICP clarity'}.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 transition-all hover:scale-105"
+                      style={{
+                        background: 'linear-gradient(135deg, #0077B5 0%, #00A0DC 100%)',
+                        border: '1px solid rgba(0, 119, 181, 0.3)',
+                        color: '#FFFFFF',
+                        boxShadow: '0 4px 12px rgba(0, 119, 181, 0.3)',
+                        textDecoration: 'none'
+                      }}
+                      onClick={() => trackCtaClick({ ctaText: 'Share to LinkedIn', ctaLocation: 'assessment-public', pagePath: '/assessment' })}
+                    >
+                      <Linkedin className="w-5 h-5" />
+                      Share to LinkedIn
+                    </a>
                     <button
-                      className="px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 transition-all"
+                      className="px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 transition-all hover:bg-opacity-80"
                       style={{
                         background: 'rgba(255, 255, 255, 0.05)',
                         border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -702,9 +761,22 @@ function AssessmentContent() {
                       Share Results
                     </button>
                   </div>
+
+                  {/* Scarcity Counter */}
+                  <div className="mb-4">
+                    <div className="max-w-md mx-auto mb-2">
+                      <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                        <div className="h-full rounded-full" style={{ width: '94%', background: 'linear-gradient(90deg, var(--color-primary), var(--color-secondary))' }} />
+                      </div>
+                    </div>
+                    <p className="text-sm font-semibold" style={{ color: 'var(--color-accent-warning)' }}>
+                      Only 6 of 100 founding member spots remaining
+                    </p>
+                  </div>
+
                   <div className="flex items-center justify-center gap-2 text-sm" style={{ color: 'var(--text-muted)' }}>
-                    <Clock className="w-4 h-4" />
-                    <span>Limited to 100 members • Free until Series A • No credit card required</span>
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>Join 47 founders who figured out their ICP before hiring a VP of Sales</span>
                   </div>
                 </>
               )}

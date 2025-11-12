@@ -351,13 +351,7 @@ export default function HomePage() {
                 textShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
               }}
             >
-              Revenue Intelligence Infrastructure
-              <span className="block mt-4 text-4xl sm:text-5xl md:text-6xl" style={{
-                color: 'var(--color-brand-primary, #3b82f6)',
-                fontWeight: 'var(--font-weight-semibold, 600)'
-              }}>
-                Build Revenue Where You're Essential, Not Optional
-              </span>
+              Don't Waste $50K/Month on Sales Tools Running Blind
             </motion.h1>
 
             {/* Executive Subheadline */}
@@ -372,7 +366,7 @@ export default function HomePage() {
                 textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
               }}
             >
-              Discover markets where you're essential & convert buyers into customer evangelists through systematic intelligence.
+              AI-powered buyer intelligence that makes your sales tools actually work.
             </motion.p>
 
             {/* Try Demo CTA - Above the Fold */}
@@ -483,6 +477,62 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* You Need This If Section */}
+      <section className="py-20 relative overflow-hidden">
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center" style={{
+              color: 'var(--color-text-primary, #ffffff)',
+              fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+            }}>
+              You Need This If...
+            </h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {[
+                "You're spending $20K+/month on sales tools nobody uses",
+                "Your pipeline is full but deals keep stalling at 'no decision'",
+                "Your sales team can't articulate your value proposition",
+                "You're about to hire sales leadership (and they'll ask 'What's our ICP?')",
+                "Your board is asking about your GTM strategy",
+                "You're stuck at $3M ARR and burning through runway"
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  className="flex items-start gap-3 p-4 rounded-xl"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}
+                >
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center" style={{
+                    background: 'rgba(16, 185, 129, 0.2)',
+                    color: 'rgb(16, 185, 129)'
+                  }}>
+                    ✓
+                  </div>
+                  <span style={{
+                    color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+                    fontSize: '1.0625rem',
+                    lineHeight: '1.6'
+                  }}>
+                    {item}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Executive Features Section */}
       <section className="py-32 relative overflow-hidden">
         
@@ -516,11 +566,11 @@ export default function HomePage() {
 
           {/* Grid Layout: Hero (2x2) + 3 standard cards - Agent 4 Visual Hierarchy */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 gap-8">
-            {/* Hero Feature: ICP Analysis (2x2 Grid - Elevated z: 10) - Agent 4 Spec */}
+            {/* Hero Feature: Know Who to Call (2x2 Grid) */}
             <FeatureCard
               icon={Target}
-              title="ICP Analysis"
-              description="Generate detailed buyer personas for your product in under 3 minutes. AI-powered insights identify decision-makers, pain points, and buying triggers."
+              title="Know Exactly Who to Call (and Who to Ignore)"
+              description="Stop burning pipeline on wrong-fit prospects. Get precise qualification criteria that cuts your sales cycle by 40%. Founders save 15 hours/week on unqualified calls."
               variant="featured"
               iconColor="var(--color-primary)"
               iconBgColor="rgba(59, 130, 246, 0.15)"
@@ -531,11 +581,11 @@ export default function HomePage() {
               className="md:col-span-2 md:row-span-2"
             />
 
-            {/* Standard Feature 2: Cost Calculator (z: 1) - Agent 4 Spec */}
+            {/* Standard Feature 2: Calculate Money Wasted */}
             <FeatureCard
               icon={Calculator}
-              title="Cost Calculator"
-              description="Calculate ROI and total cost of ownership with precision. Make data-backed investment decisions."
+              title="Calculate the $500K You're Wasting on Wrong-Fit Prospects"
+              description="See exactly how much revenue you're leaving on the table by targeting the wrong companies. Average finding: $420K in wasted effort per year."
               variant="standard"
               iconColor="rgb(52, 211, 153)"
               iconBgColor="rgba(16, 185, 129, 0.1)"
@@ -543,11 +593,11 @@ export default function HomePage() {
               animationDelay={0.2}
             />
 
-            {/* Standard Feature 3: Business Case Generator (z: 1) - Agent 4 Spec */}
+            {/* Standard Feature 3: Build ROI Decks */}
             <FeatureCard
               icon={BarChart3}
-              title="Business Case Generator"
-              description="Create compelling business cases automatically with comprehensive financial models and projections."
+              title="Build the ROI Deck Your Buyer Actually Wants"
+              description="Auto-generate business cases that make procurement say 'yes' instead of 'we'll think about it.' 3-minute business cases that close $100K+ deals."
               variant="standard"
               iconColor="rgb(192, 132, 252)"
               iconBgColor="rgba(139, 92, 246, 0.1)"
@@ -555,7 +605,7 @@ export default function HomePage() {
               animationDelay={0.3}
             />
 
-            {/* Standard Feature 4: Export & Share (z: 1) - Agent 4 Spec */}
+            {/* Standard Feature 4: Export & Share */}
             <FeatureCard
               icon={Share2}
               title="Export & Collaborate"

@@ -140,7 +140,7 @@ export default function AboutPage() {
 
       {/* Founder Story Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -151,64 +151,96 @@ export default function AboutPage() {
               color: 'var(--color-text-primary, #ffffff)',
               fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
             }}>
-              Why We're Building This
+              I Built This Because I Needed It
             </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Problem */}
-              <div className="rounded-2xl p-8" style={{
-                background: 'var(--glass-bg-standard)',
-                backdropFilter: 'var(--glass-blur-md)',
-                border: '1px solid var(--glass-border-standard)',
-                boxShadow: 'var(--shadow-subtle)'
+
+            <div className="space-y-6 rounded-2xl p-8 md:p-10" style={{
+              background: 'var(--glass-bg-emphasis)',
+              backdropFilter: 'var(--glass-blur-lg)',
+              border: '1px solid var(--glass-border-emphasis)',
+              boxShadow: 'var(--shadow-premium)'
+            }}>
+              <p className="text-lg leading-relaxed" style={{
+                color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                lineHeight: '1.7'
               }}>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{
-                  background: 'rgba(239, 68, 68, 0.1)',
-                  border: '1px solid rgba(239, 68, 68, 0.2)'
-                }}>
-                  <Zap className="w-6 h-6 text-red-400" />
-                </div>
-                <h3 className="text-xl font-bold mb-3" style={{
-                  color: 'var(--color-text-primary, #ffffff)',
-                  fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
-                }}>
-                  The Problem
-                </h3>
-                <p className="leading-relaxed" style={{
-                  color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+                <strong style={{ color: 'var(--color-text-primary)' }}>March 2024.</strong> My board asked the question I'd been dreading: <em style={{ color: 'var(--color-primary)' }}>"Who's your ICP?"</em>
+              </p>
+
+              <p className="text-lg leading-relaxed" style={{
+                color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                lineHeight: '1.7'
+              }}>
+                I froze. We were at $4M ARR. Pipeline was full. But I couldn't articulate who we were actually selling to. "Mid-market SaaS companies" was as specific as I could get.
+              </p>
+
+              <p className="text-lg leading-relaxed" style={{
+                color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                lineHeight: '1.7'
+              }}>
+                That week, I hired a $15K/month consultant. <strong style={{ color: '#fca5a5' }}>Six weeks and $90K later</strong>, they delivered a 47-page deck that sat in Google Drive collecting dust. My sales team never used it.
+              </p>
+
+              <div className="border-l-4 pl-6 py-2 my-6" style={{
+                borderColor: '#ef4444',
+                background: 'rgba(239, 68, 68, 0.1)'
+              }}>
+                <p className="text-lg italic leading-relaxed" style={{
+                  color: '#fca5a5',
                   fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                  lineHeight: '1.6'
+                  lineHeight: '1.7'
                 }}>
-                  As a founder and revenue leader, I've watched teams waste months on manual ICP research, building business cases in spreadsheets, and presenting to executives without data-backed insights. The result? Missed targets, bloated CAC, and revenue teams working on the wrong opportunities.
+                  Meanwhile, my close rate kept dropping. Sales cycle ballooned to 8 months. I was burning $20K/month on tools my team couldn't explain the ROI for.
                 </p>
               </div>
 
-              {/* Solution */}
-              <div className="rounded-2xl p-8" style={{
-                background: 'var(--glass-bg-standard)',
-                backdropFilter: 'var(--glass-blur-md)',
-                border: '1px solid var(--glass-border-standard)',
-                boxShadow: 'var(--shadow-subtle)'
+              <p className="text-lg leading-relaxed" style={{
+                color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                lineHeight: '1.7'
               }}>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{
-                  background: 'rgba(16, 185, 129, 0.1)',
-                  border: '1px solid rgba(16, 185, 129, 0.2)'
-                }}>
-                  <Users className="w-6 h-6 text-emerald-400" />
-                </div>
-                <h3 className="text-xl font-bold mb-3" style={{
-                  color: 'var(--color-text-primary, #ffffff)',
-                  fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
-                }}>
-                  The Solution
-                </h3>
-                <p className="leading-relaxed" style={{
-                  color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+                Then my VP of Sales quit. Her exit interview: <em style={{ color: '#fca5a5' }}>"I don't know who we're selling to or why they should buy."</em>
+              </p>
+
+              <p className="text-lg leading-relaxed" style={{
+                color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                lineHeight: '1.7'
+              }}>
+                That's when it clicked. <strong style={{ color: 'var(--color-primary)' }}>I didn't need another consultant. I needed buyer intelligence that was fast, actionable, and actually used by my team.</strong>
+              </p>
+
+              <div className="border-l-4 pl-6 py-2 my-6 rounded-r-xl" style={{
+                borderColor: '#10b981',
+                background: 'rgba(16, 185, 129, 0.1)'
+              }}>
+                <p className="text-lg leading-relaxed" style={{
+                  color: '#a7f3d0',
                   fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                  lineHeight: '1.6'
+                  lineHeight: '1.7'
                 }}>
-                  Andru condenses weeks of research into minutes using AI. You describe your product, we analyze your market, identify decision-makers, surface pain points, and generate ROI calculations—automatically. Your team gets back to selling, not researching.
+                  <strong style={{ color: '#10b981' }}>So I built Andru.</strong> Not as a consultant replacement. As a system that delivers ICP clarity in 3 minutes, not 3 months.
                 </p>
               </div>
+
+              <p className="text-lg leading-relaxed" style={{
+                color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                lineHeight: '1.7'
+              }}>
+                If you're a technical founder stuck at Series A, spending more time defending your pipeline than building product—I built this for you.
+              </p>
+
+              <p className="text-lg leading-relaxed font-semibold" style={{
+                color: 'var(--color-text-primary)',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                lineHeight: '1.7'
+              }}>
+                Because you shouldn't have to burn $90K and 6 months to figure out who to sell to.
+              </p>
             </div>
           </motion.div>
         </div>
@@ -270,6 +302,154 @@ export default function AboutPage() {
                 View Pricing Details
               </Link>
             </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Who This Is For Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-3xl font-bold mb-12 text-center" style={{
+              color: 'var(--color-text-primary, #ffffff)',
+              fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+            }}>
+              Who This Is For (And Who It's Not)
+            </h2>
+
+            {/* This IS For You */}
+            <div className="mb-12">
+              <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: '#10b981' }}>
+                ✓ Andru Is Built For:
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                {[
+                  {
+                    title: 'Series A Technical Founders',
+                    description: 'You built the product. Now you need to figure out sales. You\'re at $2-10M ARR and the board is asking about your GTM strategy.'
+                  },
+                  {
+                    title: 'Founders Hiring Their First VP of Sales',
+                    description: 'You\'re about to spend $180K+ on sales leadership. They\'re going to ask "What\'s our ICP?" on Day 1. You need the answer ready.'
+                  },
+                  {
+                    title: 'Founders Drowning in Sales Chaos',
+                    description: 'Pipeline is full but nothing closes. Sales cycle is 6+ months. You\'re spending $20K+/month on tools nobody uses. Something has to change.'
+                  },
+                  {
+                    title: 'Founders Who Need Answers, Not Consultants',
+                    description: 'You don\'t have 3 months and $90K for a consulting engagement. You need ICP clarity this week, not next quarter.'
+                  }
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="p-6 rounded-xl"
+                    style={{
+                      background: 'rgba(16, 185, 129, 0.1)',
+                      border: '1px solid rgba(16, 185, 129, 0.3)'
+                    }}
+                  >
+                    <h4 className="font-bold mb-2" style={{ color: '#10b981', fontSize: '1.1rem' }}>
+                      {item.title}
+                    </h4>
+                    <p style={{
+                      color: '#a7f3d0',
+                      fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                      lineHeight: '1.6'
+                    }}>
+                      {item.description}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* This Is NOT For You */}
+            <div>
+              <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: '#ef4444' }}>
+                ✗ Andru Is NOT For:
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                {[
+                  {
+                    title: 'Companies With High-Performing Sales Teams',
+                    description: 'If you\'re already closing 40%+ of pipeline and scaling predictably, you don\'t need us. Keep doing what\'s working.'
+                  },
+                  {
+                    title: 'Pre-Revenue Startups',
+                    description: 'If you\'re still validating product-market fit, focus on that first. Andru is for founders who have PMF and need to scale sales.'
+                  },
+                  {
+                    title: 'B2C Companies',
+                    description: 'We\'re built for B2B SaaS selling to enterprises. If you\'re selling to consumers, we\'re not the right fit.'
+                  },
+                  {
+                    title: 'Companies That Just Need More Leads',
+                    description: 'If your problem is lead volume (not qualification), you need a demand gen tool. We help you qualify better, not generate more.'
+                  }
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="p-6 rounded-xl"
+                    style={{
+                      background: 'rgba(239, 68, 68, 0.1)',
+                      border: '1px solid rgba(239, 68, 68, 0.3)'
+                    }}
+                  >
+                    <h4 className="font-bold mb-2" style={{ color: '#fca5a5', fontSize: '1.1rem' }}>
+                      {item.title}
+                    </h4>
+                    <p style={{
+                      color: '#fecaca',
+                      fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                      lineHeight: '1.6'
+                    }}>
+                      {item.description}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom Message */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="mt-10 p-6 rounded-xl text-center"
+              style={{
+                background: 'rgba(59, 130, 246, 0.1)',
+                border: '1px solid rgba(59, 130, 246, 0.3)'
+              }}
+            >
+              <p className="text-xl font-semibold mb-2" style={{
+                color: 'var(--color-text-primary)',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+              }}>
+                If 2+ items in the "Yes" list describe you, we should talk.
+              </p>
+              <p style={{
+                color: 'var(--color-text-secondary)',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+              }}>
+                We only work with founders who are the right fit. That's how we deliver results.
+              </p>
+            </motion.div>
+
           </motion.div>
         </div>
       </section>
