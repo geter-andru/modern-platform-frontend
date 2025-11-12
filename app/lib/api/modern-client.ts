@@ -79,12 +79,13 @@ export class ModernApiClient {
 
   /**
    * Handle API response and show user feedback
+   * Note: showToast defaults to FALSE to prevent spam on read operations
+   * Mutations should explicitly pass showToast: true OR handle their own toasts
    */
-  private handleResponse<T>(response: BackendResponse<T>, showToast: boolean = true): ApiResponse<T> {
+  private handleResponse<T>(response: BackendResponse<T>, showToast: boolean = false): ApiResponse<T> {
     if (response.success) {
-      if (showToast && response.data) {
-        toast.success('Operation completed successfully');
-      }
+      // Generic success toast removed - mutations handle their own specific messages
+      // This prevents spam when dashboard loads and makes multiple API calls
       return {
         success: true,
         data: response.data

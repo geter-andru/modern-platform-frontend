@@ -1,40 +1,27 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/app/lib/supabase/client';
 import OnboardingFlow from '../components/features/OnboardingFlow';
+import { useRequireAuth } from '@/app/lib/auth';
+import { useRequirePayment } from '@/app/lib/auth/useRequirePayment';
 
 /**
  * Onboarding Page
  *
- * Displays the 3-step onboarding flow for first-time users.
- * Redirects to dashboard/ICP tool after completion.
+ * Displays the 3-step onboarding flow for first-time PAID users.
+ * Redirects to /icp tool after completion.
  *
- * Auth Guard: Requires authenticated user
+ * Auth Guard: Requires authenticated user with payment
+ * Payment Guard: Requires founding member payment before showing onboarding
  */
 export default function OnboardingPage() {
   const [isOpen, setIsOpen] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  // Auth guard: Redirect to /auth if not authenticated
-  useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-
-      if (!session) {
-        console.log('❌ No session found - redirecting to /auth');
-        router.push('/auth?redirect=/onboarding');
-        return;
-      }
-
-      console.log('✅ User authenticated - showing onboarding');
-      setIsLoading(false);
-    };
-
-    checkAuth();
-  }, [router]);
+  // Auth + Payment guards: Auto-redirect if not authenticated or not paid
+  const { user, loading: authLoading } = useRequireAuth();
+  const { hasPaid, loading: paymentLoading } = useRequirePayment();
 
   const handleComplete = () => {
     console.log('✅ Onboarding flow completed - redirecting to ICP tool');
@@ -42,8 +29,8 @@ export default function OnboardingPage() {
     router.push('/icp');
   };
 
-  // Show loading state while checking auth
-  if (isLoading) {
+  // Show loading state while checking auth and payment
+  if (authLoading || paymentLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--background-primary)' }}>
         <div className="text-center">
@@ -53,6 +40,9 @@ export default function OnboardingPage() {
       </div>
     );
   }
+
+  // If user is authenticated and paid, show onboarding
+  // (useRequirePayment already handles redirect to /pricing if not paid)
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--background-primary)' }}>

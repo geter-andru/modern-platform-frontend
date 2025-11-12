@@ -17,6 +17,20 @@ const SupabaseAuth: React.FC<SupabaseAuthProps> = ({ redirectTo = '/icp' }) => {
   // Helper: Check if user needs onboarding
   const checkOnboardingStatus = async (userId: string): Promise<string> => {
     try {
+      // 🔓 ADMIN BYPASS: Check if user is admin first
+      const { data: { user } } = await supabase.auth.getUser();
+      const adminEmails = ['geter@humusnshore.org', 'admin@andru.ai', 'support@andru.ai'];
+      const isAdmin = user?.email && (
+        adminEmails.includes(user.email) ||
+        user.email.endsWith('@andru.ai')
+      );
+
+      // Admins skip onboarding entirely
+      if (isAdmin) {
+        console.log('✅ SupabaseAuth: Admin user detected, skipping onboarding check');
+        return redirectTo;
+      }
+
       const { data, error } = await supabase
         .from('user_profiles')
         .select('onboarding_completed')

@@ -24,6 +24,7 @@ import {
   PieChart as ChartPieIcon,
   Menu as MenuIcon,
   X as XMarkIcon,
+  ShieldCheck as ShieldCheckIcon,
 } from 'lucide-react';
 import { useAuth } from '@/app/lib/auth';
 import { BRAND_IDENTITY } from '@/app/lib/constants/brand-identity';
@@ -268,11 +269,41 @@ const WidgetSlot = ({
 export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { user, signOut } = useAuth();
+  const { user, signOut, isAdmin } = useAuth();
   const [activeItem, setActiveItem] = useState('dashboard');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+
+  // Dynamically add admin navigation item for admin users
+  const dynamicNavigationItems = React.useMemo(() => {
+    const items = { ...navigationItems };
+
+    // Add admin item to development section if user is admin
+    if (isAdmin) {
+      items.development = [
+        ...navigationItems.development,
+        {
+          id: 'admin',
+          label: 'Admin',
+          description: 'Founding member dashboard',
+          icon: ShieldCheckIcon,
+          href: '/admin/founding-members',
+          badge: null
+        }
+      ];
+    }
+
+    return items;
+  }, [isAdmin]);
+
+  // Flatten for pathname checking
+  const allDynamicItems = React.useMemo(() => [
+    ...dynamicNavigationItems.main,
+    ...dynamicNavigationItems.salesTools,
+    ...dynamicNavigationItems.quickActions,
+    ...dynamicNavigationItems.development
+  ], [dynamicNavigationItems]);
 
   // Compound hover effects
   const collapseButtonHover = useCompoundHover('medium');
@@ -281,7 +312,7 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
 
   // Set active item based on current path
   useEffect(() => {
-    const currentItem = allItems.find(item => item.href === pathname);
+    const currentItem = allDynamicItems.find(item => item.href === pathname);
     if (currentItem) {
       setActiveItem(currentItem.id);
     }
@@ -385,11 +416,11 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
         <div className="flex-1 overflow-y-auto py-4 custom-scrollbar">
           <nav className="space-y-6">
             {/* MAIN Section */}
-            {navigationItems.main.length > 0 && (
+            {dynamicNavigationItems.main.length > 0 && (
               <div className="space-y-1 px-2">
                 <SectionHeader title="MAIN" collapsed={sidebarCollapsed} />
                 <StaggeredEntrance delay={0.05} animation="fade">
-                  {navigationItems.main.map((item) => (
+                  {dynamicNavigationItems.main.map((item) => (
                     <NavItem
                       key={item.id}
                       item={item}
@@ -403,11 +434,11 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
             )}
 
             {/* SALES TOOLS Section */}
-            {navigationItems.salesTools.length > 0 && (
+            {dynamicNavigationItems.salesTools.length > 0 && (
               <div className="space-y-1 px-2">
                 <SectionHeader title="SALES TOOLS" collapsed={sidebarCollapsed} />
                 <StaggeredEntrance delay={0.05} animation="fade">
-                  {navigationItems.salesTools.map((item) => (
+                  {dynamicNavigationItems.salesTools.map((item) => (
                     <NavItem
                       key={item.id}
                       item={item}
@@ -426,11 +457,11 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
             </WidgetSlot>
 
             {/* QUICK ACTIONS Section */}
-            {navigationItems.quickActions.length > 0 && (
+            {dynamicNavigationItems.quickActions.length > 0 && (
               <div className="space-y-1 px-2">
                 <SectionHeader title="QUICK ACTIONS" collapsed={sidebarCollapsed} />
                 <StaggeredEntrance delay={0.05} animation="fade">
-                  {navigationItems.quickActions.map((item) => (
+                  {dynamicNavigationItems.quickActions.map((item) => (
                     <NavItem
                       key={item.id}
                       item={item}
@@ -444,11 +475,11 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
             )}
 
             {/* DEVELOPMENT Section */}
-            {navigationItems.development.length > 0 && (
+            {dynamicNavigationItems.development.length > 0 && (
               <div className="space-y-1 px-2">
                 <SectionHeader title="DEVELOPMENT" collapsed={sidebarCollapsed} />
                 <StaggeredEntrance delay={0.05} animation="fade">
-                  {navigationItems.development.map((item) => (
+                  {dynamicNavigationItems.development.map((item) => (
                     <NavItem
                       key={item.id}
                       item={item}
@@ -563,10 +594,10 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
 
                 <nav className="space-y-6 mt-6">
                   {/* Render all navigation sections */}
-                  {navigationItems.main.length > 0 && (
+                  {dynamicNavigationItems.main.length > 0 && (
                     <div className="space-y-1">
                       <SectionHeader title="MAIN" collapsed={false} />
-                      {navigationItems.main.map((item) => (
+                      {dynamicNavigationItems.main.map((item) => (
                         <NavItem
                           key={item.id}
                           item={item}
@@ -581,10 +612,10 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
                     </div>
                   )}
 
-                  {navigationItems.salesTools.length > 0 && (
+                  {dynamicNavigationItems.salesTools.length > 0 && (
                     <div className="space-y-1">
                       <SectionHeader title="SALES TOOLS" collapsed={false} />
-                      {navigationItems.salesTools.map((item) => (
+                      {dynamicNavigationItems.salesTools.map((item) => (
                         <NavItem
                           key={item.id}
                           item={item}
@@ -599,10 +630,10 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
                     </div>
                   )}
 
-                  {navigationItems.development.length > 0 && (
+                  {dynamicNavigationItems.development.length > 0 && (
                     <div className="space-y-1">
                       <SectionHeader title="DEVELOPMENT" collapsed={false} />
-                      {navigationItems.development.map((item) => (
+                      {dynamicNavigationItems.development.map((item) => (
                         <NavItem
                           key={item.id}
                           item={item}
