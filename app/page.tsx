@@ -15,15 +15,15 @@ import { initPublicPageTracking, trackCtaClick } from './lib/analytics/publicPag
 export default function HomePage() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Changed: Show CTAs immediately, don't block on auth check
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [whyAndruOpen, setWhyAndruOpen] = useState(false);
 
+  // Non-blocking auth check - runs in background, updates state when complete
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setIsAuthenticated(!!session);
-      setLoading(false);
     };
     checkAuth();
   }, [supabase]);
@@ -35,10 +35,13 @@ export default function HomePage() {
 
   // CTA click handler
   const handleCtaClick = (ctaText: string, ctaLocation: string) => {
+    // Fire-and-forget tracking (non-blocking)
     trackCtaClick({
       ctaText,
       ctaLocation,
       pagePath: '/'
+    }).catch(() => {
+      // Tracking failures are non-fatal and already logged
     });
   };
 

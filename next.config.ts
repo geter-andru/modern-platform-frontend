@@ -94,7 +94,9 @@ const nextConfig: NextConfig = {
   
   // Experimental features
   experimental: {
-    esmExternals: true
+    esmExternals: true,
+    // Optimize package imports to reduce bundle size
+    optimizePackageImports: ['framer-motion']
   },
   
   // Webpack configuration to reduce bundle size

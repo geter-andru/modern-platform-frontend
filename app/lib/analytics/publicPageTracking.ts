@@ -340,11 +340,14 @@ export function initPublicPageTracking(pagePath: string, pageTitle: string): voi
 
   console.log('📊 Initializing public page tracking:', { page: pagePath });
 
-  // Track initial page view
+  // Track initial page view (non-blocking, fire-and-forget)
   trackPublicPageView({
     pagePath,
     pageTitle,
     referrerUrl: document.referrer
+  }).catch(err => {
+    // Tracking failures are non-fatal and already logged in trackPublicPageView
+    // This ensures the promise rejection doesn't propagate
   });
 
   // Track engagement metrics
