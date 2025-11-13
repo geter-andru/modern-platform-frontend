@@ -301,7 +301,7 @@ export default function ICPDemoV2Page() {
               href="/signup"
               className="btn btn-primary flex items-center gap-2"
             >
-              Sign Up Free
+              Sign Up
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -331,7 +331,7 @@ export default function ICPDemoV2Page() {
               {/* Social Proof Badge */}
               <div className="flex items-center justify-center gap-2 mb-8">
                 <Badge variant="info" size="md" icon={Users}>
-                  Join 2,847 founders who improved their close rates
+                  Join 100 founders improving their enterprise close rates
                 </Badge>
               </div>
             </div>
@@ -347,7 +347,7 @@ export default function ICPDemoV2Page() {
                 <div className="flex items-center gap-4 text-sm text-text-muted">
                   <span className="flex items-center gap-1">
                     <Zap className="w-4 h-4 text-blue-400" />
-                    Takes 2 minutes
+                    Takes minutes
                   </span>
                   <span>🔒 Secure</span>
                 </div>
@@ -356,7 +356,7 @@ export default function ICPDemoV2Page() {
               <div className="space-y-4">
                 <div>
                   <label className="body-small text-text-muted mb-2 block">
-                    Product Name <span className="text-red-400">*</span>
+                    What's your product/service name? <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="text"
@@ -384,7 +384,7 @@ export default function ICPDemoV2Page() {
 
                 <div>
                   <label className="body-small text-text-muted mb-2 block">
-                    Target buyer (optional)
+                    Whose your target buyer (optional)
                   </label>
                   <input
                     type="text"
@@ -412,13 +412,13 @@ export default function ICPDemoV2Page() {
                   ) : (
                     <>
                       <Sparkles className="w-5 h-5" />
-                      Generate Free ICP
+                      Generate My Free ICP
                     </>
                   )}
                 </button>
 
                 <p className="body-small text-text-muted text-center">
-                  No credit card required • Free forever for basic features
+                  No credit card required • Free for basic features
                 </p>
 
                 {/* Results Preview */}

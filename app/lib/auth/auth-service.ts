@@ -27,14 +27,16 @@ class SupabaseAuthService {
   private authListeners: ((user: AuthUser | null) => void)[] = [];
   private sessionDebugEnabled = false; // Disable verbose debugging during build
   private refreshTimer: NodeJS.Timeout | null = null;
+  private initializationPromise: Promise<void> | null = null;
+  private isInitialized = false;
 
   constructor() {
     console.log('🔐 [AuthService] Initializing Supabase Auth Service...');
 
     // Listen to auth state changes
     supabase.auth.onAuthStateChange(this.handleAuthStateChange.bind(this));
-    // Initialize session on startup
-    this.initializeSession();
+    // Initialize session on startup (track completion)
+    this.initializationPromise = this.initializeSession();
     // Start proactive token refresh
     this.startTokenRefreshTimer();
   }
@@ -62,13 +64,14 @@ class SupabaseAuthService {
     }
   }
 
-  private async initializeSession() {
+  private async initializeSession(): Promise<void> {
     console.log('🔐 [AuthService] Initializing session from storage...');
     try {
       const { data: { session }, error } = await supabase.auth.getSession();
 
       if (error) {
         console.error('🔐 [AuthService] Error getting session:', error);
+        this.isInitialized = true;
         return;
       }
 
@@ -78,12 +81,15 @@ class SupabaseAuthService {
         this.currentSession = session;
         this.currentUser = await this.transformUser(session.user);
         console.log('🔐 [AuthService] ✅ User restored from session:', this.currentUser.email);
+        this.isInitialized = true;
         this.notifyListeners(this.currentUser);
       } else {
         console.log('🔐 [AuthService] No existing session found (user not logged in)');
+        this.isInitialized = true;
       }
     } catch (error) {
       console.error('🔐 [AuthService] ❌ Error initializing session:', error);
+      this.isInitialized = true;
     }
   }
 
@@ -463,10 +469,21 @@ class SupabaseAuthService {
   // Subscribe to auth changes
   onAuthStateChange(callback: (user: AuthUser | null) => void) {
     this.authListeners.push(callback);
-    
-    // Call immediately with current state
-    callback(this.currentUser);
-    
+
+    // Wait for initialization to complete before calling callback
+    if (this.isInitialized) {
+      // Already initialized, call immediately
+      callback(this.currentUser);
+    } else if (this.initializationPromise) {
+      // Still initializing, wait for completion
+      this.initializationPromise.then(() => {
+        callback(this.currentUser);
+      });
+    } else {
+      // Fallback: call immediately (shouldn't happen)
+      callback(this.currentUser);
+    }
+
     // Return unsubscribe function
     return () => {
       const index = this.authListeners.indexOf(callback);
