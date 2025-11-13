@@ -26,6 +26,7 @@ class SupabaseAuthService {
   private currentSession: Session | null = null;
   private authListeners: ((user: AuthUser | null) => void)[] = [];
   private sessionDebugEnabled = false; // Disable verbose debugging during build
+  private refreshTimer: NodeJS.Timeout | null = null;
 
   constructor() {
     console.log('🔐 [AuthService] Initializing Supabase Auth Service...');
@@ -33,6 +34,8 @@ class SupabaseAuthService {
     supabase.auth.onAuthStateChange(this.handleAuthStateChange.bind(this));
     // Initialize session on startup
     this.initializeSession();
+    // Start proactive token refresh
+    this.startTokenRefreshTimer();
   }
 
   /**
@@ -110,6 +113,8 @@ class SupabaseAuthService {
         console.log('🔐 [AuthService] 🎯 Initial session loaded from storage');
         if (session?.user) {
           console.log('🔐 [AuthService] ✅ Restored user session:', this.currentUser?.email);
+          // Start token refresh timer for restored session
+          this.startTokenRefreshTimer();
         } else {
           console.log('🔐 [AuthService] No stored session found (user not logged in)');
         }
@@ -129,12 +134,18 @@ class SupabaseAuthService {
           // Link completed assessment to user account (if any)
           await this.linkAssessmentToUser(session.user, session.access_token);
         }
+        // Restart token refresh timer with new session
+        this.startTokenRefreshTimer();
         break;
       case 'SIGNED_OUT':
         console.log('🔐 [AuthService] 👋 User signed out');
+        // Stop token refresh timer
+        this.stopTokenRefreshTimer();
         break;
       case 'TOKEN_REFRESHED':
         console.log('🔐 [AuthService] 🔄 Token refreshed successfully');
+        // Restart token refresh timer with updated expiry
+        this.startTokenRefreshTimer();
         break;
       case 'USER_UPDATED':
         console.log('🔐 [AuthService] 👤 User data updated');
@@ -298,6 +309,83 @@ class SupabaseAuthService {
     this.authListeners.forEach(listener => listener(user));
   }
 
+  /**
+   * Start proactive token refresh timer
+   * Refreshes tokens 5 minutes before expiry to avoid interruptions
+   */
+  private startTokenRefreshTimer() {
+    // Clear existing timer
+    if (this.refreshTimer) {
+      clearTimeout(this.refreshTimer);
+    }
+
+    // Only run in browser
+    if (typeof window === 'undefined') return;
+
+    const checkAndRefresh = async () => {
+      const session = this.currentSession;
+
+      if (!session?.expires_at) {
+        // No session, check again in 1 minute
+        this.refreshTimer = setTimeout(checkAndRefresh, 60 * 1000);
+        return;
+      }
+
+      // Calculate time until expiry
+      const expiresAt = session.expires_at * 1000; // Convert to milliseconds
+      const now = Date.now();
+      const timeUntilExpiry = expiresAt - now;
+
+      // Refresh 5 minutes before expiry (or immediately if less than 5 minutes left)
+      const refreshBuffer = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+      if (timeUntilExpiry <= refreshBuffer) {
+        console.log('🔄 [AuthService] Token expiring soon, refreshing proactively...', {
+          expiresIn: Math.round(timeUntilExpiry / 1000) + 's'
+        });
+
+        try {
+          // Supabase will automatically refresh using the refresh token
+          const { data, error } = await supabase.auth.refreshSession();
+
+          if (error) {
+            console.error('❌ [AuthService] Token refresh failed:', error);
+            // Session expired, clear state
+            this.currentSession = null;
+            this.currentUser = null;
+            this.notifyListeners(null);
+          } else if (data.session) {
+            console.log('✅ [AuthService] Token refreshed successfully');
+            // Session will be updated via onAuthStateChange handler
+          }
+        } catch (err) {
+          console.error('❌ [AuthService] Token refresh error:', err);
+        }
+
+        // Check again in 5 minutes
+        this.refreshTimer = setTimeout(checkAndRefresh, 5 * 60 * 1000);
+      } else {
+        // Schedule refresh for 5 minutes before expiry
+        const refreshIn = timeUntilExpiry - refreshBuffer;
+        console.log(`⏰ [AuthService] Token refresh scheduled in ${Math.round(refreshIn / 1000 / 60)} minutes`);
+        this.refreshTimer = setTimeout(checkAndRefresh, refreshIn);
+      }
+    };
+
+    // Start checking
+    checkAndRefresh();
+  }
+
+  /**
+   * Stop token refresh timer (cleanup)
+   */
+  private stopTokenRefreshTimer() {
+    if (this.refreshTimer) {
+      clearTimeout(this.refreshTimer);
+      this.refreshTimer = null;
+    }
+  }
+
   // Public API
   getCurrentUser(): AuthUser | null {
     if (this.sessionDebugEnabled && this.currentUser) {
@@ -347,13 +435,14 @@ class SupabaseAuthService {
   // Sign out
   async signOut() {
     const { error } = await supabase.auth.signOut();
-    
+
     if (error) {
       throw error;
     }
 
     this.currentUser = null;
     this.currentSession = null;
+    this.stopTokenRefreshTimer();
   }
 
   // Get session for server-side use
