@@ -353,7 +353,7 @@ export default function HomePage() {
             {/* Executive-Level Headline */}
             <motion.h1
               variants={fadeInUp}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
               style={{
                 color: 'var(--color-text-primary, #ffffff)',
                 fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
@@ -362,8 +362,24 @@ export default function HomePage() {
                 textShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
               }}
             >
-              Don't Waste $50K/Month on Sales Tools Running Blind
+              90% of Startups Fail for Lack of Market Need?
             </motion.h1>
+
+            <motion.h2
+              variants={fadeInUp}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
+              style={{
+                background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                fontWeight: 'var(--font-weight-bold, 700)',
+                letterSpacing: 'var(--tracking-tighter, -0.02em)',
+              }}
+            >
+              No. They Fail for Lack of Market Clarity.
+            </motion.h2>
 
             {/* Executive Subheadline */}
             <motion.p
@@ -377,7 +393,8 @@ export default function HomePage() {
                 textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
               }}
             >
-              AI-powered buyer intelligence that makes your sales tools actually work.
+              The AI platform that delivers Product-Market Intelligence, Resonance, and Clarity—
+              the complete framework for achieving enterprise product-market fit in 72 hours, not 6 months.
             </motion.p>
 
             {/* Try Demo CTA - Above the Fold */}
@@ -562,7 +579,7 @@ export default function HomePage() {
               letterSpacing: 'var(--tracking-tighter, -0.02em)',
               textShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
             }}>
-              Everything You Need to Drive Revenue
+              The Three-Layer Market Clarity Framework
             </h2>
             <p className="text-xl sm:text-2xl max-w-3xl mx-auto leading-relaxed" style={{
               color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
@@ -571,17 +588,18 @@ export default function HomePage() {
               lineHeight: 'var(--line-height-relaxed, 1.6)',
               textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
             }}>
-              Powerful tools designed for revenue teams to identify, qualify, and convert ideal customers with executive-level precision.
+              Stop reverse-engineering accidents into strategy. Build the complete intelligence stack
+              that technical founders need to achieve product-market fit at enterprise scale.
             </p>
           </motion.div>
 
           {/* Grid Layout: Hero (2x2) + 3 standard cards - Agent 4 Visual Hierarchy */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 gap-8">
-            {/* Hero Feature: Know Who to Call (2x2 Grid) */}
+            {/* Hero Feature: Product-Market Intelligence (2x2 Grid) */}
             <FeatureCard
               icon={Target}
-              title="Know Exactly Who to Call (and Who to Ignore)"
-              description="Stop burning pipeline on wrong-fit prospects. Get precise qualification criteria that cuts your sales cycle by 40%. Founders save 15 hours/week on unqualified calls."
+              title="Product-Market Intelligence: Pure Signal ICP"
+              description="Stop reverse-engineering accidents. Build your ICP from product capabilities, not historical customer data contaminated by relationship noise, timing luck, and discount-driven purchases. Know which markets are structurally positioned for Maximum Value Realization."
               variant="featured"
               iconColor="var(--color-primary)"
               iconBgColor="rgba(59, 130, 246, 0.15)"
@@ -592,11 +610,11 @@ export default function HomePage() {
               className="md:col-span-2 md:row-span-2"
             />
 
-            {/* Standard Feature 2: Calculate Money Wasted */}
+            {/* Standard Feature 2: Product-Market Resonance */}
             <FeatureCard
               icon={Calculator}
-              title="Calculate the $500K You're Wasting on Wrong-Fit Prospects"
-              description="See exactly how much revenue you're leaving on the table by targeting the wrong companies. Average finding: $420K in wasted effort per year."
+              title="Product-Market Resonance: Human Understanding"
+              description="Move from company profiles to authentic human needs. Build buyer personas and empathy maps that reveal what decision-makers see, hear, think, feel—the psychological terrain that drives every B2B purchase."
               variant="standard"
               iconColor="rgb(52, 211, 153)"
               iconBgColor="rgba(16, 185, 129, 0.1)"
@@ -604,11 +622,11 @@ export default function HomePage() {
               animationDelay={0.2}
             />
 
-            {/* Standard Feature 3: Build ROI Decks */}
+            {/* Standard Feature 3: Product-Market Clarity */}
             <FeatureCard
               icon={BarChart3}
-              title="Build the ROI Deck Your Buyer Actually Wants"
-              description="Auto-generate business cases that make procurement say 'yes' instead of 'we'll think about it.' 3-minute business cases that close $100K+ deals."
+              title="Product-Market Clarity: Tech to Strategic Outcomes"
+              description="Translate your technical capabilities into the strategic outcomes and ROI that CFOs approve and boards celebrate. Stop losing enterprise deals to inferior products because you can't articulate business value in their language."
               variant="standard"
               iconColor="rgb(192, 132, 252)"
               iconBgColor="rgba(139, 92, 246, 0.1)"
@@ -616,11 +634,11 @@ export default function HomePage() {
               animationDelay={0.3}
             />
 
-            {/* Standard Feature 4: Export & Share */}
+            {/* Standard Feature 4: AI-Powered Velocity */}
             <FeatureCard
               icon={Share2}
-              title="Export & Collaborate"
-              description="Export your ICP analysis to PDF, Markdown, CSV, or AI prompt templates. Share insights with your team and extend research with ChatGPT, Claude, or Gemini."
+              title="AI-Powered Velocity: 72 Hours, Not 6 Months"
+              description="What takes consultants 6 months and $90K to deliver, Andru generates in 72 hours. Then refines continuously as your market evolves. Export to PDF, CSV, or AI prompt templates for extended research."
               variant="standard"
               iconColor="rgb(34, 211, 238)"
               iconBgColor="rgba(6, 182, 212, 0.1)"

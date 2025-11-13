@@ -123,14 +123,21 @@ export default function AboutPage() {
                   fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
                   lineHeight: '1.7'
                 }}>
-                  Every B2B SaaS company struggles with the same fundamental question: <strong style={{ color: 'var(--color-primary)' }}>Who should we sell to?</strong> Without a clear understanding of your Ideal Customer Profile (ICP), you're burning cash on the wrong prospects, extending sales cycles, and missing revenue targets.
+                  <strong style={{ color: '#fca5a5' }}>90% of startups fail—not for lack of market need, but for lack of market clarity.</strong> They reverse-engineer accidents into strategy. They chase relationship wins contaminated by founder connections, discount-driven purchases, and timing luck. They mistake tactical flexibility for strategic direction.
                 </p>
                 <p className="text-lg leading-relaxed mt-4" style={{
                   color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
                   fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
                   lineHeight: '1.7'
                 }}>
-                  <strong style={{ color: 'var(--color-text-primary)' }}>Andru</strong> uses AI to analyze your product, market, and competitive landscape to generate detailed buyer personas, calculate ROI, and build compelling business cases—in under 3 minutes.
+                  Without <strong style={{ color: 'var(--color-primary)' }}>Product-Market Intelligence</strong> (which markets structurally need you), <strong style={{ color: 'var(--color-primary)' }}>Product-Market Resonance</strong> (what resonates with buyers), and <strong style={{ color: 'var(--color-primary)' }}>Product-Market Clarity</strong> (translating tech to strategic outcomes), you don't have product-market fit. You have product-market illusion.
+                </p>
+                <p className="text-lg leading-relaxed mt-4" style={{
+                  color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+                  fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                  lineHeight: '1.7'
+                }}>
+                  <strong style={{ color: 'var(--color-text-primary)' }}>Andru</strong> solves the market clarity crisis. We deliver the complete three-layer intelligence stack that transforms how technical founders achieve product-market fit at enterprise scale—in 72 hours, not 6 months.
                 </p>
               </div>
             </div>
@@ -210,7 +217,15 @@ export default function AboutPage() {
                 fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
                 lineHeight: '1.7'
               }}>
-                That's when it clicked. <strong style={{ color: 'var(--color-primary)' }}>I didn't need another consultant. I needed buyer intelligence that was fast, actionable, and actually used by my team.</strong>
+                That's when it clicked. <strong style={{ color: 'var(--color-primary)' }}>The problem wasn't just bad ICP research. It was lack of market clarity—the systematic framework for achieving product-market fit at enterprise scale.</strong>
+              </p>
+
+              <p className="text-lg leading-relaxed mt-4" style={{
+                color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                lineHeight: '1.7'
+              }}>
+                I needed three layers of intelligence: <strong style={{ color: 'var(--color-primary)' }}>Which markets structurally need us</strong> (Product-Market Intelligence). <strong style={{ color: 'var(--color-primary)' }}>What resonates with buyers</strong> (Product-Market Resonance). <strong style={{ color: 'var(--color-primary)' }}>How to translate our tech into strategic outcomes</strong> (Product-Market Clarity).
               </p>
 
               <div className="border-l-4 pl-6 py-2 my-6 rounded-r-xl" style={{
@@ -222,7 +237,7 @@ export default function AboutPage() {
                   fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
                   lineHeight: '1.7'
                 }}>
-                  <strong style={{ color: '#10b981' }}>So I built Andru.</strong> Not as a consultant replacement. As a system that delivers ICP clarity in 3 minutes, not 3 months.
+                  <strong style={{ color: '#10b981' }}>So I built Andru.</strong> Not as a consultant replacement. As the AI platform that delivers complete market clarity—Intelligence, Resonance, and Clarity—in 72 hours, not 6 months.
                 </p>
               </div>
 
@@ -450,6 +465,69 @@ export default function AboutPage() {
               </p>
             </motion.div>
 
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Pure Signal Philosophy Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="rounded-3xl p-12"
+            style={{
+              background: 'var(--glass-bg-emphasis)',
+              backdropFilter: 'var(--glass-blur-lg)',
+              border: '1px solid var(--glass-border-emphasis)',
+              boxShadow: 'var(--shadow-premium)'
+            }}
+          >
+            <h2 className="text-3xl font-bold mb-8 text-center" style={{
+              color: 'var(--color-text-primary, #ffffff)',
+              fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+            }}>
+              The Pure Signal Philosophy
+            </h2>
+
+            <p className="text-lg leading-relaxed mb-6" style={{
+              color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+              fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+              lineHeight: '1.7'
+            }}>
+              <strong style={{ color: 'var(--color-primary)' }}>Direction must precede data.</strong> You cannot let historical accidents dictate strategic direction. You cannot let contaminated customer data—wins driven by founder relationships, discount-driven purchases, or timing luck—define your ideal customer profile.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6" style={{
+              color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+              fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+              lineHeight: '1.7'
+            }}>
+              <strong style={{ color: 'var(--color-primary)' }}>Pure Signal</strong> is derived from first principles: the intrinsic capabilities of your product and the fundamental problems it solves. Not who happened to buy. Not who you could convince with discounts. But who is structurally positioned to derive Maximum Value Realization from what you've built.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6" style={{
+              color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+              fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+              lineHeight: '1.7'
+            }}>
+              This is the <strong style={{ color: 'var(--color-primary)' }}>Hybrid ICP Operating System</strong>: Start with Pure Signal (product capabilities). Execute intentionally (target based on value alignment). Analyze rigorously (filter accidents from authentic success). Iterate intelligently (refine based on validated market reality).
+            </p>
+
+            <div className="border-l-4 pl-6 py-4 rounded-r-xl" style={{
+              borderColor: 'var(--color-primary)',
+              background: 'rgba(59, 130, 246, 0.1)'
+            }}>
+              <p className="text-lg leading-relaxed font-semibold" style={{
+                color: 'var(--color-text-primary)',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                lineHeight: '1.7'
+              }}>
+                When you master this system, you don't just grow faster—you build defensible competitive moats that rivals can't copy. Because competitors can copy features, but they can't replicate systematic clarity about who should buy and why.
+              </p>
+            </div>
           </motion.div>
         </div>
       </section>
