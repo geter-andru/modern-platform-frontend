@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search as MagnifyingGlassIcon,
@@ -354,9 +355,13 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
         <div className="p-4 border-b border-surface/20">
           <div className="flex items-center justify-between">
             <div className={`flex items-center ${sidebarCollapsed ? 'justify-center w-full' : ''}`}>
-              <div className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-accent rounded-lg flex items-center justify-center shadow-medium">
-                <span className="text-text-primary font-bold text-sm">A</span>
-              </div>
+              <Image
+                src="/images/andru-logo-v2_192x192.png"
+                alt="Andru"
+                width={32}
+                height={32}
+                className="rounded-lg shadow-medium"
+              />
               {!sidebarCollapsed && (
                 <motion.div
                   initial={{ opacity: 0, x: -10 }}
@@ -582,9 +587,13 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
               <div className="p-4">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center">
-                    <div className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-accent rounded-lg flex items-center justify-center">
-                      <span className="text-text-primary font-bold text-sm">A</span>
-                    </div>
+                    <Image
+                      src="/images/andru-logo-v2_192x192.png"
+                      alt="Andru"
+                      width={32}
+                      height={32}
+                      className="rounded-lg shadow-medium"
+                    />
                     <div className="ml-3">
                       <h1 className="text-text-primary font-semibold text-sm">{BRAND_IDENTITY.SHORT_NAME}</h1>
                       <p className="text-text-muted text-xs">Revenue Intelligence</p>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { supabase } from './lib/supabase/client-rewrite';
 import { motion } from 'framer-motion';
@@ -75,6 +76,13 @@ export default function HomePage() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2">
+              <Image
+                src="/images/andru-logo-v2_192x192.png"
+                alt="Andru"
+                width={32}
+                height={32}
+                className="rounded-lg"
+              />
               <span className="text-xl font-bold" style={{
                 color: 'var(--color-text-primary, #ffffff)',
                 fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
