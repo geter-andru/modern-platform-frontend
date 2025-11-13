@@ -67,9 +67,19 @@ const SupabaseAuth: React.FC<SupabaseAuthProps> = ({ redirectTo = '/icp' }) => {
     checkAuth();
 
     // Listen for auth state changes (OAuth callback)
+    // 🔧 FIX: Don't redirect if URL has OAuth params - let the callback handler deal with it
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === 'SIGNED_IN' && session) {
+          // Check if we're in the middle of OAuth callback
+          const urlParams = new URLSearchParams(window.location.search);
+          const hasOAuthParams = urlParams.has('code') || urlParams.has('error');
+
+          if (hasOAuthParams) {
+            console.log('🔒 OAuth params detected, skipping auto-redirect to let callback handler process');
+            return;
+          }
+
           const destination = await checkOnboardingStatus(session.user.id);
           router.push(destination);
         }
