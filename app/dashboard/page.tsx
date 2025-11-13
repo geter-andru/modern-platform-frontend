@@ -16,6 +16,7 @@ import { EnterpriseDashboard } from '../../src/shared/components/dashboard/Enter
 import { useCustomer, useProgress, useMilestones, useProgressInsights } from '@/app/lib/hooks/useAPI';
 import { Skeleton, SkeletonCard } from '../../src/shared/components/ui/Skeleton';
 import { useCommandPalette } from '../../src/shared/components/ui/command-palette';
+import { useBehaviorTracking } from '../../src/shared/hooks/useBehaviorTracking';
 
 // Insight type definition (matches InsightsPanel component)
 interface Insight {
@@ -90,6 +91,13 @@ export default function DashboardPage() {
   const { data: progress, isLoading: progressLoading } = useProgress(user?.id);
   const { data: milestones, isLoading: milestonesLoading } = useMilestones(user?.id);
   const { data: insights, isLoading: insightsLoading } = useProgressInsights(user?.id);
+
+  // Track page view for user flow analytics
+  useBehaviorTracking({
+    customerId: user?.id,
+    toolId: 'dashboard',
+    currentPage: 'Dashboard',
+  });
 
   // Clean up OAuth callback parameters from URL (code, next, etc.)
   useEffect(() => {

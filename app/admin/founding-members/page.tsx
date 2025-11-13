@@ -8,6 +8,7 @@ import { Users, DollarSign, Calendar, Lock, RefreshCw, CheckCircle2, Clock, Aler
 import { motion } from 'framer-motion';
 import { AssessmentAnalyticsSection } from './components/AssessmentAnalyticsSection';
 import { PlatformAnalyticsSection } from './components/PlatformAnalyticsSection';
+import { useBehaviorTracking } from '../../../src/shared/hooks/useBehaviorTracking';
 
 interface FoundingMember {
   user_id: string;
@@ -53,6 +54,13 @@ export default function AdminFoundingMembersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
+
+  // Track admin page view for user flow analytics
+  useBehaviorTracking({
+    customerId: user?.id,
+    toolId: 'admin-founding-members',
+    currentPage: 'Admin - Founding Members',
+  });
 
   useEffect(() => {
     // Check if user is admin using proper auth system
