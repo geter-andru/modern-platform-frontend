@@ -92,11 +92,9 @@ export default function DashboardPage() {
   const { data: milestones, isLoading: milestonesLoading } = useMilestones(user?.id);
   const { data: insights, isLoading: insightsLoading } = useProgressInsights(user?.id);
 
-  // Track page view for user flow analytics
+  // Track page view for user flow analytics (auto-tracks navigation on mount/unmount)
   useBehaviorTracking({
-    customerId: user?.id,
-    toolId: 'dashboard',
-    currentPage: 'Dashboard',
+    customerId: user?.id || '',
   });
 
   // Clean up OAuth callback parameters from URL (code, next, etc.)

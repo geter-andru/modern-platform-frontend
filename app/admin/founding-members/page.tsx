@@ -55,11 +55,9 @@ export default function AdminFoundingMembersPage() {
   const [error, setError] = useState<string | null>(null);
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
-  // Track admin page view for user flow analytics
+  // Track admin page view for user flow analytics (auto-tracks navigation on mount/unmount)
   useBehaviorTracking({
-    customerId: user?.id,
-    toolId: 'admin-founding-members',
-    currentPage: 'Admin - Founding Members',
+    customerId: user?.id || '',
   });
 
   useEffect(() => {
