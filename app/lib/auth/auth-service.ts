@@ -30,6 +30,7 @@ class SupabaseAuthService {
 
   constructor() {
     console.log('🔐 [AuthService] Initializing Supabase Auth Service...');
+
     // Listen to auth state changes
     supabase.auth.onAuthStateChange(this.handleAuthStateChange.bind(this));
     // Initialize session on startup
@@ -493,8 +494,51 @@ class SupabaseAuthService {
   }
 }
 
-// Create singleton instance
-export const authService = new SupabaseAuthService();
+// SINGLETON FACTORY: Create instance only in browser context
+// During SSR/build, this module may be imported multiple times
+// This function ensures only one instance exists in browser
+// Uses global window storage to survive hot module reloads in development
+function getAuthService(): SupabaseAuthService {
+  // Server-side rendering: Don't create real instance
+  if (typeof window === 'undefined') {
+    // Return minimal stub for SSR compatibility
+    return {
+      getCurrentUser: () => null,
+      getCurrentSession: () => null,
+      isAuthenticated: () => false,
+      isAdmin: () => false,
+      signInWithGoogle: async () => ({ provider: 'google', url: '' }),
+      signOut: async () => {},
+      getServerSession: async () => null,
+      onAuthStateChange: () => () => {},
+      getUsers: async () => ({ data: { users: [] }, error: null }),
+      deleteUser: async () => ({ data: {}, error: null })
+    } as any;
+  }
+
+  // Browser: Create singleton instance using global window storage
+  // This survives hot module reloads in development
+  if (!(window as any).__authServiceInstance) {
+    console.log('🔐 [AuthService] Creating singleton instance...');
+    (window as any).__authServiceInstance = new SupabaseAuthService();
+  } else {
+    console.log('🔐 [AuthService] Reusing existing singleton instance');
+  }
+
+  return (window as any).__authServiceInstance;
+}
+
+// LAZY SINGLETON: Use Proxy for lazy initialization
+// This prevents eager execution during module import (SSR/HMR)
+// Instance only created on first property access in browser
+export const authService = new Proxy({} as SupabaseAuthService, {
+  get(target, prop) {
+    const instance = getAuthService();
+    return typeof instance[prop as keyof SupabaseAuthService] === 'function'
+      ? (instance[prop as keyof SupabaseAuthService] as Function).bind(instance)
+      : instance[prop as keyof SupabaseAuthService];
+  }
+});
 
 // Legacy compatibility layer (to be removed after migration)
 export const legacyAuth = {
