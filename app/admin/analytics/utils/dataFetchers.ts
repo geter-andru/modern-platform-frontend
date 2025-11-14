@@ -1421,5 +1421,191 @@ export async function fetchConversionFunnel(
   }
 }
 
+// ============================================================================
+// SCENARIO PAGE ANALYTICS
+// ============================================================================
+
+/**
+ * Fetch scenario page overview metrics
+ * Aggregates data from all /icp/[slug] pages
+ */
+export async function fetchScenarioPageOverview(
+  dateRange: DateRangeFilter
+): Promise<AnalyticsAPIResponse<any>> {
+  try {
+    // Get all visits to /icp/ pages (both anonymous and authenticated)
+    const { data: visits, error } = await supabase
+      .from('public_page_visits')
+      .select('*')
+      .like('page_path', '/icp/%')
+      .gte('created_at', dateRange.start_date)
+      .lte('created_at', dateRange.end_date) as { data: any[] | null; error: any };
+
+    if (error) throw error;
+
+    // Get assessment sessions started after scenario page visits
+    const { data: assessments, error: assessError } = await supabase
+      .from('assessment_sessions')
+      .select('*')
+      .gte('created_at', dateRange.start_date)
+      .lte('created_at', dateRange.end_date) as { data: any[] | null; error: any };
+
+    if (assessError) throw assessError;
+
+    // Get signups (users with linked assessment sessions)
+    const { data: signups, error: signupError } = await supabase
+      .from('assessment_sessions')
+      .select('*')
+      .eq('status', 'linked')
+      .gte('created_at', dateRange.start_date)
+      .lte('created_at', dateRange.end_date) as { data: any[] | null; error: any };
+
+    if (signupError) throw signupError;
+
+    const visitArray = visits || [];
+    const assessmentArray = assessments || [];
+    const signupArray = signups || [];
+
+    const total_views = visitArray.length;
+    const unique_visitors = new Set(visitArray.map((v: any) => v.anonymous_session_id || v.user_id)).size;
+    const avg_time_on_page = visitArray.length > 0
+      ? visitArray.reduce((sum: number, v: any) => sum + (v.time_on_page || 0), 0) / visitArray.length
+      : 0;
+    const total_cta_clicks = visitArray.filter((v: any) => v.clicked_cta).length;
+    const scenario_to_assessment_conversions = assessmentArray.length;
+    const scenario_to_signup_conversions = signupArray.length;
+
+    return {
+      success: true,
+      data: {
+        total_views,
+        unique_visitors,
+        avg_time_on_page,
+        total_cta_clicks,
+        scenario_to_assessment_conversions,
+        scenario_to_assessment_rate: safePercentage(scenario_to_assessment_conversions, total_views),
+        scenario_to_signup_conversions,
+        scenario_to_signup_rate: safePercentage(scenario_to_signup_conversions, total_views),
+      },
+      metadata: {
+        total_count: total_views,
+        filtered_count: total_views,
+        date_range: dateRange,
+        generated_at: new Date().toISOString(),
+      },
+    };
+  } catch (err) {
+    console.error('Error fetching scenario page overview:', err);
+    return {
+      success: false,
+      data: {
+        total_views: 0,
+        unique_visitors: 0,
+        avg_time_on_page: 0,
+        total_cta_clicks: 0,
+        scenario_to_assessment_conversions: 0,
+        scenario_to_assessment_rate: 0,
+        scenario_to_signup_conversions: 0,
+        scenario_to_signup_rate: 0,
+      },
+      error: err instanceof Error ? err.message : 'Unknown error',
+    };
+  }
+}
+
+/**
+ * Fetch detailed stats for each scenario page
+ * Returns per-scenario breakdown with all metrics
+ */
+export async function fetchScenarioDetailedStats(
+  dateRange: DateRangeFilter
+): Promise<AnalyticsAPIResponse<any[]>> {
+  try {
+    // Get all visits to /icp/ pages
+    const { data: visits, error } = await supabase
+      .from('public_page_visits')
+      .select('*')
+      .like('page_path', '/icp/%')
+      .gte('created_at', dateRange.start_date)
+      .lte('created_at', dateRange.end_date) as { data: any[] | null; error: any };
+
+    if (error) throw error;
+
+    const visitArray = visits || [];
+
+    // Group by scenario slug
+    const scenarioMap = new Map<string, any[]>();
+    (visitArray as any[]).forEach((visit: any) => {
+      const slug = visit.page_path.replace('/icp/', '').split('?')[0];
+      if (!scenarioMap.has(slug)) {
+        scenarioMap.set(slug, []);
+      }
+      scenarioMap.get(slug)!.push(visit);
+    });
+
+    // Calculate stats for each scenario
+    const scenarios: any[] = [];
+    for (const [slug, scenarioVisits] of scenarioMap.entries()) {
+      const total_views = scenarioVisits.length;
+      const unique_visitors = new Set(scenarioVisits.map(v => v.anonymous_session_id || v.user_id)).size;
+      const avg_time_on_page = scenarioVisits.reduce((sum, v) => sum + (v.time_on_page || 0), 0) / total_views;
+      const avg_scroll_depth = scenarioVisits.reduce((sum, v) => sum + (v.scroll_depth || 0), 0) / total_views;
+      const cta_clicks = scenarioVisits.filter(v => v.clicked_cta).length;
+
+      // Extract company and persona from page title if available
+      const firstVisit = scenarioVisits[0];
+      const pageTitle = firstVisit.page_title || '';
+      const titleParts = pageTitle.split(' - ');
+      const company_name = titleParts[0] || 'Unknown';
+      const persona = titleParts[1] || 'Unknown Role';
+
+      // Get last viewed timestamp
+      const last_viewed = scenarioVisits
+        .map(v => new Date(v.created_at).getTime())
+        .sort((a, b) => b - a)[0];
+
+      scenarios.push({
+        scenario_slug: slug,
+        scenario_title: pageTitle,
+        company_name,
+        persona,
+        total_views,
+        unique_visitors,
+        avg_time_on_page,
+        avg_scroll_depth,
+        bounce_rate: 0, // TODO: Calculate based on single-page sessions
+        cta_clicks,
+        cta_click_rate: safePercentage(cta_clicks, total_views),
+        assessment_conversions: 0, // TODO: Link to assessment sessions
+        assessment_conversion_rate: 0,
+        signup_conversions: 0, // TODO: Link to user signups
+        signup_conversion_rate: 0,
+        last_viewed: new Date(last_viewed).toISOString(),
+      });
+    }
+
+    // Sort by total views descending
+    scenarios.sort((a, b) => b.total_views - a.total_views);
+
+    return {
+      success: true,
+      data: scenarios,
+      metadata: {
+        total_count: scenarios.length,
+        filtered_count: scenarios.length,
+        date_range: dateRange,
+        generated_at: new Date().toISOString(),
+      },
+    };
+  } catch (err) {
+    console.error('Error fetching scenario detailed stats:', err);
+    return {
+      success: false,
+      data: [],
+      error: err instanceof Error ? err.message : 'Unknown error',
+    };
+  }
+}
+
 // Export helper for testing
 export { safePercentage, safeNumber };

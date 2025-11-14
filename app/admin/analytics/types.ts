@@ -277,6 +277,40 @@ export interface AnalyticsAPIResponse<T> {
 }
 
 // ============================================================================
+// SCENARIO PAGE ANALYTICS
+// ============================================================================
+
+export interface ScenarioPageOverview {
+  total_views: number;
+  unique_visitors: number;
+  avg_time_on_page: number; // seconds
+  total_cta_clicks: number;
+  scenario_to_assessment_conversions: number;
+  scenario_to_assessment_rate: number; // percentage
+  scenario_to_signup_conversions: number;
+  scenario_to_signup_rate: number; // percentage
+}
+
+export interface ScenarioDetailedStats {
+  scenario_slug: string;
+  scenario_title: string;
+  company_name: string;
+  persona: string;
+  total_views: number;
+  unique_visitors: number;
+  avg_time_on_page: number; // seconds
+  avg_scroll_depth: number; // percentage
+  bounce_rate: number; // percentage
+  cta_clicks: number;
+  cta_click_rate: number; // percentage
+  assessment_conversions: number;
+  assessment_conversion_rate: number; // percentage
+  signup_conversions: number;
+  signup_conversion_rate: number; // percentage
+  last_viewed: string; // ISO 8601
+}
+
+// ============================================================================
 // DASHBOARD STATE
 // ============================================================================
 
