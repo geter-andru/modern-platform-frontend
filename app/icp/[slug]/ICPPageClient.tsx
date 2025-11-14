@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { initPublicPageTracking, trackCtaClick } from '@/app/lib/analytics/publicPageTracking';
 import { useAuth } from '@/app/lib/auth/auth-provider';
 import { useBehaviorTracking } from '@/src/shared/hooks/useBehaviorTracking';
+import HowToUseModal from './HowToUseModal';
+import scenarioModalData from '@/data/scenario-modal-data.json';
 
 interface Timestamp {
   time: string;
@@ -31,6 +33,10 @@ interface ICPPageClientProps {
 export default function ICPPageClient({ scenario }: ICPPageClientProps) {
   const { slug } = scenario;
   const { user } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Find modal data for this scenario
+  const modalData = scenarioModalData.find((data) => data.slug === slug);
 
   // Track authenticated user behavior (for logged-in Delve users)
   // This safely handles unauthenticated visitors by not tracking when user is null
@@ -268,6 +274,33 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
           </div>
         </div>
 
+        {/* How To Use This Scenario Button */}
+        {modalData && (
+          <div className="mt-8 text-center">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="inline-block font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-lg transition-all"
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#e5e5e5',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                e.currentTarget.style.color = '#ffffff';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.color = '#e5e5e5';
+              }}
+            >
+              How To Use This Scenario
+            </button>
+          </div>
+        )}
+
         {/* CTA Footer */}
         <div className="mt-12 text-center">
           <div className="rounded-2xl shadow-xl p-8 md:p-10" style={{
@@ -320,6 +353,16 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
           </div>
         </div>
       </div>
+
+      {/* How To Use Modal */}
+      {modalData && (
+        <HowToUseModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          personaRole={modalData.personaRole}
+          triggeringMoment={modalData.triggeringMoment}
+        />
+      )}
     </div>
   );
 }

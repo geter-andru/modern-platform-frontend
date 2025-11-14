@@ -1,0 +1,52 @@
+[
+  {
+    "slug": "greptile",
+    "personaRole": "engineering leaders",
+    "triggeringMoment": "production bugs right before a major investor demo"
+  },
+  {
+    "slug": "blacksmith",
+    "personaRole": "DevOps leaders",
+    "triggeringMoment": "deployment deadline misses for key customers"
+  },
+  {
+    "slug": "delve",
+    "personaRole": "engineering leaders",
+    "triggeringMoment": "compliance blockers preventing enterprise deals"
+  },
+  {
+    "slug": "leaping-ai",
+    "personaRole": "operations leaders",
+    "triggeringMoment": "call center cost overruns threatening profitability"
+  },
+  {
+    "slug": "retell-ai",
+    "personaRole": "product leaders",
+    "triggeringMoment": "voice integration delays pushing back critical launches"
+  },
+  {
+    "slug": "composio",
+    "personaRole": "engineering leaders",
+    "triggeringMoment": "integration hell causing customer churn"
+  },
+  {
+    "slug": "swimm",
+    "personaRole": "software engineers",
+    "triggeringMoment": "onboarding documentation gaps slowing new hire productivity"
+  },
+  {
+    "slug": "sourcegraph",
+    "personaRole": "security engineers",
+    "triggeringMoment": "vulnerability remediation at scale overwhelming teams"
+  },
+  {
+    "slug": "tabnine",
+    "personaRole": "backend engineers",
+    "triggeringMoment": "AI autocomplete policy conflicts creating security risks"
+  },
+  {
+    "slug": "firecrawl",
+    "personaRole": "AI product managers",
+    "triggeringMoment": "data quality disasters derailing AI model performance"
+  }
+]
