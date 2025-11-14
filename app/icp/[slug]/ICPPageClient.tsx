@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react';
 import { initPublicPageTracking, trackCtaClick } from '@/app/lib/analytics/publicPageTracking';
+import { useAuth } from '@/app/lib/auth/auth-provider';
+import { useBehaviorTracking } from '@/src/shared/hooks/useBehaviorTracking';
 
 interface Timestamp {
   time: string;
@@ -28,8 +30,15 @@ interface ICPPageClientProps {
 
 export default function ICPPageClient({ scenario }: ICPPageClientProps) {
   const { slug } = scenario;
+  const { user } = useAuth();
 
-  // Initialize tracking for this ICP page
+  // Track authenticated user behavior (for logged-in Delve users)
+  // This safely handles unauthenticated visitors by not tracking when user is null
+  useBehaviorTracking({
+    customerId: user?.id || '',
+  });
+
+  // Initialize public page tracking for all visitors (anonymous + authenticated)
   useEffect(() => {
     initPublicPageTracking(
       `/icp/${slug}`,
@@ -75,7 +84,7 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
               Imagine what we can do for <strong style={{ color: '#ffffff' }}>your company</strong>
             </p>
             <p className="text-base mb-8 max-w-2xl mx-auto" style={{ color: '#a3a3a3', lineHeight: '1.6' }}>
-              This customer intelligence took 3 minutes to generate. Most founders spend 3 months chasing the wrong buyers (or never figure it out).
+              This {scenario.company} customer scenario took 3 minutes to generate. Most founders spend 3 months chasing the wrong buyers (or never figure it out).
               See how Andru maps which markets need you, what resonates with buyers, and how to articulate value—automatically.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

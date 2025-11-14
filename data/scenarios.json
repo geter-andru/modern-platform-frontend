@@ -86,43 +86,43 @@
   {
     "company": "Delve",
     "slug": "delve",
-    "title": "Chief Product Officer Avoiding the Product Launch Disaster",
-    "persona": "Chief Product Officer",
-    "scenario": "It's 10:22 AM on a Wednesday, 8 weeks before their medical device product launch that the board has already announced to investors. Jennifer (Chief Product Officer, ENFJ) just finished a design review where her industrial designer presented 3 product concepts, and the CEO asked: \"Which one are we building? We need to commit by Friday.\"",
-    "worstCase": "Picking the wrong product concept based on internal assumptions rather than validated user insights, launching a medical device that clinicians don't adopt because it doesn't fit their actual workflow, and watching $4.2M in R&D investment fail in the market just as she's trying to prove she can lead product strategy for their Series B fundraise.",
+    "title": "VP Engineering Avoiding the Enterprise Deal Blocker",
+    "persona": "VP Engineering",
+    "scenario": "It's 9:47 AM on a Tuesday, 6 weeks before their Series B close. Marcus (VP Engineering, INTJ) just got out of a sales pipeline review where the CRO said: \"We have $2.4M in enterprise deals stuck in legal review because prospects need SOC 2 compliance before they'll sign. Without it, we're missing our Q4 revenue target by 40%.\"",
+    "worstCase": "Missing the Series B revenue milestone because enterprise deals won't close without SOC 2 certification, watching the board question why engineering couldn't deliver a compliance requirement that's \"just paperwork,\" and spending the next 6 months doing manual compliance work while their competitors with certifications steal market share.",
     "timestamps": [
       {
-        "time": "10:22 AM - The Pressure",
-        "narrative": "Jennifer walks out of the conference room with her head of design, Emma. The three concepts are all beautiful. All technically feasible. But they're fundamentally different approaches to the same problem—helping nurses manage IV medications in hospital ICUs.",
-        "thinking": "This is exactly the mistake my last company made. We picked the concept the CEO liked best, not the one users actually needed. It flopped. 18 months of work, zero market traction. I can't let that happen again.",
-        "feeling": "Weight in her chest. The CEO wants a decision in 48 hours. The engineering team needs to start building next week to hit the launch date. But she doesn't have confidence that any of these three concepts will actually work in a real ICU workflow.  She opens her email. 23 unread messages from the head of manufacturing asking for final industrial design specs so they can negotiate with fabrication partners.",
-        "action": "",
+        "time": "9:47 AM - The Compliance Blocker",
+        "narrative": "Marcus walks back to his desk and opens the SOC 2 requirements document his security consultant sent last month. 147 controls to implement and document. His team of 12 engineers is already underwater shipping product features for the Series B.",
+        "thinking": "This is the classic trap. We delayed compliance because we were focused on product-market fit. Now we have fit, we have enterprise demand, and we're blocked because we can't prove we meet security standards. The consultant quoted 4-6 months and $80K minimum.",
+        "feeling": "Frustration mixed with urgency. The CRO just told the board that enterprise pipeline is real—$2.4M waiting on compliance. But his team doesn't have 6 months, and pulling engineers off the roadmap to manually collect security evidence will kill feature velocity right when they need to prove execution.",
+        "action": "Opens his email. The security consultant's proposal: \"SOC 2 Type II Readiness: 16-24 weeks, $80K-$120K professional services, requires 1-2 FTEs dedicated to evidence collection and policy documentation.\"",
         "momentOfValue": ""
       },
       {
-        "time": "10:35 AM - The Research Brief",
-        "narrative": "Jennifer remembers meeting Delve at a medical device conference 6 months ago. They specialized in exactly this—deep research for healthcare products. She pulls up their website and books a call for later today.",
-        "thinking": "This is exactly what I need. Real behavioral observation, not just interviews where people tell us what they think we want to hear.  **First moment of value:** The researcher continues: \"Based on similar medical device studies, we usually find that 60-70% of the features teams think are important turn out to be low-priority for actual users, and there are 2-3 critical workflow needs that weren't even on the product team's radar.\"",
-        "feeling": "Validation that her instinct was right—they can't trust internal assumptions. And relief that there's a systematic way to get real answers in her timeline.",
-        "action": "On the 4 PM call, Delve's research director asks detailed questions about the ICU workflow, the nurse personas, and the specific use cases. Jennifer explains the 3 concepts and her deadline pressure.",
+        "time": "10:14 AM - The Discovery",
+        "narrative": "Marcus searches \"SOC 2 automation\" and finds Delve. The homepage says: \"Compliance in days, not months. AI agents auto-collect evidence, autofill questionnaires, scan your infrastructure.\" He's skeptical—compliance automation tools usually just organize spreadsheets—but books a demo for this afternoon.",
+        "thinking": "If this is real, it solves the FTE problem. I can't pull engineers off shipping features. And 6 months puts us way past the Series B timeline.  **First moment of value:** On the demo call, the Delve rep connects to his AWS and GitHub accounts. Within 15 minutes, Delve's AI has auto-discovered his infrastructure, scanned his codebase for security controls, and started collecting evidence for 87 of the 147 SOC 2 controls automatically.",
+        "feeling": "Skeptical hope turning into relief. This isn't just a documentation tool—it's actually reading his infrastructure, validating security configurations, and generating the evidence auditors need without manual screenshots.",
+        "action": "Watches Delve's AI scan his AWS security groups, identify encryption settings, pull GitHub audit logs, and generate evidence reports. The rep explains: \"For the remaining 60 controls, you'll answer questions in Slack, and our AI drafts the policies. Most companies go from zero to audit-ready in 2-3 weeks.\"",
         "momentOfValue": ""
       },
       {
-        "time": "10:47 AM (Friday Morning, 2 Weeks Later) - The Insight",
-        "narrative": "Jennifer opens the Delve research report. 127 pages of observational data, workflow analysis, and prototype testing results from 43 ICU nurses across 3 hospitals.",
-        "thinking": "Holy shit. We would have built Concept A. The CEO would have insisted. We would have launched it, and nurses would have rejected it in real-world use because of the glove issue. We'd have wasted 18 months and $4M.  **Second moment of value:** Page 47 of the report shows a modified design direction based on user feedback—combining the sterile interaction model from Concept C with a visual status system that nurses can see from 10 feet away (solving the doorway-check issue) and a modular design that scales from 1 to 4 concurrent medications.",
-        "feeling": "",
-        "action": "Schedules an emergency design review for 2 PM today. Forwards the report to the CEO, head of design, and VP Engineering with the subject line: \"User research shows we were about to build the wrong product—here's what we should build instead.\"",
+        "time": "2:47 PM (2 Weeks Later) - The Audit Readiness",
+        "narrative": "Marcus gets a Slack notification from Delve: \"Your SOC 2 readiness score is 94%. 138 of 147 controls complete. 9 controls need manual review.\" He opens the dashboard. Delve has auto-collected evidence for access controls, encryption, logging, monitoring, and incident response. The AI-generated policies are pre-filled and ready for his review.",
+        "thinking": "Holy shit. Two weeks ago we had zero compliance documentation. Now we're audit-ready. The security consultant said this would take 6 months.  **Second moment of value:** Marcus clicks through the evidence. Delve automatically screenshots his AWS IAM policies, pulls GitHub branch protection rules, documents his encryption settings, and generates audit logs for every control—exactly what the SOC 2 auditor will ask for.",
+        "feeling": "Relief and validation. He didn't have to pull a single engineer off the roadmap. Delve did the manual compliance work that would have consumed 500+ engineering hours. And they're audit-ready in time to unblock the $2.4M enterprise pipeline.",
+        "action": "Schedules a call with the SOC 2 auditor for next week. Sends the CRO a Slack: \"Compliance blocker resolved. We're audit-ready. Can schedule SOC 2 audits now. Those enterprise deals can move forward.\"",
         "momentOfValue": ""
       },
       {
-        "time": "2:00 PM (Design Review) - The Decision",
-        "narrative": "Jennifer presents the research findings to the team. The CEO, who loved Concept A, reads the section about the sterile glove workflow issue.",
-        "thinking": "This is the difference between product leadership based on opinions versus product leadership based on validated insights. I can go into the board meeting next month showing we're making evidence-driven design decisions, not gut calls.",
-        "feeling": "The weight is gone. They have a clear design direction backed by real user data. Her team can start building Monday with confidence. And she'll be home by 6 PM to help her son with his science project instead of staying late second-guessing the product direction.",
-        "action": "",
+        "time": "4:22 PM (4 Weeks Later) - The Enterprise Unlock",
+        "narrative": "The SOC 2 audit report arrives. Marcus forwards it to the CRO with the compliance certification. Within 48 hours, legal has sent the SOC 2 report to all 7 enterprise prospects in compliance review.",
+        "thinking": "This is the difference between missing revenue targets because of compliance blockers versus proving we can operate at enterprise standards. We just unlocked $2.4M in pipeline without killing our roadmap velocity. The board sees we're ready for enterprise scale.",
+        "feeling": "The tight chest is gone. The Series B milestone is back on track. His team shipped product features AND achieved compliance. And he'll make his daughter's recital tonight at 7 PM instead of working late on compliance documentation.",
+        "action": "Opens his cost analysis. The security consultant quoted $80K-$120K for 6 months of manual compliance work. Delve cost $12K and delivered audit-ready compliance in 3 weeks with zero engineering hours diverted from the roadmap. ROI: $2.4M in unlocked enterprise revenue, $68K saved in consultant fees, 500+ engineering hours saved.",
         "momentOfValue": "",
-        "quote": "\"So if we'd built my favorite concept, nurses literally couldn't use it without breaking sterile protocol? That would have been a disaster.\""
+        "quote": "\"So we went from zero compliance to SOC 2 certified in a month? Without pulling engineers off features? How is that even possible?\""
       }
     ]
   },
