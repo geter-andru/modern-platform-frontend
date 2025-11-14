@@ -72,11 +72,11 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
               If We Can Map {scenario.company}'s Customer Journey This Well...
             </h3>
             <p className="text-lg md:text-xl mb-6" style={{ color: '#e5e5e5' }}>
-              Imagine what we can do for <strong style={{ color: '#ffffff' }}>your</strong> ICP
+              Imagine what we can do for <strong style={{ color: '#ffffff' }}>your company</strong>
             </p>
             <p className="text-base mb-8 max-w-2xl mx-auto" style={{ color: '#a3a3a3', lineHeight: '1.6' }}>
-              This customer intelligence took 3 minutes to generate. Most founders spend 3 months (or never figure it out).
-              See how Andru maps buyer journeys, pain points, and moments of value—automatically.
+              This customer intelligence took 3 minutes to generate. Most founders spend 3 months chasing the wrong buyers (or never figure it out).
+              See how Andru maps which markets need you, what resonates with buyers, and how to articulate value—automatically.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
@@ -92,7 +92,7 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
               </a>
               <a
                 href="https://andru-ai.com/"
-                onClick={() => handleCtaClick(`See ${scenario.company}'s ICP Score`, 'header')}
+                onClick={() => handleCtaClick(`See ${scenario.company}'s Intelligence Score`, 'header')}
                 className="inline-block font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-lg transition-all w-full sm:w-auto"
                 style={{
                   background: 'transparent',
@@ -100,11 +100,11 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
                   color: '#ffffff'
                 }}
               >
-                See {scenario.company}'s ICP Score
+                See {scenario.company}'s Intelligence Score
               </a>
             </div>
             <p className="text-sm mt-4" style={{ color: '#737373' }}>
-              No pitch. Just 3 minutes to see how your ICP clarity compares.
+              No pitch. Just 3 minutes to see where you stand.
             </p>
           </div>
         </div>
@@ -275,22 +275,22 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
               Want This Level of Customer Intelligence for Your Company?
             </h3>
             <p className="text-lg mb-4" style={{ color: '#e5e5e5' }}>
-              See how your ICP clarity compares to other Series A founders
+              See how your go-to-market foundation compares to other Series A founders
             </p>
             <p className="text-base mb-8 max-w-2xl mx-auto" style={{ color: '#a3a3a3', lineHeight: '1.6' }}>
-              A consultant would charge $5,000 for this analysis. With Andru, you get buyer intelligence like this in 3 minutes—not 3 months.
+              A consultant would charge $90K and take 6 months for this complete analysis. With Andru, you get customer intelligence like this in 72 hours—not 6 months.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
                 href="https://andru-ai.com/"
-                onClick={() => handleCtaClick(`See ${scenario.company}'s ICP Score`, 'footer')}
+                onClick={() => handleCtaClick(`See ${scenario.company}'s Intelligence Score`, 'footer')}
                 className="inline-block text-white font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-xl transition-all w-full sm:w-auto"
                 style={{
                   background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
                   boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
                 }}
               >
-                See {scenario.company}'s ICP Score
+                See {scenario.company}'s Intelligence Score
               </a>
               <a
                 href="https://calendly.com/humusnshore/discovery-60-min?back=1&month=2025-10"
@@ -306,7 +306,7 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
               </a>
             </div>
             <p className="text-sm mt-4" style={{ color: '#737373' }}>
-              Join 47 founders who figured out their ICP before hiring a VP of Sales
+              Join 47 founders who built their GTM foundation before hiring a VP of Sales
             </p>
           </div>
         </div>
