@@ -74,10 +74,10 @@ export function useRequireAuth(): RequireAuthResult {
     }
 
     if (!loading && !isAuthenticated) {
-      console.log('⚠️ [useRequireAuth] Not authenticated - redirecting to /auth');
+      console.log('⚠️ [useRequireAuth] Not authenticated - redirecting to /login');
       // Store intended destination
       const currentPath = window.location.pathname;
-      router.push(`/auth?redirect=${encodeURIComponent(currentPath)}`);
+      router.push(`/login?redirect=${encodeURIComponent(currentPath)}`);
     }
   }, [user, loading, isAuthenticated, router]);
 
@@ -106,7 +106,7 @@ export function useRequireAdmin() {
   useEffect(() => {
     if (!loading) {
       if (!isAuthenticated) {
-        router.push('/auth');
+        router.push('/login');
       } else if (!isAdmin) {
         router.push('/dashboard');
       }

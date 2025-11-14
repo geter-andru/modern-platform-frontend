@@ -123,8 +123,8 @@ export default function AdminFoundingMembersPage() {
     });
 
     if (!user) {
-      console.log('❌ [AdminPage] No user - redirecting to auth');
-      router.push('/auth?redirect=/admin/founding-members');
+      console.log('❌ [AdminPage] No user - redirecting to login');
+      router.push('/login?redirect=/admin/founding-members');
       return;
     }
 
