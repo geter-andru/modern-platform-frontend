@@ -9,35 +9,27 @@
     "timestamps": [
       {
         "time": "9:14 AM - The Dread",
-        "narrative": "Marcus opens the bug report channel. 47 unread messages. His product manager already escalated 3 as \"revenue-impacting\" with red flag emojis.",
-        "thinking": "This is exactly what happened at my last company before they delayed the Series B by 6 months. If we can't ship quality code consistently, the CEO will blame engineering, and I'll spend the next quarter explaining why we need to \"slow down\" instead of proving we can move fast AND ship clean code.",
-        "feeling": "Stomach tightening. The weekend bugs weren't caught in code review. Again. His senior engineers are stretched thin across too many PRs, and manual review quality is deteriorating.  He scrolls through the PR history. 127 pull requests merged last week. His team of 12 engineers is shipping fast—maybe too fast.",
+        "narrative": "Marcus opens the bug report channel. <strong>47 unread messages.</strong> His product manager already escalated 3 as <strong>\"revenue-impacting\"</strong> with red flag emojis.",
+        "thinking": "This is exactly what happened at my last company before they <strong>delayed the Series B by 6 months.</strong> If we can't ship quality code consistently, the CEO will blame engineering, and I'll spend the next quarter explaining why we need to \"slow down\" instead of proving we can move fast AND ship clean code.",
+        "feeling": "Stomach tightening. The weekend bugs weren't caught in code review. Again. His senior engineers are stretched thin across too many PRs, and manual review quality is deteriorating. He scrolls through the PR history. <strong>127 pull requests merged last week.</strong> His team of 12 engineers is shipping fast—maybe too fast.",
         "action": "",
         "momentOfValue": ""
       },
       {
-        "time": "9:28 AM - The Pattern",
-        "narrative": "Instead of the standup, Marcus opens Greptile's dashboard that his senior engineer Clara insisted they trial last month. He's been skeptical of \"AI code review\"—felt like replacing engineers with robots—but Clara kept saying \"just look at what it catches.\"",
+        "time": "9:28 AM - The Discovery",
+        "narrative": "Instead of the standup, Marcus opens Greptile's dashboard that his senior engineer Clara insisted they trial last month. He's been skeptical of \"AI code review\"—felt like replacing engineers with robots—but Clara kept saying \"just look at what it catches.\" He clicks through the last week's PR analysis. <strong>Greptile's AI reviewed all 127 PRs with full codebase context.</strong>",
         "thinking": "Holy shit. We're not catching bugs because we're not slow—we're missing context. Manual reviewers don't have time to understand how a small change in the auth middleware affects the payment flow 6 files away.",
-        "feeling": "Relief cutting through the dread. This isn't about his team being bad engineers—it's about the cognitive load of reviewing 127 PRs/week across a 200K-line codebase.",
-        "action": "Clicks through the last week's PR analysis. Greptile's AI reviewed all 127 PRs with full codebase context.  **First moment of value:** The dashboard shows that Greptile flagged 34 potential bugs across those 127 PRs. Manual review caught 23 of them. But 11 were marked \"low priority\" by humans and merged anyway. 3 of those 11 became the production bugs over the weekend.",
+        "feeling": "Relief cutting through the dread. This isn't about his team being bad engineers—it's about the <strong>cognitive load of reviewing 127 PRs/week across a 200K-line codebase.</strong>",
+        "action": "The dashboard shows that Greptile flagged <strong>34 potential bugs</strong> across those 127 PRs. Manual review caught 23 of them. But <strong>11 were marked \"low priority\" by humans and merged anyway. 3 of those 11 became the production bugs over the weekend.</strong>",
         "momentOfValue": ""
       },
       {
-        "time": "9:41 AM - The Specific Evidence",
-        "narrative": "Marcus clicks on one of the missed bugs. Greptile's inline comment from 4 days ago: \"Warning: This change to session validation could create a race condition in the checkout flow when users switch between desktop and mobile during payment. Consider adding a session lock in checkout.controller.ts:847.\"  That exact race condition caused the production bug on Saturday. Cost them a $180K transaction from their pilot customer.",
-        "thinking": "An AI caught this 4 days before it hit production, and we marked it as \"low priority\" because the human reviewer didn't connect the dots between the auth change and the checkout flow.  **Second moment of value:** He opens the current PR queue. 14 PRs waiting for review. Greptile has already analyzed all of them. One has a flagged comment: \"Critical: Potential SQL injection vulnerability in user search endpoint. Input not sanitized before query.\"",
-        "feeling": "Control returning. The Sequoia demo is in 48 hours, but at least he now has a system that's catching the critical issues his team doesn't have bandwidth to catch manually.",
-        "action": "Immediately blocks that PR from merging. Sends it back to the developer with Greptile's analysis.",
-        "momentOfValue": ""
-      },
-      {
-        "time": "10:02 AM - The Board Deck Update",
-        "narrative": "Marcus opens his board deck for the Series B prep. Instead of defensively explaining the weekend bugs, he updates the \"Engineering Quality & Scale\" slide:  \"Implemented AI-assisted code review (Greptile) - catching 3x more critical bugs than manual review alone. In the last 7 days: 34 potential bugs flagged, 11 caught that manual review missed, including race condition and SQL injection vulnerability prevented before production.\"",
-        "thinking": "This is the difference between going into that meeting defending engineering velocity versus showcasing that we're building a mature, scalable engineering culture that can support enterprise customers.  **Third moment of value:** CEO responds: \"Yes. Let's show them we're proactive about quality. Add 2 minutes to your section.\"",
-        "feeling": "The knot in his stomach is gone. His daughter's soccer game is tonight at 6 PM, and for the first time today, he thinks he might actually make it.",
-        "action": "",
-        "momentOfValue": ""
+        "time": "9:45 AM - The Evidence & Resolution",
+        "narrative": "Marcus clicks on one of the missed bugs. Greptile's inline comment from 4 days ago: <strong>\"Warning: This change to session validation could create a race condition in the checkout flow when users switch between desktop and mobile during payment. Consider adding a session lock in checkout.controller.ts:847.\"</strong> That exact race condition caused the production bug on Saturday. <strong>Cost them a $180K transaction</strong> from their pilot customer. He opens the current PR queue. 14 PRs waiting for review. Greptile has already analyzed all of them. One has a flagged comment: <strong>\"Critical: Potential SQL injection vulnerability in user search endpoint. Input not sanitized before query.\"</strong> He immediately blocks that PR from merging.",
+        "thinking": "An AI caught this 4 days before it hit production, and we marked it as \"low priority\" because the human reviewer didn't connect the dots between the auth change and the checkout flow. This is the difference between going into that Sequoia meeting defending engineering velocity versus showcasing that we're building a mature, scalable engineering culture that can support enterprise customers.",
+        "feeling": "Control returning. The Sequoia demo is in 48 hours, and he now has a system catching critical issues his team doesn't have bandwidth to catch manually. He updates his board deck: <strong>\"Implemented AI-assisted code review (Greptile) - catching 3x more critical bugs than manual review alone. In the last 7 days: 34 potential bugs flagged, 11 caught that manual review missed, including race condition that cost us $180K and SQL injection vulnerability prevented before production.\"</strong>",
+        "action": "CEO responds: \"Yes. Let's show them we're proactive about quality. Add 2 minutes to your section.\" The knot in his stomach is gone. His daughter's soccer game is tonight at 6 PM, and for the first time today, he thinks he might actually make it.",
+        "momentOfValue": "Greptile turned what would have been a defensive engineering quality conversation into proof that his team can scale to Fortune 500 customers—catching 11 critical bugs manual review missed and preventing a $180K revenue loss, all while his engineers ship 127 PRs/week."
       }
     ]
   },

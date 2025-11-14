@@ -83,7 +83,7 @@ export default function HowToUseModal({
           className="text-2xl md:text-3xl font-bold mb-6 pr-8"
           style={{ color: '#ffffff' }}
         >
-          How To Use This Scenario
+          Use This Scenario Today
         </h2>
 
         <div className="space-y-4" style={{ color: '#e5e5e5', lineHeight: '1.7' }}>

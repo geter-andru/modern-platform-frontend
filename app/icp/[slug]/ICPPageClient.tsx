@@ -87,35 +87,22 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
               A Moment in the Life of A {scenario.company} Customer...
             </h3>
             <p className="text-lg md:text-xl mb-6" style={{ color: '#e5e5e5' }}>
-              Imagine what we can do for <strong style={{ color: '#ffffff' }}>your company</strong>
+              Built with <strong style={{ color: '#ffffff' }}>Andru</strong>
             </p>
             <p className="text-base mb-8 max-w-2xl mx-auto" style={{ color: '#a3a3a3', lineHeight: '1.6' }}>
-              Andru built this {scenario.company} customer scenario in 30 seconds. We're on a mission to help founders stop spending 3-6 months chasing the wrong buyers (or never figuring it out).
-              See how Andru maps which markets needs {scenario.company} most, what resonates with target buyers, and how to articulate {scenario.company}'s value in THEIR language-automatically.
+              We're on a mission to help you win in enterprise by mapping which markets need {scenario.company} most, what resonates with target buyers, and how to articulate {scenario.company}'s value in THEIR language-automatically.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex justify-center">
               <a
-                href="https://calendly.com/humusnshore/discovery-60-min?back=1&month=2025-10"
-                onClick={() => handleCtaClick('Book a 15-Min Chat', 'header')}
-                className="inline-block text-white font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-xl transition-all w-full sm:w-auto"
+                href="https://andru-ai.com/"
+                onClick={() => handleCtaClick('See My Buyer Intelligence Score', 'header')}
+                className="inline-block text-white font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-xl transition-all"
                 style={{
                   background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
                   boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
                 }}
               >
-                Book a 15-Min Chat
-              </a>
-              <a
-                href="https://andru-ai.com/"
-                onClick={() => handleCtaClick(`See ${scenario.company}'s Intelligence Score`, 'header')}
-                className="inline-block font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-lg transition-all w-full sm:w-auto"
-                style={{
-                  background: 'transparent',
-                  border: '2px solid rgba(139, 92, 246, 0.5)',
-                  color: '#ffffff'
-                }}
-              >
-                See {scenario.company}'s Intelligence Score
+                See My Buyer Intelligence Score
               </a>
             </div>
             <p className="text-sm mt-4" style={{ color: '#737373' }}>
@@ -137,11 +124,11 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
           </div>
 
           <h1 className="text-4xl md:text-5xl font-bold mb-3" style={{ color: 'var(--color-text-primary)' }}>
-            {scenario.company}
+            {scenario.title}
           </h1>
 
           <p className="text-xl font-medium" style={{ color: 'var(--color-text-secondary)' }}>
-            {scenario.title}
+            Why The Need {scenario.company}
           </p>
         </div>
 
@@ -194,56 +181,72 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
 
                     {/* Narrative */}
                     {timestamp.narrative && (
-                      <p className="mb-4 leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-                        {timestamp.narrative}
-                      </p>
-                    )}
-
-                    {/* Moment of Value */}
-                    {timestamp.momentOfValue && (
-                      <div className="border-l-4 pl-6 py-4 mb-4 rounded-r-lg" style={{ background: 'rgba(16, 185, 129, 0.1)', borderColor: '#10b981' }}>
-                        <p className="font-semibold mb-2" style={{ color: '#6ee7b7' }}>
-                          💡 Moment of Value
-                        </p>
-                        <p className="leading-relaxed" style={{ color: '#a7f3d0' }}>
-                          {timestamp.momentOfValue}
-                        </p>
-                      </div>
+                      <p
+                        className="mb-3 text-sm leading-relaxed"
+                        style={{ color: 'var(--color-text-secondary)' }}
+                        dangerouslySetInnerHTML={{ __html: timestamp.narrative }}
+                      />
                     )}
 
                     {/* Thinking */}
                     {timestamp.thinking && (
                       <div className="mb-3">
-                        <p className="text-sm font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>
+                        <p className="text-xs font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>
                           What they're thinking:
                         </p>
-                        <p className="italic leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-                          {timestamp.thinking}
-                        </p>
+                        <p
+                          className="italic text-sm leading-relaxed"
+                          style={{ color: 'var(--color-text-secondary)' }}
+                          dangerouslySetInnerHTML={{ __html: timestamp.thinking }}
+                        />
                       </div>
                     )}
 
                     {/* Feeling */}
                     {timestamp.feeling && (
                       <div className="mb-3">
-                        <p className="text-sm font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>
+                        <p className="text-xs font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>
                           What they're feeling:
                         </p>
-                        <p className="italic leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-                          {timestamp.feeling}
-                        </p>
+                        <p
+                          className="italic text-sm leading-relaxed"
+                          style={{ color: 'var(--color-text-secondary)' }}
+                          dangerouslySetInnerHTML={{ __html: timestamp.feeling }}
+                        />
                       </div>
                     )}
 
                     {/* Action */}
                     {timestamp.action && (
                       <div className="mb-3">
-                        <p className="text-sm font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>
+                        <p className="text-xs font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>
                           What they do:
                         </p>
-                        <p className="leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-                          {timestamp.action}
-                        </p>
+                        <p
+                          className="text-sm leading-relaxed"
+                          style={{ color: 'var(--color-text-secondary)' }}
+                          dangerouslySetInnerHTML={{ __html: timestamp.action }}
+                        />
+                      </div>
+                    )}
+
+                    {/* Moment of Value */}
+                    {timestamp.momentOfValue && (
+                      <div className="border-l-4 pl-6 py-4 mb-4 rounded-r-lg" style={{
+                        background: 'rgba(59, 130, 246, 0.08)',
+                        borderColor: '#3b82f6',
+                        borderWidth: '2px'
+                      }}>
+                        <p
+                          className="text-base font-bold leading-relaxed"
+                          style={{
+                            background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text'
+                          }}
+                          dangerouslySetInnerHTML={{ __html: timestamp.momentOfValue }}
+                        />
                       </div>
                     )}
 
@@ -254,9 +257,11 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
                         backdropFilter: 'blur(16px)',
                         border: '1px solid rgba(255, 255, 255, 0.08)'
                       }}>
-                        <p className="italic" style={{ color: 'var(--color-text-secondary)' }}>
-                          "{timestamp.quote}"
-                        </p>
+                        <p
+                          className="italic"
+                          style={{ color: 'var(--color-text-secondary)' }}
+                          dangerouslySetInnerHTML={{ __html: `"${timestamp.quote}"` }}
+                        />
                       </div>
                     )}
                   </div>
@@ -296,7 +301,7 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
                 e.currentTarget.style.color = '#e5e5e5';
               }}
             >
-              How To Use This Scenario
+              Use This Scenario Today
             </button>
           </div>
         )}
@@ -325,14 +330,14 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
                 href="https://andru-ai.com/"
-                onClick={() => handleCtaClick(`See ${scenario.company}'s Intelligence Score`, 'footer')}
+                onClick={() => handleCtaClick('See My Buyer Intelligence Score', 'footer')}
                 className="inline-block text-white font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-xl transition-all w-full sm:w-auto"
                 style={{
                   background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
                   boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
                 }}
               >
-                See {scenario.company}'s Intelligence Score
+                See My Buyer Intelligence Score
               </a>
               <a
                 href="https://calendly.com/humusnshore/discovery-60-min?back=1&month=2025-10"
