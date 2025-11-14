@@ -90,28 +90,29 @@ export default function HowToUseModal({
           <div className="flex gap-3">
             <span style={{ color: '#a3a3a3', flexShrink: 0 }}>→</span>
             <p>
-              <strong style={{ color: '#ffffff' }}>Compare yourself:</strong> Most{' '}
-              {personaRole} tell us they're facing {triggeringMoment}. If this sounds
-              familiar, the example shows what clarity looks like.
+              <strong style={{ color: '#ffffff' }}>Use it in your next sales call:</strong> Walk prospects through this exact sequence—"Most{' '}
+              {personaRole} tell us they're facing {triggeringMoment}. Does that match your experience?"—
+              then show how your product changes each moment. You're demonstrating understanding, not pitching features.
             </p>
           </div>
 
           <div className="flex gap-3">
             <span style={{ color: '#a3a3a3', flexShrink: 0 }}>→</span>
             <p>
-              <strong style={{ color: '#ffffff' }}>See the structure:</strong> Notice how
-              the company understands their buyer's triggering moment, worst-case outcome,
-              and the exact value prop that addresses it. This is what Andru extracts for
-              you automatically.
+              <strong style={{ color: '#ffffff' }}>Turn this into discovery questions:</strong> Each 
+              "what they're thinking/feeling" moment becomes a qualification question. 
+              If prospects confirm these pain points, they're likely qualified. If they don't recognize 
+              them, they're probably not your ideal customer—move on.
             </p>
           </div>
 
           <div className="flex gap-3">
             <span style={{ color: '#a3a3a3', flexShrink: 0 }}>→</span>
             <p>
-              <strong style={{ color: '#ffffff' }}>Borrow the language:</strong> The exact
-              phrases in this scenario came from real conversations with their ICP. You can
-              use similar phrasing when talking about your solution.
+              <strong style={{ color: '#ffffff' }}>Test it as outbound copy:</strong> Send this scenario to 
+              10 prospects who match the persona with the subject line: 
+              "Does this workflow challenge sound familiar?" Track responses. If it resonates, you're 
+              validating your ICP. If it doesn't, your ICP likelyneeds refinement.
             </p>
           </div>
 
@@ -119,8 +120,8 @@ export default function HowToUseModal({
             <span style={{ color: '#a3a3a3', flexShrink: 0 }}>→</span>
             <p>
               <strong style={{ color: '#ffffff' }}>Apply to your situation:</strong> After
-              reviewing, get your own Intelligence Score to see how your positioning
-              compares to companies that have achieved this level of market clarity.
+              reviewing, take the assessment and find out how your positioning
+              compares to this level of buyer clarity.
             </p>
           </div>
         </div>

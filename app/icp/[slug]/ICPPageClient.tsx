@@ -84,14 +84,14 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
             }}>
-              If We Can Map {scenario.company}'s Customer Journey This Well...
+              A Moment in the Life of A {scenario.company} Customer...
             </h3>
             <p className="text-lg md:text-xl mb-6" style={{ color: '#e5e5e5' }}>
               Imagine what we can do for <strong style={{ color: '#ffffff' }}>your company</strong>
             </p>
             <p className="text-base mb-8 max-w-2xl mx-auto" style={{ color: '#a3a3a3', lineHeight: '1.6' }}>
-              This {scenario.company} customer scenario took 3 minutes to generate. Most founders spend 3 months chasing the wrong buyers (or never figure it out).
-              See how Andru maps which markets need you, what resonates with buyers, and how to articulate value—automatically.
+              Andru built this {scenario.company} customer scenario in 30 seconds. We're on a mission to help founders stop spending 3-6 months chasing the wrong buyers (or never figuring it out).
+              See how Andru maps which markets needs {scenario.company} most, what resonates with target buyers, and how to articulate {scenario.company}'s value in THEIR language-automatically.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
