@@ -765,7 +765,7 @@ export async function fetchToolUsageStats(
       exports: number;
     }>();
 
-    events.forEach((event) => {
+    (events as any[]).forEach((event: any) => {
       if (!event.tool_id) return;
 
       if (!toolMap.has(event.tool_id)) {
@@ -789,7 +789,7 @@ export async function fetchToolUsageStats(
 
     // Calculate time spent per tool from sessions
     const toolTimeMap = new Map<string, number[]>();
-    (sessions || []).forEach((session) => {
+    ((sessions as any[]) || []).forEach((session: any) => {
       if (session.primary_tool && session.duration_seconds) {
         if (!toolTimeMap.has(session.primary_tool)) {
           toolTimeMap.set(session.primary_tool, []);
