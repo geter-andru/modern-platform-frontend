@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favicon Test - View at Actual Size</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #1a1a1a;
+      color: #fff;
+    }
+    .test-container {
+      background: #2a2a2a;
+      border-radius: 12px;
+      padding: 30px;
+      margin: 20px 0;
+    }
+    .icon-display {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 20px 0;
+      padding: 20px;
+      background: #3a3a3a;
+      border-radius: 8px;
+    }
+    .icon-label {
+      font-weight: 600;
+      min-width: 180px;
+    }
+    .icon-example {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h1 {
+      color: #3b82f6;
+    }
+    h2 {
+      color: #60a5fa;
+      margin-top: 30px;
+    }
+    .note {
+      background: rgba(59, 130, 246, 0.1);
+      border-left: 4px solid #3b82f6;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    .checkmark {
+      color: #10b981;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 Favicon Test - View at Actual Display Size</h1>
+
+  <div class="note">
+    <strong>These icons are displayed at their ACTUAL size</strong> as they appear in browsers and on mobile devices.
+    They should look crisp and clear at these small sizes!
+  </div>
+
+  <div class="test-container">
+    <h2>Browser Tab Favicon (32×32)</h2>
+    <p>This is how your favicon appears in browser tabs and bookmarks:</p>
+    <div class="icon-display">
+      <span class="icon-label">Favicon (32×32):</span>
+      <div class="icon-example">
+        <img src="/app/favicon.ico" width="32" height="32" alt="Favicon 32px" style="image-rendering: auto;">
+        <span style="opacity: 0.6;">← Actual size in browser tab</span>
+      </div>
+    </div>
+    <div class="icon-display">
+      <span class="icon-label">Favicon (16×16):</span>
+      <div class="icon-example">
+        <img src="/app/favicon.ico" width="16" height="16" alt="Favicon 16px" style="image-rendering: auto;">
+        <span style="opacity: 0.6;">← Smaller browser tabs</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="test-container">
+    <h2>iOS Home Screen Icon (180×180)</h2>
+    <p>This is how your icon appears when users add your site to their iOS home screen:</p>
+    <div class="icon-display">
+      <span class="icon-label">Apple Icon (180×180):</span>
+      <div class="icon-example">
+        <img src="/app/apple-icon.png" width="180" height="180" alt="Apple icon 180px">
+        <span style="opacity: 0.6;">← Actual size on iOS home screen</span>
+      </div>
+    </div>
+    <div class="icon-display">
+      <span class="icon-label">Apple Icon (60×60):</span>
+      <div class="icon-example">
+        <img src="/app/apple-icon.png" width="60" height="60" alt="Apple icon 60px">
+        <span style="opacity: 0.6;">← Displayed size on most iPhones</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="test-container">
+    <h2>PWA/App Icon (512×512)</h2>
+    <p>This is your high-resolution icon for PWA installs and app-like experiences:</p>
+    <div class="icon-display">
+      <span class="icon-label">Icon (512×512):</span>
+      <div class="icon-example">
+        <img src="/app/icon.png" width="128" height="128" alt="Icon 128px">
+        <span style="opacity: 0.6;">← Displayed at 128px for preview</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p class="checkmark">✓ If these icons look clear and sharp at these small sizes, you're all set!</p>
+    <p>Don't worry that they look blurry when you open the files directly - that's because your computer is zooming them in. At their intended display size (shown here), they should look crisp.</p>
+  </div>
+
+  <div style="margin-top: 40px; padding: 20px; background: rgba(16, 185, 129, 0.1); border-radius: 8px;">
+    <h3 style="color: #10b981; margin-top: 0;">How to Test on Actual Devices:</h3>
+    <ol>
+      <li><strong>Browser Tab:</strong> Open your site and look at the browser tab - you should see the blue-teal gradient logo</li>
+      <li><strong>Bookmark:</strong> Bookmark your site and check the bookmarks bar</li>
+      <li><strong>iOS:</strong> On Safari, tap Share → Add to Home Screen</li>
+      <li><strong>PWA:</strong> Try installing your site as a Progressive Web App</li>
+    </ol>
+  </div>
+</body>
+</html>

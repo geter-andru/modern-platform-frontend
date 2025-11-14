@@ -29,12 +29,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const currentUser = authService.getCurrentUser();
     const currentSession = authService.getCurrentSession();
 
+    console.log('🔐 [AuthProvider] Initial auth state:', {
+      hasUser: !!currentUser,
+      email: currentUser?.email,
+      isAdmin: currentUser?.isAdmin,
+      hasSession: !!currentSession
+    });
+
     setUser(currentUser);
     setSession(currentSession);
     setLoading(false);
 
     // Subscribe to auth state changes
     const unsubscribe = authService.onAuthStateChange((newUser) => {
+      console.log('🔐 [AuthProvider] Auth state changed:', {
+        hasUser: !!newUser,
+        email: newUser?.email,
+        isAdmin: newUser?.isAdmin,
+        hasSession: !!authService.getCurrentSession()
+      });
+
       setUser(newUser);
       setSession(authService.getCurrentSession());
       setLoading(false);

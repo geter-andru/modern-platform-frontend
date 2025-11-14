@@ -17,6 +17,8 @@ import { useCustomer, useProgress, useMilestones, useProgressInsights } from '@/
 import { Skeleton, SkeletonCard } from '../../src/shared/components/ui/Skeleton';
 import { useCommandPalette } from '../../src/shared/components/ui/command-palette';
 import { useBehaviorTracking } from '../../src/shared/hooks/useBehaviorTracking';
+import { AuthLoadingScreen } from '../../src/shared/components/auth/AuthLoadingScreen';
+import { authService } from '@/app/lib/auth/auth-service';
 
 // Insight type definition (matches InsightsPanel component)
 interface Insight {
@@ -92,10 +94,56 @@ export default function DashboardPage() {
   const { data: milestones, isLoading: milestonesLoading } = useMilestones(user?.id);
   const { data: insights, isLoading: insightsLoading } = useProgressInsights(user?.id);
 
+  // OAuth loading state - show sophisticated loading screen after OAuth callback
+  const [showAuthLoading, setShowAuthLoading] = useState(false);
+  const [sessionSyncComplete, setSessionSyncComplete] = useState(false);
+
   // Track page view for user flow analytics (auto-tracks navigation on mount/unmount)
   useBehaviorTracking({
     customerId: user?.id || '',
   });
+
+  // 🔄 SESSION SYNCHRONIZATION: Detect OAuth callback and show loading screen
+  useEffect(() => {
+    const authLoading = searchParams.get('auth_loading');
+
+    if (authLoading === 'true' && !sessionSyncComplete) {
+      console.log('🔄 [Dashboard] OAuth callback detected - showing auth loading screen');
+      setShowAuthLoading(true);
+
+      // Force session refresh to ensure admin status is correctly set
+      const syncSession = async () => {
+        console.log('🔄 [Dashboard] Forcing session refresh...');
+        try {
+          const session = await authService.getServerSession();
+          const currentUser = authService.getCurrentUser();
+          console.log('✅ [Dashboard] Session synced:', {
+            userId: currentUser?.id,
+            email: currentUser?.email,
+            isAdmin: currentUser?.isAdmin,
+            sessionValid: !!session
+          });
+        } catch (error) {
+          console.error('❌ [Dashboard] Session sync error:', error);
+        }
+      };
+
+      // Start session sync immediately
+      syncSession();
+    }
+  }, [searchParams, sessionSyncComplete]);
+
+  // Handle auth loading completion
+  const handleAuthLoadingComplete = () => {
+    console.log('✅ [Dashboard] Auth loading complete - session synchronized');
+    setShowAuthLoading(false);
+    setSessionSyncComplete(true);
+
+    // Clean up auth_loading parameter from URL
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.delete('auth_loading');
+    router.replace(newUrl.pathname + newUrl.search);
+  };
 
   // Clean up OAuth callback parameters from URL (code, next, etc.)
   useEffect(() => {
@@ -141,6 +189,16 @@ export default function DashboardPage() {
   }
 
   const isLoading = customerLoading || progressLoading || milestonesLoading || insightsLoading;
+
+  // Show sophisticated auth loading screen during OAuth session sync
+  if (showAuthLoading) {
+    return (
+      <AuthLoadingScreen
+        duration={4500} // 4.5 seconds for session sync
+        onComplete={handleAuthLoadingComplete}
+      />
+    );
+  }
 
   return (
     <ModernSidebarLayout>

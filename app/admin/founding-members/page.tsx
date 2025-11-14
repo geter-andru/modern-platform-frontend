@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/app/lib/auth';
 import { ModernSidebarLayout } from '../../../src/shared/components/layout/ModernSidebarLayout';
 import { Users, DollarSign, Calendar, Lock, RefreshCw, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
@@ -9,6 +9,8 @@ import { motion } from 'framer-motion';
 import { AssessmentAnalyticsSection } from './components/AssessmentAnalyticsSection';
 import { PlatformAnalyticsSection } from './components/PlatformAnalyticsSection';
 import { useBehaviorTracking } from '../../../src/shared/hooks/useBehaviorTracking';
+import { AuthLoadingScreen } from '../../../src/shared/components/auth/AuthLoadingScreen';
+import { authService } from '@/app/lib/auth/auth-service';
 
 interface FoundingMember {
   user_id: string;
@@ -49,16 +51,63 @@ interface AdminData {
 
 export default function AdminFoundingMembersPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, loading: authLoading, session, isAdmin } = useAuth();
   const [data, setData] = useState<AdminData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
+  // OAuth loading state - show sophisticated loading screen after OAuth callback
+  const [showAuthLoading, setShowAuthLoading] = useState(false);
+  const [sessionSyncComplete, setSessionSyncComplete] = useState(false);
+
   // Track admin page view for user flow analytics (auto-tracks navigation on mount/unmount)
   useBehaviorTracking({
     customerId: user?.id || '',
   });
+
+  // 🔄 SESSION SYNCHRONIZATION: Detect OAuth callback and show loading screen
+  useEffect(() => {
+    const authLoading = searchParams.get('auth_loading');
+
+    if (authLoading === 'true' && !sessionSyncComplete) {
+      console.log('🔄 [AdminPage] OAuth callback detected - showing auth loading screen');
+      setShowAuthLoading(true);
+
+      // Force session refresh to ensure admin status is correctly set
+      const syncSession = async () => {
+        console.log('🔄 [AdminPage] Forcing session refresh...');
+        try {
+          const session = await authService.getServerSession();
+          const currentUser = authService.getCurrentUser();
+          console.log('✅ [AdminPage] Session synced:', {
+            userId: currentUser?.id,
+            email: currentUser?.email,
+            isAdmin: currentUser?.isAdmin,
+            sessionValid: !!session
+          });
+        } catch (error) {
+          console.error('❌ [AdminPage] Session sync error:', error);
+        }
+      };
+
+      // Start session sync immediately
+      syncSession();
+    }
+  }, [searchParams, sessionSyncComplete]);
+
+  // Handle auth loading completion
+  const handleAuthLoadingComplete = () => {
+    console.log('✅ [AdminPage] Auth loading complete - session synchronized');
+    setShowAuthLoading(false);
+    setSessionSyncComplete(true);
+
+    // Clean up auth_loading parameter from URL
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.delete('auth_loading');
+    router.replace(newUrl.pathname + newUrl.search);
+  };
 
   useEffect(() => {
     // Check if user is admin using proper auth system
@@ -121,6 +170,16 @@ export default function AdminFoundingMembersPage() {
       setLoading(false);
     }
   };
+
+  // Show sophisticated auth loading screen during OAuth session sync
+  if (showAuthLoading) {
+    return (
+      <AuthLoadingScreen
+        duration={4500} // 4.5 seconds for session sync
+        onComplete={handleAuthLoadingComplete}
+      />
+    );
+  }
 
   if (authLoading || loading) {
     return (

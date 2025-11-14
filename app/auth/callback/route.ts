@@ -50,15 +50,32 @@ export async function GET(request: NextRequest) {
     if (data.session) {
       console.log('✅ Route Handler Auth - Session established:', {
         userId: data.session.user.id,
-        email: data.session.user.email
+        email: data.session.user.email,
+        timestamp: new Date().toISOString()
       })
 
       // 🔓 ADMIN BYPASS: Allow admin user to access platform without payment
-      if (data.session.user.email === 'geter@humusnshore.org') {
+      const adminEmails = ['geter@humusnshore.org', 'admin@andru.ai', 'support@andru.ai'];
+      const isAdminEmail = adminEmails.includes(data.session.user.email || '');
+
+      console.log('🔐 [Auth Callback] Admin check:', {
+        email: data.session.user.email,
+        isAdminEmail,
+        adminEmails,
+        willBypassPayment: isAdminEmail
+      });
+
+      if (isAdminEmail) {
         console.log('✅ Auth Callback: Admin user detected, bypassing payment check');
         const next = searchParams.get('next') || '/dashboard';
-        return NextResponse.redirect(`${origin}${next}`);
+        // Add auth_loading parameter to trigger session sync loading screen
+        const redirectUrl = new URL(next, origin);
+        redirectUrl.searchParams.set('auth_loading', 'true');
+        console.log('🔄 Redirecting admin to:', redirectUrl.toString());
+        return NextResponse.redirect(redirectUrl.toString());
       }
+
+      console.log('⚠️  Auth Callback: Not an admin email, proceeding with payment verification');
 
       // ⚠️ PAYMENT VERIFICATION: Check if user has paid before granting access
       const { data: milestone, error: milestoneError } = await supabase
@@ -132,8 +149,13 @@ export async function GET(request: NextRequest) {
       // Get the 'next' parameter from the callback URL
       const next = searchParams.get('next') || '/dashboard'
 
+      // Add auth_loading parameter to trigger session sync loading screen
+      const redirectUrl = new URL(next, origin);
+      redirectUrl.searchParams.set('auth_loading', 'true');
+      console.log('🔄 Redirecting paid user to:', redirectUrl.toString());
+
       // Redirect to the requested page after successful auth
-      return NextResponse.redirect(`${origin}${next}`)
+      return NextResponse.redirect(redirectUrl.toString())
     }
   }
 
