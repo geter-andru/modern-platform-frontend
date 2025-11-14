@@ -320,8 +320,16 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
   }, [pathname]);
 
   const handleLogout = async () => {
-    await signOut();
-    router.push('/login');
+    try {
+      console.log('🚪 [Logout] Starting logout process...');
+      await signOut();
+      console.log('✅ [Logout] SignOut successful, redirecting to login...');
+      router.push('/login');
+    } catch (error) {
+      console.error('❌ [Logout] Error during logout:', error);
+      // Still try to redirect even if signout fails
+      router.push('/login');
+    }
   };
 
   // Sidebar animation variants

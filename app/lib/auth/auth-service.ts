@@ -441,15 +441,19 @@ class SupabaseAuthService {
 
   // Sign out
   async signOut() {
+    console.log('🚪 [AuthService] Starting signOut...');
     const { error } = await supabase.auth.signOut();
 
     if (error) {
+      console.error('❌ [AuthService] Supabase signOut error:', error);
       throw error;
     }
 
+    console.log('✅ [AuthService] Supabase signOut successful');
     this.currentUser = null;
     this.currentSession = null;
     this.stopTokenRefreshTimer();
+    console.log('✅ [AuthService] Local state cleared, signOut complete');
   }
 
   // Get session for server-side use
@@ -538,9 +542,8 @@ function getAuthService(): SupabaseAuthService {
   if (!(window as any).__authServiceInstance) {
     console.log('🔐 [AuthService] Creating singleton instance...');
     (window as any).__authServiceInstance = new SupabaseAuthService();
-  } else {
-    console.log('🔐 [AuthService] Reusing existing singleton instance');
   }
+  // Removed verbose "Reusing existing singleton instance" log to reduce console noise
 
   return (window as any).__authServiceInstance;
 }
