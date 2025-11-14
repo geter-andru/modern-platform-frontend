@@ -62,7 +62,19 @@ export function useRequireAuth(): RequireAuthResult {
   const router = useRouter();
 
   useEffect(() => {
+    // 🔄 OAuth Session Sync: Skip redirect if auth_loading parameter present
+    // This allows AuthLoadingScreen to complete session synchronization (4.5s)
+    // before checking authentication state
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAuthLoading = urlParams.get('auth_loading') === 'true';
+
+    if (isAuthLoading) {
+      console.log('🔄 [useRequireAuth] OAuth session sync in progress - skipping redirect check');
+      return; // Don't redirect during OAuth callback session sync
+    }
+
     if (!loading && !isAuthenticated) {
+      console.log('⚠️ [useRequireAuth] Not authenticated - redirecting to /auth');
       // Store intended destination
       const currentPath = window.location.pathname;
       router.push(`/auth?redirect=${encodeURIComponent(currentPath)}`);
