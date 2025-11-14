@@ -58,20 +58,34 @@ export async function GET(request: NextRequest) {
       const adminEmails = ['geter@humusnshore.org', 'admin@andru.ai', 'support@andru.ai'];
       const isAdminEmail = adminEmails.includes(data.session.user.email || '');
 
+      // 🔓 DELVE BYPASS: Allow @delve.* users to access ICP scenario pages without payment
+      const next = searchParams.get('next') || '/dashboard';
+      const isICPScenarioAccess = next.startsWith('/icp/') && !next.startsWith('/icp/demo');
+      const isDelveUser = (data.session.user.email || '').includes('@delve.');
+
       console.log('🔐 [Auth Callback] Admin check:', {
         email: data.session.user.email,
         isAdminEmail,
+        isDelveUser,
+        isICPScenarioAccess,
+        next,
         adminEmails,
-        willBypassPayment: isAdminEmail
+        willBypassPayment: isAdminEmail || (isDelveUser && isICPScenarioAccess)
       });
 
       if (isAdminEmail) {
         console.log('✅ Auth Callback: Admin user detected, bypassing payment check');
-        const next = searchParams.get('next') || '/dashboard';
         // Add auth_loading parameter to trigger session sync loading screen
         const redirectUrl = new URL(next, origin);
         redirectUrl.searchParams.set('auth_loading', 'true');
         console.log('🔄 Redirecting admin to:', redirectUrl.toString());
+        return NextResponse.redirect(redirectUrl.toString());
+      }
+
+      if (isDelveUser && isICPScenarioAccess) {
+        console.log('✅ Auth Callback: Delve user accessing ICP scenario, bypassing payment check');
+        const redirectUrl = new URL(next, origin);
+        console.log('🔄 Redirecting Delve user to:', redirectUrl.toString());
         return NextResponse.redirect(redirectUrl.toString());
       }
 
@@ -145,9 +159,6 @@ export async function GET(request: NextRequest) {
         customerId,
         accessToken: accessToken.substring(0, 20) + '...'
       });
-
-      // Get the 'next' parameter from the callback URL
-      const next = searchParams.get('next') || '/dashboard'
 
       // Add auth_loading parameter to trigger session sync loading screen
       const redirectUrl = new URL(next, origin);
