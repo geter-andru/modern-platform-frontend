@@ -2,8 +2,8 @@
   {
     "company": "Greptile",
     "slug": "greptile",
-    "title": "VP Engineering Preventing Production Bug Crisis",
-    "persona": "",
+    "title": "VP of Engineering Preventing Production Bug Crisis",
+    "persona": "VP of Engineering",
     "scenario": "It's 9:14 AM on a Monday, two days before their Series B product demo to Sequoia. Marcus (VP Engineering, ENTJ) just received a Slack DM from his CEO: \"Need to talk about the customer bug reports from the weekend.\"",
     "worstCase": "Walking into that Sequoia demo with unresolved production bugs, watching the CEO explain why their \"enterprise-ready\" platform had 3 customer-reported critical issues in the last 7 days, and potentially losing the $40M Series B when the investors question their engineering quality standards just as they're trying to prove they can scale to Fortune 500 accounts.",
     "timestamps": [
@@ -70,8 +70,8 @@
   {
     "company": "Delve",
     "slug": "delve",
-    "title": "VP Engineering Avoiding the Enterprise Deal Blocker",
-    "persona": "VP Engineering",
+    "title": "VP of Engineering Avoiding the Enterprise Deal Blocker",
+    "persona": "VP of Engineering",
     "scenario": "It's 9:47 AM on a Tuesday, 6 weeks before their Series B close. Marcus (VP Engineering, INTJ) just got out of a sales pipeline review where the CRO said: \"We have $2.4M in enterprise deals stuck in legal review because prospects need SOC 2 compliance before they'll sign. Without it, we're missing our Q4 revenue target by 40%.\"",
     "worstCase": "Missing the Series B revenue milestone because enterprise deals won't close without SOC 2 certification, watching the board question why engineering couldn't deliver a compliance requirement that's \"just paperwork,\" and spending the next 6 months doing manual compliance work while their competitors with certifications steal market share.",
     "timestamps": [
@@ -188,8 +188,8 @@
   {
     "company": "Composio",
     "slug": "composio",
-    "title": "VP Engineering Avoiding the Integration Hell Crisis",
-    "persona": "VP Engineering",
+    "title": "VP of Engineering Avoiding the Integration Hell Crisis",
+    "persona": "VP of Engineering",
     "scenario": "It's 4:17 PM on a Thursday, 10 weeks before their AI customer support product's enterprise launch. Michael (VP Engineering, INTJ) just reviewed the sprint progress and learned that his backend team has spent 3 weeks building a custom integration to connect their AI agent to Salesforce, and they estimate 4 more weeks to finish—then they'll need to build integrations for Zendesk, Jira, Slack, and HubSpot, which could take another 5 months total.",
     "worstCase": "Missing their enterprise launch deadline because his team is stuck building basic API integrations instead of core product features, watching the CEO explain to the board why 60% of engineering capacity is spent on \"plumbing work,\" and losing his credibility as the technical leader who promised the board they could ship the enterprise product in Q3.",
     "timestamps": [
@@ -223,7 +223,7 @@
     "company": "Swimm",
     "slug": "swimm",
     "title": "New Engineer Onboarding to Complex Codebase",
-    "persona": "",
+    "persona": "Software Engineer",
     "scenario": "It's 9:47 AM on a Monday morning, Day 3 at his new job. Marcus (Software Engineer, INTP) needs to implement a feature requiring him to understand their complex authentication flow that spans 8 files across 3 services, but the existing documentation is 18 months out of date and his teammates are in back-to-back meetings, leaving him stuck reverse-engineering code instead of being productive.",
     "worstCase": "Spending 2 full days reverse-engineering the authentication flow because documentation is stale and teammates are too busy to pair with him, implementing the feature incorrectly because he misunderstood how auth tokens are validated creating a security vulnerability, and watching his onboarding velocity tank because every complex flow requires days of code archaeology before he can write productive code.",
     "timestamps": [
@@ -257,7 +257,7 @@
     "company": "Sourcegraph",
     "slug": "sourcegraph",
     "title": "Security Engineer Remediating Vulnerabilities at Scale",
-    "persona": "",
+    "persona": "Security Engineer",
     "scenario": "It's 10:14 AM on a Tuesday morning. Sarah (Security Engineer, INTJ) at a 400-person engineering organization just received security audit findings: SQL injection vulnerabilities exist where user input is passed directly to SQL queries without sanitization. She needs to find all instances across their monorepo (2M lines of code, 40 microservices) and fix them systematically before the re-audit in 3 weeks.",
     "worstCase": "Missing SQL injection vulnerabilities because manual code search can't reliably find all dangerous patterns across 40 services, spending 3 weeks manually fixing instances one-by-one because there's no systematic remediation workflow, and failing the security re-audit because some vulnerable code paths were missed, delaying their enterprise compliance certification and losing $2M+ in pending deals.",
     "timestamps": [
@@ -283,7 +283,7 @@
     "company": "Tabnine",
     "slug": "tabnine",
     "title": "Developer Writing Code with AI Autocomplete",
-    "persona": "",
+    "persona": "Backend Engineer",
     "scenario": "It's 2:47 PM on a Wednesday afternoon. Jordan (Backend Engineer, ISTP) at a fintech company is implementing a user data fetch function. He types `function getUser` and his AI autocomplete suggests the next 3 lines—but he's hesitant to use GitHub Copilot because their security team prohibits it due to concerns that their proprietary code could be used to train Microsoft's models, creating IP leakage risks.",
     "worstCase": "Writing boilerplate code manually because security policy blocks AI autocomplete tools that send code to external servers, watching productivity fall behind competitors whose engineers use AI assistance but their company can't because of IP security policies, and explaining to the CTO why they can't adopt AI coding tools that would make engineering 30% more productive because of legitimate data privacy concerns.",
     "timestamps": [
@@ -515,7 +515,7 @@
     "company": "Gooey.AI",
     "slug": "gooeyai",
     "title": "Nonprofit Program Director Avoiding Service Gap",
-    "persona": "Nonprofit Program Director",
+    "persona": "Program Director",
     "scenario": "It's 9:28 AM on a Tuesday, 4 weeks before their refugee assistance program scales to serve 1,200 families. Marcus (Program Director, ENFP) needs a multilingual chatbot to handle intake requests, but was just quoted $120K and 12 weeks by a custom development agency.",
     "worstCase": "Turning away refugee families who need assistance because his small team can't handle 1,200 intake requests manually, watching his nonprofit fail to scale services despite having funding, and losing grant funding that's contingent on serving minimum family counts.",
     "timestamps": [

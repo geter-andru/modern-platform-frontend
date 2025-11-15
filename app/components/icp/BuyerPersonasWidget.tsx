@@ -193,7 +193,28 @@ export default function BuyerPersonasWidget({
 
       setPersonas(transformedPersonas)
       console.log(`✅ Generated ${transformedPersonas.length} buyer personas successfully`)
-      
+
+      // Track persona generation tool usage for Dashboard-v3 leading indicators
+      try {
+        await fetch('/api/leading-indicators/tool-usage', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            tool_name: 'buyer_persona_generation',
+            tool_category: 'icp_analysis',
+            action_type: 'personas_generated',
+            metadata: {
+              personasCount: transformedPersonas.length,
+              personaNames: transformedPersonas.map(p => p.name)
+            }
+          })
+        })
+      } catch (trackingError) {
+        // Don't fail persona generation if tracking fails
+        console.warn('Failed to track persona generation:', trackingError)
+      }
+
     } catch (error) {
       console.error('❌ Persona generation failed:', error)
       const errorMessage = error instanceof Error ? error.message : 'Failed to generate buyer personas. Please try again.'

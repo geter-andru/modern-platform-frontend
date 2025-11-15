@@ -257,8 +257,8 @@ export default function BuyerPersonasWidget({
         ? persona.psychographics.fears.join(', ')
         : (persona.psychographics.fears || persona.psychographics.challenges?.join(', ') || 'Making wrong decisions')
     },
-    goals: persona.psychographics.goals || ['Improve efficiency', 'Drive growth', 'Reduce costs'],
-    painPoints: persona.psychographics.challenges || ['Current limitations', 'Process inefficiencies', 'Resource constraints'],
+    goals: persona.goals || persona.psychographics.goals || ['Improve efficiency', 'Drive growth', 'Reduce costs'],
+    painPoints: persona.painPoints || persona.psychographics.challenges || ['Current limitations', 'Process inefficiencies', 'Resource constraints'],
     buyingBehavior: {
       decisionProcess: persona.behavior?.decisionMakingProcess || 'Data-driven evaluation'
     },
@@ -366,12 +366,12 @@ export default function BuyerPersonasWidget({
             <div className="text-left flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="text-lg font-semibold text-white truncate">
-                  {persona.name}
+                  {persona.title}
                 </h3>
                 <ConfidenceBadge level={getConfidenceLevel(confidence)} score={confidence} size="sm" />
               </div>
               <p className="text-sm text-gray-500 truncate">
-                {persona.title}
+                {persona.role}
               </p>
             </div>
           </div>
@@ -559,7 +559,7 @@ export default function BuyerPersonasWidget({
                     C-level executives with budget authority and final purchasing decisions
                   </p>
                 </div>
-                <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+                <div className="flex items-start gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
                   {economicBuyers.map((persona, index) => renderPersonaCard(persona, index))}
                 </div>
               </div>
@@ -577,7 +577,7 @@ export default function BuyerPersonasWidget({
                     VPs and directors who evaluate technical fit, integration, and quality standards
                   </p>
                 </div>
-                <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+                <div className="flex items-start gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
                   {technicalBuyers.map((persona, index) => renderPersonaCard(persona, index))}
                 </div>
               </div>
@@ -595,7 +595,7 @@ export default function BuyerPersonasWidget({
                     Daily users who become champions or blockers based on product experience
                   </p>
                 </div>
-                <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+                <div className="flex items-start gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
                   {endUsers.map((persona, index) => renderPersonaCard(persona, index))}
                 </div>
               </div>
@@ -646,10 +646,10 @@ export default function BuyerPersonasWidget({
                         </div>
                         <div className="text-left">
                           <h3 className="text-lg font-semibold text-white">
-                            {persona.name}
+                            {persona.title}
                           </h3>
                           <p className="text-sm text-gray-500">
-                            {persona.title} • {persona.role}
+                            {persona.role}
                           </p>
                         </div>
                       </div>

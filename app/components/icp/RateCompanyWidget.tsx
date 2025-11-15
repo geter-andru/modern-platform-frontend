@@ -222,7 +222,30 @@ export default function RateCompanyWidget({
       
       setRating(rating)
       console.log('✅ Company analysis completed successfully:', rating)
-      
+
+      // Track ICP tool usage for Dashboard-v3 leading indicators
+      try {
+        await fetch('/api/leading-indicators/tool-usage', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            tool_name: 'icp_rating',
+            tool_category: 'icp_analysis',
+            action_type: 'company_rated',
+            metadata: {
+              companyName: companyName.trim(),
+              overallScore: rating.overallScore,
+              tier: rating.tier.name,
+              confidence: rating.confidence
+            }
+          })
+        })
+      } catch (trackingError) {
+        // Don't fail the rating if tracking fails
+        console.warn('Failed to track ICP tool usage:', trackingError)
+      }
+
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to analyze company. Please try again.'
       setError(errorMessage)

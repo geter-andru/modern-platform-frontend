@@ -6,6 +6,7 @@ import { ArrowRight, Sparkles, Download, Users, BarChart3, TrendingUp, AlertCirc
 import Link from 'next/link';
 import BuyerPersonasWidget from '../../../src/features/icp-analysis/widgets/BuyerPersonasWidget';
 import MyICPOverviewWidget from '../../../src/features/icp-analysis/widgets/MyICPOverviewWidget';
+import { PostGenerationCTA } from '../../../src/features/icp-analysis/components/PostGenerationCTA';
 import { Badge } from '../../../src/shared/components/ui/Badge';
 import { MotionBackground } from '../../../src/shared/components/ui/MotionBackground';
 import { exportICPToPDF } from '@/app/lib/utils/pdf-export';
@@ -24,6 +25,7 @@ export default function ICPDemoV2Page() {
   const [comparisonView, setComparisonView] = useState<'without' | 'with'>('without');
   const [showResults, setShowResults] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generationStage, setGenerationStage] = useState<string>('');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -34,6 +36,9 @@ export default function ICPDemoV2Page() {
   const [productDescription, setProductDescription] = useState('');
   const [targetBuyer, setTargetBuyer] = useState('');
 
+  // Generated personas state (starts with demo data, replaced after generation)
+  const [generatedPersonas, setGeneratedPersonas] = useState(demoData.personas);
+
   // Mobile detection for touch optimization
   const [isMobile, setIsMobile] = useState(false);
   React.useEffect(() => {
@@ -42,6 +47,40 @@ export default function ICPDemoV2Page() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Keyboard shortcuts for power users
+  React.useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
+      // G = Generate (only if form is filled)
+      if (e.key === 'g' && !isGenerating && productName && productDescription) {
+        handleGenerate();
+      }
+      // E = Export (when results visible)
+      if (e.key === 'e' && showResults) {
+        setShowExportModal(true);
+      }
+      // Escape = Close modal
+      if (e.key === 'Escape' && showExportModal) {
+        setShowExportModal(false);
+      }
+      // D = Jump to demo
+      if (e.key === 'd') {
+        document.getElementById('demo-results')?.scrollIntoView({ behavior: 'smooth' });
+      }
+      // F = Jump to form
+      if (e.key === 'f') {
+        document.getElementById('generation-form')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [isGenerating, productName, productDescription, showResults, showExportModal]);
 
   // Horizontal scroll handlers
   const checkScrollPosition = () => {
@@ -82,28 +121,77 @@ export default function ICPDemoV2Page() {
     }
 
     setIsGenerating(true);
-    toast.loading('Generating your ICP...', { id: 'generate' });
 
-    // Simulate AI generation
-    setTimeout(() => {
+    try {
+      // Show initial loading state
+      setGenerationStage('Analyzing product positioning...');
+      toast.loading('Analyzing product positioning...', { id: 'generate' });
+
+      // Call backend API
+      const response = await fetch('/api/demo/generate-icp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          productName,
+          productDescription,
+          targetBuyer: targetBuyer || null
+        })
+      });
+
+      const data = await response.json();
+
+      // Handle rate limiting
+      if (response.status === 429) {
+        setIsGenerating(false);
+        setGenerationStage('');
+        toast.error('Demo limit reached (3 per 24 hours). Sign up for unlimited generations!', { id: 'generate' });
+        return;
+      }
+
+      // Handle other errors
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Generation failed');
+      }
+
+      // Update generation stage
+      setGenerationStage('Crafting buyer personas...');
+      toast.loading('Crafting buyer personas...', { id: 'generate' });
+
+      // Store generated personas
+      setGeneratedPersonas(data.personas);
+
+      // Success!
       setIsGenerating(false);
+      setGenerationStage('');
       setShowResults(true);
-      toast.success('ICP generated successfully!', { id: 'generate' });
+      toast.success(`${data.personas.length} personas generated!`, { id: 'generate' });
 
       // Scroll to results
       setTimeout(() => {
         document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
-    }, 2000);
+    } catch (error: any) {
+      setIsGenerating(false);
+      setGenerationStage('');
+      toast.error(error.message || 'Generation failed. Please try again in a moment.', { id: 'generate' });
+
+      // Log error for debugging
+      console.error('ICP generation error:', error);
+
+      // Optional: Send to error tracking service
+      // trackError('icp-generation-failed', { productName, error });
+    }
   };
 
   const handlePDFExport = async () => {
     toast.loading('Generating demo PDF...', { id: 'pdf-export' });
     const exportData = {
-      companyName: 'Demo - ' + demoData.product.productName,
-      productName: demoData.product.description,
-      personas: demoData.personas,
-      generatedAt: demoData.generatedAt
+      companyName: 'Demo - ' + (productName || demoData.product.productName),
+      productName: productDescription || demoData.product.description,
+      personas: generatedPersonas,
+      generatedAt: new Date().toISOString()
     };
     const result = await exportICPToPDF(exportData, {
       includeDemoWatermark: true,
@@ -121,10 +209,10 @@ export default function ICPDemoV2Page() {
   const handleMarkdownExport = async () => {
     toast.loading('Copying demo Markdown to clipboard...', { id: 'markdown-export' });
     const exportData = {
-      companyName: 'Demo - ' + demoData.product.productName,
-      productName: demoData.product.description,
-      personas: demoData.personas,
-      generatedAt: demoData.generatedAt
+      companyName: 'Demo - ' + (productName || demoData.product.productName),
+      productName: productDescription || demoData.product.description,
+      personas: generatedPersonas,
+      generatedAt: new Date().toISOString()
     };
     const result = await exportToMarkdown(exportData, {
       includeDemoWatermark: true
@@ -140,10 +228,10 @@ export default function ICPDemoV2Page() {
   const handleCSVExport = () => {
     toast.loading('Generating demo CSV...', { id: 'csv-export' });
     const exportData = {
-      companyName: 'Demo - ' + demoData.product.productName,
-      productName: demoData.product.description,
-      personas: demoData.personas,
-      generatedAt: demoData.generatedAt
+      companyName: 'Demo - ' + (productName || demoData.product.productName),
+      productName: productDescription || demoData.product.description,
+      personas: generatedPersonas,
+      generatedAt: new Date().toISOString()
     };
     const result = exportToCSV(exportData, {
       includeDemoWatermark: true
@@ -318,39 +406,98 @@ export default function ICPDemoV2Page() {
               <div className="flex items-center justify-center gap-2 mb-4">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20">
                   <Sparkles className="w-4 h-4 text-blue-400" />
-                  <span className="body-small text-blue-400">Interactive Demo</span>
+                  <span className="body-small text-blue-400">Free ICP Generator • No Signup Required</span>
                 </div>
               </div>
 
-              <h1 className="heading-1 mb-4">Generate Your ICP in 3 Minutes</h1>
-
-              <p className="body-large text-text-muted max-w-3xl mx-auto mb-6">
-                See how Andru generates detailed buyer personas, pain points, and sales plays for B2B SaaS.
-              </p>
+              <h1 className="heading-1 mb-4">See Your Ideal Customer Profile—In 2 Minutes</h1>
 
               {/* Social Proof Badge */}
               <div className="flex items-center justify-center gap-2 mb-8">
                 <Badge variant="info" size="md" icon={Users}>
-                  Join 100 founders improving their enterprise close rates
+                  Andru helps founders improve their enterprise close rates. See how.
                 </Badge>
               </div>
             </div>
+          </StaggeredItem>
 
-            {/* Inline Generation Form */}
-            <div className="max-w-2xl mx-auto p-6 rounded-2xl border" style={{
+          {/* NEW: Instant Demo Results - Show BEFORE Form */}
+          <StaggeredItem delay={0.1} animation="lift">
+            <div className="mb-16" id="demo-results">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4" style={{
+                  background: 'rgba(59, 130, 246, 0.1)',
+                  border: '1px solid rgba(59, 130, 246, 0.3)'
+                }}>
+                  <Sparkles className="w-4 h-4 text-blue-400" />
+                  <span className="body-small text-blue-400">Live Preview</span>
+                </div>
+
+                <h2 className="heading-2 mb-3">
+                  Here's What You'll Get
+                </h2>
+                <p className="body-large text-text-muted max-w-2xl mx-auto">
+                  Sample ICP for <strong className="text-blue-400">"DevTool Pro"</strong>
+                  {' '}(AI-powered code review platform for engineering teams)
+                </p>
+              </div>
+
+              {/* Show first 2 persona cards */}
+              <div className="max-w-5xl mx-auto mb-8">
+                <BuyerPersonasWidget
+                  personas={generatedPersonas.slice(0, 2)}
+                  isDemo={true}
+                />
+
+                {/* Preview indicator */}
+                <div className="mt-6 p-4 rounded-lg text-center" style={{
+                  background: 'rgba(59, 130, 246, 0.05)',
+                  border: '1px solid rgba(59, 130, 246, 0.2)'
+                }}>
+                  <p className="body-small text-text-muted">
+                    Showing 2 of 5 detailed personas •
+                    <button
+                      onClick={() => document.getElementById('generation-form')?.scrollIntoView({ behavior: 'smooth' })}
+                      className="text-blue-400 hover:text-blue-300 ml-1 underline"
+                    >
+                      Generate full analysis for your product ↓
+                    </button>
+                  </p>
+                </div>
+              </div>
+
+              {/* Primary CTA - moved up */}
+              <div className="text-center">
+                <button
+                  onClick={() => {
+                    document.getElementById('generation-form')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="btn btn-primary btn-large inline-flex items-center gap-2"
+                  style={{
+                    boxShadow: '0 8px 24px rgba(59, 130, 246, 0.4)'
+                  }}
+                >
+                  <Sparkles className="w-5 h-5" />
+                  Generate This For My Product (2 min)
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+                <p className="body-small text-text-muted mt-3">
+                  No signup required • See all 5 personas + ICP overview
+                </p>
+              </div>
+            </div>
+          </StaggeredItem>
+
+          {/* THEN: Form section (now labeled properly) */}
+          <StaggeredItem delay={0.15} animation="lift">
+            <div id="generation-form" className="max-w-2xl mx-auto p-6 rounded-2xl border" style={{
               background: 'var(--glass-bg)',
               borderColor: 'var(--glass-border)',
               backdropFilter: 'blur(20px)'
             }}>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="heading-3">Try It Now</h2>
-                <div className="flex items-center gap-4 text-sm text-text-muted">
-                  <span className="flex items-center gap-1">
-                    <Zap className="w-4 h-4 text-blue-400" />
-                    Takes minutes
-                  </span>
-                  <span>🔒 Secure</span>
-                </div>
+              <div className="text-center mb-6">
+                <h3 className="heading-3 mb-2">Generate Your Custom ICP</h3>
+                <p className="body text-text-muted">Tell us about your product and get instant insights</p>
               </div>
 
               <div className="space-y-4">
@@ -364,7 +511,9 @@ export default function ICPDemoV2Page() {
                     onChange={(e) => setProductName(e.target.value)}
                     placeholder="e.g., DevTool Pro"
                     className="w-full px-4 py-3 rounded-lg border bg-surface-secondary text-text-primary placeholder-text-subtle focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-                    style={{ borderColor: 'var(--glass-border)' }}
+                    style={{ 
+                      background: 'var(--glass-bg)',
+                      borderColor: 'var(--glass-border)' }}
                   />
                 </div>
 
@@ -378,13 +527,15 @@ export default function ICPDemoV2Page() {
                     placeholder="e.g., AI-powered code review platform that catches 3x more bugs..."
                     rows={3}
                     className="w-full px-4 py-3 rounded-lg border bg-surface-secondary text-text-primary placeholder-text-subtle focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
-                    style={{ borderColor: 'var(--glass-border)' }}
+                    style={{ 
+                      background: 'var(--glass-bg)',
+                      borderColor: 'var(--glass-border)' }}
                   />
                 </div>
 
                 <div>
                   <label className="body-small text-text-muted mb-2 block">
-                    Whose your target buyer (optional)
+                    Who's your target buyer? (optional)
                   </label>
                   <input
                     type="text"
@@ -392,22 +543,30 @@ export default function ICPDemoV2Page() {
                     onChange={(e) => setTargetBuyer(e.target.value)}
                     placeholder="e.g., Engineering teams at Series A startups (or leave blank)"
                     className="w-full px-4 py-3 rounded-lg border bg-surface-secondary text-text-primary placeholder-text-subtle focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-                    style={{ borderColor: 'var(--glass-border)' }}
+                    style={{ 
+                      background: 'var(--glass-bg)',
+                      borderColor: 'var(--glass-border)' }}
                   />
                 </div>
 
                 <button
                   onClick={handleGenerate}
                   disabled={isGenerating}
-                  className="btn btn-primary w-full flex items-center justify-center gap-2 btn-large"
+                  className="btn btn-primary w-full flex flex-col items-center justify-center gap-2 btn-large"
                   style={{
-                    boxShadow: '0 4px 16px rgba(59, 130, 246, 0.3)'
+                    boxShadow: '0 4px 16px rgba(59, 130, 246, 0.3)',
+                    minHeight: '60px'
                   }}
                 >
                   {isGenerating ? (
                     <>
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      Generating...
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        <span>Generating...</span>
+                      </div>
+                      {generationStage && (
+                        <span className="text-xs font-mono opacity-75">{generationStage}</span>
+                      )}
                     </>
                   ) : (
                     <>
@@ -859,7 +1018,7 @@ export default function ICPDemoV2Page() {
                     className={`btn ${activeTab === 'personas' ? 'btn-primary' : 'btn-secondary'} flex items-center gap-2`}
                   >
                     <Users className="w-4 h-4" />
-                    Buyer Personas ({demoData.personas.length})
+                    Buyer Personas ({generatedPersonas.length})
                   </button>
                   <button
                     onClick={() => setActiveTab('overview')}
@@ -881,7 +1040,7 @@ export default function ICPDemoV2Page() {
                 {activeTab === 'personas' && (
                   <>
                     <BuyerPersonasWidget
-                      personas={demoData.personas}
+                      personas={generatedPersonas}
                       isDemo={true}
                     />
                     {/* Contextual CTA for Personas */}
@@ -904,7 +1063,7 @@ export default function ICPDemoV2Page() {
                   <>
                     <MyICPOverviewWidget
                       icpData={demoData.icp}
-                      personas={demoData.personas}
+                      personas={generatedPersonas}
                       productName={productName || demoData.product.productName}
                       isDemo={true}
                     />
@@ -925,24 +1084,16 @@ export default function ICPDemoV2Page() {
                 )}
               </motion.div>
 
-              {/* Sign Up CTA After Results */}
+              {/* Strategic CTAs After Results */}
               <StaggeredItem delay={0.5} animation="lift" className="mt-12">
-                <div className="p-8 rounded-2xl border text-center" style={{
-                  background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%)',
-                  borderColor: 'var(--glass-border)'
-                }}>
-                  <h3 className="heading-2 mb-3">Want to Save This Analysis?</h3>
-                  <p className="body-large text-text-muted mb-6 max-w-2xl mx-auto">
-                    Sign up free to save your ICP, get watermark-free exports, and generate unlimited analyses.
-                  </p>
-                  <Link
-                    href="/signup"
-                    className="btn btn-primary btn-large inline-flex items-center gap-2"
-                  >
-                    Sign Up Free
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                </div>
+                <PostGenerationCTA
+                  variant="all"
+                  productName={productName || 'your product'}
+                  onCTAClick={(ctaType) => {
+                    // Track CTA clicks for analytics
+                    console.log('Post-generation CTA clicked:', ctaType);
+                  }}
+                />
               </StaggeredItem>
             </div>
           )}
@@ -1017,6 +1168,42 @@ export default function ICPDemoV2Page() {
             </p>
           </motion.div>
         </motion.div>
+      )}
+
+      {/* Keyboard Shortcuts Hint - Only show on desktop */}
+      {!isMobile && (
+        <div className="fixed bottom-4 right-4 p-3 rounded-lg border backdrop-blur-xl"
+          style={{
+            background: 'rgba(0, 0, 0, 0.8)',
+            borderColor: 'rgba(255, 255, 255, 0.1)',
+            fontSize: '11px',
+            color: '#a3a3a3',
+            zIndex: 40
+          }}
+        >
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <kbd className="px-1.5 py-0.5 rounded bg-gray-700 text-white font-mono">D</kbd>
+              <span>Jump to demo</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <kbd className="px-1.5 py-0.5 rounded bg-gray-700 text-white font-mono">F</kbd>
+              <span>Jump to form</span>
+            </div>
+            {productName && productDescription && (
+              <div className="flex items-center gap-2">
+                <kbd className="px-1.5 py-0.5 rounded bg-gray-700 text-white font-mono">G</kbd>
+                <span>Generate ICP</span>
+              </div>
+            )}
+            {showResults && (
+              <div className="flex items-center gap-2">
+                <kbd className="px-1.5 py-0.5 rounded bg-gray-700 text-white font-mono">E</kbd>
+                <span>Export results</span>
+              </div>
+            )}
+          </div>
+        </div>
       )}
 
       {/* Hidden Scrollbar CSS - 21st.dev pattern */}
