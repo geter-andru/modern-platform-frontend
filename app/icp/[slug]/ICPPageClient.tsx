@@ -340,6 +340,18 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
                 See My Buyer Intelligence Score
               </a>
               <a
+                href="/icp/demo-v2"
+                onClick={() => handleCtaClick('Demo Andru', 'footer')}
+                className="inline-block font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-lg transition-all w-full sm:w-auto"
+                style={{
+                  background: 'transparent',
+                  border: '2px solid rgba(139, 92, 246, 0.5)',
+                  color: '#ffffff'
+                }}
+              >
+                Demo Andru
+              </a>
+              <a
                 href="https://calendly.com/humusnshore/discovery-60-min?back=1&month=2025-10"
                 onClick={() => handleCtaClick('Talk to the Founder', 'footer')}
                 className="inline-block font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-lg transition-all w-full sm:w-auto"
