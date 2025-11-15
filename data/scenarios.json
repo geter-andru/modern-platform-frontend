@@ -43,7 +43,7 @@
     "timestamps": [
       {
         "time": "2:43 PM - The Panic",
-        "narrative": "Rachel pulls up the GitHub Actions dashboard. The build for the analytics feature branch has been running for 51 minutes and is only 62% complete. Standard GitHub runners. Again.",
+        "narrative": "Rachel pulls up the GitHub Actions dashboard. The build for the analytics feature branch has been running for 51 minutes and is only <strong>62% complete</strong>. Standard GitHub runners. Again.",
         "thinking": "This is the third time this month that build times have blown past our SLA. The CTO keeps asking \"why are our deploys so slow?\" and I keep saying \"because GitHub's shared runners are oversubscribed\" but that excuse won't work when we miss a customer deadline.",
         "feeling": "Pulse quickening. She has two choices: let this build finish (estimated 28 more minutes) and then run the deployment pipeline (another 22 minutes), which puts them at 4:24 PM—cutting it dangerously close to the 6 PM customer call. Or cancel it, re-run, and hope it's faster this time (which it never is).  She opens Slack. 3 engineers are asking when the staging environment will be ready for QA testing. The product manager is in #deploys asking for an ETA.",
         "action": "",
@@ -51,27 +51,19 @@
       },
       {
         "time": "2:51 PM - The Discovery",
-        "narrative": "Rachel remembers the email from Blacksmith she archived 2 weeks ago. \"2x faster CI builds, 75% lower cost than GitHub runners.\" She was skeptical—seemed too good to be true—but she saved the link.",
+        "narrative": "Rachel remembers the email from Blacksmith she archived 2 weeks ago. \"<strong>2x faster</strong> CI builds, <strong>75% lower cost</strong> than GitHub runners.\" She was skeptical—seemed too good to be true—but she saved the link. Rachel creates a new branch, updates the workflow file with the Blacksmith runner configuration, and triggers the build. She sets a 15-minute timer on her phone. If this doesn't work, she'll cancel and go back to hoping the slow runner finishes in time.",
         "thinking": "I don't have time to evaluate this properly, but I also don't have time to miss this deadline. What's the worst case—I waste an hour on a failed integration?  **First moment of value:** The integration guide shows literally one line of code change in her workflow YAML: ```yaml runs-on: blacksmith-8cpu ```",
         "feeling": "Skeptical hope. This feels too simple, but the docs show it's actually running builds on dedicated hardware instead of shared runners.",
-        "action": "Opens the archived email. Clicks through to Blacksmith's docs. Reads: \"One-line integration with GitHub Actions. Bare metal gaming CPUs. 4x faster Docker cache downloads.\"",
-        "momentOfValue": ""
-      },
-      {
-        "time": "3:04 PM - The Quick Win",
-        "narrative": "Rachel creates a new branch, updates the workflow file with the Blacksmith runner configuration, and triggers the build. She sets a 15-minute timer on her phone. If this doesn't work, she'll cancel and go back to hoping the slow runner finishes in time.",
-        "thinking": "Holy shit. This actually works. And I integrated it in 12 minutes.",
-        "feeling": "Relief flooding through her chest. She has time. She can deploy to staging by 3:45 PM, give QA 90 minutes to verify, and deploy to production by 5:30 PM—30 minutes before the customer call with buffer time.",
-        "action": "Watches the build logs stream. Docker layers are downloading. She checks the timing—4x faster than their usual cache pulls. The build compilation starts.  **Second moment of value:** 11 minutes later, the build completes. The full CI pipeline that was taking 79 minutes on standard GitHub runners just finished in 18 minutes on Blacksmith's bare metal CPUs.",
+        "action": "Opens the archived email. Clicks through to Blacksmith's docs. Reads: \"One-line integration with GitHub Actions. Bare metal gaming CPUs. <strong>4x faster</strong> Docker cache downloads.\" Watches the build logs stream. Docker layers are downloading. She checks the timing—<strong>4x faster</strong> than their usual cache pulls. The build compilation starts.  **Second moment of value:** 11 minutes later, the build completes. The full CI pipeline that was taking 79 minutes on standard GitHub runners just finished in 18 minutes on Blacksmith's bare metal CPUs.",
         "momentOfValue": ""
       },
       {
         "time": "3:38 PM - The Deployment",
         "narrative": "The staging deploy finishes at 3:37 PM. Rachel pings the QA team: \"Analytics dashboard ready for testing in staging. Need sign-off by 5:15 PM.\"",
-        "thinking": "This is the kind of no-brainer optimization the CTO wants to see. Faster builds AND lower costs. I can go into next quarter's budget planning showing we're already optimizing infrastructure spend.  **Third moment of value:** She updates the CTO in Slack: \"Deploy on track for 5:30 PM. Also, switched CI to Blacksmith—builds 4x faster and we'll save $73K annually on CI costs. Can include in next quarter's infra optimization report.\"  CTO responds: \"Great. Let's talk about rolling this out to all repos next week.\"",
+        "thinking": "This is the kind of no-brainer optimization the CTO wants to see. Faster builds AND lower costs. I can go into next quarter's budget planning showing we're already optimizing infrastructure spend.  **Third moment of value:** She updates the CTO in Slack: \"Deploy on track for 5:30 PM. Also, switched CI to Blacksmith—builds <strong>4x faster</strong> and we'll save <strong>$73K annual</strong>ly on CI costs. Can include in next quarter's infra optimization report.\"  CTO responds: \"Great. Let's talk about rolling this out to all repos next week.\"",
         "feeling": "The tight chest is gone. The customer demo will happen on time. Her 8-year-old's birthday dinner is tonight at 7 PM, and for the first time today, she's confident she won't have to reschedule.",
         "action": "Opens her cost calculator. Blacksmith is charging 75% less than what they're currently paying for GitHub Actions with faster builds. Quick math: they're spending $8,200/month on CI/CD. Blacksmith would be $2,100/month for better performance.",
-        "momentOfValue": ""
+        "momentOfValue": "Blacksmith turned a missed deployment deadline into a cost-saving win—delivering the customer demo on time while cutting CI/CD costs from $8,200/month to $2,100/month with 4x faster builds."
       }
     ]
   },
@@ -93,28 +85,19 @@
       },
       {
         "time": "10:14 AM - The Discovery",
-        "narrative": "Marcus searches \"SOC 2 automation\" and finds Delve. The homepage says: \"Compliance in days, not months. AI agents auto-collect evidence, autofill questionnaires, scan your infrastructure.\" He's skeptical—compliance automation tools usually just organize spreadsheets—but books a demo for this afternoon.",
+        "narrative": "Marcus searches \"SOC 2 automation\" and finds Delve. The homepage says: \"Compliance in days, not months. AI agents auto-collect evidence, autofill questionnaires, scan your infrastructure.\" He's skeptical—compliance automation tools usually just organize spreadsheets—but books a demo for this afternoon. Marcus gets a Slack notification from Delve: \"Your SOC 2 readiness score is 94%. 138 of 147 controls complete. 9 controls need manual review.\" He opens the dashboard. Delve has auto-collected evidence for access controls, encryption, logging, monitoring, and incident response. The AI-generated policies are pre-filled and ready for his review.",
         "thinking": "If this is real, it solves the FTE problem. I can't pull engineers off shipping features. And 6 months puts us way past the Series B timeline.  **First moment of value:** On the demo call, the Delve rep connects to his AWS and GitHub accounts. Within 15 minutes, Delve's AI has auto-discovered his infrastructure, scanned his codebase for security controls, and started collecting evidence for 87 of the 147 SOC 2 controls automatically.",
         "feeling": "Skeptical hope turning into relief. This isn't just a documentation tool—it's actually reading his infrastructure, validating security configurations, and generating the evidence auditors need without manual screenshots.",
-        "action": "Watches Delve's AI scan his AWS security groups, identify encryption settings, pull GitHub audit logs, and generate evidence reports. The rep explains: \"For the remaining 60 controls, you'll answer questions in Slack, and our AI drafts the policies. Most companies go from zero to audit-ready in 2-3 weeks.\"",
-        "momentOfValue": ""
-      },
-      {
-        "time": "2:47 PM (2 Weeks Later) - The Audit Readiness",
-        "narrative": "Marcus gets a Slack notification from Delve: \"Your SOC 2 readiness score is 94%. 138 of 147 controls complete. 9 controls need manual review.\" He opens the dashboard. Delve has auto-collected evidence for access controls, encryption, logging, monitoring, and incident response. The AI-generated policies are pre-filled and ready for his review.",
-        "thinking": "Holy shit. Two weeks ago we had zero compliance documentation. Now we're audit-ready. The security consultant said this would take 6 months.  **Second moment of value:** Marcus clicks through the evidence. Delve automatically screenshots his AWS IAM policies, pulls GitHub branch protection rules, documents his encryption settings, and generates audit logs for every control—exactly what the SOC 2 auditor will ask for.",
-        "feeling": "Relief and validation. He didn't have to pull a single engineer off the roadmap. Delve did the manual compliance work that would have consumed 500+ engineering hours. And they're audit-ready in time to unblock the $2.4M enterprise pipeline.",
-        "action": "Schedules a call with the SOC 2 auditor for next week. Sends the CRO a Slack: \"Compliance blocker resolved. We're audit-ready. Can schedule SOC 2 audits now. Those enterprise deals can move forward.\"",
+        "action": "Watches Delve's AI scan his AWS security groups, identify encryption settings, pull GitHub audit logs, and generate evidence reports. The rep explains: \"For the remaining 60 controls, you'll answer questions in Slack, and our AI drafts the policies. Most companies go from zero to audit-ready in 2-3 weeks.\" Schedules a call with the SOC 2 auditor for next week. Sends the CRO a Slack: \"Compliance blocker resolved. We're audit-ready. Can schedule SOC 2 audits now. Those enterprise deals can move forward.\"",
         "momentOfValue": ""
       },
       {
         "time": "4:22 PM (4 Weeks Later) - The Enterprise Unlock",
         "narrative": "The SOC 2 audit report arrives. Marcus forwards it to the CRO with the compliance certification. Within 48 hours, legal has sent the SOC 2 report to all 7 enterprise prospects in compliance review.",
-        "thinking": "This is the difference between missing revenue targets because of compliance blockers versus proving we can operate at enterprise standards. We just unlocked $2.4M in pipeline without killing our roadmap velocity. The board sees we're ready for enterprise scale.",
+        "thinking": "This is the difference between missing revenue targets because of compliance blockers versus proving we can operate at enterprise standards. We just <strong>unlocked $2</strong>.4M in pipeline without killing our roadmap velocity. The board sees we're ready for enterprise scale.",
         "feeling": "The tight chest is gone. The Series B milestone is back on track. His team shipped product features AND achieved compliance. And he'll make his daughter's recital tonight at 7 PM instead of working late on compliance documentation.",
-        "action": "Opens his cost analysis. The security consultant quoted $80K-$120K for 6 months of manual compliance work. Delve cost $12K and delivered audit-ready compliance in 3 weeks with zero engineering hours diverted from the roadmap. ROI: $2.4M in unlocked enterprise revenue, $68K saved in consultant fees, 500+ engineering hours saved.",
-        "momentOfValue": "",
-        "quote": "\"So we went from zero compliance to SOC 2 certified in a month? Without pulling engineers off features? How is that even possible?\""
+        "action": "Opens his cost analysis. The security consultant quoted $80K-$120K for <strong>6 months of</strong> manual compliance work. Delve <strong>cost $12K</strong> and delivered audit-ready compliance in 3 weeks with zero engineering hours diverted from the roadmap. ROI: $2.4M in unlocked enterprise revenue, $68K saved in consultant fees, 500+ engineering hours saved.",
+        "momentOfValue": "Delve unlocked $2.4M in enterprise pipeline and achieved SOC 2 compliance in 3 weeks for $12K—versus the consultant's quote of $80K-$120K for 6 months—saving 500+ engineering hours and proving the team can operate at enterprise standards without killing roadmap velocity."
       }
     ]
   },
@@ -130,13 +113,13 @@
         "time": "7:28 AM - The Impossible Trade-off",
         "narrative": "Patricia sits at her kitchen table with coffee, laptop open, reviewing the metrics before heading to the office. Her daughter is at swim practice—Patricia promised to pick her up at 8:30 AM but knows this might turn into a fire drill.",
         "thinking": "This is the classic operations trap. CFO wants costs down. CEO wants CSAT scores up. Can't have both with traditional offshore outsourcing. If call volume keeps growing at this rate, we'll hit $180K/month by Q4.",
-        "feeling": "Trapped. She inherited this BPO contract from the previous ops director. The offshore agents are cheap per hour but require extensive training, have high turnover (42% annually), and the quality is inconsistent—hence the CSAT drop.  She opens her email. The CEO forwarded a customer complaint from Twitter: \"Called support 3 times, got 3 different answers about my billing issue. This is frustrating.\"",
+        "feeling": "Trapped. She inherited this BPO contract from the previous ops director. The offshore agents are cheap per hour but require extensive training, have high turnover (<strong>42% annually</strong>), and the quality is inconsistent—hence the CSAT drop.  She opens her email. The CEO forwarded a customer complaint from Twitter: \"Called support 3 times, got 3 different answers about my billing issue. This is frustrating.\"",
         "action": "",
         "momentOfValue": ""
       },
       {
         "time": "7:41 AM - The Hypothesis",
-        "narrative": "Patricia remembers the demo she took 3 weeks ago from Leaping AI. Voice agents that could handle common support queries—password resets, billing questions, account status—with self-improving AI. She was skeptical: \"AI can't replace human empathy.\" But the demo was impressive.",
+        "narrative": "Patricia remembers the demo she took <strong>3 weeks ago</strong> from Leaping AI. Voice agents that could handle common support queries—password resets, billing questions, account status—with self-improving AI. She was skeptical: \"AI can't replace human empathy.\" But the demo was impressive.",
         "thinking": "If we're handling 18,000 calls/month and 70% could be automated, that's 12,600 calls at $0.15 instead of $2.40. Quick math: $30K/month vs. current $127K. But what if the AI gives wrong answers and CSAT drops even more?  **First moment of value:** She clicks through the case studies in the proposal. One company (insurance) replaced 60% of their call center volume with Leaping AI and CSAT actually *increased* from 79% to 87% because AI response times were instant and answers were consistent.",
         "feeling": "Cautious optimism. The insurance use case is similar to hers—lots of policy questions, billing inquiries, status updates. Not complex claims requiring empathy, just information retrieval.",
         "action": "Pulls up the Leaping AI proposal she filed away. Pricing: $0.15/call handled by AI vs. $2.40/call with offshore BPO. Promised automation rate: 70% of tier-1 queries.",
@@ -152,7 +135,7 @@
       },
       {
         "time": "8:17 AM (Following Monday) - The Early Results",
-        "narrative": "Patricia is in the office reviewing the pilot week data. 2,847 calls routed to Leaping AI. 2,019 handled autonomously (71% automation rate, matching the promise). 828 escalated to human agents when the AI detected complexity or customer frustration.",
+        "narrative": "Patricia is in the office reviewing the pilot week data. 2,847 calls routed to Leaping AI. 2,019 handled autonomously (<strong>71% automation</strong> rate, matching the promise). 828 escalated to human agents when the AI detected complexity or customer frustration.",
         "thinking": "This is actually working. The AI handles the repetitive stuff perfectly, and humans focus on the complex cases that actually need empathy and judgment. This is the hybrid model that scales.",
         "feeling": "Relief cutting through the stress. She has a credible cost-reduction strategy that doesn't sacrifice quality.",
         "action": "",
@@ -164,7 +147,7 @@
         "thinking": "This is the difference between going into this meeting defensive about costs versus going in with a strategic efficiency plan already validated with real data.",
         "feeling": "Vindication. Her operational instincts were right. She picks up her daughter on time today. The crisis is solved.",
         "action": "",
-        "momentOfValue": ""
+        "momentOfValue": "Leaping AI transformed what could have been a defensive cost conversation into a strategic efficiency presentation—71% automation rate, maintaining quality while positioning to cut call center costs by 60% ($97K annually)."
       }
     ]
   },
@@ -186,18 +169,10 @@
       },
       {
         "time": "11:52 AM - The Search",
-        "narrative": "Jordan opens a new tab and Googles: \"voice API for healthcare appointment scheduling.\" He's looking for any way to avoid building custom voice infrastructure from scratch.",
-        "thinking": "There has to be someone who's already built this. Healthcare startups don't have 12 weeks to build voice infrastructure—they need to ship features. Someone must have solved this problem.",
+        "narrative": "Jordan opens a new tab and Googles: \"voice API for healthcare appointment scheduling.\" He's looking for any way to avoid building custom voice infrastructure from scratch. Jordan calls Priya over. \"Before you spend 12 weeks building custom voice infrastructure, can you spend 2 hours testing this API?\"",
+        "thinking": "There has to be someone who's already built this. Healthcare startups don't have <strong>12 weeks to</strong> build voice infrastructure—they need to ship features. Someone must have solved this problem.",
         "feeling": "A spark of hope. He clicks through the docs. The integration examples show exactly what he needs—phone number setup, natural conversation flows, appointment booking logic.",
         "action": "Clicks through 4 different API providers. Some are call center focused (too complex). Some don't have HIPAA compliance (deal-breaker). Some have 6-month enterprise sales cycles (way too slow).  **First moment of value:** He finds Retell AI. \"Voice AI API for production-ready conversational agents. Sub-500ms latency. HIPAA compliant. Integrates with any telephony system. $0.07/minute pay-as-you-go.\"",
-        "momentOfValue": ""
-      },
-      {
-        "time": "12:18 PM - The Integration Test",
-        "narrative": "Jordan calls Priya over. \"Before you spend 12 weeks building custom voice infrastructure, can you spend 2 hours testing this API?\"",
-        "thinking": "",
-        "feeling": "Relief flooding through him. This isn't a 12-week custom build. This is a 2-week integration project.",
-        "action": "",
         "momentOfValue": ""
       },
       {
@@ -205,8 +180,8 @@
         "narrative": "Jordan opens his roadmap spreadsheet. Changes the \"Voice calling integration\" task from \"8-12 weeks\" to \"2 weeks.\" Updates the v2 launch date from \"delayed TBD\" to \"September 15 (on track).\"",
         "thinking": "",
         "feeling": "The panic is gone. The v2 launch is back on track. His 6-year-old's school play is tomorrow at 2 PM, and for the first time this week, he's confident he won't have to miss it because of a product crisis.",
-        "action": "Slacks the CEO: \"Good news. Found a HIPAA-compliant voice API (Retell AI) that solves the custom voice infrastructure problem. Priya built a working prototype in 90 minutes. V2 launch still on track for Sept 15. Demo-ready for Friday's pilot customer call.\"  CEO responds: \"Wait, we're back on track? How?\"  Jordan: \"Turns out we don't need to build voice infrastructure from scratch. This API handles all the telephony, speech recognition, and conversation management. We just wire it up to our scheduling logic. $0.07/minute vs. the $240K we budgeted for custom development.\"  **Third moment of value:** CEO: \"So we're saving $240K in engineering costs, keeping the launch date, and you can still demo it on Friday? That's the kind of product execution I want to see more of. Write this up for the next board meeting.\"",
-        "momentOfValue": ""
+        "action": "Slacks the CEO: \"Good news. Found a HIPAA-compliant voice API (Retell AI) that solves the custom voice infrastructure problem. Priya built a working prototype in 90 minutes. V2 launch still on track for Sept 15. Demo-ready for Friday's pilot customer call.\"  CEO responds: \"Wait, we're back on track? How?\"  Jordan: \"Turns out we don't need to build voice infrastructure from scratch. This API handles all the telephony, speech recognition, and conversation management. We just wire it up to our scheduling logic. $0.07/minute vs. the $240K we budgeted for custom development.\"  **Third moment of value:** CEO: \"So we're <strong>saving $240K</strong> in engineering costs, keeping the launch date, and you can still demo it on Friday? That's the kind of product execution I want to see more of. Write this up for the next board meeting.\"",
+        "momentOfValue": "Demo-ready for Friday's pilot customer call.\"  CEO responds: \"Wait, we're back on track? How?\"  Jordan: \"Turns out we don't need to build voice infrastructure from scratch."
       }
     ]
   },
@@ -222,23 +197,15 @@
         "time": "4:17 PM - The Realization",
         "narrative": "Michael closes his laptop in the engineering all-hands and walks to his office. His lead backend engineer, Sarah, follows him.",
         "thinking": "",
-        "feeling": "Frustration building. The CEO is already asking why the enterprise roadmap is \"behind schedule.\" The board deck promised enterprise-ready product by September. It's now July, and they haven't even started the Zendesk, Jira, or Slack integrations.  He opens the backlog. 8 \"integration tasks\" in the next 3 sprints. Each estimated at 3-4 weeks. That's 24-32 weeks of engineering effort just to integrate with the SaaS tools every enterprise customer uses.",
+        "feeling": "Frustration building. The CEO is already asking why the enterprise roadmap is \"behind schedule.\" The board deck promised enterprise-ready product by September. It's now July, and they haven't even started the Zendesk, Jira, or Slack integrations.  He opens the backlog. 8 \"integration tasks\" in the next 3 sprints. Each estimated at 3-4 weeks. That's 24-<strong>32 weeks of</strong> engineering effort just to integrate with the SaaS tools every enterprise customer uses.",
         "action": "",
         "momentOfValue": ""
       },
       {
         "time": "4:34 PM - The Discovery",
-        "narrative": "Michael Googles: \"unified API for Salesforce Zendesk Jira integrations.\" He's done this search before, found Zapier (too consumer-focused), found Workato (6-month enterprise sales cycle), found Tray.io (requires non-engineers to build workflows).",
+        "narrative": "Michael Googles: \"unified API for Salesforce Zendesk Jira integrations.\" He's done this search before, found Zapier (too consumer-focused), found Workato (6-month enterprise sales cycle), found Tray.io (requires non-engineers to build workflows). Michael calls Sarah over. \"Before you spend 4 more weeks on the Salesforce integration, spend 2 hours testing this Composio API.\"",
         "thinking": "I need something that my developers can integrate directly into our AI agent codebase. Not a no-code tool for business users. An actual developer API.  **First moment of value:** He finds Composio. \"AI agent infrastructure platform. 250+ pre-built integrations. Unified API with automatic OAuth handling. Built for developers.\"",
         "feeling": "Skeptical but intrigued. He clicks through the docs. The integration examples show exactly what he needs—Python SDK, automatic authentication, one API to access Salesforce, Zendesk, Jira, Slack, HubSpot, and 245 other tools.",
-        "action": "",
-        "momentOfValue": ""
-      },
-      {
-        "time": "4:52 PM - The Integration Test",
-        "narrative": "Michael calls Sarah over. \"Before you spend 4 more weeks on the Salesforce integration, spend 2 hours testing this Composio API.\"",
-        "thinking": "",
-        "feeling": "Relief mixed with frustration. Relief that there's a solution. Frustration that they wasted 3 weeks building something that already exists.",
         "action": "",
         "momentOfValue": ""
       },
@@ -247,8 +214,8 @@
         "narrative": "Michael opens the engineering roadmap. Deletes 6 epics: \"Custom Zendesk Integration,\" \"Custom Jira Integration,\" \"Custom Slack Integration,\" \"Custom HubSpot Integration,\" \"Custom GitHub Integration,\" \"Custom Confluence Integration.\"",
         "thinking": "",
         "feeling": "Control returning. The enterprise launch is back on track. His team can focus on core AI features instead of plumbing. His 10-year wedding anniversary dinner is tonight at 7:30 PM, and he'll actually be there on time instead of staying late debugging OAuth tokens.",
-        "action": "Replaces them with one epic: \"Integrate Composio unified API.\" Estimated effort: 2 weeks instead of 24 weeks.  He Slacks the CEO: \"Good news. Found a unified API platform (Composio) that gives us 250+ integrations with one integration. Saves us 22 weeks of engineering effort. Enterprise launch back on track for September. Will have demo-ready integration next week.\"  CEO: \"Wait. One API gives us Salesforce, Zendesk, Jira, Slack, and everything else? Why weren't we using this from day one?\"  Michael: \"Because I didn't know it existed. But now we do. And it changes our entire integration strategy.\"  **Third moment of value:** CEO: \"This is huge. Can you present this to the board next week? This is the kind of strategic technical decision that proves we're building smart, not just building fast.\"",
-        "momentOfValue": ""
+        "action": "Replaces them with one epic: \"Integrate Composio unified API.\" Estimated effort: <strong>2 weeks in</strong>stead of 24 weeks.  He Slacks the CEO: \"Good news. Found a unified API platform (Composio) that gives us 250+ integrations with one integration. Saves us <strong>22 weeks of</strong> engineering effort. Enterprise launch back on track for September. Will have demo-ready integration next week.\"  CEO: \"Wait. One API gives us Salesforce, Zendesk, Jira, Slack, and everything else? Why weren't we using this from day one?\"  Michael: \"Because I didn't know it existed. But now we do. And it changes our entire integration strategy.\"  **Third moment of value:** CEO: \"This is huge. Can you present this to the board next week? This is the kind of strategic technical decision that proves we're building smart, not just building fast.\"",
+        "momentOfValue": "Composio saved 22 weeks of engineering effort by replacing 6 custom integration epics with one unified API—keeping the enterprise launch on track for September and proving the team can build smart instead of reinventing integration infrastructure."
       }
     ]
   },
@@ -262,7 +229,7 @@
     "timestamps": [
       {
         "time": "9:47 AM - The Stale Documentation Problem",
-        "narrative": "Marcus opens the \"Authentication Flow\" Confluence doc. Last updated: 18 months ago. He reads the steps, then opens the codebase—the implementation doesn't match the docs. The doc mentions a JWT validation service that no longer exists. Code references functions the doc doesn't mention. The documentation is useless.",
+        "narrative": "Marcus opens the \"Authentication Flow\" Confluence doc. Last updated: <strong>18 months ago</strong>. He reads the steps, then opens the codebase—the implementation doesn't match the docs. The doc mentions a JWT validation service that no longer exists. Code references functions the doc doesn't mention. The documentation is useless.",
         "thinking": "I need to understand how authentication works before I can implement this feature, but the docs are 18 months outdated and wrong. I could ask teammates to pair with me, but they're in meetings all day. I'm going to spend 2 days reading 8 files across 3 services trying to reverse-engineer the flow. This is a terrible onboarding experience.",
         "feeling": "Frustration and unproductive blockage. He's a competent engineer, but understanding complex flows in unfamiliar codebases requires documentation or mentorship. Stale docs are worse than no docs—they teach wrong mental models. He's stuck reading code without context, slow and error-prone.",
         "action": "",
@@ -270,7 +237,7 @@
       },
       {
         "time": "11:14 AM - The Synchronized Documentation",
-        "narrative": "Marcus's onboarding buddy mentions Swimm—\"our docs stay in sync with the code automatically.\" He opens Swimm and searches for \"authentication flow.\"  **Moment of value:** Swimm shows step-by-step documentation explaining the authentication flow with code snippets pulled directly from their codebase. The docs show: Step 1 happens in auth-service/validate.ts (with actual code), Step 2 happens in middleware/jwt.ts (with actual code), Step 3 happens in user-service/session.ts. When Marcus clicks through, he sees the current code, not outdated descriptions. Swimm's auto-sync means when code changes, the docs update automatically—documentation never goes stale. He understands the authentication flow in 30 minutes instead of 2 days of reverse-engineering.",
+        "narrative": "Marcus's onboarding buddy mentions Swimm—\"our docs stay in sync with the code automatically.\" He opens Swimm and searches for \"authentication flow.\"  **Moment of value:** Swimm shows step-by-step documentation explaining the authentication flow with code snippets pulled directly from their codebase. The docs show: Step 1 happens in auth-service/validate.ts (with actual code), Step 2 happens in middleware/jwt.ts (with actual code), Step 3 happens in user-service/session.ts. When Marcus clicks through, he sees the current code, not outdated descriptions. Swimm's auto-sync means when code changes, the docs update automatically—documentation never goes stale. He understands the authentication flow in 30 minutes instead of <strong>2 days of</strong> reverse-engineering.",
         "thinking": "Swimm's docs actually match the codebase because they're synchronized with the actual code. I can see exactly where each step happens, what the functions do, and how they connect. This is what onboarding documentation should be—current, code-connected, and maintained automatically instead of rotting in Confluence.",
         "feeling": "",
         "action": "",
@@ -282,7 +249,7 @@
         "thinking": "",
         "feeling": "Productivity and competence. He's contributing to the codebase on Day 3 instead of being blocked by stale documentation. Swimm made complex codebase knowledge accessible to new engineers without requiring constant teammate interruptions or multi-day code archaeology.",
         "action": "Messages his onboarding buddy: \"Implemented auth feature using Swimm docs to understand the flow. Docs actually matched the code (unlike Confluence). Understood complex flow in 30 minutes instead of spending 2 days reverse-engineering. This is the first job where onboarding docs are actually useful because they stay synchronized with the codebase automatically.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Swimm shows step-by-step documentation explaining the authentication flow with code snippets pulled directly from their codebase. The docs show: Step 1 happens in auth-service/validate.ts (with actual code), Step 2 happens in middleware/jwt.ts (with actual code), Step 3 happens in user-service/session.ts. When Marcus clicks through, he sees the current code, not outdated descriptions. Swimm's auto-sync means when code changes, the docs update automatically—documentation never goes stale. He understands the authentication flow in 30 minutes instead of <strong>2 days of reverse</strong>-engineering."
       }
     ]
   },
@@ -296,7 +263,7 @@
     "timestamps": [
       {
         "time": "10:14 AM - The Cross-Codebase Vulnerability Search",
-        "narrative": "Sarah needs to find all instances where user input reaches SQL queries unsanitized. She tries GitHub search: incomplete results because code search doesn't understand semantic patterns like \"is this user input\" across function boundaries. She could manually audit all 40 services, but that's 3 weeks of work and error-prone.",
+        "narrative": "Sarah needs to find all instances where user input reaches SQL queries unsanitized. She tries GitHub search: incomplete results because code search doesn't understand semantic patterns like \"is this user input\" across function boundaries. She could manually audit all 40 services, but that's <strong>3 weeks of</strong> work and error-prone.",
         "thinking": "I need to find every place in our 2M line monorepo where user input flows into SQL queries without sanitization. This is a semantic code pattern, not a simple text search—I need to understand data flow across functions and files. Manual audit would take 3 weeks and I'd still miss instances. GitHub search can't do semantic code analysis. I need code intelligence that understands patterns across the codebase.",
         "feeling": "Scale problem anxiety and audit deadline pressure. Security vulnerabilities need systematic remediation, but finding them all across a large codebase is hard. Missing even one instance means the vulnerability remains. She needs automated code intelligence to find patterns reliably.",
         "action": "",
@@ -304,11 +271,11 @@
       },
       {
         "time": "2:47 PM - The Code Intelligence Platform",
-        "narrative": "Sarah's security team lead suggests Sourcegraph—\"code intelligence platform with semantic search and batch changes.\" She writes a Sourcegraph search query defining the vulnerable pattern: \"user input passed to SQL query without sanitization.\"  **Moment of value:** Sourcegraph searches their entire monorepo (2M lines, 40 services) using semantic code understanding. It finds 23 instances of the vulnerable pattern, showing exactly where user input flows into SQL queries unsanitized. Sarah creates batch changes—automated pull requests fixing all 23 instances with proper parameterized queries. She tracks remediation across the organization: 18 PRs merged, 5 pending review. The systematic fix that would take 3 weeks manually is complete in 3 days because Sourcegraph found all instances reliably and enabled batch remediation.",
-        "thinking": "Sourcegraph just found 23 SQL injection vulnerabilities across our entire codebase in minutes using semantic search that understands code patterns. The batch changes feature let me fix all 23 instances systematically instead of manually creating PRs for each service. This is security remediation at scale—automated vulnerability discovery and systematic fixes across large codebases.",
+        "narrative": "Sarah's security team lead suggests Sourcegraph—\"code intelligence platform with semantic search and batch changes.\" She writes a Sourcegraph search query defining the vulnerable pattern: \"user input passed to SQL query without sanitization.\"  **Moment of value:** Sourcegraph searches their entire monorepo (2M lines, 40 services) using semantic code understanding. It finds <strong>23 instances</strong> of the vulnerable pattern, showing exactly where user input flows into SQL queries unsanitized. Sarah creates batch changes—automated pull requests fixing all <strong>23 instances</strong> with proper parameterized queries. She tracks remediation across the organization: <strong>18 PRs</strong> merged, 5 pending review. The systematic fix that would take 3 weeks manually is complete in 3 days because Sourcegraph found all instances reliably and enabled batch remediation.",
+        "thinking": "Sourcegraph just found 23 SQL injection vulnerabilities across our entire codebase in minutes using semantic search that understands code patterns. The batch changes feature let me fix all <strong>23 instances</strong> systematically instead of manually creating PRs for each service. This is security remediation at scale—automated vulnerability discovery and systematic fixes across large codebases.",
         "feeling": "",
         "action": "",
-        "momentOfValue": "Sourcegraph searches their entire monorepo (2M lines, 40 services) using semantic code understanding. It finds 23 instances of the vulnerable pattern, showing exactly where user input flows into SQL queries unsanitized. Sarah creates batch changes—automated pull requests fixing all 23 instances with proper parameterized queries. She tracks remediation across the organization: 18 PRs merged, 5 pending review. The systematic fix that would take 3 weeks manually is complete in 3 days because Sourcegraph found all instances reliably and enabled batch remediation."
+        "momentOfValue": "Sourcegraph searches their entire monorepo (2M lines, 40 services) using semantic code understanding. It finds <strong>23 instances</strong> of the vulnerable pattern, showing exactly where user input flows into SQL queries unsanitized. Sarah creates batch changes—automated pull requests fixing all <strong>23 instances</strong> with proper parameterized queries. She tracks remediation across the organization: <strong>18 PRs</strong> merged, 5 pending review. The systematic fix that would take 3 weeks manually is complete in 3 days because Sourcegraph found all instances reliably and enabled batch remediation."
       }
     ]
   },
@@ -350,7 +317,7 @@
         "time": "9:42 AM - The Data Crisis",
         "narrative": "Lisa pulls up the data engineering dashboard. The custom scrapers have processed 63 of 500 target law firm websites. Error rate: 47%. The data is full of HTML tags, broken formatting, and incomplete content extraction.",
         "thinking": "This is exactly what I was afraid of. We're trying to scrape 500 different website structures with custom code. Every site is different—some use JavaScript rendering, some have rate limiting, some have complex navigation. We're never going to finish in time.",
-        "feeling": "Panic. The CEO announced this launch to prospects 3 weeks ago. Law firms are expecting a demo. If the AI is trained on garbage data, it'll give garbage answers.",
+        "feeling": "Panic. The CEO announced this launch to prospects <strong>3 weeks ago</strong>. Law firms are expecting a demo. If the AI is trained on garbage data, it'll give garbage answers.",
         "action": "",
         "momentOfValue": ""
       },
@@ -368,7 +335,7 @@
         "thinking": "",
         "feeling": "Relief. The AI can now be trained on quality data. The launch will happen on time. Her credibility is intact.",
         "action": "Updates the CEO: \"Data extraction problem solved. Using Firecrawl API instead of custom scrapers. All 500 sites processed with clean data. Launch back on track.\"",
-        "momentOfValue": ""
+        "momentOfValue": "The API returns clean, structured markdown in 4 seconds. No HTML tags. No broken formatting. Just the actual legal content her AI needs for training."
       }
     ]
   },
@@ -384,7 +351,7 @@
         "time": "2:14 PM - The Resource Constraint",
         "narrative": "Jake walks out of the engineering planning meeting. The VP Engineering was clear: \"We have zero capacity. Your feedback tool is prioritized for Q4, not Q3.\"",
         "thinking": "This is the classic product manager nightmare. I have a great idea, executive buy-in, but no engineering resources. If I wait until Q4, someone else will have shipped this internally and I'll lose credit for the initiative.",
-        "feeling": "Frustration. The CEO specifically asked for this tool 3 weeks ago. If Jake goes back and says \"engineering can't build it until Q4,\" it makes product look slow.",
+        "feeling": "Frustration. The CEO specifically asked for this tool <strong>3 weeks ago</strong>. If Jake goes back and says \"engineering can't build it until Q4,\" it makes product look slow.",
         "action": "",
         "momentOfValue": ""
       },
@@ -402,7 +369,7 @@
         "thinking": "",
         "feeling": "",
         "action": "Presents to the CEO: \"Here's the customer feedback analysis tool you asked for. Built it without engineering resources using Wordware. It's already running in production.\"",
-        "momentOfValue": "",
+        "momentOfValue": "Wordware's AI turns his English description into a working application. He tests it. It actually works. Gmail connected, sentiment analysis running, Slack notifications posting.",
         "quote": "\"Wait, you built this yourself? In 3 weeks? How?\""
       }
     ]
@@ -417,8 +384,8 @@
     "timestamps": [
       {
         "time": "7:23 AM - The Data Search Problem",
-        "narrative": "Chen opens their data warehouse. They have 47 TB of dashcam footage, LiDAR scans, and GPS data from test vehicles. But searching for \"pedestrian + rain + crosswalk\" requires manually querying multiple databases and correlating timestamps across different sensor types.",
-        "thinking": "This is going to take 3 days minimum. Query the video database for rain conditions, cross-reference with object detection logs for pedestrians, match timestamps with LiDAR data. By the time I find the training data, I won't have time to actually train the model.",
+        "narrative": "Chen opens their data warehouse. They have <strong>47 TB of dashcam</strong> footage, LiDAR scans, and GPS data from test vehicles. But searching for \"pedestrian + rain + crosswalk\" requires manually querying multiple databases and correlating timestamps across different sensor types.",
+        "thinking": "This is going to take <strong>3 days minimum</strong>. Query the video database for rain conditions, cross-reference with object detection logs for pedestrians, match timestamps with LiDAR data. By the time I find the training data, I won't have time to actually train the model.",
         "feeling": "Pressure. The quarterly review is in 2 weeks. Leadership expects to see measurable improvement in wet-weather pedestrian detection. If he doesn't have the right training data, the model won't improve.",
         "action": "",
         "momentOfValue": ""
@@ -426,7 +393,7 @@
       {
         "time": "8:05 AM - The Database Discovery",
         "narrative": "Chen's colleague mentions they switched to Activeloop's Deep Lake for multimodal data storage last month.",
-        "thinking": "This search would have taken me 3 days manually. Deep Lake did it in 4 seconds with 85.6% accuracy. This changes my entire workflow.",
+        "thinking": "This search would have taken me 3 days manually. Deep Lake did it in 4 seconds with 85.<strong>6% accuracy</strong>. This changes my entire workflow.",
         "feeling": "",
         "action": "Opens Deep Lake and runs a query: \"Find all scenes with pedestrians in crosswalks during rain, include dashcam video, LiDAR point clouds, and GPS coordinates.\"  **Moment of value:** Deep Lake returns 847 relevant scenes in 4 seconds. The multimodal RAG system automatically correlated video, LiDAR, and GPS data. Each result includes all sensor data from the same moment, ready for training.",
         "momentOfValue": "Deep Lake returns 847 relevant scenes in 4 seconds. The multimodal RAG system automatically correlated video, LiDAR, and GPS data. Each result includes all sensor data from the same moment, ready for training."
@@ -435,9 +402,9 @@
         "time": "9:47 AM - The Training Pipeline",
         "narrative": "Chen feeds the 847 rainy-weather pedestrian scenes into his model training pipeline. By Monday afternoon, he has measurably improved wet-weather detection accuracy.",
         "thinking": "",
-        "feeling": "Confidence. The demo will show real improvement. His data search workflow is 100x faster. He'll make his daughter's school recital tonight instead of working late on data queries.",
+        "feeling": "Confidence. The demo will show real improvement. His data search workflow is <strong>100x faster</strong>. He'll make his daughter's school recital tonight instead of working late on data queries.",
         "action": "Updates his manager: \"Found the training data we needed using Deep Lake's multimodal search. Model training is ahead of schedule. Wet-weather pedestrian detection improved by 34%. Ready for quarterly review.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Deep Lake returns 847 relevant scenes in 4 seconds. The multimodal RAG system automatically correlated video, LiDAR, and GPS data. Each result includes all sensor data from the same moment, ready for training."
       }
     ]
   },
@@ -471,7 +438,7 @@
         "thinking": "",
         "feeling": "Relief and validation. The v3 launch stays on schedule. She solved the problem by recognizing what to build vs. what to buy.",
         "action": "Updates the CEO: \"Voice support is back in the v3 launch. Found a voice API (Vapi) that handles all the infrastructure. We just build the conversation logic. Demo-ready by Friday.\"",
-        "momentOfValue": "",
+        "momentOfValue": "She reads the docs. The integration is literally: define your conversation flow, connect to your business logic API, deploy. Vapi handles all the telephony, speech recognition, and call management infrastructure.",
         "quote": "\"So we're back on the original timeline? How?\""
       }
     ]
@@ -486,7 +453,7 @@
     "timestamps": [
       {
         "time": "3:47 PM - The Needle in Haystack",
-        "narrative": "Kevin has 47 TB of sensor data from their robot fleet—LiDAR, cameras, IMU data, GPS logs. Somewhere in there is the pattern causing object detection failures. Finding it manually means writing custom scripts to query multiple databases and correlate timestamps.",
+        "narrative": "Kevin has <strong>47 TB of sensor</strong> data from their robot fleet—LiDAR, cameras, IMU data, GPS logs. Somewhere in there is the pattern causing object detection failures. Finding it manually means writing custom scripts to query multiple databases and correlate timestamps.",
         "thinking": "I need to find every instance where the robot's camera saw a package but the object detection model failed to classify it. That requires searching video logs, correlating with detection model outputs, and cross-referencing LiDAR to confirm the object was actually there. Three days minimum.",
         "feeling": "Time pressure. The customer demo is in 6 days. If the robots fail during the demo, the deal is dead.",
         "action": "",
@@ -504,9 +471,9 @@
         "time": "5:18 PM - The Fix",
         "narrative": "Kevin identifies the root cause: their model wasn't trained on reflective packaging in low-light warehouses. He schedules retraining with the correct data.",
         "thinking": "",
-        "feeling": "Relief. The demo will work. The deal is safe. He solved in 90 minutes what would have taken 3 days of manual log analysis.",
+        "feeling": "Relief. The demo will work. The deal is safe. He solved in 90 minutes what would have taken <strong>3 days of</strong> manual log analysis.",
         "action": "Updates the VP Engineering: \"Found the object detection bug using Roboto's log analysis. Root cause identified. Fix in progress. Demo on track.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Roboto returns 47 matching events in 20 minutes, with automatic correlation across camera, LiDAR, and detection logs. Each result shows the exact sensor data, timestamps, and environmental conditions."
       }
     ]
   },
@@ -529,7 +496,7 @@
       {
         "time": "11:47 AM - The ML Alternative",
         "narrative": "Emma's designer mentions Curie—\"3D generation from photos using ML. Used by StockX for sneaker models.\"",
-        "thinking": "If this quality holds across all sneakers, we can model 200 sneakers for $8K instead of $180K, and finish in 2 days instead of 8 weeks.",
+        "thinking": "If this quality holds across all sneakers, we can model 200 sneakers for $8K instead of $180K, and finish in <strong>2 days in</strong>stead of 8 weeks.",
         "feeling": "",
         "action": "Uploads photos of one sneaker from 12 angles (photos they already have from their product photography). Curie's ML generates a 3D model in 4 minutes.  **Moment of value:** The model is photorealistic. Emma can view it in AR on her phone. It looks production-quality. Cost: $40 per model vs. $900 for traditional 3D artists.",
         "momentOfValue": "The model is photorealistic. Emma can view it in AR on her phone. It looks production-quality. Cost: $40 per model vs. $900 for traditional 3D artists."
@@ -538,9 +505,9 @@
         "time": "2:34 PM - The Launch Save",
         "narrative": "Emma processes all 200 sneakers through Curie over 2 days. Total cost: $8,000. The AR feature launches on schedule with full product catalog support.",
         "thinking": "",
-        "feeling": "Vindication. The launch happens. The holiday season timing is preserved. She found a 10x better solution.",
-        "action": "Updates the board: \"AR feature launching on time with complete product catalog. Used ML-generated 3D models (Curie) instead of traditional artists—95% cost savings, 10x faster production.\"",
-        "momentOfValue": ""
+        "feeling": "Vindication. The launch happens. The holiday season timing is preserved. She found a <strong>10x better</strong> solution.",
+        "action": "Updates the board: \"AR feature launching on time with complete product catalog. Used ML-generated 3D models (Curie) instead of traditional artists—95% cost savings, <strong>10x faster</strong> production.\"",
+        "momentOfValue": "The model is photorealistic. Emma can view it in AR on her phone. It looks production-quality. Cost: $40 per model vs. $900 for traditional 3D artists."
       }
     ]
   },
@@ -574,7 +541,7 @@
         "thinking": "",
         "feeling": "Impact. Technology is finally enabling mission instead of blocking it. Families are getting help faster.",
         "action": "Reports to the grant committee: \"Successfully scaled to 1,200 families using AI automation (Gooey.AI). 85% of intake requests handled automatically, human team focuses on complex cases. Under budget.\"",
-        "momentOfValue": ""
+        "momentOfValue": "In 3 hours, Marcus builds a working chatbot that refugees can text in Arabic, Spanish, or English, and get automated responses about available services with links to schedule human caseworker appointments."
       }
     ]
   },
@@ -599,7 +566,7 @@
         "narrative": "Jordan's DevOps lead mentions they're testing StackGen—\"infrastructure-from-code that auto-generates Terraform and Helm from application code.\"",
         "thinking": "This is exactly what infrastructure-as-code should be—automatically derived from application code, not manually duplicated in a different syntax.",
         "feeling": "",
-        "action": "Points StackGen at her application codebase. The intelligent agents analyze her database calls, Redis caching, S3 uploads, and security requirements.  **Moment of value:** StackGen generates Terraform configs and Helm charts automatically, with proper security policies, compliance guardrails, and best practices. What she estimated as 5-6 days of manual work is ready for review in 20 minutes.",
+        "action": "Points StackGen at her application codebase. The intelligent agents analyze her database calls, Redis caching, S3 uploads, and security requirements.  **Moment of value:** StackGen generates Terraform configs and Helm charts automatically, with proper security policies, compliance guardrails, and best practices. What she estimated as 5-<strong>6 days of</strong> manual work is ready for review in 20 minutes.",
         "momentOfValue": "StackGen generates Terraform configs and Helm charts automatically, with proper security policies, compliance guardrails, and best practices. What she estimated as 5-6 days of manual work is ready for review in 20 minutes."
       },
       {
@@ -607,8 +574,8 @@
         "narrative": "Jordan reviews the generated configs, makes minor adjustments, and deploys to staging. The infrastructure provisions correctly with all security policies and compliance requirements in place.",
         "thinking": "",
         "feeling": "Relief and validation. The launch happens on time. She can focus on actual feature development instead of DevOps toil.",
-        "action": "Updates her manager: \"Infrastructure complete. Production deployment ready for Friday. Used StackGen to auto-generate configs from application code—saved 5 days of manual Terraform/Helm work.\"",
-        "momentOfValue": ""
+        "action": "Updates her manager: \"Infrastructure complete. Production deployment ready for Friday. Used StackGen to auto-generate configs from application code—saved <strong>5 days of</strong> manual Terraform/Helm work.\"",
+        "momentOfValue": "StackGen generates Terraform configs and Helm charts automatically, with proper security policies, compliance guardrails, and best practices. What she estimated as <strong>5-6 days of manual</strong> work is ready for review in 20 minutes."
       }
     ]
   },
@@ -631,7 +598,7 @@
       {
         "time": "4:52 PM - The Tracing Dashboard",
         "narrative": "Sarah's colleague mentions AgentOps—\"observability for AI agents, tracing for AutoGen workflows.\"",
-        "thinking": "Holy shit. I can see the entire agent execution trace. The bug is obvious now—it would have taken me 4 hours of blind debugging without this visibility.",
+        "thinking": "Holy shit. I can see the entire agent execution trace. The bug is obvious now—it would have taken me <strong>4 hours of</strong> blind debugging without this visibility.",
         "feeling": "",
         "action": "Integrates AgentOps SDK into their workflow (4 lines of code). Reruns the test. Opens the AgentOps dashboard.  **Moment of value:** The tracing shows the complete execution flow across all 7 agents, with every API call, decision point, and data exchange visualized. She can see exactly where the ReAct loop is failing—the retrieval agent is re-querying the same information because it's not properly parsing the response format.",
         "momentOfValue": "The tracing shows the complete execution flow across all 7 agents, with every API call, decision point, and data exchange visualized. She can see exactly where the ReAct loop is failing—the retrieval agent is re-querying the same information because it's not properly parsing the response format."
@@ -642,7 +609,7 @@
         "thinking": "",
         "feeling": "Confidence. The demo will work. The agents are stable. The investors will see a reliable, production-grade system.",
         "action": "Updates the CEO: \"AI agent issue fixed. Root cause was retrieval loop error. Found and fixed using AgentOps tracing in 40 minutes. Demo-ready.\"",
-        "momentOfValue": ""
+        "momentOfValue": "The tracing shows the complete execution flow across all 7 agents, with every API call, decision point, and data exchange visualized. She can see exactly where the ReAct loop is failing—the retrieval agent is re-querying the same information because it's not properly parsing the response format."
       }
     ]
   },
@@ -658,7 +625,7 @@
         "time": "10:23 AM - The Mobile Disaster",
         "narrative": "Taylor opens the landing page on her phone. The hero image is cut off. The CTA button is below the fold. The product details section has text overlapping images. On desktop it's beautiful. On mobile it's unusable.",
         "thinking": "This is my nightmare. We optimized for desktop designers, not mobile users. 75% of our DTC beauty brand traffic is mobile. If this page doesn't convert on mobile, the entire launch fails.",
-        "feeling": "Panic. The developer quoted 3 days to fix the mobile layout manually. The launch is in 5 days. Marketing already scheduled the email blast.",
+        "feeling": "Panic. The developer quoted <strong>3 days to</strong> fix the mobile layout manually. The launch is in 5 days. Marketing already scheduled the email blast.",
         "action": "",
         "momentOfValue": ""
       },
@@ -676,7 +643,7 @@
         "thinking": "",
         "feeling": "Confidence. The launch will work on the devices customers actually use. She proved she can ship without being blocked by engineering.",
         "action": "Updates the CEO: \"Landing page ready for launch. Mobile-optimized using Replo—23% higher mobile conversion. A/B testing 3 variants to maximize revenue.\"",
-        "momentOfValue": ""
+        "momentOfValue": "The mobile version looks professional and loads fast. Taylor A/B tests 3 CTA button placements using Replo's built-in testing. The AI-optimized mobile layout shows 23% higher conversion than the broken version."
       }
     ]
   },
@@ -691,7 +658,7 @@
       {
         "time": "8:42 AM - The Cost-Performance Trap",
         "narrative": "Daniel reviews his options: (A) Keep large GPU instances running 24/7 at $47K/month, or (B) scale up manually during Black Friday but risk missing the spike and crashing.",
-        "thinking": "This is insane. We need 10x capacity for 72 hours and 1x capacity for the other 690 hours of the month. But traditional infrastructure doesn't work that way—I either overpay for idle resources or risk downtime.",
+        "thinking": "This is insane. We need 10x capacity for 72 hours and 1x capacity for the other <strong>690 hours of</strong> the month. But traditional infrastructure doesn't work that way—I either overpay for idle resources or risk downtime.",
         "feeling": "Frustration. The CFO is going to see $47K in GPU costs and question whether ML is worth it.",
         "action": "",
         "momentOfValue": ""
@@ -701,7 +668,7 @@
         "narrative": "Daniel's colleague mentions Cerebrium—\"serverless AI infrastructure, auto-scales, pay only for actual usage.\"",
         "thinking": "This is how infrastructure should work—scale with demand, not sit idle. We get better performance at lower cost.",
         "feeling": "",
-        "action": "Deploys their recommendation model to Cerebrium. Tests scaling: when traffic spikes from 100 req/sec to 10,000 req/sec, Cerebrium auto-scales GPU instances in seconds, maintains <50ms latency, then scales down when traffic drops.  **Moment of value:** Cost projection: $6,200 for Black Friday weekend vs. $47K for always-on infrastructure. Same performance, 87% lower cost because they only pay for actual compute usage.",
+        "action": "Deploys their recommendation model to Cerebrium. Tests scaling: when traffic spikes from 100 req/sec to 10,000 req/sec, Cerebrium auto-scales GPU instances in seconds, maintains <50ms latency, then scales down when traffic drops.  **Moment of value:** Cost projection: $6,200 for Black Friday weekend vs. $47K for always-on infrastructure. Same performance, <strong>87% lower cost</strong> because they only pay for actual compute usage.",
         "momentOfValue": "Cost projection: $6,200 for Black Friday weekend vs. $47K for always-on infrastructure. Same performance, 87% lower cost because they only pay for actual compute usage."
       },
       {
@@ -710,7 +677,7 @@
         "thinking": "",
         "feeling": "Relief. The CFO will see responsible infrastructure optimization instead of uncontrolled ML spending. Black Friday will scale without manual intervention.",
         "action": "Sends to the CFO: \"Migrated ML inference to serverless (Cerebrium). Black Friday scaling handled automatically. Cost reduced from $47K to $12K monthly while maintaining performance.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Cost projection: $6,200 for Black Friday weekend vs. $47K for always-on infrastructure. Same performance, <strong>87% lower cost</strong> because they only pay for actual compute usage."
       }
     ]
   },
@@ -744,7 +711,7 @@
         "thinking": "",
         "feeling": "Control returning. Pipeline generation is becoming predictable. Her team is closing deals with warm leads instead of burning out on cold outbound.",
         "action": "Updates the CEO: \"Changed prospecting strategy from cold outbound to warm leads with evaluation signals (Reo.Dev). Response rates 18x higher. Q4 pipeline building faster with better-quality opportunities.\"",
-        "momentOfValue": ""
+        "momentOfValue": "The platform identifies 12 of those developers as engineering leaders at companies matching their ICP, with specific signals: \"Explored pricing page 3x,\" \"Cloned GitHub starter template,\" \"Asked questions in community Slack.\" These are warm leads with actual product interest, not cold prospects."
       }
     ]
   },
@@ -759,8 +726,8 @@
       {
         "time": "7:23 AM - The Cost Spike",
         "narrative": "Alex opens the OpenAI invoice: $47,242 for October vs. $31,087 for September. No breakdown by feature, user, or request type. Just a total token count and cost.",
-        "thinking": "This is burning runway at 1.5x our projected rate. If costs keep growing like this, we have 11 months of runway instead of 18. I need to know where the money is going—which features, which API calls, which users.",
-        "feeling": "Panic. The investors expect 18 months of runway. If they find out we're burning cash faster, they'll question whether the founding team can manage burn rate.",
+        "thinking": "This is burning runway at 1.5x our projected rate. If costs keep growing like this, we have <strong>11 months of</strong> runway instead of 18. I need to know where the money is going—which features, which API calls, which users.",
+        "feeling": "Panic. The investors expect <strong>18 months of</strong> runway. If they find out we're burning cash faster, they'll question whether the founding team can manage burn rate.",
         "action": "",
         "momentOfValue": ""
       },
@@ -774,11 +741,11 @@
       },
       {
         "time": "9:47 AM - The Runway Extension",
-        "narrative": "Alex changes classification calls to use GPT-3.5. Projected monthly LLM costs drop from $47K to $31K. That's $192K annual savings—adding 4 months to their runway.",
+        "narrative": "Alex changes classification calls to use GPT-3.5. Projected monthly LLM costs drop from $47K to $31K. That's <strong>$192K annual</strong> savings—adding <strong>4 months to</strong> their runway.",
         "thinking": "",
         "feeling": "Relief. The burn rate is back on track. The runway extension gives them more time to hit revenue milestones. He can focus on features instead of emergency cost-cutting.",
         "action": "Updates the CEO: \"Found and fixed LLM cost issue using Keywords AI observability. Monthly costs down from $47K to $31K through smart model routing. Runway extended by 4 months.\"",
-        "momentOfValue": ""
+        "momentOfValue": "He integrates Keywords AI's SDK (literally 2 lines of code). Within hours, the dashboard shows that 23% of their GPT-4 calls are simple classification tasks that could use GPT-3.5 instead, saving 90% per call."
       }
     ]
   },
@@ -793,7 +760,7 @@
       {
         "time": "2:47 PM - The Complexity Wall",
         "narrative": "Nina reviews her technical to-do list for real-time sync: Set up WebSocket server, implement state management, handle offline/online transitions, write conflict resolution logic, manage database schema migrations, handle real-time subscriptions.",
-        "thinking": "This is 4-6 weeks of work minimum. I built the core task management features in 3 weeks, and now real-time sync is going to take twice as long. The CEO keeps asking \"isn't real-time just a WebSocket?\"",
+        "thinking": "This is 4-<strong>6 weeks of</strong> work minimum. I built the core task management features in 3 weeks, and now real-time sync is going to take twice as long. The CEO keeps asking \"isn't real-time just a WebSocket?\"",
         "feeling": "Overwhelmed. She's a solo developer. Building production-quality real-time infrastructure is a full engineering team's worth of work.",
         "action": "",
         "momentOfValue": ""
@@ -801,7 +768,7 @@
       {
         "time": "3:28 PM - The Backend Replacement",
         "narrative": "Nina's developer friend mentions Convex—\"real-time fullstack TypeScript platform, reactive sync handled automatically.\"",
-        "thinking": "I just replaced 4-6 weeks of WebSocket and state management complexity with a backend platform that handles it automatically. This changes the entire architecture.",
+        "thinking": "I just replaced 4-<strong>6 weeks of</strong> WebSocket and state management complexity with a backend platform that handles it automatically. This changes the entire architecture.",
         "feeling": "",
         "action": "Reads the Convex docs. Writes TypeScript functions defining her backend logic and database schema. Convex automatically handles real-time updates, subscriptions, and state sync across all connected clients.  **Moment of value:** When one user creates a task, it instantly appears on their teammate's screen across web and mobile—without Nina writing any WebSocket code, state management, or sync logic. Convex's reactive sync handles everything automatically.",
         "momentOfValue": "When one user creates a task, it instantly appears on their teammate's screen across web and mobile—without Nina writing any WebSocket code, state management, or sync logic. Convex's reactive sync handles everything automatically."
@@ -811,8 +778,8 @@
         "narrative": "Nina deploys the Convex-powered backend to production. Real-time collaboration works flawlessly across all clients. The launch stays on the original timeline.",
         "thinking": "",
         "feeling": "Relief and validation. She shipped the hard feature without drowning in infrastructure complexity. The launch happens on time. She's home by 6 PM for her book club meeting.",
-        "action": "Updates the CEO: \"Real-time sync complete. Used Convex instead of custom WebSocket infrastructure—saved 4 weeks of development. Launch on track for September 15.\"",
-        "momentOfValue": ""
+        "action": "Updates the CEO: \"Real-time sync complete. Used Convex instead of custom WebSocket infrastructure—saved <strong>4 weeks of</strong> development. Launch on track for September 15.\"",
+        "momentOfValue": "When one user creates a task, it instantly appears on their teammate's screen across web and mobile—without Nina writing any WebSocket code, state management, or sync logic. Convex's reactive sync handles everything automatically."
       }
     ]
   },
@@ -837,7 +804,7 @@
         "narrative": "Sam's CTO mentions they should try Mintlify—\"AI generates developer docs from code automatically.\"",
         "thinking": "This is how documentation should work—automatically derived from code, not manually duplicated by humans who can't keep up with dev velocity.",
         "feeling": "",
-        "action": "Connects Mintlify to their GitHub repo. The AI analyzes their TypeScript code, API endpoints, inline comments, and generates comprehensive documentation—parameter descriptions, code examples, authentication guides.  **Moment of value:** What Sam estimated as 2 weeks of manual documentation updates is done automatically. Every API endpoint documented with working code examples. Authentication flow explained with actual implementation code. All kept in sync with every code change automatically.",
+        "action": "Connects Mintlify to their GitHub repo. The AI analyzes their TypeScript code, API endpoints, inline comments, and generates comprehensive documentation—parameter descriptions, code examples, authentication guides.  **Moment of value:** What Sam estimated as <strong>2 weeks of</strong> manual documentation updates is done automatically. Every API endpoint documented with working code examples. Authentication flow explained with actual implementation code. All kept in sync with every code change automatically.",
         "momentOfValue": "What Sam estimated as 2 weeks of manual documentation updates is done automatically. Every API endpoint documented with working code examples. Authentication flow explained with actual implementation code. All kept in sync with every code change automatically."
       },
       {
@@ -846,7 +813,7 @@
         "thinking": "",
         "feeling": "Confidence. Investors will see professional, up-to-date documentation. He's not spending 40% of his time on manual doc updates anymore.",
         "action": "Updates the CTO: \"API documentation complete and current. Using Mintlify to auto-generate from code. Docs will stay synchronized with every release. Due diligence ready.\"",
-        "momentOfValue": ""
+        "momentOfValue": "What Sam estimated as <strong>2 weeks of manual</strong> documentation updates is done automatically. Every API endpoint documented with working code examples. Authentication flow explained with actual implementation code. All kept in sync with every code change automatically."
       }
     ]
   },
@@ -861,7 +828,7 @@
       {
         "time": "3:42 PM - The Infrastructure Rabbit Hole",
         "narrative": "Priya specs out the onboarding workflow: send welcome email, wait 2 days, check if user completed setup, send reminder if not, wait 3 days, offer phone support if still incomplete. Managing this requires job queues, state storage, retry logic, monitoring.",
-        "thinking": "The business logic is simple, but implementing it requires building a distributed job scheduling system. That's 2-3 weeks of infrastructure work for a feature that should take 2 days to build.",
+        "thinking": "The business logic is simple, but implementing it requires building a distributed job scheduling system. That's 2-<strong>3 weeks of</strong> infrastructure work for a feature that should take <strong>2 days to</strong> build.",
         "feeling": "Frustration. She's a backend engineer, not a DevOps specialist. She wants to build product features, not queue infrastructure.",
         "action": "",
         "momentOfValue": ""
@@ -879,8 +846,8 @@
         "narrative": "Priya deploys the onboarding workflow to production. It scales from 10 to 10,000 concurrent user workflows automatically. User activation rates improve 34% within the first week.",
         "thinking": "",
         "feeling": "Satisfaction. The feature works. Users are getting better onboarding. She built product logic, not infrastructure.",
-        "action": "Updates her manager: \"Onboarding automation live. Used Inngest for workflow orchestration—shipped in 2 days instead of 3 weeks building custom queue infrastructure.\"",
-        "momentOfValue": ""
+        "action": "Updates her manager: \"Onboarding automation live. Used Inngest for workflow orchestration—shipped in <strong>2 days in</strong>stead of 3 weeks building custom queue infrastructure.\"",
+        "momentOfValue": "Inngest's workflow engine handles all scheduling, retries, and state management automatically. Priya's 7-day multi-step onboarding workflow runs across thousands of users with zero infrastructure management—automatic scaling, retries on failure, and persistent state."
       }
     ]
   },
@@ -896,7 +863,7 @@
         "time": "11:23 AM - The SendGrid Maze",
         "narrative": "Kevin has 23 tabs open trying to configure SendGrid: domain authentication, IP warming, suppression lists, template editors, API keys scattered across different dashboard sections. His test email landed in spam.",
         "thinking": "I'm a backend engineer, not an email deliverability expert. Why does sending transactional email require navigating a UI designed for marketing teams with features I don't understand?",
-        "feeling": "Frustration. He's been debugging email configuration for 2 hours instead of building actual product features.",
+        "feeling": "Frustration. He's been debugging email configuration for <strong>2 hours in</strong>stead of building actual product features.",
         "action": "",
         "momentOfValue": ""
       },
@@ -914,7 +881,7 @@
         "thinking": "",
         "feeling": "Relief. Emails work. He's building features again instead of fighting email infrastructure.",
         "action": "Updates his team: \"Transactional email complete using Resend API. Switched from SendGrid—cleaner API, better deliverability, developer-friendly.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Resend's API is actually designed for developers—clear documentation, TypeScript support, webhook events, and detailed logs. No confusing marketing dashboard. No mystery configuration pages. Just send email and see exactly what happened."
       }
     ]
   },
@@ -948,7 +915,7 @@
         "thinking": "",
         "feeling": "Satisfaction. He delivered the tool without being blocked by frontend complexity. The ops team is more efficient.",
         "action": "Updates his manager: \"Admin dashboard live. Built in pure Python using Reflex—no need to learn React. Ops team can now monitor 30% of Fortune 500 internal tools built this way.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Reflex generates a responsive React frontend from his Python code automatically. The operations team gets a professional web dashboard. Marcus never wrote a line of JavaScript."
       }
     ]
   },
@@ -962,7 +929,7 @@
     "timestamps": [
       {
         "time": "9:42 AM - The Auth Infrastructure Scope",
-        "narrative": "Jordan lists everything needed for production API auth: key generation, rotation, revocation, per-customer rate limiting (500 req/min for tier-1, 5000 for enterprise), usage analytics, abuse detection, audit logs. Building this is 6 weeks minimum.",
+        "narrative": "Jordan lists everything needed for production API auth: key generation, rotation, revocation, per-customer rate limiting (500 req/min for tier-1, 5000 for enterprise), usage analytics, abuse detection, audit logs. Building this is <strong>6 weeks minimum</strong>.",
         "thinking": "API authentication isn't just generating random tokens. It's rate limiting, security, analytics, compliance—an entire infrastructure layer. I'm a small team, not an auth platform company.",
         "feeling": "Overwhelmed. The API product is ready, but auth infrastructure is blocking the launch.",
         "action": "",
@@ -973,7 +940,7 @@
         "narrative": "Jordan finds Unkey—\"open-source API authentication and management platform.\"",
         "thinking": "This is the build vs. buy decision done right. I'm not building custom auth infrastructure—I'm using battle-tested open-source tools and focusing on my actual product.",
         "feeling": "",
-        "action": "Deploys Unkey's open-source auth server. Integrates the SDK into her API. Defines rate limits per customer tier in the dashboard.  **Moment of value:** In an afternoon, Jordan has production-ready API authentication—key management, per-customer rate limiting, real-time analytics, and audit logs. What would have taken 6 weeks to build from scratch is deployed and working.",
+        "action": "Deploys Unkey's open-source auth server. Integrates the SDK into her API. Defines rate limits per customer tier in the dashboard.  **Moment of value:** In an afternoon, Jordan has production-ready API authentication—key management, per-customer rate limiting, real-time analytics, and audit logs. What would have taken <strong>6 weeks to</strong> build from scratch is deployed and working.",
         "momentOfValue": "In an afternoon, Jordan has production-ready API authentication—key management, per-customer rate limiting, real-time analytics, and audit logs. What would have taken 6 weeks to build from scratch is deployed and working."
       },
       {
@@ -981,8 +948,8 @@
         "narrative": "Jordan's API launches with secure authentication, granular rate limiting, and detailed analytics showing exactly which customers are approaching their limits.",
         "thinking": "",
         "feeling": "Relief. The API launches on time with proper security. She didn't waste 6 weeks reinventing auth infrastructure.",
-        "action": "Updates the CEO: \"API authentication live. Using Unkey open-source platform—saved 6 weeks of custom auth development. Launching with enterprise-grade security day one.\"",
-        "momentOfValue": ""
+        "action": "Updates the CEO: \"API authentication live. Using Unkey open-source platform—saved <strong>6 weeks of</strong> custom auth development. Launching with enterprise-grade security day one.\"",
+        "momentOfValue": "In an afternoon, Jordan has production-ready API authentication—key management, per-customer rate limiting, real-time analytics, and audit logs. What would have taken <strong>6 weeks to build</strong> from scratch is deployed and working."
       }
     ]
   },
@@ -1016,7 +983,7 @@
         "thinking": "",
         "feeling": "Vindication. She didn't go into the review defensive. She went in with data, insights, and a fix already deployed.",
         "action": "Shows the CEO: \"Using PostHog for behavioral analysis, identified root cause in 2 hours, deployed fix same day. Retention tracking week-over-week.\"",
-        "momentOfValue": ""
+        "momentOfValue": "PostHog's session recordings, funnels, and cohort analysis show the exact user behavior causing the retention drop. Emma creates a feature flag to test a new onboarding flow that makes the tutorial mandatory."
       }
     ]
   },
@@ -1031,7 +998,7 @@
       {
         "time": "1:47 PM - The Integration Impossibility",
         "narrative": "Alex reviews the sales team's deal pipeline: 12 opportunities blocked pending HRIS integrations. Customers use BambooHR, Workday, Gusto, ADP, Rippling, Namely, Zenefits... The list has 40 different systems. Building 40 custom integrations is impossible.",
-        "thinking": "This is the classic SaaS scaling problem. Each customer uses different systems. We can't build 40 custom integrations—that's 18 months of engineering effort just to handle data sync.",
+        "thinking": "This is the classic SaaS scaling problem. Each customer uses different systems. We can't build 40 custom integrations—that's <strong>18 months of</strong> engineering effort just to handle data sync.",
         "feeling": "Trapped. Every sales call ends with \"do you integrate with [random HRIS]?\" They're losing deals to competitors who somehow support dozens of integrations.",
         "action": "",
         "momentOfValue": ""
@@ -1048,9 +1015,9 @@
         "time": "4:18 PM - The Sales Unblock",
         "narrative": "Alex updates the sales team: \"HRIS integrations complete. We now support 40+ systems via Merge API. Unblocking all 12 pending deals.\"",
         "thinking": "",
-        "feeling": "Relief. Sales is unblocked. The product can compete on integration breadth without consuming 18 months of engineering time.",
+        "feeling": "Relief. Sales is unblocked. The product can compete on integration breadth without consuming <strong>18 months of</strong> engineering time.",
         "action": "Demos to the CEO: \"Integrated Merge unified API. One codebase, 40+ HRIS systems supported. Sales team can now say yes to any integration request.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Instead of building 40 custom integrations, Alex integrates one Merge API. His code works with BambooHR, Workday, Gusto, and 37 other systems with the same codebase. Merge handles all the system-specific complexity."
       }
     ]
   },
@@ -1084,7 +1051,7 @@
         "thinking": "",
         "feeling": "Relief. The infrastructure economics work. The model can handle viral moments without burning cash on idle capacity.",
         "action": "Updates the CFO: \"ML deployment costs reduced 80% by switching to serverless (Replicate). Auto-scales for traffic spikes without manual intervention.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Cost: $0.002 per inference (only paying for actual usage) vs. $12K/month for always-on infrastructure. During a viral moment with 50,000 images generated in 3 hours, Replicate handled all requests without Maya doing anything."
       }
     ]
   },
@@ -1107,18 +1074,18 @@
       {
         "time": "4:18 PM - The Automated Diagnosis",
         "narrative": "Daniel's manager deployed Waypoint AI last month for escalation management.",
-        "thinking": "This diagnosis would have taken me 4 hours of manual log analysis and multiple back-and-forths with the customer. Waypoint AI did it in 4 minutes with a ready-to-implement solution.",
+        "thinking": "This diagnosis would have taken me <strong>4 hours of</strong> manual log analysis and multiple back-and-forths with the customer. Waypoint AI did it in 4 minutes with a ready-to-implement solution.",
         "feeling": "",
         "action": "Inputs the customer's database logs into Waypoint AI. The system automatically analyzes query patterns, schema changes, and performance data.  **Moment of value:** Waypoint AI identifies that the customer is missing a critical index after the migration, generates a suggested fix with step-by-step implementation, and routes the ticket to the right senior database engineer with full context already prepared.",
         "momentOfValue": "Waypoint AI identifies that the customer is missing a critical index after the migration, generates a suggested fix with step-by-step implementation, and routes the ticket to the right senior database engineer with full context already prepared."
       },
       {
         "time": "4:47 PM - The Fast Resolution",
-        "narrative": "The senior engineer receives the ticket with Waypoint's analysis, confirms the diagnosis, and sends the customer the index creation script. Issue resolved in 2 hours instead of 4 days.",
+        "narrative": "The senior engineer receives the ticket with Waypoint's analysis, confirms the diagnosis, and sends the customer the index creation script. Issue resolved in <strong>2 hours in</strong>stead of 4 days.",
         "thinking": "",
         "feeling": "Relief. The customer is happy. The ticket didn't consume his entire weekend. Waypoint turned a potential escalation disaster into a fast win.",
         "action": "Updates the customer: \"Root cause identified (missing index post-migration). Fix provided. Performance restored. Total resolution time: 2 hours.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Waypoint AI identifies that the customer is missing a critical index after the migration, generates a suggested fix with step-by-step implementation, and routes the ticket to the right senior database engineer with full context already prepared."
       }
     ]
   },
@@ -1132,7 +1099,7 @@
     "timestamps": [
       {
         "time": "9:14 AM - The Manual Research Grind",
-        "narrative": "Rachel opens LinkedIn Sales Navigator to build her target account list. Each prospect requires researching: funding status, tech stack, recent hires, company size, and decision-maker contacts. She times herself: 18 minutes per lead. 40 leads = 12 hours of research.",
+        "narrative": "Rachel opens LinkedIn Sales Navigator to build her target account list. Each prospect requires researching: funding status, tech stack, recent hires, company size, and decision-maker contacts. She times herself: 18 minutes per lead. 40 leads = <strong>12 hours of</strong> research.",
         "thinking": "I spend 60% of my week doing research instead of actual selling. By the time I have a qualified list, half the day is gone and I have no time for outreach.",
         "feeling": "Frustrated. She's good at conversations, bad at data entry. Manual research is burning her productivity.",
         "action": "",
@@ -1152,7 +1119,7 @@
         "thinking": "",
         "feeling": "Satisfaction. She's doing what SDRs should do—selling, not researching. Her productivity metrics are finally reflecting her actual skills.",
         "action": "Updates her manager: \"Hit weekly quota by Monday afternoon using Crustdata for prospect research. Spent 90% of my time on outreach instead of manual data gathering.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Crustdata returns 34 qualified leads in 8 seconds with funding details, tech stack, employee count, recent job postings, and decision-maker contacts. Research that would have taken 12 hours is done instantly."
       }
     ]
   },
@@ -1174,7 +1141,7 @@
       },
       {
         "time": "10:04 AM - The API-Powered Research",
-        "narrative": "Rachel remembers her teammate mentioned Crustdata—\"real-time B2B data API for finding companies with specific signals.\" She opens the platform and queries: \"Series A companies, $10M+ funding in last 6 months, DevOps job postings active.\"  **Moment of value:** The API returns 34 qualified leads in 8 seconds. Each record includes funding details, tech stack, employee count, hiring signals, and decision-maker contacts. Data that would take 2 weeks to research manually—delivered instantly.",
+        "narrative": "Rachel remembers her teammate mentioned Crustdata—\"real-time B2B data API for finding companies with specific signals.\" She opens the platform and queries: \"Series A companies, $10M+ funding in last 6 months, DevOps job postings active.\"  **Moment of value:** The API returns 34 qualified leads in 8 seconds. Each record includes funding details, tech stack, employee count, hiring signals, and decision-maker contacts. Data that would take <strong>2 weeks to</strong> research manually—delivered instantly.",
         "thinking": "This just gave me an entire week's worth of qualified prospects in 8 seconds. I can start calling right now instead of researching until Wednesday.",
         "feeling": "",
         "action": "",
@@ -1182,11 +1149,11 @@
       },
       {
         "time": "11:47 AM - The Outreach Execution",
-        "narrative": "Rachel has already called 15 prospects. Five booked discovery meetings. She's ahead of her weekly target by Monday noon—something that hasn't happened in 3 months.",
+        "narrative": "Rachel has already called <strong>15 prospects</strong>. Five booked discovery meetings. She's ahead of her weekly target by Monday noon—something that hasn't happened in 3 months.",
         "thinking": "",
         "feeling": "Relief and confidence. This is the best Monday she's had in months. She'll hit her daughter's soccer practice at 4 PM instead of working late to catch up on research.",
         "action": "Slacks her manager: \"Hit weekly meeting quota by Monday lunch using Crustdata for prospecting. Can we get a team license?\"",
-        "momentOfValue": ""
+        "momentOfValue": "The API returns 34 qualified leads in 8 seconds. Each record includes funding details, tech stack, employee count, hiring signals, and decision-maker contacts. Data that would take <strong>2 weeks to research</strong> manually—delivered instantly."
       }
     ]
   },
@@ -1220,7 +1187,7 @@
         "thinking": "",
         "feeling": "Confidence and relief. This is why she became a nurse—to provide excellent care. Elemeno gave her the knowledge she needed exactly when she needed it, reducing the risk of the kind of medical error that kills patients.",
         "action": "Texts her clinical educator: \"Used Elemeno tonight for ECMO alarm protocol. Handled it correctly, patient stable. This tool is saving lives by giving us instant access to expert guidance.\"",
-        "momentOfValue": ""
+        "momentOfValue": "The video shows her exactly what to check first, when to escalate, and how to safely troubleshoot. She watches once, follows the protocol, identifies the issue (minor flow obstruction), and resolves it in 4 minutes without escalation."
       }
     ]
   },
@@ -1242,7 +1209,7 @@
       },
       {
         "time": "9:52 AM - The Automated Intelligence",
-        "narrative": "David's colleague at their product team demo'd Workbase—\"workflow automation for B2B account management.\" He signs up and connects their product analytics and CRM.  **Moment of value:** Workbase automatically surfaces that 3 accounts have declining usage trends (40%+ drop in 30 days), 2 are approaching renewal dates within 45 days with low engagement, and 1 just hired a new VP of Engineering who might rethink vendors. Each insight includes suggested actions and email templates.",
+        "narrative": "David's colleague at their product team demo'd Workbase—\"workflow automation for B2B account management.\" He signs up and connects their product analytics and CRM.  **Moment of value:** Workbase automatically surfaces that <strong>3 accounts</strong> have declining usage trends (40%+ drop in 30 days), 2 are approaching renewal dates within 45 days with low engagement, and 1 just hired a new VP of Engineering who might rethink vendors. Each insight includes suggested actions and email templates.",
         "thinking": "Holy shit. This just showed me exactly which accounts need attention and why, with prioritized workflows. I've been missing these signals for months because I was stuck in spreadsheets.",
         "feeling": "",
         "action": "",
@@ -1253,8 +1220,8 @@
         "narrative": "David has already scheduled check-in calls with the 3 at-risk accounts. He's prepared QBR decks for the 2 approaching renewal. He sent a personalized welcome email to the new VP of Engineering at the third account.",
         "thinking": "",
         "feeling": "Control and confidence. He's being proactive instead of reactive. His renewal rate will improve because he caught the warning signs early. He'll make his son's 6 PM baseball game instead of staying late to update spreadsheets.",
-        "action": "Updates his VP: \"Identified 6 accounts needing immediate attention using Workbase. Already scheduled interventions. Should improve renewal forecast by 8-12 points.\"",
-        "momentOfValue": ""
+        "action": "Updates his VP: \"Identified <strong>6 accounts</strong> needing immediate attention using Workbase. Already scheduled interventions. Should improve renewal forecast by 8-12 points.\"",
+        "momentOfValue": "Workbase automatically surfaces that <strong>3 accounts</strong> have declining usage trends (40%+ drop in 30 days), 2 are approaching renewal dates within 45 days with low engagement, and 1 just hired a new VP of Engineering who might rethink vendors. Each insight includes suggested actions and email templates."
       }
     ]
   },
@@ -1288,7 +1255,7 @@
         "thinking": "",
         "feeling": "Relief and validation. She can trust the alarms she hears are actually important. This is preventing the exact kind of alarm fatigue that leads to preventable patient harm—the kind of outcomes that inspired CalmWave's founder after his sister died from a medical error.",
         "action": "Emails her nurse manager: \"CalmWave made a measurable difference today. Alarm volume down 47%, response time to critical alarms improved. This tech is reducing alarm fatigue and improving patient safety.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Over the next 3 hours, Sarah hears 42 alarms instead of 112. CalmWave suppressed 70 non-actionable alerts (false positives, low-priority warnings) while escalating 2 genuinely critical alarms with visual prioritization. She responds immediately to both critical alerts because she's not desensitized by alarm noise."
       }
     ]
   },
@@ -1304,13 +1271,13 @@
         "time": "9:23 AM - The Renewal Complexity",
         "narrative": "Marcus opens his benefits renewal spreadsheet. 12 insurance carriers. 47 plan options. Variables to consider: employee demographics, claims history, premium costs, deductible structures, coverage networks, dependent costs, HSA compatibility, and projected utilization.",
         "thinking": "This analysis takes me 40 hours every year. I'm basically guessing which plan is optimal because I can't model all the variables. Last year's selection ended up costing us $180K more than it should have because I didn't account for our employee age demographics changing.",
-        "feeling": "Pressure and inadequacy. The CFO asked for a \"data-driven benefits strategy that reduces costs by 15%.\" He has no systematic way to deliver that without spending 2 weeks in spreadsheets.",
+        "feeling": "Pressure and inadequacy. The CFO asked for a \"data-driven benefits strategy that reduces costs by 15%.\" He has no systematic way to deliver that without spending <strong>2 weeks in</strong> spreadsheets.",
         "action": "",
         "momentOfValue": ""
       },
       {
         "time": "10:47 AM - The Intelligence Platform",
-        "narrative": "Marcus's CFO forwarded an article about Avante AI—\"first AI-native employee benefits intelligence platform.\" He signs up for a demo and uploads their employee data, claims history, and plan options.  **Moment of value:** Avante AI's platform analyzes all variables in 8 minutes and recommends an optimal benefits package: specific carrier selections, plan tier mix, HSA strategy, and dependent coverage structure. The projected outcome: $340K annual savings (18% cost reduction) while improving coverage quality scores by 12%.",
+        "narrative": "Marcus's CFO forwarded an article about Avante AI—\"first AI-native employee benefits intelligence platform.\" He signs up for a demo and uploads their employee data, claims history, and plan options.  **Moment of value:** Avante AI's platform analyzes all variables in 8 minutes and recommends an optimal benefits package: specific carrier selections, plan tier mix, HSA strategy, and dependent coverage structure. The projected outcome: <strong>$340K annual</strong> savings (18% cost reduction) while improving coverage quality scores by 12%.",
         "thinking": "This AI just did in 8 minutes what takes me 40 hours manually, with better accuracy because it's modeling variables I don't have time to analyze. This is the data-driven benefits strategy the CFO wanted.",
         "feeling": "",
         "action": "",
@@ -1321,8 +1288,8 @@
         "narrative": "Marcus prepares his benefits recommendation presentation with Avante AI's analysis, cost projections, and quality metrics. He has a defensible, data-driven strategy instead of a gut-feel selection.",
         "thinking": "",
         "feeling": "Confidence and validation. He's delivering exactly what the CFO asked for—measurable cost reduction with data to back it up. Benefits renewal used to be his most stressful project; now he has a systematic approach that works.",
-        "action": "Emails the CFO: \"Completed benefits renewal analysis using AI intelligence platform. Recommending package that saves $340K annually while improving coverage. Ready to present to leadership.\"",
-        "momentOfValue": ""
+        "action": "Emails the CFO: \"Completed benefits renewal analysis using AI intelligence platform. Recommending package that saves <strong>$340K annual</strong>ly while improving coverage. Ready to present to leadership.\"",
+        "momentOfValue": "Avante AI's platform analyzes all variables in 8 minutes and recommends an optimal benefits package: specific carrier selections, plan tier mix, HSA strategy, and dependent coverage structure. The projected outcome: <strong>$340K annual</strong> savings (18% cost reduction) while improving coverage quality scores by 12%."
       }
     ]
   },
@@ -1345,7 +1312,7 @@
       {
         "time": "11:52 AM - The AI Calling Platform",
         "narrative": "Jennifer's VP of Enrollment forwarded a case study about Bland AI—\"enterprise AI phone calling platform with natural conversation capability, used by University of Phoenix.\" She books a demo and tests it with their most common inquiry questions.  **Moment of value:** Bland AI's phone agents handle natural conversations about programs, application deadlines, financial aid, and campus tours. In testing, the AI correctly answers 87% of common questions, schedules tour bookings directly into their calendar system, and escalates complex questions to human counselors with full conversation context.",
-        "thinking": "This AI can handle 70% of our inquiry calls autonomously while my counselors focus on high-touch recruitment conversations. We can answer every call immediately instead of making students wait 2.7 days for a callback.",
+        "thinking": "This AI can handle 70% of our inquiry calls autonomously while my counselors focus on high-touch recruitment conversations. We can answer every call immediately instead of making students wait 2.<strong>7 days for</strong> a callback.",
         "feeling": "",
         "action": "",
         "momentOfValue": "Bland AI's phone agents handle natural conversations about programs, application deadlines, financial aid, and campus tours. In testing, the AI correctly answers 87% of common questions, schedules tour bookings directly into their calendar system, and escalates complex questions to human counselors with full conversation context."
@@ -1356,7 +1323,7 @@
         "thinking": "",
         "feeling": "Relief and pride. They're providing the responsive service students expect without burning out her admissions team. Enrollment numbers will improve because they're not losing students to slow callback times.",
         "action": "Presents to the president: \"Solved our inquiry volume problem using AI calling platform. Now answering 94% of calls immediately, student satisfaction up 34 points. Projected enrollment impact: +8% for fall class.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Bland AI's phone agents handle natural conversations about programs, application deadlines, financial aid, and campus tours. In testing, the AI correctly answers 87% of common questions, schedules tour bookings directly into their calendar system, and escalates complex questions to human counselors with full conversation context."
       }
     ]
   },
@@ -1378,7 +1345,7 @@
       },
       {
         "time": "9:47 AM - The AI Security Platform",
-        "narrative": "Nathan's security architect mentions Corgea—\"AI-driven application security platform founded by a repeat founder with $2.6M seed from YouTube co-founder.\" He tests it on their latest scan results.  **Moment of value:** Corgea's AI automatically categorizes all 47 vulnerabilities by severity using their codebase context, reduces false positives by 30% (eliminating 14 non-issues), and generates pull requests with fix suggestions for the 23 critical and high-severity issues. What would take his team 12 days of manual triage and fixing is automated into 2 days.",
+        "narrative": "Nathan's security architect mentions Corgea—\"AI-driven application security platform founded by a repeat founder with $2.6M seed from YouTube co-founder.\" He tests it on their latest scan results.  **Moment of value:** Corgea's AI automatically categorizes all 47 vulnerabilities by severity using their codebase context, reduces false positives by 30% (eliminating 14 non-issues), and generates pull requests with fix suggestions for the 23 critical and high-severity issues. What would take his team <strong>12 days of</strong> manual triage and fixing is automated into 2 days.",
         "thinking": "This just accelerated our vulnerability remediation by 80%. My team can focus on the 23 real critical issues instead of wasting time on 14 false positives and 10 low-priority dependency updates that don't actually matter.",
         "feeling": "",
         "action": "",
@@ -1386,11 +1353,11 @@
       },
       {
         "time": "11:23 AM - The Remediation Sprint",
-        "narrative": "Nathan's team reviews Corgea's generated PRs. Twelve fixes are ready to merge immediately. Eight require minor adjustments. Three critical SQL injection vulnerabilities are now patched and deployed—all within 3 hours of detection instead of the usual 23-day average.",
+        "narrative": "Nathan's team reviews Corgea's generated PRs. Twelve fixes are ready to merge immediately. Eight require minor adjustments. Three critical SQL injection vulnerabilities are now patched and deployed—all within <strong>3 hours of</strong> detection instead of the usual 23-day average.",
         "thinking": "",
         "feeling": "Relief and confidence. Their security posture just improved measurably. The SOC 2 audit will show compliant remediation times. He's protecting the company from breaches instead of drowning in security scan backlogs.",
-        "action": "Updates the board: \"Implemented AI security platform (Corgea) that reduced our vulnerability remediation time from 23 days to 2 days average. SOC 2 compliance back on track. Critical vulnerabilities now patched same-day.\"",
-        "momentOfValue": ""
+        "action": "Updates the board: \"Implemented AI security platform (Corgea) that reduced our vulnerability remediation time from <strong>23 days to</strong> 2 days average. SOC 2 compliance back on track. Critical vulnerabilities now patched same-day.\"",
+        "momentOfValue": "Corgea's AI automatically categorizes all 47 vulnerabilities by severity using their codebase context, reduces false positives by 30% (eliminating 14 non-issues), and generates pull requests with fix suggestions for the 23 critical and high-severity issues. What would take his team <strong>12 days of manual</strong> triage and fixing is automated into 2 days."
       }
     ]
   },
@@ -1413,7 +1380,7 @@
       {
         "time": "4:04 PM - The Automated Detection",
         "narrative": "Lauren's security architect just implemented Strac's DLP platform last month. She opens the dashboard and runs a scan across all their cloud apps: GitHub, Slack, Notion, Google Workspace, Confluence.  **Moment of value:** Strac automatically detects the AWS credentials in GitHub (already flagged), identifies customer PII in 3 Slack channels (not just the one the customer saw), finds 2 API keys in a Notion doc, and 1 SSN in a Google Sheet. The platform provides one-click redaction, automatic alerts, and creates a complete audit trail for compliance reporting.",
-        "thinking": "Strac just found 7 instances of sensitive data exposure across 5 tools in 4 minutes. Manually searching would have taken me 2 days, and I probably would have missed 3 of these. This is preventing multiple potential breaches right now.",
+        "thinking": "Strac just found <strong>7 instances</strong> of sensitive data exposure across 5 tools in 4 minutes. Manually searching would have taken me 2 days, and I probably would have missed 3 of these. This is preventing multiple potential breaches right now.",
         "feeling": "",
         "action": "",
         "momentOfValue": "Strac automatically detects the AWS credentials in GitHub (already flagged), identifies customer PII in 3 Slack channels (not just the one the customer saw), finds 2 API keys in a Notion doc, and 1 SSN in a Google Sheet. The platform provides one-click redaction, automatic alerts, and creates a complete audit trail for compliance reporting."
@@ -1423,8 +1390,8 @@
         "narrative": "Lauren has redacted all exposed sensitive data, revoked the compromised credentials, documented the incident, and sent the customer a response: \"We identified and remediated the PII exposure within 90 minutes of your report using our automated DLP platform. Full audit trail attached.\"",
         "thinking": "",
         "feeling": "Relief and validation. They responded to a critical security incident in 90 minutes instead of 2+ days. Strac prevented a potential breach and GDPR violation by automatically finding sensitive data she couldn't have located manually fast enough.",
-        "action": "Updates the CISO: \"Handled data exposure incident using Strac. Found and remediated 7 instances across 5 tools. AWS credentials revoked, PII redacted, audit trail complete. No evidence of exploitation. GDPR compliance maintained.\"",
-        "momentOfValue": ""
+        "action": "Updates the CISO: \"Handled data exposure incident using Strac. Found and remediated <strong>7 instances</strong> across 5 tools. AWS credentials revoked, PII redacted, audit trail complete. No evidence of exploitation. GDPR compliance maintained.\"",
+        "momentOfValue": "Strac automatically detects the AWS credentials in GitHub (already flagged), identifies customer PII in 3 Slack channels (not just the one the customer saw), finds 2 API keys in a Notion doc, and 1 SSN in a Google Sheet. The platform provides one-click redaction, automatic alerts, and creates a complete audit trail for compliance reporting."
       }
     ]
   },
@@ -1438,7 +1405,7 @@
     "timestamps": [
       {
         "time": "9:14 AM - The Drafting Timeline",
-        "narrative": "James reads the invention disclosure: novel lipid nanoparticle formulation for mRNA vaccine delivery. Complex chemistry, multiple claims needed, detailed specifications required. His usual process: 40 hours to draft claims, specifications, figures, and background sections.",
+        "narrative": "James reads the invention disclosure: novel lipid nanoparticle formulation for mRNA vaccine delivery. Complex chemistry, multiple claims needed, detailed specifications required. His usual process: <strong>40 hours to</strong> draft claims, specifications, figures, and background sections.",
         "thinking": "They want a first draft in 4 days. That's impossible with my normal drafting workflow. I'd have to work 10-hour days and still probably miss the deadline. And if I rush, I'll make mistakes that weaken the patent's enforceability.",
         "feeling": "Pressure and frustration. Patent drafting requires precision—every word matters for USPTO examination and litigation defense. But clients increasingly expect faster turnaround times. He's caught between quality and speed.",
         "action": "",
@@ -1490,8 +1457,8 @@
     "timestamps": [
       {
         "time": "8:47 AM - The Research Time Sink",
-        "narrative": "Tyler opens his prospecting list. Fifteen target engineers at Series B startups. His process: check their GitHub for recent activity, analyze their company's tech stack on BuiltWith, read their engineering blog, scan news for recent funding or launches. This takes 15-20 minutes per prospect—4 hours total.",
-        "thinking": "I don't have 4 hours for prospecting research today. I have 12 discovery calls scheduled and 40 email threads to manage. If I skip the research and send generic emails, my reply rate will be terrible because engineers ignore outreach that doesn't show technical understanding.",
+        "narrative": "Tyler opens his prospecting list. Fifteen target engineers at Series B startups. His process: check their GitHub for recent activity, analyze their company's tech stack on BuiltWith, read their engineering blog, scan news for recent funding or launches. This takes 15-20 minutes per prospect—<strong>4 hours to</strong>tal.",
+        "thinking": "I don't have <strong>4 hours for</strong> prospecting research today. I have 12 discovery calls scheduled and 40 email threads to manage. If I skip the research and send generic emails, my reply rate will be terrible because engineers ignore outreach that doesn't show technical understanding.",
         "feeling": "Frustration and time pressure. Good outbound requires research, but research takes time he doesn't have. He's stuck choosing between quality and quantity.",
         "action": "",
         "momentOfValue": ""
@@ -1502,7 +1469,7 @@
         "thinking": "",
         "feeling": "Relief and competitive advantage. He's sending high-quality, personalized outreach without sacrificing 4 hours per day on research. His reply rates will improve because the emails demonstrate real technical understanding. He can focus on conversations instead of research.",
         "action": "Slacks his manager: \"Topo's AI agent researched and drafted 15 prospect emails overnight. Sent all of them by 8:30 AM with better technical personalization than I could have done manually. This is a game-changer for prospecting efficiency.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Topo.io's AI agent turned 4 hours of daily prospecting research into 15 minutes of oversight—sending high-quality, technically personalized outreach while freeing him to focus on actual sales conversations."
       }
     ]
   },
@@ -1536,7 +1503,7 @@
         "thinking": "",
         "feeling": "Relief and satisfaction. She built a reliable email system using tools designed for engineers. The feature is shipped, tested, and monitored. She can focus on backend features instead of wrestling with marketing email platforms.",
         "action": "Updates her standup doc: \"Transactional email system complete using Loops. Onboarding sequence live in production. Webhook monitoring implemented. Developer-friendly API instead of marketing automation complexity.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Maya integrates Loops in 45 minutes: defines email templates in their codebase, triggers emails via API calls from her backend, receives webhook events for delivery status, and views logs in a clean developer-friendly dashboard. All the transactional email infrastructure she needs with no marketing automation complexity."
       }
     ]
   },
@@ -1577,7 +1544,7 @@
       {
         "time": "10:14 AM - The Prompt Testing Chaos",
         "narrative": "Sarah has three prompt variations in different Google Docs. The team manually tests each one by typing sample questions into ChatGPT and Claude, copying responses into a spreadsheet, and subjectively rating quality. No systematic testing, no version control, no performance metrics.",
-        "thinking": "We're about to deploy an AI chatbot to 10,000 customers, and our testing process is \"manually type questions into ChatGPT and see if the responses look good.\" We don't know which prompt performs better, which model is more reliable, or how much each conversation will cost in tokens.",
+        "thinking": "We're about to deploy an AI chatbot to <strong>10,000 customers</strong>, and our testing process is \"manually type questions into ChatGPT and see if the responses look good.\" We don't know which prompt performs better, which model is more reliable, or how much each conversation will cost in tokens.",
         "feeling": "Anxiety and inadequacy. They're treating prompt engineering like guesswork instead of systematic product development. If the chatbot quality is inconsistent after launch, it's because they didn't have proper testing infrastructure.",
         "action": "",
         "momentOfValue": ""
@@ -1621,8 +1588,8 @@
         "narrative": "David's team deploys a fix: corrects the retry logic, adds rate limiting, tests the feature. LLM costs drop back to $420/day within 2 hours. Helicone's monitoring confirms the issue is resolved and costs are normal.",
         "thinking": "",
         "feeling": "Relief and validation. They caught a critical cost issue within hours instead of discovering it on the monthly bill weeks later. Helicone gave them the observability they need to manage LLM costs like professional infrastructure, not hope for the best and check the bill later.",
-        "action": "Updates the CEO: \"Caught a 425% LLM cost spike on Monday morning using Helicone observability platform. Root cause identified in 15 minutes, fix deployed in 90 minutes. Prevented $40K in wasteful spending over the next month. Setting up cost spike alerts to catch future issues automatically.\"",
-        "momentOfValue": ""
+        "action": "Updates the CEO: \"Caught a 425% LLM cost spike on Monday morning using Helicone observability platform. Root cause identified in 15 minutes, fix deployed in 90 minutes. <strong>Prevented $40K</strong> in wasteful spending over the next month. Setting up cost spike alerts to catch future issues automatically.\"",
+        "momentOfValue": "Helicone's dashboard shows exactly which API endpoint is responsible, the specific prompt that's looping, the token count per request, and the projected monthly cost if not fixed ($63K). David identifies the bug in 15 minutes—a retry logic error causing recursive LLM calls."
       }
     ]
   },
@@ -1636,7 +1603,7 @@
     "timestamps": [
       {
         "time": "9:14 AM - The Integration Complexity",
-        "narrative": "Alex has built 2 CRM integrations so far: Salesforce and HubSpot. Each took 1 week—OAuth setup, API mapping, webhook subscriptions, token refresh handling, error logging. They need 30+ integrations. At 1 week per integration, that's 30 weeks of work. Launch is in 6 weeks.",
+        "narrative": "Alex has built 2 CRM integrations so far: Salesforce and HubSpot. Each took 1 week—OAuth setup, API mapping, webhook subscriptions, token refresh handling, error logging. They need 30+ integrations. At 1 week per integration, that's <strong>30 weeks of</strong> work. Launch is in 6 weeks.",
         "thinking": "Building and maintaining 30 different CRM integrations is going to consume our entire engineering roadmap. Every CRM has different OAuth flows, different data models, different rate limits. We can't launch without integrations, but building them all ourselves is impossible.",
         "feeling": "Overwhelm and resignation. Integration work isn't intellectually interesting—it's tedious API mapping and error handling. But it's required for the product to be viable. He's stuck choosing between delaying launch or launching with incomplete integrations.",
         "action": "",
@@ -1645,7 +1612,7 @@
       {
         "time": "10:47 AM - The Unified Integration API",
         "narrative": "Alex's tech lead finds Nango—\"unified API for CRM integrations. Handle OAuth and data syncing across 30+ systems with one codebase.\" He reads the docs: single API handles authentication, syncing, token management, and webhooks for all supported CRMs.  **Moment of value:** Alex integrates Nango and adds support for 8 additional CRMs (Pipedrive, Zoho, Copper, Close, Freshsales, Insightly, Nutshell, Agile CRM) in 3 days—work that would have taken 8 weeks building each integration individually. Nango automatically manages OAuth token refreshes, webhook subscriptions, and API rate limiting across all systems.",
-        "thinking": "Nango just turned 3 months of integration development into a 2-week project. I'm writing integration logic once and it works across 30+ CRMs because Nango handles all the authentication and syncing complexity. This changes our entire launch timeline.",
+        "thinking": "Nango just turned <strong>3 months of</strong> integration development into a 2-week project. I'm writing integration logic once and it works across 30+ CRMs because Nango handles all the authentication and syncing complexity. This changes our entire launch timeline.",
         "feeling": "",
         "action": "",
         "momentOfValue": "Alex integrates Nango and adds support for 8 additional CRMs (Pipedrive, Zoho, Copper, Close, Freshsales, Insightly, Nutshell, Agile CRM) in 3 days—work that would have taken 8 weeks building each integration individually. Nango automatically manages OAuth token refreshes, webhook subscriptions, and API rate limiting across all systems."
@@ -1671,7 +1638,7 @@
       {
         "time": "3:52 PM - The Serverless Background Jobs",
         "narrative": "Priya's tech lead suggests Defer—\"serverless platform for background jobs. Define workflows as TypeScript functions with automatic retries and monitoring.\" She reads the docs: write functions, Defer handles execution, scaling, retries, scheduling.  **Moment of value:** Priya defines her video processing workflow as TypeScript functions: `extractFrames()`, `runMLClassification()`, `generateThumbnails()`. Defer automatically handles job queuing, retry logic, parallel execution, and monitoring. She deploys to production processing 10,000 videos/day with zero Kubernetes configuration or Redis management.",
-        "thinking": "Defer just eliminated 2 weeks of infrastructure work. I wrote the actual business logic as functions, and Defer handles all the job queue complexity, retries, and monitoring. This is what serverless should feel like—writing business logic, not managing infrastructure.",
+        "thinking": "Defer just eliminated <strong>2 weeks of</strong> infrastructure work. I wrote the actual business logic as functions, and Defer handles all the job queue complexity, retries, and monitoring. This is what serverless should feel like—writing business logic, not managing infrastructure.",
         "feeling": "",
         "action": "",
         "momentOfValue": "Priya defines her video processing workflow as TypeScript functions: `extractFrames()`, `runMLClassification()`, `generateThumbnails()`. Defer automatically handles job queuing, retry logic, parallel execution, and monitoring. She deploys to production processing 10,000 videos/day with zero Kubernetes configuration or Redis management."
@@ -1690,17 +1657,17 @@
         "time": "9:47 AM - The Feature Complexity",
         "narrative": "Marcus reviews the engineering estimate for building collaborative whiteboard features: infinite canvas rendering, real-time collaboration with cursor tracking, shape libraries, freehand drawing, text notes, undo/redo, export. Engineering says 18 months with 2 full-time engineers. The CEO wants it in 2 months.",
         "thinking": "The CEO sees whiteboards as a \"nice-to-have feature\" but engineering says it's an 18-month project. Building a performant infinite canvas with real-time collaboration is basically recreating Figma or Miro's core technology. We can't deliver this in our timeline.",
-        "feeling": "Frustration and pressure. Customers expect whiteboard features in collaboration tools—it's table stakes. But building canvas technology from scratch is massively complex. He needs a solution that doesn't consume 18 months of engineering time.",
+        "feeling": "Frustration and pressure. Customers expect whiteboard features in collaboration tools—it's table stakes. But building canvas technology from scratch is massively complex. He needs a solution that doesn't consume <strong>18 months of</strong> engineering time.",
         "action": "",
         "momentOfValue": ""
       },
       {
         "time": "11:14 AM - The Embeddable Canvas SDK",
-        "narrative": "Marcus's frontend engineer finds tldraw—\"infinite canvas SDK for React apps. All the collaborative whiteboard features of Figma or Miro, embeddable in your product.\" He tests the SDK: real-time collaboration, shapes, drawing, sticky notes, all working out of the box.  **Moment of value:** Marcus's team integrates tldraw's SDK into their React app in 2 weeks. Their users can now brainstorm with real-time collaborative whiteboards, drag-and-drop shapes, draw freehand, and add sticky notes—all the visual collaboration features they needed without 18 months of custom canvas development.",
+        "narrative": "Marcus's frontend engineer finds tldraw—\"infinite canvas SDK for React apps. All the collaborative whiteboard features of Figma or Miro, embeddable in your product.\" He tests the SDK: real-time collaboration, shapes, drawing, sticky notes, all working out of the box.  **Moment of value:** Marcus's team integrates tldraw's SDK into their React app in 2 weeks. Their users can now brainstorm with real-time collaborative whiteboards, drag-and-drop shapes, draw freehand, and add sticky notes—all the visual collaboration features they needed without <strong>18 months of</strong> custom canvas development.",
         "thinking": "tldraw just delivered in 2 weeks what engineering estimated would take 18 months. We're embedding a production-ready infinite canvas with real-time collaboration. This is exactly what customers expect from modern collaboration tools.",
         "feeling": "",
         "action": "",
-        "momentOfValue": "Marcus's team integrates tldraw's SDK into their React app in 2 weeks. Their users can now brainstorm with real-time collaborative whiteboards, drag-and-drop shapes, draw freehand, and add sticky notes—all the visual collaboration features they needed without 18 months of custom canvas development."
+        "momentOfValue": "Marcus's team integrates tldraw's SDK into their React app in 2 weeks. Their users can now brainstorm with real-time collaborative whiteboards, drag-and-drop shapes, draw freehand, and add sticky notes—all the visual collaboration features they needed without <strong>18 months of</strong> custom canvas development."
       }
     ]
   },
@@ -1723,7 +1690,7 @@
       {
         "time": "12:04 AM - The Correlated Analytics",
         "narrative": "Chen opens Sift's observability platform, which monitors all satellite telemetry with real-time analytics. He queries: \"Correlate Satellite 7 solar array temperature with battery voltage, orbital position, and historical thermal patterns.\"  **Moment of value:** Sift's analytics automatically correlate the thermal data: battery voltage is dropping faster than expected (13.2V, should be 14.1V), orbital position shows the satellite is in extended sun exposure, and historical patterns indicate this thermal profile appears 6 hours before battery charge controller failures. This isn't a sensor error—it's early warning of potential battery system failure.",
-        "thinking": "Sift just correlated three data sources and showed me that this temperature anomaly is an early indicator of battery failure. I have 6 hours to intervene before critical systems are affected. This correlation analysis would have taken me 45 minutes manually—too slow to prevent the failure.",
+        "thinking": "Sift just correlated three data sources and showed me that this temperature anomaly is an early indicator of battery failure. I have <strong>6 hours to</strong> intervene before critical systems are affected. This correlation analysis would have taken me 45 minutes manually—too slow to prevent the failure.",
         "feeling": "",
         "action": "",
         "momentOfValue": "Sift's analytics automatically correlate the thermal data: battery voltage is dropping faster than expected (13.2V, should be 14.1V), orbital position shows the satellite is in extended sun exposure, and historical patterns indicate this thermal profile appears 6 hours before battery charge controller failures. This isn't a sensor error—it's early warning of potential battery system failure."
@@ -1734,7 +1701,7 @@
         "thinking": "",
         "feeling": "Relief and professional pride. Sift's analytics helped him make the right call—this was a real emergency, not a false alarm. The satellite is safe because they caught the warning signs early and had the data correlation to understand root cause in minutes, not hours.",
         "action": "Documents the incident: \"Sift's correlation analytics identified early warning signs of battery charge controller failure 6 hours before critical impact. Temperature anomaly + voltage drop + orbital position data together indicated thermal management issue. Intervention successful. Satellite 7 stable. Prevented potential $200M satellite loss.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Sift's analytics automatically correlate the thermal data: battery voltage is dropping faster than expected (13.2V, should be 14.1V), orbital position shows the satellite is in extended sun exposure, and historical patterns indicate this thermal profile appears 6 hours before battery charge controller failures. This isn't a sensor error—it's early warning of potential battery system failure."
       }
     ]
   },
@@ -1802,7 +1769,7 @@
         "time": "3:47 PM - The Dependency Trust Problem",
         "narrative": "Marcus opens the PR. The frontend team added `react-data-viz-pro` for dashboard charts. He checks npm: 47K weekly downloads, looks legitimate. But last month, a popular npm package with 2M downloads was compromised and contained malware that went undetected for 3 weeks.",
         "thinking": "I can't manually audit every npm package for malicious code. The package has 12 dependencies, each with their own sub-dependencies—I'd need to review 40+ packages to be confident. But supply chain attacks are real: event-stream, ua-parser-js, and coa were all compromised with malware that affected millions of users.",
-        "feeling": "Anxiety and inadequacy. He's responsible for security, but he doesn't have time to manually audit every open-source dependency. If he blocks the PR, the frontend team misses their sprint. If he approves it and it's compromised, 7,500 customers are affected.",
+        "feeling": "Anxiety and inadequacy. He's responsible for security, but he doesn't have time to manually audit every open-source dependency. If he blocks the PR, the frontend team misses their sprint. If he approves it and it's compromised, <strong>7,500 customers</strong> are affected.",
         "action": "",
         "momentOfValue": ""
       },
@@ -1818,9 +1785,9 @@
         "time": "4:47 PM - The Attack Prevention",
         "narrative": "Marcus blocks the PR and alerts the frontend team: \"Socket flagged this package as compromised—contains cryptomining code and suspicious network requests. Finding alternative data viz library.\" They find a clean alternative. The supply chain attack is prevented before reaching production.",
         "thinking": "",
-        "feeling": "Relief and validation. Socket prevented a security incident that could have affected 7,500 customers and cost thousands in AWS bills. Supply chain security is now automated in their CI/CD pipeline instead of relying on manual audits he doesn't have time to do properly.",
+        "feeling": "Relief and validation. Socket prevented a security incident that could have affected <strong>7,500 customers</strong> and cost thousands in AWS bills. Supply chain security is now automated in their CI/CD pipeline instead of relying on manual audits he doesn't have time to do properly.",
         "action": "Posts in the engineering Slack: \"Socket caught a supply chain attack in today's PR—compromised npm package with hidden cryptomining code. Blocked before production. This is exactly why we installed supply chain security scanning in CI/CD. Everyone should review Socket reports before merging PRs with new dependencies.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Socket's scan flagged `react-data-viz-pro` as high-risk: the package recently added obfuscated code, makes network requests to unfamiliar domains, and includes a dependency with known cryptomining patterns. Socket caught the supply chain attack before it reached production—what would have been invisible in manual review is clearly highlighted with evidence."
       }
     ]
   },
@@ -1869,7 +1836,7 @@
       {
         "time": "4:14 PM - The Cloud Data Security Platform",
         "narrative": "David's CISO suggests Normalyze—\"cloud data security platform that automatically discovers data stores, classifies sensitive data, and maps access permissions across AWS, Azure, and GCP.\" He connects their cloud accounts and runs a scan.  **Moment of value:** Normalyze automatically discovers all 370 data stores across their three cloud providers, uses AI to classify which ones contain PHI (47 locations identified), maps access permissions for each, and alerts that 3 S3 buckets with patient data are publicly accessible due to misconfiguration. Within 2 hours, David has complete visibility into sensitive data location, classification, and access—work that would take 2 months manually.",
-        "thinking": "Normalyze just found 3 publicly accessible S3 buckets containing patient data—potential HIPAA violations I didn't know existed. The automated discovery and classification gave me complete visibility across all three cloud providers in 2 hours instead of 2 months. This is preventing a HIPAA breach and $1.5M fine.",
+        "thinking": "Normalyze just found 3 publicly accessible S3 buckets containing patient data—potential HIPAA violations I didn't know existed. The automated discovery and classification gave me complete visibility across all three cloud providers in <strong>2 hours in</strong>stead of 2 months. This is preventing a HIPAA breach and $1.5M fine.",
         "feeling": "",
         "action": "",
         "momentOfValue": "Normalyze automatically discovers all 370 data stores across their three cloud providers, uses AI to classify which ones contain PHI (47 locations identified), maps access permissions for each, and alerts that 3 S3 buckets with patient data are publicly accessible due to misconfiguration. Within 2 hours, David has complete visibility into sensitive data location, classification, and access—work that would take 2 months manually."
@@ -1913,18 +1880,18 @@
       {
         "time": "10:14 AM - The Compliance Manual Labor",
         "narrative": "Marcus reviews the SOC 2 readiness checklist from their compliance consultant: 87 security controls to implement, 200+ pieces of evidence to collect (AWS IAM screenshots, GitHub access logs, HR employee offboarding records, infrastructure monitoring, incident response documentation). Manual evidence collection: 200 hours estimated.",
-        "thinking": "We're a 40-person startup. We don't have 200 hours for manual compliance evidence gathering. That's 5 weeks of full-time work taking engineers away from product development. And manual evidence collection means I'll be taking screenshots 3 days before the audit, hoping nothing has changed.",
+        "thinking": "We're a 40-person startup. We don't have <strong>200 hours for</strong> manual compliance evidence gathering. That's <strong>5 weeks of</strong> full-time work taking engineers away from product development. And manual evidence collection means I'll be taking screenshots 3 days before the audit, hoping nothing has changed.",
         "feeling": "Overwhelm and resentment. SOC 2 is required to close enterprise deals, but the compliance process feels like busywork—manual screenshots and documentation instead of actual security improvements. He needs systematic compliance, not manual evidence gathering.",
         "action": "",
         "momentOfValue": ""
       },
       {
         "time": "12:47 PM - The Automated Compliance Platform",
-        "narrative": "Marcus's investor suggests Thoropass—\"automate SOC 2 compliance with continuous evidence collection and monitoring.\" He books a demo and connects Thoropass to their AWS, GitHub, Google Workspace, and HR systems.  **Moment of value:** Thoropass continuously monitors their 87 security controls, automatically collects evidence from integrated systems (AWS IAM changes, GitHub access logs, employee onboarding/offboarding), and provides a real-time dashboard showing audit readiness. Instead of 200 hours of manual screenshots, evidence collection is automated and always up-to-date.",
+        "narrative": "Marcus's investor suggests Thoropass—\"automate SOC 2 compliance with continuous evidence collection and monitoring.\" He books a demo and connects Thoropass to their AWS, GitHub, Google Workspace, and HR systems.  **Moment of value:** Thoropass continuously monitors their 87 security controls, automatically collects evidence from integrated systems (AWS IAM changes, GitHub access logs, employee onboarding/offboarding), and provides a real-time dashboard showing audit readiness. Instead of <strong>200 hours of</strong> manual screenshots, evidence collection is automated and always up-to-date.",
         "thinking": "Thoropass just turned compliance from a 6-month manual project into a systematic automated process. Evidence collection is continuous instead of last-minute screenshots. The dashboard shows exactly which controls are compliant and which need remediation. This is how compliance should work.",
         "feeling": "",
         "action": "",
-        "momentOfValue": "Thoropass continuously monitors their 87 security controls, automatically collects evidence from integrated systems (AWS IAM changes, GitHub access logs, employee onboarding/offboarding), and provides a real-time dashboard showing audit readiness. Instead of 200 hours of manual screenshots, evidence collection is automated and always up-to-date."
+        "momentOfValue": "Thoropass continuously monitors their 87 security controls, automatically collects evidence from integrated systems (AWS IAM changes, GitHub access logs, employee onboarding/offboarding), and provides a real-time dashboard showing audit readiness. Instead of <strong>200 hours of</strong> manual screenshots, evidence collection is automated and always up-to-date."
       }
     ]
   },
@@ -1938,8 +1905,8 @@
     "timestamps": [
       {
         "time": "9:47 AM - The Certification Blocker",
-        "narrative": "Jennifer reviews the RFPs: Company A requires SOC 2 (deal value: $800K ARR), Company B requires SOC 2 + ISO 27001 (deal value: $950K ARR), Company C requires SOC 2 + HIPAA (deal value: $650K ARR). Her compliance consultant's estimate: 8-12 months, $120K in consulting fees, plus internal team time.",
-        "thinking": "We're losing $2.4M in enterprise pipeline because we don't have security certifications. These prospects love our product, but procurement won't approve vendors without SOC 2, ISO 27001, or HIPAA. By the time we get certified in 12 months, they'll have signed with competitors.",
+        "narrative": "Jennifer reviews the RFPs: Company A requires SOC 2 (deal value: <strong>$800K ARR</strong>), Company B requires SOC 2 + ISO 27001 (deal value: <strong>$950K ARR</strong>), Company C requires SOC 2 + HIPAA (deal value: <strong>$650K ARR</strong>). Her compliance consultant's estimate: 8-12 months, $120K in consulting fees, plus internal team time.",
+        "thinking": "We're <strong>losing $2</strong>.4M in enterprise pipeline because we don't have security certifications. These prospects love our product, but procurement won't approve vendors without SOC 2, ISO 27001, or HIPAA. By the time we get certified in 12 months, they'll have signed with competitors.",
         "feeling": "Frustration and urgency. Compliance is blocking enterprise revenue growth. Her competitors with inferior products are winning deals because they have certifications. She needs faster compliance or enterprise growth is dead.",
         "action": "",
         "momentOfValue": ""
@@ -1947,7 +1914,7 @@
       {
         "time": "11:14 AM - The Automated Compliance Platform",
         "narrative": "Jennifer's CEO suggests Vanta—\"automate SOC 2, ISO 27001, and HIPAA compliance with continuous monitoring and evidence collection.\" The CTO connects Vanta to their AWS, GitHub, Google Workspace, and HR systems.  **Moment of value:** Vanta integrates with their infrastructure and continuously monitors 200+ security controls across all three frameworks (SOC 2, ISO 27001, HIPAA). The platform automatically collects audit evidence, identifies gaps in their security posture, and provides remediation guidance. Instead of 12 months and $120K in consulting, they're on track for SOC 2 certification in 3 months with ISO 27001 and HIPAA following shortly after.",
-        "thinking": "Vanta just compressed our compliance timeline from 12 months to 3-4 months. The automated monitoring and evidence collection eliminates the manual work that makes traditional compliance so slow. We can actually pursue these enterprise deals instead of telling prospects \"we'll have certifications in a year.\"",
+        "thinking": "Vanta just compressed our compliance timeline from <strong>12 months to</strong> 3-4 months. The automated monitoring and evidence collection eliminates the manual work that makes traditional compliance so slow. We can actually pursue these enterprise deals instead of telling prospects \"we'll have certifications in a year.\"",
         "feeling": "",
         "action": "",
         "momentOfValue": "Vanta integrates with their infrastructure and continuously monitors 200+ security controls across all three frameworks (SOC 2, ISO 27001, HIPAA). The platform automatically collects audit evidence, identifies gaps in their security posture, and provides remediation guidance. Instead of 12 months and $120K in consulting, they're on track for SOC 2 certification in 3 months with ISO 27001 and HIPAA following shortly after."
@@ -2016,15 +1983,15 @@
     "timestamps": [
       {
         "time": "10:47 AM - The Compliance Deadline Crisis",
-        "narrative": "Rachel reads the procurement email: \"Legal and security teams approved. Contract contingent on SOC 2 Type 1 certification. Target launch date: 8 weeks.\" Her compliance consultant's timeline: 6-9 months minimum for SOC 2. The math doesn't work.",
-        "thinking": "We finally landed our first enterprise customer—$400K ARR that validates product-market fit for our Series A pitch. But they need SOC 2 in 8 weeks and our consultant says 6 months minimum. If we lose this deal because of compliance timeline, we lose our showcase customer for fundraising and the competitor wins by default.",
+        "narrative": "Rachel reads the procurement email: \"Legal and security teams approved. Contract contingent on SOC 2 Type 1 certification. Target launch date: 8 weeks.\" Her compliance consultant's timeline: 6-<strong>9 months minimum</strong> for SOC 2. The math doesn't work.",
+        "thinking": "We finally landed our first enterprise customer—<strong>$400K ARR</strong> that validates product-market fit for our Series A pitch. But they need SOC 2 in 8 weeks and our consultant says <strong>6 months minimum</strong>. If we lose this deal because of compliance timeline, we lose our showcase customer for fundraising and the competitor wins by default.",
         "feeling": "Desperation and urgency. This enterprise deal is critical for their growth trajectory and investor narrative. Losing it because compliance takes too long would be devastating—it's not that their product isn't good enough, it's just that certification processes are slow.",
         "action": "",
         "momentOfValue": ""
       },
       {
         "time": "2:14 PM - The Fast-Track Compliance Platform",
-        "narrative": "Rachel's YC batch-mate suggests Thoropass—\"achieve SOC 2 certification in 8 weeks instead of 6 months with automated control implementation and evidence collection.\" She schedules an onboarding call and her CTO immediately starts connecting their systems.  **Moment of value:** Thoropass guides their team through implementing required security controls with specific playbooks and automated evidence collection. Instead of manually figuring out what SOC 2 requires and gathering screenshots, Thoropass provides a clear roadmap, monitors implementation progress, and automatically collects evidence as controls are deployed. They achieve SOC 2 Type 1 certification in 8 weeks—meeting the customer's deadline.",
+        "narrative": "Rachel's YC batch-mate suggests Thoropass—\"achieve SOC 2 certification in <strong>8 weeks in</strong>stead of 6 months with automated control implementation and evidence collection.\" She schedules an onboarding call and her CTO immediately starts connecting their systems.  **Moment of value:** Thoropass guides their team through implementing required security controls with specific playbooks and automated evidence collection. Instead of manually figuring out what SOC 2 requires and gathering screenshots, Thoropass provides a clear roadmap, monitors implementation progress, and automatically collects evidence as controls are deployed. They achieve SOC 2 Type 1 certification in 8 weeks—meeting the customer's deadline.",
         "thinking": "Thoropass just saved our most important enterprise deal. We implemented SOC 2 controls systematically with their playbooks instead of guessing what auditors want, and evidence collection was automated instead of last-minute screenshot gathering. Eight weeks from start to certification—exactly the timeline we needed.",
         "feeling": "",
         "action": "",
@@ -2062,7 +2029,7 @@
         "thinking": "",
         "feeling": "Relief and efficiency. He's not spending entire days manually provisioning access. Offboarding is now systematic instead of hoping he remembered every app. Lumos made access management scalable and secure instead of manual and error-prone.",
         "action": "Updates the IT team Slack: \"All new hire access provisioning complete via Lumos automation. Offboarding for 2 Friday departures complete—all access revoked across 30+ systems in 15 minutes with full audit trails. Manual provisioning used to take 6-8 hours per Monday. Now it's automated. Security team: we now have the orphaned account prevention and audit trails you've been requesting.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Lumos automatically provisions access to all required apps based on role templates. Engineers get GitHub org access, AWS IAM, Slack channels, Jira projects—all provisioned automatically in 8 minutes. Designer gets Figma team access, Adobe licensing, design system access. For the 2 offboarded employees, Lumos automatically revokes access across all 30+ connected systems within 15 minutes, including apps Marcus didn't even remember they had access to."
       }
     ]
   },
@@ -2076,7 +2043,7 @@
     "timestamps": [
       {
         "time": "9:14 AM - The Annual Audit Dread",
-        "narrative": "Jennifer opens last year's audit preparation notes: \"3 weeks of 60-hour weeks gathering evidence from 25 different systems, 47 spreadsheets tracking control implementation, 8 last-minute remediations when we discovered controls had drifted out of compliance.\" She starts building this year's evidence collection plan—looks like another 3-week nightmare.",
+        "narrative": "Jennifer opens last year's audit preparation notes: \"<strong>3 weeks of</strong> 60-hour weeks gathering evidence from 25 different systems, 47 spreadsheets tracking control implementation, 8 last-minute remediations when we discovered controls had drifted out of compliance.\" She starts building this year's evidence collection plan—looks like another 3-week nightmare.",
         "thinking": "I spend 11 months not knowing if we're actually compliant, then 3 weeks before the audit frantically gathering evidence and discovering problems. Last year we found that backup testing hadn't been performed for 4 months—something I could have fixed in June if I'd known about it, but instead we discovered it in November right before the audit.",
         "feeling": "Dread and inefficiency. Annual recertification shouldn't be a 3-week crisis. She should know their compliance status continuously, not discover control gaps when it's too late to fix them gracefully. She's being reactive instead of proactive.",
         "action": "",
@@ -2084,11 +2051,11 @@
       },
       {
         "time": "11:47 AM - The Continuous Compliance Platform",
-        "narrative": "Jennifer's new CISO suggested Trustero after joining last month—\"continuous compliance monitoring with real-time audit readiness scoring.\" She connects Trustero to their infrastructure and security tools.  **Moment of value:** Trustero continuously monitors all their SOC 2 and ISO 27001 security controls, automatically collects evidence from integrated systems, and provides a real-time audit readiness score: 94% compliant. The platform highlights 4 controls that need attention (backup testing is 2 weeks overdue, one access review incomplete). Jennifer fixes these issues in 2 days instead of discovering them during the audit.",
+        "narrative": "Jennifer's new CISO suggested Trustero after joining last month—\"continuous compliance monitoring with real-time audit readiness scoring.\" She connects Trustero to their infrastructure and security tools.  **Moment of value:** Trustero continuously monitors all their SOC 2 and ISO 27001 security controls, automatically collects evidence from integrated systems, and provides a real-time audit readiness score: 94% compliant. The platform highlights 4 controls that need attention (backup testing is 2 weeks overdue, one access review incomplete). Jennifer fixes these issues in <strong>2 days in</strong>stead of discovering them during the audit.",
         "thinking": "Trustero is showing me our compliance status in real-time instead of waiting until audit season to discover problems. The 94% readiness score means we're mostly compliant with specific gaps identified. I can fix these 4 issues now in 2 days, instead of finding them during the audit and scrambling to remediate.",
         "feeling": "",
         "action": "",
-        "momentOfValue": "Trustero continuously monitors all their SOC 2 and ISO 27001 security controls, automatically collects evidence from integrated systems, and provides a real-time audit readiness score: 94% compliant. The platform highlights 4 controls that need attention (backup testing is 2 weeks overdue, one access review incomplete). Jennifer fixes these issues in 2 days instead of discovering them during the audit."
+        "momentOfValue": "Trustero continuously monitors all their SOC 2 and ISO 27001 security controls, automatically collects evidence from integrated systems, and provides a real-time audit readiness score: 94% compliant. The platform highlights 4 controls that need attention (backup testing is 2 weeks overdue, one access review incomplete). Jennifer fixes these issues in <strong>2 days in</strong>stead of discovering them during the audit."
       }
     ]
   },
@@ -2136,11 +2103,11 @@
       },
       {
         "time": "2:14 PM - The Data Discovery Platform",
-        "narrative": "Lauren's DPO recommends BigID—\"automatically discover and classify sensitive data across 200+ data stores including shadow IT.\" She deploys BigID's discovery agents across their infrastructure, SaaS apps, and data repositories.  **Moment of value:** BigID automatically discovers customer PII across all 200+ data stores—finding data in databases, data lakes, SaaS apps, file shares, and 8 shadow IT systems the privacy team didn't know existed. The platform automatically tags customer data by type and jurisdiction (GDPR, CCPA, LGPD), maps data flows, and enables automated responses to privacy requests. Lauren can now search \"find all data for customer@email.com\" and get comprehensive results across every system in 4 minutes instead of 45 days of manual searching.",
+        "narrative": "Lauren's DPO recommends BigID—\"automatically discover and classify sensitive data across 200+ data stores including shadow IT.\" She deploys BigID's discovery agents across their infrastructure, SaaS apps, and data repositories.  **Moment of value:** BigID automatically discovers customer PII across all 200+ data stores—finding data in databases, data lakes, SaaS apps, file shares, and 8 shadow IT systems the privacy team didn't know existed. The platform automatically tags customer data by type and jurisdiction (GDPR, CCPA, LGPD), maps data flows, and enables automated responses to privacy requests. Lauren can now search \"find all data for customer@email.com\" and get comprehensive results across every system in 4 minutes instead of <strong>45 days of</strong> manual searching.",
         "thinking": "BigID just found customer PII in 8 systems I didn't know existed—including a forgotten analytics database and a marketing automation tool nobody told privacy about. The automated discovery means I can actually fulfill DSARs within the 30-day deadline. This is transforming privacy compliance from impossible manual searching to automated systematic discovery.",
         "feeling": "",
         "action": "",
-        "momentOfValue": "BigID automatically discovers customer PII across all 200+ data stores—finding data in databases, data lakes, SaaS apps, file shares, and 8 shadow IT systems the privacy team didn't know existed. The platform automatically tags customer data by type and jurisdiction (GDPR, CCPA, LGPD), maps data flows, and enables automated responses to privacy requests. Lauren can now search \"find all data for customer@email.com\" and get comprehensive results across every system in 4 minutes instead of 45 days of manual searching."
+        "momentOfValue": "BigID automatically discovers customer PII across all 200+ data stores—finding data in databases, data lakes, SaaS apps, file shares, and 8 shadow IT systems the privacy team didn't know existed. The platform automatically tags customer data by type and jurisdiction (GDPR, CCPA, LGPD), maps data flows, and enables automated responses to privacy requests. Lauren can now search \"find all data for customer@email.com\" and get comprehensive results across every system in 4 minutes instead of <strong>45 days of</strong> manual searching."
       }
     ]
   },
@@ -2180,7 +2147,7 @@
     "timestamps": [
       {
         "time": "10:14 AM - The Encryption Performance Dilemma",
-        "narrative": "Marcus reviews PCI DSS requirements: \"Encrypt cardholder data at rest and in use.\" He tests traditional database encryption on a staging environment. Query performance drops 40%. Analytics applications break because they can't join encrypted tables. The encryption implementation requires application code changes to handle encrypted fields—3 months of development work.",
+        "narrative": "Marcus reviews PCI DSS requirements: \"Encrypt cardholder data at rest and in use.\" He tests traditional database encryption on a staging environment. Query performance drops 40%. Analytics applications break because they can't join encrypted tables. The encryption implementation requires application code changes to handle encrypted fields—<strong>3 months of</strong> development work.",
         "thinking": "PCI requires encryption, but traditional database encryption destroys performance and breaks our applications. Our data analysts run thousands of queries per day—they can't wait 40% longer for results. And re-engineering our analytics applications to work with encrypted fields is a 3-month project. The audit is in 6 weeks.",
         "feeling": "Trapped and frustrated. Compliance requires encryption, but encryption breaks their database's core functionality. He's choosing between PCI compliance and operational usability. There has to be a better approach than rendering their data warehouse 40% slower and breaking every analytics application.",
         "action": "",
@@ -2214,11 +2181,11 @@
       },
       {
         "time": "11:47 AM - The Data Privacy Vault",
-        "narrative": "Sarah's payments consultant suggests Skyflow—\"data privacy vault for tokenizing sensitive data, reduces PCI scope by 70%.\" She reads the architecture: cardholder data is encrypted and stored in Skyflow's zero-trust infrastructure, their application only handles tokens. Card data never touches their servers.  **Moment of value:** Sarah integrates Skyflow's SDK. When customers enter credit card numbers, Skyflow intercepts and encrypts the data before it reaches their application, storing it in Skyflow's PCI-compliant vault and returning a token. Their application stores and processes tokens, never raw card numbers. Their PCI compliance scope drops 70%—no card data means most of their infrastructure is out-of-scope, reducing audit costs from $180K to $35K and remediation from 8 months to 6 weeks.",
+        "narrative": "Sarah's payments consultant suggests Skyflow—\"data privacy vault for tokenizing sensitive data, reduces PCI scope by 70%.\" She reads the architecture: cardholder data is encrypted and stored in Skyflow's zero-trust infrastructure, their application only handles tokens. Card data never touches their servers.  **Moment of value:** Sarah integrates Skyflow's SDK. When customers enter credit card numbers, Skyflow intercepts and encrypts the data before it reaches their application, storing it in Skyflow's PCI-compliant vault and returning a token. Their application stores and processes tokens, never raw card numbers. Their PCI compliance scope drops 70%—no card data means most of their infrastructure is out-of-scope, reducing audit costs from $180K to $35K and remediation from <strong>8 months to</strong> 6 weeks.",
         "thinking": "Skyflow just took card data storage completely out of our infrastructure. We're tokenizing at the edge—card data never reaches our application servers, databases, or cloud infrastructure. This reduced our PCI scope by 70%, cutting audit costs and remediation time by the same amount. We don't have to build PCI-compliant vault infrastructure because Skyflow is the vault.",
         "feeling": "",
         "action": "",
-        "momentOfValue": "Sarah integrates Skyflow's SDK. When customers enter credit card numbers, Skyflow intercepts and encrypts the data before it reaches their application, storing it in Skyflow's PCI-compliant vault and returning a token. Their application stores and processes tokens, never raw card numbers. Their PCI compliance scope drops 70%—no card data means most of their infrastructure is out-of-scope, reducing audit costs from $180K to $35K and remediation from 8 months to 6 weeks."
+        "momentOfValue": "Sarah integrates Skyflow's SDK. When customers enter credit card numbers, Skyflow intercepts and encrypts the data before it reaches their application, storing it in Skyflow's PCI-compliant vault and returning a token. Their application stores and processes tokens, never raw card numbers. Their PCI compliance scope drops 70%—no card data means most of their infrastructure is out-of-scope, reducing audit costs from $180K to $35K and remediation from <strong>8 months to</strong> 6 weeks."
       }
     ]
   },
@@ -2258,7 +2225,7 @@
     "timestamps": [
       {
         "time": "10:47 AM - The PCI Liability Burden",
-        "narrative": "Rachel reads the PCI compliance proposal: \"Level 1 Merchant compliance (300K+ transactions annually): quarterly network scans ($8K each), annual penetration test ($25K), PCI audit ($90K), security monitoring infrastructure ($40K annually). Total first year: $160K, ongoing: $122K annually.\"",
+        "narrative": "Rachel reads the PCI compliance proposal: \"Level 1 Merchant compliance (300K+ transactions annually): quarterly network scans ($8K each), annual penetration test ($25K), PCI audit ($90K), security monitoring infrastructure (<strong>$40K annual</strong>ly). Total first year: $160K, ongoing: <strong>$122K annual</strong>ly.\"",
         "thinking": "We're a 30-person startup. Spending $160K on PCI compliance our first year means cutting 2 engineering hires. And the real risk isn't just cost—it's liability. If we get breached and cardholder data is compromised, we're facing massive fines and litigation. We need to process payments without the liability of storing card data.",
         "feeling": "Strategic risk and resource constraint. PCI compliance is expensive, but the bigger issue is liability—storing cardholder data makes them a target for breaches and creates existential business risk. They need payment processing without the security burden of handling raw card numbers.",
         "action": "",
@@ -2285,18 +2252,18 @@
       {
         "time": "9:14 AM - The Manual Deletion Coordination",
         "narrative": "Lauren opens the deletion request and starts the coordination process. She needs to: identify all systems where this customer's data exists (production DB, Snowflake warehouse, Salesforce, HubSpot, Zendesk, Mixpanel, Amplitude, Google Analytics, Intercom, plus 20 more systems), coordinate with database admin to delete from production, coordinate with data engineering to delete from warehouse, coordinate with marketing to delete from HubSpot/Mailchimp, coordinate with support to delete tickets...",
-        "thinking": "Last time I did this it took 2 weeks of chasing 5 different teams and I still missed customer data in our analytics backup and an old marketing automation tool we don't actively use. The process is completely manual—emailing teams, tracking deletions in a spreadsheet, hoping nobody forgets a system. I have 30 days legally to complete this deletion and I'm already worried I'll miss the deadline.",
+        "thinking": "Last time I did this it took <strong>2 weeks of</strong> chasing 5 different teams and I still missed customer data in our analytics backup and an old marketing automation tool we don't actively use. The process is completely manual—emailing teams, tracking deletions in a spreadsheet, hoping nobody forgets a system. I have 30 days legally to complete this deletion and I'm already worried I'll miss the deadline.",
         "feeling": "Overwhelm and compliance anxiety. Data deletion requests are legally required, but fulfilling them requires finding data across 30+ systems and coordinating with multiple teams who have other priorities. Every missed system is a GDPR violation. Every deadline missed is a regulatory risk.",
         "action": "",
         "momentOfValue": ""
       },
       {
         "time": "11:47 AM - The Automated Privacy Orchestration",
-        "narrative": "Lauren's DPO recommends Transcend—\"automate data deletion requests across all your systems with orchestrated workflows.\" She deploys Transcend and connects their 30+ data systems (databases, data warehouse, SaaS applications).  **Moment of value:** Lauren inputs the deletion request into Transcend. The platform automatically identifies everywhere that customer's data exists across all 30 connected systems (production database, data warehouse, Salesforce, HubSpot, Zendesk, Mixpanel, Amplitude, Intercom, and 22 others), orchestrates the deletion across all systems in the correct order (avoiding referential integrity issues), and generates an audit report showing exactly what was deleted from where. The entire process takes 2 hours instead of 2 weeks, is fully documented for compliance, and ensures no data is missed.",
-        "thinking": "Transcend just automated what took 2 weeks of manual coordination. It found customer data across all 30 systems, orchestrated deletion in the right sequence, and generated the audit documentation I need for GDPR compliance. This is the systematic privacy operations I've been trying to build manually—automated, comprehensive, compliant.",
+        "narrative": "Lauren's DPO recommends Transcend—\"automate data deletion requests across all your systems with orchestrated workflows.\" She deploys Transcend and connects their 30+ data systems (databases, data warehouse, SaaS applications).  **Moment of value:** Lauren inputs the deletion request into Transcend. The platform automatically identifies everywhere that customer's data exists across all 30 connected systems (production database, data warehouse, Salesforce, HubSpot, Zendesk, Mixpanel, Amplitude, Intercom, and 22 others), orchestrates the deletion across all systems in the correct order (avoiding referential integrity issues), and generates an audit report showing exactly what was deleted from where. The entire process takes <strong>2 hours in</strong>stead of 2 weeks, is fully documented for compliance, and ensures no data is missed.",
+        "thinking": "Transcend just automated what took <strong>2 weeks of</strong> manual coordination. It found customer data across all 30 systems, orchestrated deletion in the right sequence, and generated the audit documentation I need for GDPR compliance. This is the systematic privacy operations I've been trying to build manually—automated, comprehensive, compliant.",
         "feeling": "",
         "action": "",
-        "momentOfValue": "Lauren inputs the deletion request into Transcend. The platform automatically identifies everywhere that customer's data exists across all 30 connected systems (production database, data warehouse, Salesforce, HubSpot, Zendesk, Mixpanel, Amplitude, Intercom, and 22 others), orchestrates the deletion across all systems in the correct order (avoiding referential integrity issues), and generates an audit report showing exactly what was deleted from where. The entire process takes 2 hours instead of 2 weeks, is fully documented for compliance, and ensures no data is missed."
+        "momentOfValue": "Lauren inputs the deletion request into Transcend. The platform automatically identifies everywhere that customer's data exists across all 30 connected systems (production database, data warehouse, Salesforce, HubSpot, Zendesk, Mixpanel, Amplitude, Intercom, and 22 others), orchestrates the deletion across all systems in the correct order (avoiding referential integrity issues), and generates an audit report showing exactly what was deleted from where. The entire process takes <strong>2 hours in</strong>stead of 2 weeks, is fully documented for compliance, and ensures no data is missed."
       }
     ]
   },
@@ -2382,7 +2349,7 @@
         "thinking": "",
         "feeling": "Relief and validation. The viral moment that could have killed their service became a growth milestone because infrastructure auto-scaled transparently. Momento eliminated cache capacity planning as a concern—they can now focus on game features instead of worrying about infrastructure scaling.",
         "action": "Posts in the engineering Slack: \"Handled viral traffic spike (100K → 2M DAU) using Momento serverless cache. Auto-scaled instantly without manual intervention. Cache response times stable at <10ms. No emergency infrastructure work required. This is what cloud infrastructure should be—automatically handles whatever traffic comes, we pay for what we use. Redis would have required hours of emergency scaling work.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Momento auto-scales instantly to handle the 2M DAU spike without Chen doing any capacity planning or cluster management. Cache response times return to <10ms. The infrastructure scales transparently based on actual throughput—from 100K DAU to 2M DAU—without manual intervention. Chen pays only for actual usage, and never has to think about cache capacity planning again."
       }
     ]
   },
@@ -2416,7 +2383,7 @@
         "thinking": "",
         "feeling": "Relief and validation. Edera prevented the worst-case security scenario for platforms running untrusted code. Runtime container security is now enforced beyond just Kubernetes RBAC and network policies—Edera provides defense-in-depth isolation that blocks attacks even when other controls fail.",
         "action": "Briefs the security team: \"Container escape attempt blocked by Edera runtime isolation. Compromised ML training job attempted lateral movement to access API credentials—blocked before access granted. Incident contained, no infrastructure compromise. Edera's runtime enforcement prevented the exact attack scenario we were most concerned about: customer code escaping container isolation and accessing production infrastructure.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Edera's runtime security blocks the container escape attempt in real-time—the compromised ML training job is isolated in its namespace and cannot access credentials from other pods. Edera generates a detailed attack report showing exactly what the container attempted to access, how the attack was blocked, and provides forensics for investigation. The lateral movement is prevented, and the rest of their infrastructure remains secure."
       }
     ]
   },
@@ -2430,7 +2397,7 @@
     "timestamps": [
       {
         "time": "9:47 AM - The Validation Gap",
-        "narrative": "Rachel reviews the new onboarding prototype in Figma. Product wants to ship in 2 weeks. Engineering is ready to build. But Rachel has zero data on whether users can actually complete the flow successfully. She could schedule user interviews, but that's 3 weeks of calendar coordination for 50 sessions.",
+        "narrative": "Rachel reviews the new onboarding prototype in Figma. Product wants to ship in 2 weeks. Engineering is ready to build. But Rachel has zero data on whether users can actually complete the flow successfully. She could schedule user interviews, but that's <strong>3 weeks of</strong> calendar coordination for 50 sessions.",
         "thinking": "This onboarding flow looks good in Figma, but I don't know if users will understand it. What if step 3 is confusing? What if the billing page scares people away? I should validate this with users before Engineering builds it, but scheduling 50 user interviews takes 3 weeks and delays our launch. I'm being asked to ship unvalidated design.",
         "feeling": "Uncertainty and validation anxiety. She's designing based on best practices and intuition, but has no user data. Shipping without validation means discovering UX problems after launch when it's expensive to fix and users have already churned.",
         "action": "",
@@ -2439,7 +2406,7 @@
       {
         "time": "11:14 AM - The Rapid Usability Testing",
         "narrative": "Rachel's design lead suggests Maze—\"remote usability testing platform, get results from 50 users in 48 hours without scheduling interviews.\" She uploads her Figma prototype to Maze and sends the test link to 50 people matching their target user profile.  **Moment of value:** Maze tracks exactly how users interact with the prototype: clicks, task completion rates, time-on-task, confusion points. Within 48 hours, Rachel has data from 50 users showing that 70% drop off at the billing page (too many fields, unclear pricing), and session recordings show users clicking repeatedly on step 3 expecting it to be interactive when it's just explanatory text. She iterates the design—simplifies billing page to 3 fields, makes step 3 actually interactive—and validates the improved version before shipping.",
-        "thinking": "Maze just showed me that 70% of users were dropping off at the billing page—a critical UX problem I would have shipped if I didn't test. The session recordings showed exactly where users got confused. I fixed those issues and validated the improved design in 3 days instead of shipping broken UX and discovering it after 700 trial signups churned.",
+        "thinking": "Maze just showed me that 70% of users were dropping off at the billing page—a critical UX problem I would have shipped if I didn't test. The session recordings showed exactly where users got confused. I fixed those issues and validated the improved design in <strong>3 days in</strong>stead of shipping broken UX and discovering it after 700 trial signups churned.",
         "feeling": "",
         "action": "",
         "momentOfValue": "Maze tracks exactly how users interact with the prototype: clicks, task completion rates, time-on-task, confusion points. Within 48 hours, Rachel has data from 50 users showing that 70% drop off at the billing page (too many fields, unclear pricing), and session recordings show users clicking repeatedly on step 3 expecting it to be interactive when it's just explanatory text. She iterates the design—simplifies billing page to 3 fields, makes step 3 actually interactive—and validates the improved version before shipping."
@@ -2456,7 +2423,7 @@
     "timestamps": [
       {
         "time": "10:14 AM - The SDK Development Burden",
-        "narrative": "Jordan reviews the customer requests: \"Do you have a Python SDK?\" \"Is there a TypeScript client library?\" \"Where's the Go package?\" His CTO estimates 3 months for one engineer to build SDKs in 4 languages, write documentation, set up publishing pipelines, and create a developer portal. That's 3 months not spent on API features.",
+        "narrative": "Jordan reviews the customer requests: \"Do you have a Python SDK?\" \"Is there a TypeScript client library?\" \"Where's the Go package?\" His CTO estimates <strong>3 months for</strong> one engineer to build SDKs in 4 languages, write documentation, set up publishing pipelines, and create a developer portal. That's 3 months not spent on API features.",
         "thinking": "Customers expect SDKs for every major language—they don't want to write raw HTTP clients. But building and maintaining 4 SDKs manually is a massive ongoing burden. Every time we change the API, we need to update 4 SDKs, 4 documentation sites, and publish to 4 package managers. This doesn't scale.",
         "feeling": "Resource constraint frustration and competitive disadvantage. Competitors offer SDKs, but allocating 2 engineers to SDK maintenance means slowing down API feature development. He needs SDKs without the ongoing maintenance burden.",
         "action": "",
@@ -2464,11 +2431,11 @@
       },
       {
         "time": "2:47 PM - The Automated SDK Generation",
-        "narrative": "Jordan's API infrastructure consultant recommends Speakeasy—\"automatically generate type-safe SDKs from OpenAPI spec, publish to package managers, generate docs.\" He connects their OpenAPI specification to Speakeasy.  **Moment of value:** Speakeasy automatically generates production-quality, type-safe SDKs in Python, TypeScript, Go, and Java from their OpenAPI spec, publishes them to npm, PyPI, Maven, and Go modules, generates interactive API documentation with code examples, and provides a developer portal. What would have been 3 months of SDK development is complete in one day. Every API change triggers automatic SDK updates, keeping everything in sync with zero manual work.",
-        "thinking": "Speakeasy just eliminated 3 months of SDK development work. The SDKs are type-safe, properly documented, and published to package managers automatically. Every time we update the API, SDKs regenerate and stay in sync. This is what API infrastructure should be—focus on the API design, automate the SDK distribution.",
+        "narrative": "Jordan's API infrastructure consultant recommends Speakeasy—\"automatically generate type-safe SDKs from OpenAPI spec, publish to package managers, generate docs.\" He connects their OpenAPI specification to Speakeasy.  **Moment of value:** Speakeasy automatically generates production-quality, type-safe SDKs in Python, TypeScript, Go, and Java from their OpenAPI spec, publishes them to npm, PyPI, Maven, and Go modules, generates interactive API documentation with code examples, and provides a developer portal. What would have been <strong>3 months of</strong> SDK development is complete in one day. Every API change triggers automatic SDK updates, keeping everything in sync with zero manual work.",
+        "thinking": "Speakeasy just eliminated <strong>3 months of</strong> SDK development work. The SDKs are type-safe, properly documented, and published to package managers automatically. Every time we update the API, SDKs regenerate and stay in sync. This is what API infrastructure should be—focus on the API design, automate the SDK distribution.",
         "feeling": "",
         "action": "",
-        "momentOfValue": "Speakeasy automatically generates production-quality, type-safe SDKs in Python, TypeScript, Go, and Java from their OpenAPI spec, publishes them to npm, PyPI, Maven, and Go modules, generates interactive API documentation with code examples, and provides a developer portal. What would have been 3 months of SDK development is complete in one day. Every API change triggers automatic SDK updates, keeping everything in sync with zero manual work."
+        "momentOfValue": "Speakeasy automatically generates production-quality, type-safe SDKs in Python, TypeScript, Go, and Java from their OpenAPI spec, publishes them to npm, PyPI, Maven, and Go modules, generates interactive API documentation with code examples, and provides a developer portal. What would have been <strong>3 months of</strong> SDK development is complete in one day. Every API change triggers automatic SDK updates, keeping everything in sync with zero manual work."
       }
     ]
   },
@@ -2517,7 +2484,7 @@
       {
         "time": "11:47 AM - The MLOps Platform",
         "narrative": "Chen's data science consultant recommends VESSL AI—\"managed MLOps platform for experiment tracking, training orchestration, and model deployment.\" He connects VESSL to their Kubernetes cluster and migrates his experiment definitions.  **Moment of value:** Chen defines his 40 hyperparameter combinations in VESSL's interface and launches all training experiments simultaneously. VESSL orchestrates the Kubernetes jobs, tracks all metrics in one dashboard, compares model performance with visualization, and provides one-click deployment of the winning model to production. The entire MLOps workflow is managed without him manually provisioning jobs, tracking experiments, or managing model registry infrastructure.",
-        "thinking": "VESSL just eliminated 3 days of experiment management overhead. I defined 40 experiments, clicked \"run,\" and VESSL handled all the infrastructure orchestration and metric tracking. The comparison dashboard shows me which hyperparameters performed best. This is what MLOps should be—focus on data science, automate the infrastructure management.",
+        "thinking": "VESSL just eliminated <strong>3 days of</strong> experiment management overhead. I defined 40 experiments, clicked \"run,\" and VESSL handled all the infrastructure orchestration and metric tracking. The comparison dashboard shows me which hyperparameters performed best. This is what MLOps should be—focus on data science, automate the infrastructure management.",
         "feeling": "",
         "action": "",
         "momentOfValue": "Chen defines his 40 hyperparameter combinations in VESSL's interface and launches all training experiments simultaneously. VESSL orchestrates the Kubernetes jobs, tracks all metrics in one dashboard, compares model performance with visualization, and provides one-click deployment of the winning model to production. The entire MLOps workflow is managed without him manually provisioning jobs, tracking experiments, or managing model registry infrastructure."
@@ -2569,7 +2536,7 @@
       {
         "time": "11:47 AM - The Visual Pipeline Builder",
         "narrative": "Marcus's data platform lead suggests Prophecy—\"visual interface for building Spark pipelines, generates optimized code automatically.\" He opens Prophecy and starts building pipelines by dragging-and-dropping transformations.  **Moment of value:** Marcus drags data sources (Salesforce, HubSpot, APIs) onto Prophecy's canvas, adds transformation nodes (filters, joins, aggregations), and connects them visually. Prophecy generates optimized Scala/Spark code automatically, deploys to Airflow for orchestration, and maintains the code in Git for version control. He builds 12 pipelines in 1 week instead of 6 weeks—Prophecy generates production-quality Spark code from his visual definitions, maintaining code quality and consistency across all pipelines.",
-        "thinking": "Prophecy just made ETL development 5x faster. I'm defining transformations visually—connect Salesforce, filter opportunities, join with accounts, aggregate by region—and Prophecy generates the Spark code automatically. The generated code is production-quality, version controlled in Git, and deployed to Airflow. This is the abstraction data engineering needed—describe the logic, automate the implementation.",
+        "thinking": "Prophecy just made ETL development <strong>5x faster</strong>. I'm defining transformations visually—connect Salesforce, filter opportunities, join with accounts, aggregate by region—and Prophecy generates the Spark code automatically. The generated code is production-quality, version controlled in Git, and deployed to Airflow. This is the abstraction data engineering needed—describe the logic, automate the implementation.",
         "feeling": "",
         "action": "",
         "momentOfValue": "Marcus drags data sources (Salesforce, HubSpot, APIs) onto Prophecy's canvas, adds transformation nodes (filters, joins, aggregations), and connects them visually. Prophecy generates optimized Scala/Spark code automatically, deploys to Airflow for orchestration, and maintains the code in Git for version control. He builds 12 pipelines in 1 week instead of 6 weeks—Prophecy generates production-quality Spark code from his visual definitions, maintaining code quality and consistency across all pipelines."
@@ -2665,7 +2632,7 @@
       {
         "time": "11:47 AM - The Feature Serving Challenge",
         "narrative": "Chen reviews the production requirements: surge pricing model needs 47 features computed in <10ms per ride request. Features combine streaming data (driver GPS locations from last 5 minutes, current weather) with historical aggregations (demand patterns by hour/day, event schedules). Building this custom feature infrastructure means: streaming data pipeline, feature computation engine, low-latency serving layer, feature monitoring. His team estimates 4-6 months.",
-        "thinking": "I have a trained model that works great in offline evaluation. But deploying it to production requires real-time feature infrastructure that computes 47 features in <10ms—combining streaming data and historical aggregations. Building this ourselves is 4-6 months of infrastructure work before we even serve predictions. This is why ML models take forever to reach production.",
+        "thinking": "I have a trained model that works great in offline evaluation. But deploying it to production requires real-time feature infrastructure that computes 47 features in <10ms—combining streaming data and historical aggregations. Building this ourselves is 4-<strong>6 months of</strong> infrastructure work before we even serve predictions. This is why ML models take forever to reach production.",
         "feeling": "Infrastructure bottleneck frustration and deployment anxiety. The model is ready, but feature infrastructure is blocking production deployment. He's an ML engineer, not a real-time systems architect. Building low-latency feature serving is complex infrastructure work that delays model deployment by months.",
         "action": "",
         "momentOfValue": ""
@@ -2673,7 +2640,7 @@
       {
         "time": "2:34 PM - The Feature Platform",
         "narrative": "Chen's ML platform consultant recommends Tecton—\"feature platform for real-time ML, serves features in <10ms with streaming and historical aggregations.\" He defines his 47 features in Tecton's framework and deploys to production.  **Moment of value:** When a user requests a ride, Tecton computes and serves all 47 features in <10ms—combining streaming data from Kafka (driver locations from last 5 minutes, current weather) with historical aggregations from their data warehouse (demand patterns, event schedules). The surge pricing model receives features instantly, makes predictions, returns pricing. Chen didn't build custom feature infrastructure—Tecton handles streaming ingestion, feature computation, low-latency serving, and monitoring.",
-        "thinking": "Tecton just eliminated 4-6 months of feature infrastructure work. I defined features declaratively, Tecton handles all the streaming data processing and low-latency serving. <10ms feature serving means the model can actually be used in production for real-time pricing. This is what ML platforms should be—focus on model development, automate the feature infrastructure.",
+        "thinking": "Tecton just eliminated 4-<strong>6 months of</strong> feature infrastructure work. I defined features declaratively, Tecton handles all the streaming data processing and low-latency serving. <10ms feature serving means the model can actually be used in production for real-time pricing. This is what ML platforms should be—focus on model development, automate the feature infrastructure.",
         "feeling": "",
         "action": "",
         "momentOfValue": "When a user requests a ride, Tecton computes and serves all 47 features in <10ms—combining streaming data from Kafka (driver locations from last 5 minutes, current weather) with historical aggregations from their data warehouse (demand patterns, event schedules). The surge pricing model receives features instantly, makes predictions, returns pricing. Chen didn't build custom feature infrastructure—Tecton handles streaming ingestion, feature computation, low-latency serving, and monitoring."
@@ -2716,7 +2683,7 @@
     "timestamps": [
       {
         "time": "10:47 AM - The Code Execution Safety Problem",
-        "narrative": "Alex tests his AI coding assistant. User request: \"Analyze this CSV and show me the top 10 customers by revenue.\" GPT-4 generates Python code with pandas operations. Looks correct. But Alex realizes: he's about to exec() untrusted AI-generated code on their production servers. What if the LLM generates malicious code? What if there's an infinite loop? What if it tries to access environment variables with API keys?",
+        "narrative": "Alex tests his AI coding assistant. User request: \"Analyze this CSV and show me the top <strong>10 customers</strong> by revenue.\" GPT-4 generates Python code with pandas operations. Looks correct. But Alex realizes: he's about to exec() untrusted AI-generated code on their production servers. What if the LLM generates malicious code? What if there's an infinite loop? What if it tries to access environment variables with API keys?",
         "thinking": "Running LLM-generated code is dangerous. I can't trust that the AI won't generate code with bugs, infinite loops, or malicious operations. I need sandboxed execution—isolated environment with resource limits where AI code can run safely without accessing credentials or affecting the host system. But building secure sandboxes is complex infrastructure.",
         "feeling": "Security risk and execution safety anxiety. AI code generation is valuable, but execution is the dangerous part. He can't run untrusted code with full system access, but he also can't afford to build complex container isolation infrastructure just for AI code execution.",
         "action": "",
@@ -2751,7 +2718,7 @@
       {
         "time": "11:47 AM - The Serverless GPU Platform",
         "narrative": "Priya finds Modal—\"serverless platform for batch jobs, write a Python function, Modal provisions GPUs automatically.\" She wraps her image processing function with @modal decorator and submits the job.  **Moment of value:** Priya's Python function runs on Modal's platform. Modal automatically provisions hundreds of GPUs, distributes the 10M images across workers, processes them in parallel, and scales down when complete. The entire job finishes in 40 minutes. Cost: $180 for actual GPU time used. No infrastructure setup, no ongoing costs when not running jobs. Just Python code and serverless execution.",
-        "thinking": "Modal just eliminated 3 days of infrastructure work. I wrote a Python function, decorated it with @modal, submitted 10M images, and Modal handled all the GPU provisioning and work distribution. 40 minutes and $180 instead of 3 days setup and $4K/month ongoing cluster costs. This is what serverless compute should be—write code, run at scale, pay for usage.",
+        "thinking": "Modal just eliminated <strong>3 days of</strong> infrastructure work. I wrote a Python function, decorated it with @modal, submitted 10M images, and Modal handled all the GPU provisioning and work distribution. 40 minutes and $180 instead of 3 days setup and $4K/month ongoing cluster costs. This is what serverless compute should be—write code, run at scale, pay for usage.",
         "feeling": "",
         "action": "",
         "momentOfValue": "Priya's Python function runs on Modal's platform. Modal automatically provisions hundreds of GPUs, distributes the 10M images across workers, processes them in parallel, and scales down when complete. The entire job finishes in 40 minutes. Cost: $180 for actual GPU time used. No infrastructure setup, no ongoing costs when not running jobs. Just Python code and serverless execution."
@@ -2776,11 +2743,11 @@
       },
       {
         "time": "3:14 PM - The AI Coding Agent",
-        "narrative": "Marcus's team recently deployed Sweep AI agent connected to their GitHub. He adds a comment to the issue: \"@sweep implement this endpoint following our existing API patterns.\" Sweep's AI agent reads the issue and begins working autonomously.  **Moment of value:** Sweep analyzes their codebase to understand existing API patterns, generates the controller code following their conventions, writes tests matching their test structure, creates a pull request with all changes. Marcus reviews the PR 10 minutes later: code looks correct, tests are comprehensive, follows their patterns. He requests one small change (add pagination), Sweep updates the PR immediately. Marcus approves and merges. Total time: 10 minutes of review instead of 4 hours of implementation.",
-        "thinking": "Sweep just turned 4 hours of routine coding into 10 minutes of code review. The AI read our codebase, understood our patterns, generated code that matches our style. I'm doing code review—the part that requires human judgment—not writing boilerplate CRUD endpoints. This is the productivity multiplier that AI coding should provide.",
+        "narrative": "Marcus's team recently deployed Sweep AI agent connected to their GitHub. He adds a comment to the issue: \"@sweep implement this endpoint following our existing API patterns.\" Sweep's AI agent reads the issue and begins working autonomously.  **Moment of value:** Sweep analyzes their codebase to understand existing API patterns, generates the controller code following their conventions, writes tests matching their test structure, creates a pull request with all changes. Marcus reviews the PR 10 minutes later: code looks correct, tests are comprehensive, follows their patterns. He requests one small change (add pagination), Sweep updates the PR immediately. Marcus approves and merges. Total time: 10 minutes of review instead of <strong>4 hours of</strong> implementation.",
+        "thinking": "Sweep just turned <strong>4 hours of</strong> routine coding into 10 minutes of code review. The AI read our codebase, understood our patterns, generated code that matches our style. I'm doing code review—the part that requires human judgment—not writing boilerplate CRUD endpoints. This is the productivity multiplier that AI coding should provide.",
         "feeling": "",
         "action": "",
-        "momentOfValue": "Sweep analyzes their codebase to understand existing API patterns, generates the controller code following their conventions, writes tests matching their test structure, creates a pull request with all changes. Marcus reviews the PR 10 minutes later: code looks correct, tests are comprehensive, follows their patterns. He requests one small change (add pagination), Sweep updates the PR immediately. Marcus approves and merges. Total time: 10 minutes of review instead of 4 hours of implementation."
+        "momentOfValue": "Sweep analyzes their codebase to understand existing API patterns, generates the controller code following their conventions, writes tests matching their test structure, creates a pull request with all changes. Marcus reviews the PR 10 minutes later: code looks correct, tests are comprehensive, follows their patterns. He requests one small change (add pagination), Sweep updates the PR immediately. Marcus approves and merges. Total time: 10 minutes of review instead of <strong>4 hours of</strong> implementation."
       }
     ]
   },
@@ -2802,8 +2769,8 @@
       },
       {
         "time": "4:04 PM - The AI Codebase Assistant",
-        "narrative": "Jordan opens Cosine/Genie, the AI agent his team recently deployed. He asks: \"Authentication is failing with 'invalid_token' error for 15% of logins. When was this bug introduced and what's the root cause?\"  **Moment of value:** Cosine has deep context about their entire codebase. The AI identifies that the bug was introduced in commit abc123 when the token validation function was refactored to handle JWT expiration, finds all 8 places that function is called, and spots the issue: one call path isn't passing the required timezone parameter, causing intermittent failures when server and client timezones differ. Cosine suggests a fix with working code snippet showing exactly what to change. Jordan had the root cause and solution in 5 minutes instead of 3 hours of manual investigation.",
-        "thinking": "Cosine just turned 3 hours of git archaeology into a 5-minute chat conversation. The AI has full codebase context—it identified the exact commit that introduced the bug, found all affected code paths, and explained the root cause with a working fix. This is what AI coding assistance should be—instant deep codebase understanding instead of manual context building.",
+        "narrative": "Jordan opens Cosine/Genie, the AI agent his team recently deployed. He asks: \"Authentication is failing with 'invalid_token' error for 15% of logins. When was this bug introduced and what's the root cause?\"  **Moment of value:** Cosine has deep context about their entire codebase. The AI identifies that the bug was introduced in commit abc123 when the token validation function was refactored to handle JWT expiration, finds all 8 places that function is called, and spots the issue: one call path isn't passing the required timezone parameter, causing intermittent failures when server and client timezones differ. Cosine suggests a fix with working code snippet showing exactly what to change. Jordan had the root cause and solution in 5 minutes instead of <strong>3 hours of</strong> manual investigation.",
+        "thinking": "Cosine just turned <strong>3 hours of</strong> git archaeology into a 5-minute chat conversation. The AI has full codebase context—it identified the exact commit that introduced the bug, found all affected code paths, and explained the root cause with a working fix. This is what AI coding assistance should be—instant deep codebase understanding instead of manual context building.",
         "feeling": "",
         "action": "",
         "momentOfValue": "Cosine has deep context about their entire codebase. The AI identifies that the bug was introduced in commit abc123 when the token validation function was refactored to handle JWT expiration, finds all 8 places that function is called, and spots the issue: one call path isn't passing the required timezone parameter, causing intermittent failures when server and client timezones differ. Cosine suggests a fix with working code snippet showing exactly what to change. Jordan had the root cause and solution in 5 minutes instead of 3 hours of manual investigation."
@@ -2814,7 +2781,7 @@
         "thinking": "",
         "feeling": "Efficiency and weekend saved. The bug is fixed, production is stable, and he's not spending Friday evening debugging. Cosine made codebase understanding instant—AI with full context can answer questions that would take humans hours of manual investigation to research.",
         "action": "Posts in engineering Slack: \"Fixed critical auth bug using Cosine AI debugging. Bug introduced in commit abc123 during JWT refactoring—one call path missing timezone parameter. Cosine identified root cause in 5 minutes by analyzing git history and codebase context, showed all affected code paths, suggested fix. Bug resolved in 1 hour instead of 3+ hours of manual git blame investigation. AI codebase understanding is transforming debugging workflow—instant context instead of manual archaeology.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Cosine has deep context about their entire codebase. The AI identifies that the bug was introduced in commit abc123 when the token validation function was refactored to handle JWT expiration, finds all 8 places that function is called, and spots the issue: one call path isn't passing the required timezone parameter, causing intermittent failures when server and client timezones differ. Cosine suggests a fix with working code snippet showing exactly what to change. Jordan had the root cause and solution in 5 minutes instead of <strong>3 hours of manual</strong> investigation."
       }
     ]
   },
@@ -2836,8 +2803,8 @@
       },
       {
         "time": "2:18 AM - The AI Incident Assistant",
-        "narrative": "Rachel opens Slack and asks Kubiya AI agent: \"Why is the API service responding slowly? Latency spiked to 3.2s.\"  **Moment of value:** Kubiya's AI agent autonomously investigates: queries application logs (no errors), checks database performance (query time spiked), analyzes slow query logs (finds queries scanning full users table), checks database indexes (identifies that the index on users.email was dropped during tonight's migration), and suggests the fix (recreate the index). Kubiya handled 70% of routine troubleshooting autonomously—collecting logs, analyzing metrics, identifying root cause—presenting Rachel with diagnosis and solution in 4 minutes instead of her spending 2 hours investigating half-asleep.",
-        "thinking": "Kubiya just diagnosed the incident in 4 minutes. The AI autonomously checked logs, analyzed database performance, found the missing index causing slow queries, and gave me the fix. I can recreate the index and resolve this incident in 12 minutes total instead of spending 2 hours investigating. This is what AI operations should be—autonomous troubleshooting that gives humans diagnosis and solution, not raw data to analyze.",
+        "narrative": "Rachel opens Slack and asks Kubiya AI agent: \"Why is the API service responding slowly? Latency spiked to 3.2s.\"  **Moment of value:** Kubiya's AI agent autonomously investigates: queries application logs (no errors), checks database performance (query time spiked), analyzes slow query logs (finds queries scanning full users table), checks database indexes (identifies that the index on users.email was dropped during tonight's migration), and suggests the fix (recreate the index). Kubiya handled 70% of routine troubleshooting autonomously—collecting logs, analyzing metrics, identifying root cause—presenting Rachel with diagnosis and solution in 4 minutes instead of her spending <strong>2 hours in</strong>vestigating half-asleep.",
+        "thinking": "Kubiya just diagnosed the incident in 4 minutes. The AI autonomously checked logs, analyzed database performance, found the missing index causing slow queries, and gave me the fix. I can recreate the index and resolve this incident in 12 minutes total instead of spending <strong>2 hours in</strong>vestigating. This is what AI operations should be—autonomous troubleshooting that gives humans diagnosis and solution, not raw data to analyze.",
         "feeling": "",
         "action": "",
         "momentOfValue": "Kubiya's AI agent autonomously investigates: queries application logs (no errors), checks database performance (query time spiked), analyzes slow query logs (finds queries scanning full users table), checks database indexes (identifies that the index on users.email was dropped during tonight's migration), and suggests the fix (recreate the index). Kubiya handled 70% of routine troubleshooting autonomously—collecting logs, analyzing metrics, identifying root cause—presenting Rachel with diagnosis and solution in 4 minutes instead of her spending 2 hours investigating half-asleep."
@@ -2848,7 +2815,7 @@
         "thinking": "",
         "feeling": "Incident resolved and sleep restored. Kubiya prevented a 2-hour 2 AM debugging session by autonomously handling routine troubleshooting work. AI operations assistance is valuable—not replacing DevOps engineers, but handling the routine investigation work that enables faster incident resolution, especially during off-hours when engineers are less effective.",
         "action": "Documents incident in post-mortem: \"Database index dropped during migration causing full table scans. Diagnosed by Kubiya AI agent in 4 minutes—AI autonomously investigated logs, metrics, and database performance, identified root cause and suggested fix. Incident resolved in 12 minutes total. Kubiya handled routine troubleshooting autonomously (checking logs, analyzing metrics, correlating timing), enabling rapid resolution at 2 AM when human investigation would have been slow and error-prone due to sleep deprivation.\"",
-        "momentOfValue": ""
+        "momentOfValue": "Kubiya's AI agent autonomously investigates: queries application logs (no errors), checks database performance (query time spiked), analyzes slow query logs (finds queries scanning full users table), checks database indexes (identifies that the index on users.email was dropped during tonight's migration), and suggests the fix (recreate the index). Kubiya handled 70% of routine troubleshooting autonomously—collecting logs, analyzing metrics, identifying root cause—presenting Rachel with diagnosis and solution in 4 minutes instead of her spending 2 hours investigating half-asleep."
       }
     ]
   }
