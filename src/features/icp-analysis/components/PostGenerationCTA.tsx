@@ -14,6 +14,20 @@ import Link from 'next/link';
 
 type CTAVariant = 'beta-waitlist' | 'urgent-assistance' | 'discovery' | 'all';
 
+interface CTAConfig {
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+  title: string;
+  description: string;
+  benefits: string[];
+  buttonText: string;
+  buttonHref: string;
+  urgency: string | null;
+  color: string;
+  gradientFrom: string;
+  gradientTo: string;
+  recommended: boolean;
+}
+
 interface PostGenerationCTAProps {
   variant?: CTAVariant;
   productName?: string;
@@ -30,7 +44,7 @@ export function PostGenerationCTA({
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
 
   // CTA configurations
-  const ctas = {
+  const ctas: Record<string, CTAConfig> = {
     'beta-waitlist': {
       icon: Users,
       title: 'Join the Founding Members Waitlist',
@@ -88,9 +102,9 @@ export function PostGenerationCTA({
   };
 
   // Determine which CTAs to show
-  const visibleCTAs = variant === 'all'
+  const visibleCTAs: Array<[string, CTAConfig]> = variant === 'all'
     ? Object.entries(ctas)
-    : [[variant, ctas[variant as keyof typeof ctas]]];
+    : (variant && ctas[variant] ? [[variant, ctas[variant]]] : []);
 
   const handleCTAClick = (ctaKey: string) => {
     if (onCTAClick) {

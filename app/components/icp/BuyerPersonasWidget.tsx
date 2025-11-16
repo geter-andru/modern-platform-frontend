@@ -206,7 +206,7 @@ export default function BuyerPersonasWidget({
             action_type: 'personas_generated',
             metadata: {
               personasCount: transformedPersonas.length,
-              personaNames: transformedPersonas.map(p => p.name)
+              personaNames: transformedPersonas.map((p: BuyerPersona) => p.name)
             }
           })
         })

@@ -104,6 +104,7 @@ export const FunnelChart: React.FC<FunnelChartProps> = ({
           },
           label: (context) => {
             const value = context.parsed.x;
+            if (value === null) return '';
             const total = stages[0].value;
             const percentage = ((value / total) * 100).toFixed(1);
             return `${value} (${percentage}% of total)`;
@@ -140,7 +141,7 @@ export const FunnelChart: React.FC<FunnelChartProps> = ({
           color: '#d1d5db',
           font: {
             size: 12,
-            weight: '500'
+            weight: 500
           },
           padding: 10
         },

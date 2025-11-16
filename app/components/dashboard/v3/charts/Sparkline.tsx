@@ -97,7 +97,7 @@ export const Sparkline: React.FC<SparklineProps> = ({
         },
         callbacks: {
           title: () => '',
-          label: (context) => `${context.parsed.y.toFixed(1)}`
+          label: (context) => context.parsed.y !== null ? `${context.parsed.y.toFixed(1)}` : ''
         }
       }
     },

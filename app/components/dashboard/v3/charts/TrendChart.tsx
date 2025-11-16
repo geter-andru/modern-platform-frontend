@@ -120,7 +120,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({
           color: '#9ca3af', // gray-400
           font: {
             size: 11,
-            weight: '500'
+            weight: 500
           },
           padding: 12,
           usePointStyle: true,
@@ -153,6 +153,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({
           },
           label: (context) => {
             const label = context.dataset.label || '';
+            if (context.parsed.y === null) return '';
             const value = context.parsed.y.toFixed(1);
             return `${label}: ${value}`;
           }

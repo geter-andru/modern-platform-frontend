@@ -105,7 +105,7 @@ export const RadarComparisonChart: React.FC<RadarComparisonChartProps> = ({
           color: '#9ca3af', // gray-400
           font: {
             size: 12,
-            weight: '500'
+            weight: 500
           },
           padding: 15,
           usePointStyle: true,
@@ -151,7 +151,7 @@ export const RadarComparisonChart: React.FC<RadarComparisonChartProps> = ({
           color: '#d1d5db', // gray-300
           font: {
             size: 11,
-            weight: '500'
+            weight: 500
           },
           padding: 10
         },

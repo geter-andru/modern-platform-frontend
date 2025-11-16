@@ -16,7 +16,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Navigation, TrendingUp, AlertCircle } from 'lucide-react';
-import { useSession } from 'next-auth/react';
+import { useRequireAuth } from '@/app/lib/auth/auth-hooks';
 import { useRouter } from 'next/navigation';
 import { ToolOutcomesGrid, DEFAULT_INDICATORS } from '@/app/components/dashboard/v3/ToolOutcomesGrid';
 import { PredictionTracker } from '@/app/components/dashboard/v3/PredictionTracker';
@@ -41,7 +41,7 @@ interface DashboardData {
 // ==================== MAIN COMPONENT ====================
 
 export default function DashboardV3Page() {
-  const { data: session, status: sessionStatus } = useSession();
+  const { user, loading: authLoading } = useRequireAuth();
   const router = useRouter();
 
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
@@ -49,19 +49,12 @@ export default function DashboardV3Page() {
   const [error, setError] = useState<string | null>(null);
 
   // ==================== AUTHENTICATION ====================
-
-  useEffect(() => {
-    if (sessionStatus === 'loading') return;
-
-    if (sessionStatus === 'unauthenticated') {
-      router.push('/auth/login?returnUrl=/dashboard-v3');
-    }
-  }, [sessionStatus, router]);
+  // Auth handled by useRequireAuth - redirects if not authenticated
 
   // ==================== DATA FETCHING ====================
 
   useEffect(() => {
-    if (sessionStatus !== 'authenticated') return;
+    if (authLoading) return;
 
     const fetchDashboardData = async () => {
       try {
@@ -111,11 +104,11 @@ export default function DashboardV3Page() {
     };
 
     fetchDashboardData();
-  }, [sessionStatus]);
+  }, [authLoading]);
 
   // ==================== LOADING STATE ====================
 
-  if (sessionStatus === 'loading' || isLoading) {
+  if (authLoading || isLoading) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] py-12 px-6">
         <div className="max-w-7xl mx-auto">
@@ -126,12 +119,6 @@ export default function DashboardV3Page() {
         </div>
       </div>
     );
-  }
-
-  // ==================== UNAUTHENTICATED STATE ====================
-
-  if (sessionStatus === 'unauthenticated') {
-    return null; // Will redirect via useEffect
   }
 
   // ==================== ERROR STATE ====================
