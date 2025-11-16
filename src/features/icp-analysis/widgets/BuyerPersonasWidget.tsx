@@ -797,19 +797,55 @@ export default function BuyerPersonasWidget({
                                 </div>
                               </div>
 
+                              {/* Why This Persona - NEW intelligence field */}
+                              {(persona as any).whyThisPersona && (
+                                <div className="bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-lg p-4 border border-blue-500/20">
+                                  <h4 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
+                                    <Target className="w-4 h-4 text-blue-400" />
+                                    Why This Persona Represents Your Ideal Customer
+                                  </h4>
+                                  <p className="text-sm text-gray-300 leading-relaxed">
+                                    {(persona as any).whyThisPersona}
+                                  </p>
+                                </div>
+                              )}
+
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="bg-black rounded-lg p-4">
                                   <h4 className="text-sm font-semibold text-white mb-3">
-                                    Common Objections
+                                    Common Objections & Responses
                                   </h4>
-                                  <ul className="space-y-2">
-                                    {persona.objections.map((objection, objIndex) => (
-                                      <li key={objIndex} className="text-sm text-white flex items-start gap-2">
-                                        <span className="text-orange-400 mt-1">•</span>
-                                        {objection}
-                                      </li>
-                                    ))}
-                                  </ul>
+                                  {/* Handle both old format (string[]) and new format (object[]) */}
+                                  <div className="space-y-4">
+                                    {persona.objections.map((objection, objIndex) => {
+                                      // Check if objection is an object with objection/response fields
+                                      const isNewFormat = typeof objection === 'object' && objection !== null && 'objection' in objection;
+
+                                      if (isNewFormat) {
+                                        const obj = objection as { objection: string; response: string };
+                                        return (
+                                          <div key={objIndex} className="space-y-2">
+                                            <div className="flex items-start gap-2">
+                                              <span className="text-orange-400 mt-1 flex-shrink-0">❌</span>
+                                              <p className="text-sm text-white font-medium">{obj.objection}</p>
+                                            </div>
+                                            <div className="flex items-start gap-2 ml-5">
+                                              <span className="text-green-400 mt-1 flex-shrink-0">✓</span>
+                                              <p className="text-sm text-gray-300">{obj.response}</p>
+                                            </div>
+                                          </div>
+                                        );
+                                      } else {
+                                        // Old format - just display as string
+                                        return (
+                                          <li key={objIndex} className="text-sm text-white flex items-start gap-2">
+                                            <span className="text-orange-400 mt-1">•</span>
+                                            {objection as string}
+                                          </li>
+                                        );
+                                      }
+                                    })}
+                                  </div>
                                 </div>
 
                                 <div className="bg-black rounded-lg p-4">

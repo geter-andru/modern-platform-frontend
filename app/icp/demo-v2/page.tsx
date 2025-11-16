@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, Download, Users, BarChart3, TrendingUp, AlertCircle, CheckCircle2, Zap, Target, DollarSign, TrendingDown, ChevronRight, ChevronLeft } from 'lucide-react';
+import { ArrowRight, Sparkles, Download, Users, BarChart3, TrendingUp, AlertCircle, CheckCircle2, Zap, Target, DollarSign, TrendingDown, ChevronRight, ChevronLeft, Share2, Lightbulb, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import BuyerPersonasWidget from '../../../src/features/icp-analysis/widgets/BuyerPersonasWidget';
 import MyICPOverviewWidget from '../../../src/features/icp-analysis/widgets/MyICPOverviewWidget';
@@ -38,6 +38,10 @@ export default function ICPDemoV2Page() {
 
   // Generated personas state (starts with demo data, replaced after generation)
   const [generatedPersonas, setGeneratedPersonas] = useState(demoData.personas);
+
+  // Intelligence extraction state
+  const [refinedDescription, setRefinedDescription] = useState<string>('');
+  const [coreCapability, setCoreCapability] = useState<string>('');
 
   // Mobile detection for touch optimization
   const [isMobile, setIsMobile] = useState(false);
@@ -123,9 +127,23 @@ export default function ICPDemoV2Page() {
     setIsGenerating(true);
 
     try {
-      // Show initial loading state
-      setGenerationStage('Analyzing product positioning...');
-      toast.loading('Analyzing product positioning...', { id: 'generate' });
+      // Simulated live preview - Stage 1
+      setGenerationStage('Analyzing product description...');
+      toast.loading('Analyzing product description...', { id: 'generate' });
+
+      // Simulate progress (30% - analyzing)
+      await new Promise(resolve => setTimeout(resolve, 800));
+
+      // Simulated live preview - Stage 2
+      setGenerationStage('Extracting core capability...');
+      toast.loading('Extracting core capability...', { id: 'generate' });
+
+      // Simulate progress (50% - extracting)
+      await new Promise(resolve => setTimeout(resolve, 600));
+
+      // Simulated live preview - Stage 3
+      setGenerationStage('Identifying buyer personas...');
+      toast.loading('Identifying buyer personas...', { id: 'generate' });
 
       // Call backend API
       const response = await fetch('/api/demo/generate-icp', {
@@ -155,9 +173,16 @@ export default function ICPDemoV2Page() {
         throw new Error(data.error || 'Generation failed');
       }
 
-      // Update generation stage
-      setGenerationStage('Crafting buyer personas...');
-      toast.loading('Crafting buyer personas...', { id: 'generate' });
+      // Simulated live preview - Stage 4
+      setGenerationStage('Generating objection responses...');
+      toast.loading('Generating objection responses...', { id: 'generate' });
+
+      // Simulate progress (90% - finalizing)
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Store intelligence extraction results
+      setRefinedDescription(data.refinedProductDescription || '');
+      setCoreCapability(data.coreCapability || '');
 
       // Store generated personas
       setGeneratedPersonas(data.personas);
@@ -166,7 +191,7 @@ export default function ICPDemoV2Page() {
       setIsGenerating(false);
       setGenerationStage('');
       setShowResults(true);
-      toast.success(`${data.personas.length} personas generated!`, { id: 'generate' });
+      toast.success(`Deep buyer intelligence extracted! ${data.personas.length} personas generated.`, { id: 'generate' });
 
       // Scroll to results
       setTimeout(() => {
@@ -242,6 +267,24 @@ export default function ICPDemoV2Page() {
     } else {
       toast.error(result.error || 'Failed to export CSV', { id: 'csv-export' });
     }
+  };
+
+  const handleSocialShare = (platform: 'linkedin' | 'twitter') => {
+    const shareMessage = `Andru analyzed ${productName}'s core capability and generated buyer personas with objection handlers in under 5 minutes - complete with WHY each persona is the ideal customer. Finally, buyer intelligence that doesn't feel generic.\n\nhttps://platform.andru.ai/icp/demo-v2`;
+
+    const encodedMessage = encodeURIComponent(shareMessage);
+
+    let shareUrl = '';
+    if (platform === 'linkedin') {
+      // LinkedIn doesn't support pre-filled text, but we can share the URL
+      shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://platform.andru.ai/icp/demo-v2')}`;
+    } else {
+      // Twitter/X supports pre-filled text
+      shareUrl = `https://twitter.com/intent/tweet?text=${encodedMessage}`;
+    }
+
+    window.open(shareUrl, '_blank', 'width=600,height=400');
+    toast.success(`Opening ${platform === 'linkedin' ? 'LinkedIn' : 'X/Twitter'} share dialog...`);
   };
 
   const dataStats = [
@@ -1000,15 +1043,79 @@ export default function ICPDemoV2Page() {
                       Based on: <strong>{productName || 'DevTool Pro'}</strong>
                     </p>
                   </div>
-                  <button
-                    onClick={() => setShowExportModal(true)}
-                    className="btn btn-secondary flex items-center gap-2"
-                  >
-                    <Download className="w-4 h-4" />
-                    Export Results
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => handleSocialShare('linkedin')}
+                      className="btn btn-secondary flex items-center gap-2"
+                      title="Share on LinkedIn"
+                    >
+                      <Share2 className="w-4 h-4" />
+                      LinkedIn
+                    </button>
+                    <button
+                      onClick={() => handleSocialShare('twitter')}
+                      className="btn btn-secondary flex items-center gap-2"
+                      title="Share on X/Twitter"
+                    >
+                      <Share2 className="w-4 h-4" />
+                      X
+                    </button>
+                    <button
+                      onClick={() => setShowExportModal(true)}
+                      className="btn btn-primary flex items-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      Export
+                    </button>
+                  </div>
                 </div>
               </StaggeredItem>
+
+              {/* Intelligence Summary - NEW */}
+              {(refinedDescription || coreCapability) && (
+                <StaggeredItem delay={0.35} animation="lift">
+                  <div className="mb-6 p-6 rounded-xl border" style={{
+                    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(147, 51, 234, 0.05) 100%)',
+                    borderColor: 'rgba(59, 130, 246, 0.2)'
+                  }}>
+                    <div className="flex items-start gap-3 mb-4">
+                      <div className="p-2 rounded-lg" style={{ background: 'rgba(59, 130, 246, 0.1)' }}>
+                        <Lightbulb className="w-5 h-5 text-primary-blue" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-text-primary mb-1">Intelligence Extraction</h3>
+                        <p className="text-sm text-text-muted">
+                          Andru's deep analysis of your product description
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      {refinedDescription && (
+                        <div>
+                          <p className="text-xs font-medium text-text-muted mb-2 uppercase tracking-wider">
+                            Enhanced Product Description
+                          </p>
+                          <p className="text-text-primary leading-relaxed">
+                            {refinedDescription}
+                          </p>
+                        </div>
+                      )}
+
+                      {coreCapability && (
+                        <div>
+                          <p className="text-xs font-medium text-text-muted mb-2 uppercase tracking-wider">
+                            Core Capability (Pure Signal)
+                          </p>
+                          <p className="text-text-primary font-medium leading-relaxed">
+                            {coreCapability}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </StaggeredItem>
+              )}
 
               {/* Tab Navigation */}
               <StaggeredItem delay={0.4} animation="slide">
