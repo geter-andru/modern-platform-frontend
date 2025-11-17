@@ -23,6 +23,7 @@ export interface ApiResponse<T = any> {
   data?: T;
   error?: string;
   details?: string;
+  metadata?: any;
 }
 
 export interface CustomerData {

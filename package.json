@@ -11,6 +11,7 @@
     "types:check": "tsc --noEmit",
     "validate:env": "tsx scripts/validate-env.ts",
     "validate:config": "node scripts/validate-dev-config.js",
+    "validate:scenarios": "node scripts/validate-scenarios.cjs",
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",

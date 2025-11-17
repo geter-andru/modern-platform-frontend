@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Building2, MapPin, TrendingUp, ExternalLink, Linkedin, DollarSign, Users, CheckCircle2, AlertCircle, Sparkles, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { useAuth } from '@/app/lib/hooks/useAuth';
+import { useAuth } from '@/app/lib/auth';
 import { api } from '@/app/lib/api/modern-client';
 import toast, { Toaster } from 'react-hot-toast';
 import { StaggeredItem } from '../../../src/shared/utils/staggered-entrance';

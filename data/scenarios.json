@@ -105,7 +105,7 @@
     "company": "Leaping AI",
     "slug": "leaping-ai",
     "title": "Call Center Operations Director Preventing Cost Overrun Crisis",
-    "persona": "",
+    "persona": "Operations Director",
     "scenario": "It's 7:28 AM on a Monday, one week before her quarterly cost review with the CFO. Patricia (Operations Director, ESTJ) is looking at last month's call center P&L and sees offshore BPO costs jumped from $94K to $127K due to higher-than-expected call volume, while customer satisfaction scores dropped from 87% to 81%.",
     "worstCase": "Walking into that CFO meeting unable to explain why call center costs are accelerating faster than customer growth, getting pressure to cut service quality just as customer complaints are rising, and potentially losing her credibility as the person responsible for \"running operations efficiently\" when she's 6 months into a new role and trying to prove she can scale the support organization profitably.",
     "timestamps": [
@@ -855,7 +855,7 @@
     "company": "Resend",
     "slug": "resend",
     "title": "Developer Shipping Email Features",
-    "persona": "",
+    "persona": "Developer",
     "scenario": "It's 11:23 AM on a Tuesday, implementing transactional emails for their SaaS product. Kevin (Developer, INTP) just spent 2 hours debugging why SendGrid emails are landing in spam and the dashboard's 15 different configuration pages are incomprehensible.",
     "worstCase": "Shipping a product where critical emails (password resets, billing notifications) don't reach users, watching customer complaints pile up about \"emails not working,\" and spending engineering time debugging email deliverability instead of building features.",
     "timestamps": [
@@ -889,7 +889,7 @@
     "company": "Reflex",
     "slug": "reflex",
     "title": "Python Developer Building Internal Tools",
-    "persona": "",
+    "persona": "Python Developer",
     "scenario": "It's 2:17 PM on a Thursday, building an internal admin dashboard for the operations team. Marcus (Python Developer, ISTP) just realized building a web frontend means learning React and JavaScript, which he doesn't know and doesn't want to learn.",
     "worstCase": "The ops team staying stuck with spreadsheets because he can't build a web UI, explaining to his manager why a \"simple dashboard\" is taking 8 weeks to learn JavaScript for, and losing the opportunity to automate manual operations work.",
     "timestamps": [
@@ -923,7 +923,7 @@
     "company": "Unkey",
     "slug": "unkey",
     "title": "API Developer Implementing Authentication",
-    "persona": "",
+    "persona": "API Developer",
     "scenario": "It's 9:42 AM on a Monday, implementing API authentication for their B2B product. Jordan (API Developer, INTJ) just estimated 6 weeks to build API key management, rate limiting, analytics, and security features from scratch.",
     "worstCase": "Delaying the API launch by 6 weeks to build auth infrastructure, shipping insecure authentication that gets hacked, and losing credibility as the technical lead responsible for API security.",
     "timestamps": [
@@ -957,7 +957,7 @@
     "company": "PostHog",
     "slug": "posthog",
     "title": "Product Manager Debugging Retention",
-    "persona": "",
+    "persona": "Product Manager",
     "scenario": "It's 10:47 AM on a Wednesday, preparing for the quarterly product review. Emma (Product Manager, ENFJ) needs to explain why user retention dropped from 42% to 31% last month, but has no data showing where users are dropping off.",
     "worstCase": "Walking into the quarterly review unable to explain the retention drop, watching executives question whether product knows what they're building, and losing credibility as the PM responsible for growth metrics.",
     "timestamps": [
@@ -1025,7 +1025,7 @@
     "company": "Replicate",
     "slug": "replicate",
     "title": "ML Engineer Deploying Custom Models",
-    "persona": "",
+    "persona": "ML Engineer",
     "scenario": "It's 11:23 AM on a Thursday, deploying their custom Stable Diffusion model for image generation. Maya (ML Engineer, ISTP) just realized maintaining GPU infrastructure for unpredictable traffic will cost $12K/month in idle servers or crash during traffic spikes.",
     "worstCase": "Either burning $12K/month on idle GPU servers or crashing during viral moments when traffic spikes 100x, losing revenue and reputation because their AI product can't handle demand.",
     "timestamps": [
@@ -1059,7 +1059,7 @@
     "company": "Waypoint AI",
     "slug": "waypoint-ai",
     "title": "Customer Success Engineer Triaging Escalations",
-    "persona": "",
+    "persona": "CS Engineer",
     "scenario": "It's 3:42 PM on a Friday, handling a technical support escalation from a major customer. Daniel (CS Engineer, ISFJ) needs to route the database performance issue to the right senior engineer, but diagnosing the problem manually could take 4 hours and the customer is demanding immediate help.",
     "worstCase": "Misrouting the ticket to the wrong engineer causing additional delays, watching the customer's frustration escalate to the executive level, and losing the account because technical support couldn't resolve issues quickly.",
     "timestamps": [
@@ -1093,7 +1093,7 @@
     "company": "Crustdata",
     "slug": "crustdata",
     "title": "SDR Building Target Account Lists",
-    "persona": "",
+    "persona": "SDR",
     "scenario": "It's 9:14 AM on a Monday, starting the week with an empty pipeline. Rachel (SDR, ESTP) needs to find 40 qualified prospects but manually researching companies on LinkedIn and Crunchbase takes 20 minutes per lead—8 hours for a full list.",
     "worstCase": "Missing her weekly quota because manual prospecting is too slow, watching her manager question her productivity, and potentially losing her SDR role if pipeline contribution stays low.",
     "timestamps": [
@@ -1124,44 +1124,10 @@
     ]
   },
   {
-    "company": "Crustdata",
-    "slug": "crustdata",
-    "title": "SDR Building Target Account Lists",
-    "persona": "",
-    "scenario": "It's 9:14 AM on a Monday, starting the week with an empty pipeline. Rachel (SDR, ESTP) needs to find 40 qualified prospects for their AI infrastructure platform, but manually researching companies on LinkedIn and Crunchbase takes 20 minutes per lead—8 hours for a full list.",
-    "worstCase": "Missing her weekly quota because manual prospecting is too slow, watching her sales manager question her productivity metrics at Friday's pipeline review, and potentially losing her SDR role if pipeline contribution stays consistently below team average.",
-    "timestamps": [
-      {
-        "time": "9:14 AM - The Manual Research Grind",
-        "narrative": "Rachel opens her prospecting spreadsheet. Empty. She starts researching on LinkedIn: find a Series A company, check their funding announcement, look up their tech stack on BuiltWith, verify they're hiring DevOps engineers, record it all in Salesforce.",
-        "thinking": "This is taking 18 minutes per lead. If I do this for 40 companies, I won't even start outreach until Wednesday. I'll miss quota again.",
-        "feeling": "Frustration and pressure. Her manager already flagged her low activity metrics last week. She needs to prove she can source pipeline, not just research it.",
-        "action": "",
-        "momentOfValue": ""
-      },
-      {
-        "time": "10:04 AM - The API-Powered Research",
-        "narrative": "Rachel remembers her teammate mentioned Crustdata—\"real-time B2B data API for finding companies with specific signals.\" She opens the platform and queries: \"Series A companies, $10M+ funding in last 6 months, DevOps job postings active.\"  **Moment of value:** The API returns 34 qualified leads in 8 seconds. Each record includes funding details, tech stack, employee count, hiring signals, and decision-maker contacts. Data that would take <strong>2 weeks to</strong> research manually—delivered instantly.",
-        "thinking": "This just gave me an entire week's worth of qualified prospects in 8 seconds. I can start calling right now instead of researching until Wednesday.",
-        "feeling": "",
-        "action": "",
-        "momentOfValue": "The API returns 34 qualified leads in 8 seconds. Each record includes funding details, tech stack, employee count, hiring signals, and decision-maker contacts. Data that would take 2 weeks to research manually—delivered instantly."
-      },
-      {
-        "time": "11:47 AM - The Outreach Execution",
-        "narrative": "Rachel has already called <strong>15 prospects</strong>. Five booked discovery meetings. She's ahead of her weekly target by Monday noon—something that hasn't happened in 3 months.",
-        "thinking": "",
-        "feeling": "Relief and confidence. This is the best Monday she's had in months. She'll hit her daughter's soccer practice at 4 PM instead of working late to catch up on research.",
-        "action": "Slacks her manager: \"Hit weekly meeting quota by Monday lunch using Crustdata for prospecting. Can we get a team license?\"",
-        "momentOfValue": "The API returns 34 qualified leads in 8 seconds. Each record includes funding details, tech stack, employee count, hiring signals, and decision-maker contacts. Data that would take <strong>2 weeks to research</strong> manually—delivered instantly."
-      }
-    ]
-  },
-  {
     "company": "Elemeno Health",
     "slug": "elemeno-health",
     "title": "New ICU Nurse Preventing Medical Error",
-    "persona": "",
+    "persona": "ICU Nurse",
     "scenario": "It's 11:42 PM on a Thursday night shift, 3 weeks into her first solo ICU rotation. Emma (ICU Nurse, ISFJ) hears an ECMO alarm sound from bed 7—a life support alarm she's never encountered in real-world practice, only during orientation 6 weeks ago.",
     "worstCase": "Responding incorrectly to a critical alarm and causing patient harm, being the nurse who proves she wasn't ready for solo ICU shifts, and living with the knowledge that inadequate training led to a preventable adverse event.",
     "timestamps": [
@@ -1195,7 +1161,7 @@
     "company": "Workbase",
     "slug": "workbase",
     "title": "CSM Preventing Account Churn",
-    "persona": "",
+    "persona": "Customer Success Manager",
     "scenario": "It's 8:47 AM on a Tuesday, 2 weeks before quarterly business review season. David (Customer Success Manager, ENFJ) manages 47 enterprise SaaS accounts worth $2.4M in ARR, but he's been manually tracking usage trends in spreadsheets and constantly missing early churn signals.",
     "worstCase": "Losing 3 major accounts at renewal because he didn't catch declining usage early enough to intervene, watching his renewal rate drop below 90%, and explaining to his VP why accounts churned that could have been saved with proactive outreach.",
     "timestamps": [
@@ -1229,7 +1195,7 @@
     "company": "CalmWave",
     "slug": "calmwave",
     "title": "ICU Nurse Managing Alarm Fatigue",
-    "persona": "",
+    "persona": "ICU Nurse",
     "scenario": "It's 2:14 PM on a Wednesday afternoon in a 400-bed hospital ICU. Sarah (ICU Nurse, ISTJ) monitors 8 patients, each connected to devices generating 150+ alarms per day—1,200 total alarms to mentally process, most of which are false positives or low-priority alerts.",
     "worstCase": "Missing a critical alarm because she's desensitized to constant alert noise, causing patient harm from delayed response, and being the nurse whose alarm fatigue led to an adverse event that makes hospital incident reports and regulatory scrutiny.",
     "timestamps": [
@@ -1263,7 +1229,7 @@
     "company": "Avante AI",
     "slug": "avante-ai",
     "title": "HR Manager Optimizing Benefits Costs",
-    "persona": "",
+    "persona": "HR Benefits Manager",
     "scenario": "It's 9:23 AM on a Monday in October, 6 weeks before annual benefits renewal deadline. Marcus (HR Benefits Manager, ENTJ) at a 500-person company needs to compare 12 different insurance plans across cost, coverage, and employee needs—a process that typically takes 40 hours of spreadsheet analysis.",
     "worstCase": "Selecting suboptimal benefits that cost the company $400K more than necessary, employees complaining about worse coverage or higher premiums, and his CFO questioning why HR can't make data-driven benefits decisions that control healthcare costs.",
     "timestamps": [
@@ -1297,7 +1263,7 @@
     "company": "Bland AI",
     "slug": "bland-ai",
     "title": "University Admissions Handling Peak Inquiry Volume",
-    "persona": "",
+    "persona": "Director of Admissions",
     "scenario": "It's 10:47 AM on a Monday in March, peak college admissions season. Jennifer (Director of Admissions, ESFJ) at a mid-sized university faces 2,400 inquiry calls from prospective students over the next 6 weeks, but her team of 8 admissions counselors can only handle 45 calls per day—leaving 300+ students waiting days for callbacks.",
     "worstCase": "Losing prospective students to competitor universities because inquiry calls go unanswered, watching enrollment numbers drop 12% because students choose schools with more responsive admissions offices, and explaining to the university president why they missed enrollment targets despite record inquiry volume.",
     "timestamps": [
@@ -1331,7 +1297,7 @@
     "company": "Corgea",
     "slug": "corgea",
     "title": "CISO Accelerating Vulnerability Remediation",
-    "persona": "",
+    "persona": "CISO",
     "scenario": "It's 8:14 AM on a Tuesday after Monday's weekly security scan. Nathan (CISO, INTJ) at a fintech startup reviews the scan results: 47 code vulnerabilities across their repos, ranging from critical SQL injection risks to low-priority dependency updates—and his 3-person security team doesn't have time to triage and fix them all.",
     "worstCase": "A security breach because critical vulnerabilities sat unfixed for weeks while his team wasted time on false positives, explaining to the board and regulators why known vulnerabilities weren't patched, and losing customer trust (and SOC 2 certification) because their vulnerability remediation SLA is 14 days and they're currently at 23 days average.",
     "timestamps": [
@@ -1365,7 +1331,7 @@
     "company": "Strac",
     "slug": "strac",
     "title": "Compliance Officer Preventing Data Exposure",
-    "persona": "",
+    "persona": "Compliance Officer",
     "scenario": "It's 3:47 PM on a Thursday afternoon. Lauren (Compliance Officer, ISTJ) at a Series B SaaS company gets a Slack message from their security tool: \"AWS credentials detected in public GitHub repository.\" Simultaneously, a customer emails saying they noticed customer PII in a Slack channel during a screen share demo.",
     "worstCase": "A major data breach because AWS credentials are publicly exposed and being actively exploited, GDPR fines up to €20M because customer PII was improperly stored in communication tools, and losing enterprise customers who require strict data security compliance as a vendor requirement.",
     "timestamps": [
@@ -1399,7 +1365,7 @@
     "company": "Solve Intelligence",
     "slug": "solve-intelligence",
     "title": "Patent Attorney Accelerating Application Drafting",
-    "persona": "",
+    "persona": "Patent Attorney",
     "scenario": "It's 9:14 AM on a Monday morning. James (Patent Attorney, INTP) at a biotech law firm just received an invention disclosure from a pharmaceutical client for a novel drug delivery mechanism—a patent application that typically requires 40 hours of drafting time over 2 weeks, and they want the first draft by Friday.",
     "worstCase": "Missing the client's Friday deadline and losing credibility as their go-to patent counsel, rushing the draft and making errors that weaken the patent's defensibility, and watching the client move to a competitor firm that can draft patents faster while maintaining quality.",
     "timestamps": [
@@ -1425,7 +1391,7 @@
     "company": "PartnerHQ",
     "slug": "partnerhq",
     "title": "Enterprise Sales Rep Accessing Warm Introductions",
-    "persona": "",
+    "persona": "Enterprise Account Executive",
     "scenario": "It's 10:23 AM on a Tuesday. Mike (Enterprise Account Executive, ESTP) at an enterprise security company has been trying to reach the CISO at a Fortune 500 target account for 6 weeks—12 cold emails, 8 LinkedIn messages, 4 cold calls—all ignored.",
     "worstCase": "Missing his Q3 quota because he can't get meetings with senior enterprise buyers who ignore cold outbound, watching competitor reps with better networks close deals while he's stuck sending emails to black holes, and losing his AE role if he doesn't hit quota for 2 consecutive quarters.",
     "timestamps": [
@@ -1451,7 +1417,7 @@
     "company": "Topo.io",
     "slug": "topoio",
     "title": "SDR Eliminating Manual Prospecting Grind",
-    "persona": "",
+    "persona": "SDR",
     "scenario": "It's 8:47 AM on a Monday morning. Tyler (SDR, ENTP) at a DevTools company needs to find and research 15 qualified prospects this week, but manually analyzing GitHub activity, tech stacks, blog posts, and company news takes 4+ hours—time he doesn't have with 40 active conversations already in progress.",
     "worstCase": "Missing his weekly outreach quota because manual prospecting takes too long, sending generic emails because he doesn't have time to personalize them, and watching his reply rates drop below 3% because his outreach doesn't demonstrate actual research into each prospect's technical context.",
     "timestamps": [
@@ -1477,7 +1443,7 @@
     "company": "Loops",
     "slug": "loops",
     "title": "Developer Building Transactional Emails",
-    "persona": "",
+    "persona": "Backend Engineer",
     "scenario": "It's 2:47 PM on a Wednesday afternoon. Maya (Backend Engineer, INTP) at a subscription SaaS company needs to build a reliable system for sending transactional emails—onboarding sequences, trial expirations, billing notifications—but she's spent 3 hours wrestling with SendGrid's complex UI designed for marketing teams, not engineers.",
     "worstCase": "Launching their new onboarding flow with unreliable email delivery, debugging email templating issues in production when trial reminders don't send, and explaining to her engineering manager why a \"simple email feature\" took 2 weeks to ship when it should have been 2 days.",
     "timestamps": [
@@ -1511,7 +1477,7 @@
     "company": "Recall.ai",
     "slug": "recallai",
     "title": "RevOps Manager Building Customer Intelligence",
-    "persona": "",
+    "persona": "Revenue Operations Manager",
     "scenario": "It's 9:23 AM on a Monday morning. Jordan (Revenue Operations Manager, ENTJ) at a B2B SaaS company with an 8-person sales team needs to analyze customer feedback from 200+ discovery calls last quarter, but neither RevOps nor product teams have time to attend and manually note-take every sales call.",
     "worstCase": "Building product features that don't match what customers actually asked for because feedback is filtered through sales reps' incomplete notes, missing critical competitive intelligence and feature requests buried in unrecorded calls, and explaining to the VP Product why their roadmap priorities are based on anecdotal evidence instead of systematic customer voice analysis.",
     "timestamps": [
@@ -1537,7 +1503,7 @@
     "company": "Vellum",
     "slug": "vellum",
     "title": "AI Product Team Optimizing LLM Performance",
-    "persona": "",
+    "persona": "AI Product Manager",
     "scenario": "It's 10:14 AM on a Tuesday morning. Sarah (AI Product Manager, INTJ) and her team are building a customer support chatbot, but they've tested 3 different prompts with GPT-4 and can't systematically determine which performs better—they're manually reviewing responses, guessing at quality, and have no version control for prompt iterations.",
     "worstCase": "Deploying a chatbot to production that gives inconsistent or low-quality responses because they didn't properly test prompt variations, discovering after launch that Claude would have performed better than GPT-4 but they never tested it, and watching LLM costs spiral out of control because they have no visibility into token usage per conversation.",
     "timestamps": [
@@ -1563,7 +1529,7 @@
     "company": "Helicone",
     "slug": "helicone",
     "title": "Engineering Manager Preventing LLM Cost Overruns",
-    "persona": "",
+    "persona": "Engineering Manager",
     "scenario": "It's 8:47 AM on a Monday morning. David (Engineering Manager, ISTJ) at an AI startup checks his AWS billing dashboard and sees that weekend LLM costs spiked from $400/day to $2,100/day—a 425% increase—but he has no visibility into why or which feature is responsible.",
     "worstCase": "Burning through their $80K monthly runway on wasteful LLM spending because they can't identify the root cause, discovering after 2 weeks that a production bug has cost them $40K in unnecessary API calls, and explaining to the CEO why engineering didn't catch a 425% cost spike until it showed up on the monthly bill.",
     "timestamps": [
@@ -1597,7 +1563,7 @@
     "company": "Nango",
     "slug": "nango",
     "title": "Developer Building CRM Integrations",
-    "persona": "",
+    "persona": "Full-Stack Developer",
     "scenario": "It's 9:14 AM on a Monday morning, 6 weeks before launch. Alex (Full-Stack Developer, ISTP) is building a marketing automation SaaS that needs to sync data with customers' CRMs—but their customers use 30+ different systems (HubSpot, Salesforce, Pipedrive, Zoho, etc.), each with different OAuth flows, API structures, and webhook implementations.",
     "worstCase": "Delaying their product launch by 3 months because CRM integrations are taking longer than the entire core product, launching with only 2 integrations and losing deals because prospects need HubSpot or Pipedrive support, and watching a single engineer spend 6 months maintaining OAuth token refresh logic across 30 different APIs instead of building actual product features.",
     "timestamps": [
@@ -1623,7 +1589,7 @@
     "company": "Defer",
     "slug": "defer",
     "title": "Developer Building Background Job Processing",
-    "persona": "",
+    "persona": "Backend Engineer",
     "scenario": "It's 2:34 PM on a Wednesday afternoon. Priya (Backend Engineer, INTJ) is building a content moderation system that needs to process uploaded videos in the background—extract frames, run ML classification, generate thumbnails—but setting up reliable background job infrastructure with Kubernetes, Redis queues, and monitoring is a 2-week project before she can write the actual business logic.",
     "worstCase": "Launching video uploads without reliable background processing, watching the system crash when 500 videos are uploaded simultaneously because there's no queue management, and explaining to her engineering manager why a \"simple background job feature\" required 2 weeks of Kubernetes infrastructure work before any actual feature code was written.",
     "timestamps": [
@@ -1649,7 +1615,7 @@
     "company": "tldraw",
     "slug": "tldraw",
     "title": "Product Designer Adding Collaborative Whiteboard",
-    "persona": "",
+    "persona": "Product Designer",
     "scenario": "It's 9:47 AM on a Monday morning, 8 weeks before launch. Marcus (Product Designer, ENFP) at a remote collaboration tool needs to add real-time whiteboarding features to their web app, but building an infinite canvas with collaborative drawing, shapes, and real-time sync from scratch would take 18 months of engineering time.",
     "worstCase": "Launching without whiteboard features and losing deals to competitors who offer Miro-like collaborative canvases, explaining to the CEO why a \"simple whiteboard feature\" requires 18 months of engineering work, and watching their product roadmap get blocked because canvas development consumes the entire engineering team's capacity.",
     "timestamps": [
@@ -1675,7 +1641,7 @@
     "company": "Sift",
     "slug": "sift",
     "title": "Aerospace Engineer Monitoring Satellite Systems",
-    "persona": "",
+    "persona": "Aerospace Systems Engineer",
     "scenario": "It's 11:47 PM on a Saturday night. Chen (Aerospace Systems Engineer, ISTJ) is on-call monitoring telemetry from 12 satellites in orbit when Satellite 7's automated alert triggers: \"Solar array temperature anomaly detected—reading 15°C above normal range.\"",
     "worstCase": "Missing early warning signs of critical system failure because temperature data isn't correlated with battery voltage and orbital position, watching a $200M satellite fail because anomalous readings weren't investigated quickly enough, and being the engineer who missed telemetry signals that could have prevented a catastrophic satellite loss.",
     "timestamps": [
@@ -1709,7 +1675,7 @@
     "company": "Mem0",
     "slug": "mem0",
     "title": "AI Developer Building Personal Assistant Agent",
-    "persona": "",
+    "persona": "AI Engineer",
     "scenario": "It's 2:47 PM on a Thursday afternoon. Priya (AI Engineer, INTP) is building a personal assistant AI agent, but every conversation starts from zero context—the AI doesn't remember that the user prefers morning meetings, has a peanut allergy, or is training for a marathon—making it feel robotic instead of personal.",
     "worstCase": "Launching a \"personal\" assistant that asks the same questions every conversation because it has no memory, watching users abandon the product because it feels impersonal and unhelpful, and realizing too late that building a reliable memory layer for AI agents is more complex than the entire core product.",
     "timestamps": [
@@ -1735,7 +1701,7 @@
     "company": "Permit.io",
     "slug": "permitio",
     "title": "Developer Implementing Enterprise Access Controls",
-    "persona": "",
+    "persona": "Backend Engineer",
     "scenario": "It's 10:47 AM on a Wednesday morning, 4 weeks before enterprise launch. Jordan (Backend Engineer, INTJ) at a B2B SaaS company needs to implement fine-grained permissions—admins can delete users, editors can modify content, viewers can only read—but hardcoding authorization logic (if user.role == 'admin') into every API endpoint will create unmaintainable spaghetti code.",
     "worstCase": "Launching with brittle permissions code that requires engineering deploys every time sales needs to customize access rules for enterprise customers, creating a security vulnerability because authorization logic is scattered across 40 different API endpoints instead of centralized, and losing enterprise deals because they can't provide detailed access audit logs that procurement requires.",
     "timestamps": [
@@ -1761,7 +1727,7 @@
     "company": "Socket",
     "slug": "socket",
     "title": "Security Engineer Preventing Supply Chain Attack",
-    "persona": "",
+    "persona": "Security Engineer",
     "scenario": "It's 3:47 PM on a Friday afternoon. Marcus (Security Engineer, ISTJ) at a startup with 7,500 customers is reviewing the PR that adds a new npm package for data visualization—but manually auditing open-source dependencies for malware, supply chain attacks, and suspicious code patterns would take hours he doesn't have before the team deploys Monday morning.",
     "worstCase": "Approving a compromised npm package that contains hidden cryptomining code or data exfiltration malware, watching their AWS bill spike to $15K/month from cryptomining running in production containers, and explaining to 7,500 customers that their data was potentially compromised because a supply chain attack reached production.",
     "timestamps": [
@@ -1795,7 +1761,7 @@
     "company": "Chainguard",
     "slug": "chainguard",
     "title": "DevOps Engineer Eliminating Container Vulnerabilities",
-    "persona": "",
+    "persona": "DevOps Engineer",
     "scenario": "It's 9:14 AM on a Monday morning, 2 weeks before SOC 2 audit. Sarah (DevOps Engineer, ISTJ) at a fintech company runs security scans on their Kubernetes deployments and finds 47 CVE vulnerabilities in their Docker base images—mostly from Ubuntu's standard packages—creating a weekly scramble to patch critical vulnerabilities before the audit.",
     "worstCase": "Failing their SOC 2 audit because container images have known critical vulnerabilities that auditors flag as non-compliant, spending 8 hours per week patching and rebuilding containers to address CVE alerts, and explaining to customers why their fintech platform has 47 known security vulnerabilities in production infrastructure.",
     "timestamps": [
@@ -1821,7 +1787,7 @@
     "company": "Normalyze",
     "slug": "normalyze",
     "title": "Cloud Security Team Preventing Data Exposure",
-    "persona": "",
+    "persona": "Cloud Security Engineer",
     "scenario": "It's 2:47 PM on a Wednesday afternoon at a healthcare company with infrastructure across AWS, Azure, and GCP. David (Cloud Security Engineer, INTJ) needs to verify that all PHI (Protected Health Information) is properly secured before their HIPAA compliance audit in 3 weeks—but manually mapping data locations, classifications, and access permissions across three cloud providers would take a full-time analyst 2 months.",
     "worstCase": "Discovering during the HIPAA audit that 3 S3 buckets containing patient data are publicly accessible due to misconfiguration, facing a $1.5M HIPAA fine plus breach notification to 40K patients, and watching the CISO explain to the board why security didn't know which cloud resources contained PHI.",
     "timestamps": [
@@ -1847,7 +1813,7 @@
     "company": "Cyera",
     "slug": "cyera",
     "title": "Data Security Officer Managing Data Sprawl",
-    "persona": "",
+    "persona": "Data Security Officer",
     "scenario": "It's 9:23 AM on a Monday morning at a global enterprise. Lauren (Data Security Officer, ENTJ) needs to prepare for a GDPR audit, but she has no comprehensive inventory of where sensitive customer PII exists across their infrastructure—it's scattered across SaaS apps, databases, data lakes, and shadow IT systems the security team doesn't even know exist.",
     "worstCase": "Facing GDPR audit findings because the security team can't demonstrate comprehensive knowledge and control of where customer PII is stored, discovering after a data breach that customer data was duplicated across 47 different systems they weren't monitoring, and watching GDPR fines up to €20M because they can't prove they know where sensitive data lives and who has access.",
     "timestamps": [
@@ -1873,7 +1839,7 @@
     "company": "Thoropass",
     "slug": "thoropass",
     "title": "Startup Preparing for First SOC 2 Audit",
-    "persona": "",
+    "persona": "Head of Engineering",
     "scenario": "It's 10:14 AM on a Monday morning, 4 months before their first enterprise customer requires SOC 2 certification. Marcus (Head of Engineering, ENTJ) at a 40-person startup needs to prepare for SOC 2 audit, but the compliance consultant estimated 200 hours of manual evidence collection—screenshots of AWS configs, GitHub logs, HR documentation—something their lean team doesn't have time for.",
     "worstCase": "Missing the enterprise deal because SOC 2 certification takes 6 months instead of the 4 months they have, spending 200 hours of engineering time gathering compliance screenshots instead of building product, and discovering during the audit that their evidence is incomplete or outdated, requiring remediation work that delays certification by another 2 months.",
     "timestamps": [
@@ -1899,7 +1865,7 @@
     "company": "Vanta",
     "slug": "vanta",
     "title": "SaaS Company Unlocking Enterprise Deals",
-    "persona": "",
+    "persona": "VP Sales",
     "scenario": "It's 9:47 AM on a Tuesday morning. Jennifer (VP Sales, ESTJ) at a 50-person SaaS company just received RFP requirements from 3 major enterprise prospects—all require SOC 2, one requires ISO 27001, one requires HIPAA compliance—but her company has no security certifications and the compliance consultant quoted 8-12 months and $120K to achieve all three.",
     "worstCase": "Losing $2.4M in enterprise ARR because they can't meet security certification requirements fast enough, watching competitors win deals simply because they have compliance certifications while her product is technically superior, and explaining to the board why enterprise pipeline is stalled because compliance is taking 12 months.",
     "timestamps": [
@@ -1925,7 +1891,7 @@
     "company": "Drata",
     "slug": "drata",
     "title": "Compliance Manager Preparing for SOC 2 Type 2",
-    "persona": "",
+    "persona": "Compliance Manager",
     "scenario": "It's 8:14 AM on a Monday morning, 8 weeks before their SOC 2 Type 2 audit. Sarah (Compliance Manager, ISTJ) at a 200-person SaaS company needs to prove they've maintained security controls continuously for 12 months—but manually gathering evidence from 40+ systems and verifying that no employees have excess access is a full-time job taking her away from actual security improvements.",
     "worstCase": "Audit findings that 7 former employees still have production access because offboarding processes weren't tracked systematically, delaying the SOC 2 Type 2 report by 2 months while they remediate, and losing 2 enterprise deals worth $1.8M that are contingent on clean audit results without findings.",
     "timestamps": [
@@ -1951,7 +1917,7 @@
     "company": "Secureframe",
     "slug": "secureframe",
     "title": "Healthcare SaaS Managing Multi-Framework Compliance",
-    "persona": "",
+    "persona": "Security Team Lead",
     "scenario": "It's 9:23 AM on a Wednesday morning at a healthcare SaaS company preparing for annual audits. David (Security Team Lead, INTJ) needs to maintain SOC 2, HIPAA, and ISO 27001 compliance simultaneously—but each framework requires separate evidence collection, different control mappings, and his compliance consultant quoted $180K annually to manage all three frameworks with dedicated resources.",
     "worstCase": "Failing one of the three audits because they couldn't effectively track 300+ security controls across different frameworks with a 2-person security team, hiring a 3-person dedicated compliance team at $450K annual cost just to maintain certifications, and watching their healthcare customers churn because compliance lapses create vendor risk they can't accept.",
     "timestamps": [
@@ -1975,9 +1941,9 @@
   },
   {
     "company": "Thoropass",
-    "slug": "thoropass",
+    "slug": "thoropass-yc",
     "title": "YC Startup Closing First Enterprise Deal",
-    "persona": "",
+    "persona": "Co-Founder & CEO",
     "scenario": "It's 10:47 AM on a Tuesday morning. Rachel (Co-Founder & CEO, ENTJ) at a YC-backed startup just received verbal commitment for their first enterprise deal—$400K annual contract—but the procurement team requires SOC 2 Type 1 certification before signing, and their compliance consultant quoted 6-9 months for certification when the customer wants to launch in 8 weeks.",
     "worstCase": "Losing their first enterprise customer because compliance takes too long, watching the customer sign with a competitor while they spend 6 months getting certified, and explaining to investors why their showcase enterprise deal fell through because of compliance timeline, stalling their Series A fundraising momentum.",
     "timestamps": [
@@ -2003,7 +1969,7 @@
     "company": "Lumos",
     "slug": "lumos",
     "title": "IT Admin Automating Access Management",
-    "persona": "",
+    "persona": "IT Admin",
     "scenario": "It's 8:47 AM on a Monday morning at a 300-person company. Marcus (IT Admin, ISTJ) has 3 new employees starting today who need access to GitHub, AWS, Slack, Jira, Confluence, Notion, Figma, and 8 other SaaS apps—but manually provisioning access across 15 different admin dashboards takes 2 hours per employee, and he also has 2 offboarded employees from Friday whose access he needs to manually revoke from 30+ systems.",
     "worstCase": "New employees sitting idle for 4 hours on Day 1 because IT hasn't provisioned their access yet, creating security risks from orphaned accounts when former employees retain access to critical systems because he forgot to check one of 30 apps, and explaining to the security team why an ex-employee who left 6 months ago still has admin access to production AWS discovered during the SOC 2 audit.",
     "timestamps": [
@@ -2037,7 +2003,7 @@
     "company": "Trustero",
     "slug": "trustero",
     "title": "Compliance Officer Maintaining Annual Certifications",
-    "persona": "",
+    "persona": "Compliance Officer",
     "scenario": "It's 9:14 AM on a Monday morning, 6 weeks before annual SOC 2 and ISO 27001 recertification audits. Jennifer (Compliance Officer, ISFJ) at a Series B startup needs to prove they've maintained security controls continuously for 12 months, but last year's recertification consumed 3 weeks of frantic evidence gathering and she's dreading the same scramble this year.",
     "worstCase": "Discovering 2 weeks before the audit that critical evidence is missing or controls drifted out of compliance, watching the auditor find control gaps that require remediation and delay certification by 2 months, and losing 2 enterprise prospects ($1.2M pipeline) who are waiting for clean recertification results before signing contracts.",
     "timestamps": [
@@ -2063,7 +2029,7 @@
     "company": "Privacera",
     "slug": "privacera",
     "title": "Data Governance Team Enforcing Access Policies",
-    "persona": "",
+    "persona": "Data Governance Manager",
     "scenario": "It's 2:47 PM on a Wednesday afternoon at a financial services company with data infrastructure across Snowflake, Databricks, and AWS S3. Sarah (Data Governance Manager, ENTJ) just received notice that their GDPR audit is in 8 weeks and the auditor wants to see unified data access policies and audit trails—but currently their data analysts have inconsistent access controls across three different platforms with no centralized policy enforcement or audit logging.",
     "worstCase": "Failing the GDPR audit because they can't demonstrate unified data access policies across their multi-platform data infrastructure, discovering that analysts in the US office have been accessing EU customer PII without proper authorization and masking, and facing €20M GDPR fines because they have no audit trail showing who accessed what customer data and when.",
     "timestamps": [
@@ -2089,7 +2055,7 @@
     "company": "BigID",
     "slug": "bigid",
     "title": "Privacy Team Responding to Data Subject Requests",
-    "persona": "",
+    "persona": "Privacy Manager",
     "scenario": "It's 10:23 AM on a Thursday morning at a global retailer. Lauren (Privacy Manager, ISFJ) just received 47 GDPR data subject access requests (DSARs) and 12 CCPA deletion requests—but she has no comprehensive inventory of where customer data exists across their 200+ data stores (databases, data lakes, SaaS apps, file shares), making it impossible to fulfill these requests within the legal 30-day deadline.",
     "worstCase": "Missing the 30-day GDPR response deadline because manually searching 200+ systems for customer data takes 45+ days, facing €20M GDPR fines for non-compliance with data subject requests, and discovering after a data breach that customer PII existed in systems and file shares the privacy team didn't even know about.",
     "timestamps": [
@@ -2115,7 +2081,7 @@
     "company": "OneTrust",
     "slug": "onetrust",
     "title": "Chief Privacy Officer Managing Global Compliance",
-    "persona": "",
+    "persona": "Chief Privacy Officer",
     "scenario": "It's 9:47 AM on a Monday morning at a Fortune 500 company operating in 40 countries. David (Chief Privacy Officer, ENTJ) needs to manage GDPR, CCPA, LGPD, and 15 other global privacy regulations—but currently privacy request orchestration, consent management, and vendor risk assessments are handled by three separate tools requiring 8 FTEs and still creating compliance gaps.",
     "worstCase": "Failing regulatory audits because privacy operations are fragmented across disconnected tools with no unified visibility, discovering that consent preferences from their mobile app aren't synchronized with their web properties creating GDPR violations, and watching regulatory fines accumulate because vendor risk assessments for 2,000+ third parties are 6 months behind schedule.",
     "timestamps": [
@@ -2141,7 +2107,7 @@
     "company": "Baffle",
     "slug": "baffle",
     "title": "Database Admin Achieving PCI Compliance",
-    "persona": "",
+    "persona": "Database Administrator",
     "scenario": "It's 10:14 AM on a Tuesday morning at a financial services company preparing for PCI DSS audit. Marcus (Database Administrator, ISTP) needs to encrypt sensitive customer data in their Snowflake data warehouse, but traditional encryption breaks analytics queries, requires application code changes, and degrades database performance by 40%—making it operationally impossible to implement before the audit in 6 weeks.",
     "worstCase": "Failing the PCI audit because customer payment data isn't properly encrypted at rest and in use, implementing encryption that breaks their analytics applications requiring 3 months of code changes and testing, and watching database query performance degrade 40% making their data warehouse unusable for real-time analytics that the business depends on.",
     "timestamps": [
@@ -2167,7 +2133,7 @@
     "company": "Skyflow",
     "slug": "skyflow",
     "title": "Payments Platform Reducing PCI Scope",
-    "persona": "",
+    "persona": "Head of Engineering",
     "scenario": "It's 9:23 AM on a Wednesday morning at a Series B payments platform. Sarah (Head of Engineering, INTJ) is preparing for their first PCI DSS Level 1 audit and just received the compliance consultant's estimate: $180K in audit costs, 8 months of remediation work, because their application stores cardholder data directly in their PostgreSQL database, putting their entire infrastructure in PCI scope.",
     "worstCase": "Spending $180K and 8 months on PCI compliance work that diverts engineering from product development, failing the audit because their self-built card data storage doesn't meet PCI DSS requirements for encryption and key management, and watching deal velocity slow because enterprise customers require Level 1 PCI compliance that they can't achieve quickly.",
     "timestamps": [
@@ -2193,7 +2159,7 @@
     "company": "Evervault",
     "slug": "evervault",
     "title": "Healthcare Startup Achieving HIPAA Encryption",
-    "persona": "",
+    "persona": "Lead Developer",
     "scenario": "It's 2:47 PM on a Thursday afternoon at a healthcare SaaS startup preparing for their first HIPAA compliance assessment. Jordan (Lead Developer, INTP) needs to implement end-to-end encryption for all patient health data (PHI), but building custom cryptographic infrastructure with proper key management and audit logging would require hiring a dedicated security engineer ($180K+ annually) and delay product launch by 3+ months.",
     "worstCase": "Launching without HIPAA-compliant encryption and facing $50K+ fines per violation, building custom encryption that has security vulnerabilities because cryptography is hard to implement correctly, and explaining to healthcare customers why their patient data encryption doesn't meet HIPAA technical safeguards because the startup didn't have resources to build it properly.",
     "timestamps": [
@@ -2219,7 +2185,7 @@
     "company": "Very Good Security (VGS)",
     "slug": "very-good-security-vgs",
     "title": "Fintech Platform Eliminating PCI Liability",
-    "persona": "",
+    "persona": "CTO",
     "scenario": "It's 10:47 AM on a Monday morning at a fintech startup launching payment features. Rachel (CTO, ENTJ) just received their PCI compliance quote: $160K for Level 1 audit because their application collects and stores customer credit card data, putting them in scope for full PCI DSS compliance including quarterly network scans, annual penetration testing, and continuous security monitoring.",
     "worstCase": "Spending $160K annually on PCI compliance audits plus $200K+ in ongoing security infrastructure that diverts resources from product development, facing data breach liability because their application handles raw cardholder data that could be compromised, and watching enterprise deals stall because customers see they're a small startup storing card data and question their security maturity.",
     "timestamps": [
@@ -2245,7 +2211,7 @@
     "company": "Transcend",
     "slug": "transcend",
     "title": "Privacy Team Automating Data Deletion Requests",
-    "persona": "",
+    "persona": "Privacy Manager",
     "scenario": "It's 9:14 AM on a Tuesday morning at a SaaS company. Lauren (Privacy Manager, ISFJ) just received a GDPR data deletion request (\"right to be forgotten\") from a customer who wants all their data permanently deleted. But fulfilling this request requires coordinating with 5 different teams to delete data from 30+ systems (production database, data warehouse, marketing tools, analytics, CRM, support tickets, backups), and last time this took 2 weeks of manual coordination and they still missed data in 3 systems.",
     "worstCase": "Missing data during deletion and facing GDPR audit findings because customer data still exists in backup systems or forgotten SaaS tools, exceeding the 30-day legal deadline because manual cross-team coordination takes too long, and facing €20M GDPR fines because they can't systematically fulfill data deletion requests that are legally required rights.",
     "timestamps": [
@@ -2271,7 +2237,7 @@
     "company": "Browserbase",
     "slug": "browserbase",
     "title": "Developer Building AI Web Agent",
-    "persona": "",
+    "persona": "AI Engineer",
     "scenario": "It's 10:47 AM on a Wednesday morning. Alex (AI Engineer, INTP) is building an AI web agent that needs to scrape product data from 500 e-commerce websites for price comparison, but managing headless browser infrastructure, handling CAPTCHAs, rotating proxies, and debugging \"connection timeout\" errors is consuming 60% of his development time instead of building the actual AI logic.",
     "worstCase": "Launching an AI agent that fails 40% of the time because websites block headless browsers or CAPTCHAs interrupt automation, spending $8K/month on proxy services and CAPTCHA solving while still getting blocked by anti-bot measures, and explaining to his CTO why the \"AI scraping project\" has become a \"browser infrastructure management project\" with no AI improvements in 3 weeks.",
     "timestamps": [
@@ -2297,7 +2263,7 @@
     "company": "Port",
     "slug": "port",
     "title": "Platform Team Reducing DevOps Interruptions",
-    "persona": "",
+    "persona": "Platform Engineering Lead",
     "scenario": "It's 9:14 AM on a Monday morning at a 200-person tech company. Sarah (Platform Engineering Lead, ENTJ) checks Slack and sees 14 new messages over the weekend from developers asking: \"How do I provision a new staging environment?\" \"Who owns the checkout service?\" \"What's the deployment status for the API?\" \"Where are the runbooks for database incidents?\"",
     "worstCase": "Watching her 3-person DevOps team spend 40% of their time answering repetitive developer questions instead of improving infrastructure, developers waiting 4+ hours for simple provisioning requests because documentation is scattered across Confluence, Slack, and tribal knowledge, and missing an SLA breach because developers couldn't find the incident runbook quickly enough.",
     "timestamps": [
@@ -2323,7 +2289,7 @@
     "company": "Momento",
     "slug": "momento",
     "title": "Mobile Gaming Handling Viral Growth",
-    "persona": "",
+    "persona": "Backend Engineer",
     "scenario": "It's 7:47 AM on a Saturday morning. Chen (Backend Engineer, ISTP) at a mobile gaming company wakes up to PagerDuty alerts: their game just went viral on TikTok overnight, daily active users spiked from 100K to 2M, and their Redis cache cluster is at 94% capacity with response times degrading from 5ms to 450ms, threatening to crash the entire player session system.",
     "worstCase": "Complete service outage because cache infrastructure can't handle viral load spike, losing 1.8M new players because game performance is unplayable during their first session (400ms lag on every action), and spending his entire Saturday emergency-scaling Redis clusters instead of celebrating the viral moment that could transform their startup.",
     "timestamps": [
@@ -2357,7 +2323,7 @@
     "company": "Edera",
     "slug": "edera",
     "title": "Platform Team Preventing Container Escape",
-    "persona": "",
+    "persona": "Platform Security Engineer",
     "scenario": "It's 2:47 PM on a Thursday afternoon. Marcus (Platform Security Engineer, INTJ) at an AI infrastructure company is running ML training workloads on Kubernetes when their security monitoring alerts: \"Container in ml-training namespace attempting unauthorized access to credentials in api-service namespace—possible lateral movement attack.\"",
     "worstCase": "Complete infrastructure compromise because a compromised container escaped and accessed credentials from other pods, watching attackers pivot from one compromised ML training job to their entire production API infrastructure with customer data, and explaining to customers that their AI platform was breached because container isolation wasn't properly enforced at runtime.",
     "timestamps": [
@@ -2391,7 +2357,7 @@
     "company": "Maze",
     "slug": "maze",
     "title": "Product Designer Validating UX Before Shipping",
-    "persona": "",
+    "persona": "Product Designer",
     "scenario": "It's 9:47 AM on a Monday morning. Rachel (Product Designer, ENFP) at a SaaS company just finished designing a new onboarding flow that Product and Engineering love, but she has no data on whether actual users can successfully complete it—and scheduling 50 user interview sessions to test it would take 3 weeks, delaying the launch.",
     "worstCase": "Shipping an onboarding flow that looks beautiful but has a 70% drop-off rate because step 3 is confusing and the billing page scares users away, discovering these UX problems after launch when 700 trial signups have already churned, and watching the VP Product question why design didn't validate usability before shipping.",
     "timestamps": [
@@ -2417,7 +2383,7 @@
     "company": "Speakeasy",
     "slug": "speakeasy",
     "title": "API Company Shipping Multi-Language SDKs",
-    "persona": "",
+    "persona": "VP Engineering",
     "scenario": "It's 10:14 AM on a Tuesday morning. Jordan (VP Engineering, ENTJ) at an API-first company just launched a new REST API for their payments platform, but their customers are asking for SDKs in Python, TypeScript, Go, and Java—and his engineering estimate is 3 months to build SDKs, write documentation, publish to package managers, and keep them in sync with every API change.",
     "worstCase": "Losing API customers to competitors who provide type-safe SDKs because developers don't want to write raw HTTP clients, watching SDK documentation drift out of sync with API changes creating developer confusion and support burden, and explaining to the CEO why a \"simple SDK project\" requires 2 engineers working full-time for 3 months when they're trying to ship new API features.",
     "timestamps": [
@@ -2443,7 +2409,7 @@
     "company": "Qdrant",
     "slug": "qdrant",
     "title": "ML Engineer Building Semantic Search",
-    "persona": "",
+    "persona": "ML Engineer",
     "scenario": "It's 2:14 PM on a Wednesday afternoon. Sarah (ML Engineer, INTP) at a legal tech company is building semantic search for 2M case law documents, but traditional keyword search returns irrelevant results because legal queries rarely use the exact same words as relevant case law—lawyers need search by meaning, not exact keyword matching.",
     "worstCase": "Shipping a legal research tool that returns irrelevant results because keyword search misses semantically similar cases that use different terminology, watching lawyers abandon the product because they can't find relevant precedents for their cases, and explaining to the CEO why their ML-powered legal search is no better than Google keyword search from 2005.",
     "timestamps": [
@@ -2469,7 +2435,7 @@
     "company": "VESSL AI",
     "slug": "vessl-ai",
     "title": "Data Science Team Managing ML Experiments",
-    "persona": "",
+    "persona": "ML Lead",
     "scenario": "It's 9:23 AM on a Monday morning at an e-commerce company. Chen (ML Lead, ISTJ) needs to train a product recommendation model with 40 different hyperparameter combinations to find the best performing version, but manually managing 40 Kubernetes training jobs, tracking metrics in spreadsheets, and comparing model performance is consuming 3 days of work before they even start the actual experiments.",
     "worstCase": "Losing track of which hyperparameters produced which results because experiment tracking is manual spreadsheets, wasting GPU compute budget running duplicate experiments because there's no systematic tracking, and explaining to the VP Engineering why ML model development takes 4 weeks when 3 weeks is just experiment management overhead instead of actual data science work.",
     "timestamps": [
@@ -2495,7 +2461,7 @@
     "company": "LanceDB",
     "slug": "lancedb",
     "title": "Computer Vision Team Building Visual Search",
-    "persona": "",
+    "persona": "Computer Vision Engineer",
     "scenario": "It's 10:47 AM on a Tuesday morning. Priya (Computer Vision Engineer, INTP) at a fashion e-commerce company is building visual search—users upload a photo, the app finds visually similar products—but storing and searching 10M product image embeddings requires vector database infrastructure that works on both edge devices (mobile apps) and cloud servers (API backend) with the same codebase.",
     "worstCase": "Building two completely different search implementations (one for mobile, one for cloud) that create maintenance nightmares and feature discrepancies, watching mobile visual search performance degrade because the vector database can't run efficiently on resource-constrained devices, and explaining to product why visual search works differently on mobile vs. web because they have separate vector infrastructure.",
     "timestamps": [
@@ -2521,7 +2487,7 @@
     "company": "Prophecy",
     "slug": "prophecy",
     "title": "Data Engineer Building ETL Pipelines",
-    "persona": "",
+    "persona": "Data Engineer",
     "scenario": "It's 9:14 AM on a Wednesday morning. Marcus (Data Engineer, ISTP) needs to build 12 new ETL pipelines for their data warehouse—extracting data from SaaS APIs, applying transformations, joining datasets, loading to Snowflake—but writing Spark code for each pipeline manually would take 6 weeks, and maintaining 12 separate codebases means any schema change requires updating code across all pipelines.",
     "worstCase": "Spending 6 weeks writing repetitive Spark transformations instead of solving actual data problems, creating unmaintainable pipeline code because each engineer writes transformations differently, and watching pipelines break in production when source schemas change because there's no visual dependency mapping showing what transforms what.",
     "timestamps": [
@@ -2547,7 +2513,7 @@
     "company": "Momentic",
     "slug": "momentic",
     "title": "QA Engineer Eliminating Test Maintenance",
-    "persona": "",
+    "persona": "QA Engineer",
     "scenario": "It's 9:47 AM on a Monday morning at a SaaS company. Rachel (QA Engineer, ISTJ) just received alerts that 23 of their 200 Selenium end-to-end tests failed after Friday's UI deployment—but the tests aren't catching bugs, they're failing because the UI changed (button IDs renamed, form layout updated) and now she needs to spend 20 hours manually updating brittle test selectors.",
     "worstCase": "Spending 20 hours per week maintaining flaky tests instead of finding actual bugs, watching engineering lose confidence in the test suite because 30% of failures are false positives from UI changes not bugs, and missing real production bugs because QA time is consumed by test maintenance instead of exploratory testing and actual quality work.",
     "timestamps": [
@@ -2573,7 +2539,7 @@
     "company": "Synthesized",
     "slug": "synthesized",
     "title": "QA Team Generating Compliant Test Data",
-    "persona": "",
+    "persona": "QA Lead",
     "scenario": "It's 10:14 AM on a Tuesday morning at a bank preparing for production release. Marcus (QA Lead, INTJ) needs realistic test data for their loan application system—edge cases like high debt-to-income ratios, multiple co-borrowers, international addresses—but they can't use production data due to GDPR, and manually creating fake data doesn't include the statistical distributions and edge cases needed for comprehensive testing.",
     "worstCase": "Launching with inadequate testing because test data doesn't represent real-world complexity, discovering critical bugs in production when edge cases occur that weren't in their manually-created test data, and facing GDPR fines because someone copied production customer data to the test environment despite privacy policies forbidding it.",
     "timestamps": [
@@ -2599,7 +2565,7 @@
     "company": "Weaviate",
     "slug": "weaviate",
     "title": "Developer Building Customer Support Chatbot",
-    "persona": "",
+    "persona": "Backend Developer",
     "scenario": "It's 2:47 PM on a Wednesday afternoon. Sarah (Backend Developer, INTP) is building a customer support chatbot using GPT-4, but when customers ask product questions, the LLM hallucinates answers and makes up features that don't exist—because it's answering from its training data instead of their actual product documentation and support ticket knowledge base.",
     "worstCase": "Launching a chatbot that confidently gives wrong answers to customers causing support escalations, watching customers trust the incorrect information and blame the company for features that don't work as the chatbot described, and explaining to the support team why their \"AI chatbot\" is creating more work by spreading misinformation instead of solving problems.",
     "timestamps": [
@@ -2625,7 +2591,7 @@
     "company": "Tecton",
     "slug": "tecton",
     "title": "ML Team Serving Real-Time Features",
-    "persona": "",
+    "persona": "ML Engineer",
     "scenario": "It's 11:47 AM on a Thursday morning at a rideshare company. Chen (ML Engineer, ISTP) needs to deploy their surge pricing model to production, but the model requires 47 real-time features (driver availability in the last 5 minutes, historical demand patterns, weather, events)—and building custom feature serving infrastructure that computes and serves features in <10ms would take his team 4+ months.",
     "worstCase": "Launching with slow feature serving (200ms+ latency) that makes ride requests unresponsive, building custom real-time feature infrastructure that has reliability problems causing model prediction failures, and explaining to the VP Engineering why ML deployment takes 6 months when 4 months is just building feature infrastructure instead of improving the actual model.",
     "timestamps": [
@@ -2651,7 +2617,7 @@
     "company": "Robust Intelligence",
     "slug": "robust-intelligence",
     "title": "AI Product Team Validating Credit Scoring Model",
-    "persona": "",
+    "persona": "AI Product Lead",
     "scenario": "It's 9:23 AM on a Monday morning at a fintech company preparing to launch their AI-powered credit scoring model. Sarah (AI Product Lead, ENTJ) is conducting final pre-production validation and needs to verify the model isn't vulnerable to adversarial attacks, input manipulation, or fairness issues—but they don't have systematic AI model testing infrastructure beyond basic accuracy metrics.",
     "worstCase": "Deploying a model with vulnerabilities that allow fraudsters to manipulate inputs and inflate credit scores, facing regulatory fines because the model has undetected bias against protected demographic groups, and discovering model drift in production after approving millions in fraudulent loans because there was no monitoring detecting that the model's behavior changed over time.",
     "timestamps": [
@@ -2677,7 +2643,7 @@
     "company": "E2B",
     "slug": "e2b",
     "title": "Developer Building AI Coding Assistant",
-    "persona": "",
+    "persona": "AI Engineer",
     "scenario": "It's 10:47 AM on a Wednesday morning. Alex (AI Engineer, INTP) is building an AI coding assistant that generates Python code to analyze datasets, but running user-prompted LLM-generated code directly on their servers is dangerous—what if the AI generates code with infinite loops, attempts to access credentials, or performs malicious file system operations?",
     "worstCase": "Running untrusted LLM-generated code that crashes their production servers because the AI wrote an infinite loop consuming all memory, watching the AI-generated code exfiltrate credentials or sensitive data because there's no isolation, and explaining to the security team why their \"AI assistant\" became an attack vector because generated code ran with full system access.",
     "timestamps": [
@@ -2703,7 +2669,7 @@
     "company": "Modal",
     "slug": "modal",
     "title": "Data Scientist Running Batch Processing",
-    "persona": "",
+    "persona": "Data Scientist",
     "scenario": "It's 9:14 AM on a Monday morning. Priya (Data Scientist, INTP) needs to process 10M images for a computer vision training dataset—extract features, run preprocessing, generate embeddings—work that requires hundreds of GPUs running in parallel, but provisioning a GPU cluster on AWS would take 3 days of infrastructure setup and cost $4K/month minimum even when not in use.",
     "worstCase": "Spending 3 days setting up Kubernetes GPU clusters instead of doing data science, paying $4K/month for infrastructure that sits idle 80% of the time between batch jobs, and explaining to her manager why a \"simple data preprocessing task\" consumed a week of infrastructure work plus ongoing costs when she should be training models.",
     "timestamps": [
@@ -2729,7 +2695,7 @@
     "company": "Sweep",
     "slug": "sweep",
     "title": "Developer Automating Coding Tasks",
-    "persona": "",
+    "persona": "Full-Stack Developer",
     "scenario": "It's 2:47 PM on a Tuesday afternoon. Marcus (Full-Stack Developer, ISTP) receives a product request via GitHub issue: \"Add API endpoint to export user data to CSV format.\" This is a straightforward task—create controller, fetch user data, format as CSV, add tests—but it'll still take 4 hours of coding time that he'd rather spend on more complex features.",
     "worstCase": "Spending 4 hours on routine boilerplate coding instead of solving complex technical problems, accumulating 20+ \"simple feature\" GitHub issues that each take 3-5 hours individually creating a backlog that delays important product work, and watching developer productivity consumed by routine implementation work instead of architecture and problem-solving.",
     "timestamps": [
@@ -2755,7 +2721,7 @@
     "company": "Cosine/Genie",
     "slug": "cosine-genie",
     "title": "Developer Debugging Production Issue",
-    "persona": "",
+    "persona": "Backend Engineer",
     "scenario": "It's 3:47 PM on a Friday afternoon. Jordan (Backend Engineer, INTP) receives a critical bug report: user authentication is failing for 15% of login attempts with error \"invalid_token\" but the logs don't show which code path is causing it. He needs to investigate git history, understand when this bug was introduced, find all the places the authentication function is called, and determine the root cause—work that typically takes 3 hours of git blame diving and context building.",
     "worstCase": "Spending his entire Friday evening debugging because he can't quickly understand which code change introduced the bug, deploying a fix that doesn't address the root cause because he didn't find all the affected code paths, and watching the bug reappear Monday morning because his rushed Friday fix was incomplete.",
     "timestamps": [
@@ -2789,7 +2755,7 @@
     "company": "Kubiya",
     "slug": "kubiya",
     "title": "DevOps Engineer Handling Production Incident",
-    "persona": "",
+    "persona": "DevOps Engineer",
     "scenario": "It's 2:14 AM on a Saturday morning. Rachel (DevOps Engineer, ISTJ) wakes up to PagerDuty alert: \"API service response time degraded, p95 latency 3.2s (normally 120ms).\" She's groggy, it's the middle of the night, and she needs to quickly investigate logs, check database performance, identify root cause, and fix the issue before customers wake up to a broken service.",
     "worstCase": "Spending 2 hours at 2 AM manually digging through logs and metrics to find root cause, missing customer-impacting outage window because investigation is too slow, and making incorrect diagnosis because she's half-asleep and doesn't have full context about recent deployments and infrastructure changes.",
     "timestamps": [
