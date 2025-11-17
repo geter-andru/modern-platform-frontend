@@ -262,7 +262,7 @@ export async function generateICPPDF(
     checkPageBreak(40);
 
     // Persona header
-    doc.setFillColor(primaryColor);
+    doc.setFillColor(...primaryColor);
     doc.rect(margin, yPosition, pageWidth - 2 * margin, 10, 'F');
 
     doc.setFontSize(14);

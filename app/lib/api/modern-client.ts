@@ -438,6 +438,29 @@ export class ModernApiClient {
       };
     }
   }
+
+  /**
+   * Prospect Discovery API
+   * Discovers 5-7 real companies matching user's ICP using Claude AI + web search
+   */
+  async discoverProspects(data: {
+    companyName: string;
+    refinedProductDescription: string;
+    coreCapability: string;
+    industry?: string;
+    targetMarket?: string;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await authBridge.post('/api/prospect-discovery/generate', data);
+      return this.handleResponse(response);
+    } catch (error) {
+      return {
+        success: false,
+        error: 'Failed to discover prospects',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      };
+    }
+  }
 }
 
 // Export singleton instance
@@ -479,7 +502,16 @@ export const api = {
   exportBusinessCase: (data: any) => modernApiClient.exportBusinessCase(data),
   exportComprehensive: (data: any) => modernApiClient.exportComprehensive(data),
   getExportStatus: (exportId: string) => modernApiClient.getExportStatus(exportId),
-  getExportHistory: (customerId: string) => modernApiClient.getExportHistory(customerId)
+  getExportHistory: (customerId: string) => modernApiClient.getExportHistory(customerId),
+
+  // Prospect Discovery
+  discoverProspects: (data: {
+    companyName: string;
+    refinedProductDescription: string;
+    coreCapability: string;
+    industry?: string;
+    targetMarket?: string;
+  }) => modernApiClient.discoverProspects(data)
 };
 
 export default modernApiClient;
