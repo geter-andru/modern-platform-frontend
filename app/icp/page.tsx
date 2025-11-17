@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, RefreshCw, Download, FileDown, FileCode, Table, Sparkles } from 'lucide-react';
+import { ArrowLeft, RefreshCw, Download, FileDown, FileCode, Table, Sparkles, Search } from 'lucide-react';
 import { Brain, Target, Users, FileText, Zap, BarChart3 } from 'lucide-react';
+import Link from 'next/link';
 import { useRequireAuth, useRequirePayment } from '@/app/lib/auth';
 import { useCustomer, useCustomerICP, useTrackAction } from '@/app/lib/hooks/useAPI';
 import { usePersonasCache } from '@/app/lib/hooks/cache';
@@ -591,7 +592,7 @@ export default function ICPPage() {
           </div>
         </div>
 
-        <div className="flex gap-4 justify-center">
+        <div className="flex gap-4 justify-center flex-wrap">
           <GlassButton
             variant="secondary"
             onClick={handleRefresh}
@@ -602,10 +603,20 @@ export default function ICPPage() {
             Refresh Data
           </GlassButton>
 
+          <Link href="/icp/prospect-discovery">
+            <GlassButton
+              variant="primary"
+              glow
+              className="flex items-center gap-2"
+            >
+              <Search className="w-4 h-4" />
+              Find Prospects That Match
+            </GlassButton>
+          </Link>
+
           <GlassButton
-            variant="primary"
+            variant="secondary"
             onClick={() => setShowExportModal(true)}
-            glow
             className="flex items-center gap-2"
           >
             <Download className="w-4 h-4" />
