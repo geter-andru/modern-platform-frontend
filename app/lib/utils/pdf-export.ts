@@ -162,9 +162,22 @@ export async function generateICPPDF(
   let yPosition = margin;
 
   // Color scheme - Use brand colors if available, otherwise default Andru colors
-  const primaryColor = options.brandAssets?.colors?.primary || '#3B82F6'; // Brand primary or Andru blue
-  const secondaryColor = options.brandAssets?.colors?.secondary || '#6B7280'; // Brand secondary or gray
-  const accentColor = '#10B981'; // Green - keep for success/positive indicators
+  // Convert hex colors to RGB for jsPDF 3.x compatibility
+  const hexToRgb = (hex: string): [number, number, number] => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]
+      : [0, 0, 0];
+  };
+
+  const primaryColorHex = options.brandAssets?.colors?.primary || '#3B82F6'; // Brand primary or Andru blue
+  const secondaryColorHex = options.brandAssets?.colors?.secondary || '#6B7280'; // Brand secondary or gray
+
+  const primaryColor = hexToRgb(primaryColorHex);
+  const secondaryColor = hexToRgb(secondaryColorHex);
+  const accentColor = hexToRgb('#10B981'); // Green - keep for success/positive indicators
+  const redColor = hexToRgb('#EF4444'); // Red
+  const orangeColor = hexToRgb('#F59E0B'); // Orange
 
   // Helper function to add page if needed
   const checkPageBreak = (neededSpace: number) => {
@@ -190,14 +203,14 @@ export async function generateICPPDF(
   }
 
   doc.setFontSize(24);
-  doc.setTextColor(primaryColor);
+  doc.setTextColor(...primaryColor);
   doc.setFont('helvetica', 'bold');
   doc.text('Ideal Customer Profile', margin, yPosition);
   yPosition += 12;
 
   // Subheader
   doc.setFontSize(12);
-  doc.setTextColor(secondaryColor);
+  doc.setTextColor(...secondaryColor);
   doc.setFont('helvetica', 'normal');
   const companyText = options.companyName || data.companyName || 'Your Company';
   const productText = options.productName || data.productName || 'Your Product';
@@ -233,13 +246,13 @@ export async function generateICPPDF(
   // PERSONAS SECTION
   if (!data.personas || data.personas.length === 0) {
     doc.setFontSize(12);
-    doc.setTextColor(secondaryColor);
+    doc.setTextColor(...secondaryColor);
     doc.text('No buyer personas available.', margin, yPosition);
     return doc;
   }
 
   doc.setFontSize(16);
-  doc.setTextColor(primaryColor);
+  doc.setTextColor(...primaryColor);
   doc.setFont('helvetica', 'bold');
   doc.text(`Buyer Personas (${data.personas.length})`, margin, yPosition);
   yPosition += 10;
@@ -260,7 +273,7 @@ export async function generateICPPDF(
 
     // Title & Role/Company
     doc.setFontSize(11);
-    doc.setTextColor(secondaryColor);
+    doc.setTextColor(...secondaryColor);
     doc.setFont('helvetica', 'italic');
     const subtitle = persona.role
       ? `${persona.title} • ${persona.role}`
@@ -274,7 +287,7 @@ export async function generateICPPDF(
     if (persona.demographics) {
       checkPageBreak(20);
       doc.setFontSize(11);
-      doc.setTextColor(primaryColor);
+      doc.setTextColor(...primaryColor);
       doc.setFont('helvetica', 'bold');
       doc.text('Demographics', margin, yPosition);
       yPosition += 5;
@@ -306,7 +319,7 @@ export async function generateICPPDF(
     if (goals.length > 0) {
       checkPageBreak(20);
       doc.setFontSize(11);
-      doc.setTextColor(accentColor);
+      doc.setTextColor(...accentColor);
       doc.setFont('helvetica', 'bold');
       doc.text('Goals', margin, yPosition);
       yPosition += 5;
@@ -329,7 +342,7 @@ export async function generateICPPDF(
     if (painPoints.length > 0) {
       checkPageBreak(20);
       doc.setFontSize(11);
-      doc.setTextColor('#EF4444'); // Red
+      doc.setTextColor(...redColor); // Red
       doc.setFont('helvetica', 'bold');
       doc.text('Pain Points', margin, yPosition);
       yPosition += 5;
@@ -365,7 +378,7 @@ export async function generateICPPDF(
     if (channels.length > 0 || commStyle) {
       checkPageBreak(15);
       doc.setFontSize(11);
-      doc.setTextColor(primaryColor);
+      doc.setTextColor(...primaryColor);
       doc.setFont('helvetica', 'bold');
       doc.text('Communication Preferences', margin, yPosition);
       yPosition += 5;
@@ -394,7 +407,7 @@ export async function generateICPPDF(
     if (objections.length > 0) {
       checkPageBreak(20);
       doc.setFontSize(11);
-      doc.setTextColor('#F59E0B'); // Orange
+      doc.setTextColor(...orangeColor); // Orange
       doc.setFont('helvetica', 'bold');
       doc.text('Common Objections', margin, yPosition);
       yPosition += 5;
