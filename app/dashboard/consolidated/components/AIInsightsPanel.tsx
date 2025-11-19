@@ -15,20 +15,25 @@ export function AIInsightsPanel({ insights, isLoading, customerId }: AIInsightsP
 
   // TODO: Get real insight from AI/backend
   const primaryInsight = {
-    action: 'Complete Business Case for Acme Corp',
-    reason: 'Deal closing next week, CFO needs ROI validation',
-    businessImpact: {
-      description: '+$200K ARR → 6% closer to Series B goal',
-      value: 200000,
-      percentageImpact: 6
+    capability: 'Value Communication',
+    action: 'Create business case for Acme Corp',
+    capabilityImpact: {
+      current: 52,
+      predicted: 60,
+      gain: 8,
+      description: 'Builds systematic ROI quantification methodology'
     },
-    competencyImpact: {
-      category: 'Value Communication',
-      percentageGain: 8
+    immediateBusinessImpact: {
+      description: 'Acme deal +35% close probability',
+      value: '$200K ARR opportunity'
     },
-    resourceUnlock: {
-      name: 'Executive Sales Kit',
-      tier: 2
+    predictiveImpact: {
+      description: '+4% win rate in Q2 2025',
+      value: '+$280K ARR predicted'
+    },
+    resourceImpact: {
+      description: 'Creates reusable framework (library asset)',
+      value: 'VP Sales enablement tool'
     },
     estimatedTime: '30 min',
     actionUrl: '/tools/business-case'
@@ -59,8 +64,8 @@ export function AIInsightsPanel({ insights, isLoading, customerId }: AIInsightsP
         <div className="flex-1">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h3 className="text-sm font-medium text-white/60 mb-1">
-                AI-Driven Priority Action
+              <h3 className="text-sm font-medium text-purple-300 mb-1 uppercase tracking-wide">
+                Build {primaryInsight.capability} Capability
               </h3>
               <h2 className="text-2xl font-bold text-white">
                 {primaryInsight.action}
@@ -74,54 +79,60 @@ export function AIInsightsPanel({ insights, isLoading, customerId }: AIInsightsP
             </div>
           </div>
 
-          {/* Why Now */}
+          {/* Capability Impact */}
           <div className="bg-white/5 border border-white/10 rounded-lg p-3 mb-4">
-            <div className="text-xs text-white/50 mb-1">Why Now:</div>
-            <div className="text-sm text-white/90">
-              {primaryInsight.reason}
+            <div className="text-xs text-white/50 mb-2 uppercase tracking-wide">Capability Impact:</div>
+            <div className="flex items-baseline gap-2 mb-1">
+              <span className="text-lg font-bold text-blue-400">{primaryInsight.capabilityImpact.current}%</span>
+              <span className="text-white/50">→</span>
+              <span className="text-lg font-bold text-green-400">{primaryInsight.capabilityImpact.predicted}%</span>
+              <span className="text-sm text-green-400">(+{primaryInsight.capabilityImpact.gain}%)</span>
+            </div>
+            <div className="text-sm text-white/70">
+              {primaryInsight.capabilityImpact.description}
             </div>
           </div>
 
-          {/* Impact Grid */}
+          {/* Triple Impact Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-            {/* Business Impact */}
+            {/* Immediate Business Impact */}
             <div className="bg-white/5 border border-green-500/30 rounded-lg p-3">
               <div className="flex items-center gap-2 mb-2">
                 <TrendingUp className="w-4 h-4 text-green-400" />
-                <span className="text-xs text-white/60">Business Impact</span>
+                <span className="text-xs text-white/60 uppercase tracking-wide">Immediate Impact</span>
               </div>
-              <div className="text-lg font-bold text-green-400">
-                +{primaryInsight.businessImpact.percentageImpact}%
+              <div className="text-sm font-bold text-green-400 mb-1">
+                {primaryInsight.immediateBusinessImpact.description}
               </div>
-              <div className="text-xs text-white/70 mt-1">
-                {primaryInsight.businessImpact.description}
-              </div>
-            </div>
-
-            {/* Competency Impact */}
-            <div className="bg-white/5 border border-blue-500/30 rounded-lg p-3">
-              <div className="flex items-center gap-2 mb-2">
-                <Target className="w-4 h-4 text-blue-400" />
-                <span className="text-xs text-white/60">Competency Impact</span>
-              </div>
-              <div className="text-lg font-bold text-blue-400">
-                +{primaryInsight.competencyImpact.percentageGain}%
-              </div>
-              <div className="text-xs text-white/70 mt-1">
-                {primaryInsight.competencyImpact.category}
+              <div className="text-xs text-white/70">
+                {primaryInsight.immediateBusinessImpact.value}
               </div>
             </div>
 
-            {/* Resource Unlock */}
+            {/* Predictive Impact */}
             <div className="bg-white/5 border border-purple-500/30 rounded-lg p-3">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs text-white/60">Resource Unlock</span>
+                <Target className="w-4 h-4 text-purple-400" />
+                <span className="text-xs text-white/60 uppercase tracking-wide">Predictive Impact</span>
               </div>
-              <div className="text-sm font-bold text-purple-400">
-                {primaryInsight.resourceUnlock.name}
+              <div className="text-sm font-bold text-purple-400 mb-1">
+                {primaryInsight.predictiveImpact.description}
               </div>
-              <div className="text-xs text-white/70 mt-1">
-                Tier {primaryInsight.resourceUnlock.tier}
+              <div className="text-xs text-white/70">
+                {primaryInsight.predictiveImpact.value}
+              </div>
+            </div>
+
+            {/* Resource Impact */}
+            <div className="bg-white/5 border border-blue-500/30 rounded-lg p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xs text-white/60 uppercase tracking-wide">Resource Impact</span>
+              </div>
+              <div className="text-sm font-bold text-blue-400 mb-1">
+                {primaryInsight.resourceImpact.description}
+              </div>
+              <div className="text-xs text-white/70">
+                {primaryInsight.resourceImpact.value}
               </div>
             </div>
           </div>
@@ -133,7 +144,7 @@ export function AIInsightsPanel({ insights, isLoading, customerId }: AIInsightsP
             onClick={() => router.push(primaryInsight.actionUrl)}
             className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-purple-500 to-blue-600 text-white font-medium shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-200"
           >
-            <span>Start {primaryInsight.action.split(' ')[0]} →</span>
+            <span>Build Capability: {primaryInsight.action} →</span>
             <ArrowRight className="w-5 h-5" />
           </motion.button>
         </div>

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, Download, Users, BarChart3, TrendingUp, AlertCircle, CheckCircle2, Zap, Target, DollarSign, TrendingDown, ChevronRight, ChevronLeft, Share2, Lightbulb, MessageSquare } from 'lucide-react';
+import { ArrowRight, Sparkles, Download, Users, BarChart3, TrendingUp, AlertCircle, CheckCircle2, Zap, Target, DollarSign, TrendingDown, ChevronRight, ChevronLeft, Share2, Lightbulb, MessageSquare, Mail } from 'lucide-react';
 import Link from 'next/link';
 import BuyerPersonasWidget from '../../../src/features/icp-analysis/widgets/BuyerPersonasWidget';
 import MyICPOverviewWidget from '../../../src/features/icp-analysis/widgets/MyICPOverviewWidget';
@@ -98,6 +98,11 @@ export default function ICPDemoV2Page() {
   // Rate limit state
   const [remainingGenerations, setRemainingGenerations] = useState<number>(3);
   const [generationsResetTime, setGenerationsResetTime] = useState<string>('');
+
+  // Email capture state
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [emailInput, setEmailInput] = useState('');
+  const [isSubmittingEmail, setIsSubmittingEmail] = useState(false);
 
   // Mobile detection for touch optimization
   const [isMobile, setIsMobile] = useState(false);
@@ -405,6 +410,61 @@ export default function ICPDemoV2Page() {
 
     window.open(shareUrl, '_blank', 'width=600,height=400');
     toast.success(`Opening ${platform === 'linkedin' ? 'LinkedIn' : 'X/Twitter'} share dialog...`);
+  };
+
+  const handleEmailCapture = async () => {
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailInput || !emailRegex.test(emailInput)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    setIsSubmittingEmail(true);
+
+    try {
+      const response = await fetch('/api/demo/capture-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailInput,
+          demo_type: 'icp_analysis',
+          company_slug: productName || null
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        if (data.already_exists) {
+          toast.success('You\'re already on the list! Check your inbox.', {
+            icon: '📧',
+            duration: 4000,
+          });
+        } else {
+          toast.success('Analysis sent! Check your inbox.', {
+            icon: '✅',
+            duration: 5000,
+            style: {
+              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+              color: '#fff',
+              fontWeight: 600
+            }
+          });
+        }
+        setShowEmailModal(false);
+        setEmailInput('');
+      } else {
+        toast.error(data.error || 'Failed to send analysis. Please try again.');
+      }
+    } catch (error) {
+      console.error('Email capture error:', error);
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmittingEmail(false);
+    }
   };
 
   // Option 10: Share Results Handler
@@ -1225,6 +1285,17 @@ Try it: https://andru-ai.com/demo`;
                   </div>
                   <div className="flex items-center gap-3">
                     <button
+                      onClick={() => setShowEmailModal(true)}
+                      className="btn btn-primary flex items-center gap-2"
+                      style={{
+                        background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                        boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
+                      }}
+                    >
+                      <Mail className="w-4 h-4" />
+                      Email Me This
+                    </button>
+                    <button
                       onClick={() => handleSocialShare('linkedin')}
                       className="btn btn-secondary flex items-center gap-2"
                       title="Share on LinkedIn"
@@ -1242,7 +1313,7 @@ Try it: https://andru-ai.com/demo`;
                     </button>
                     <button
                       onClick={() => setShowExportModal(true)}
-                      className="btn btn-primary flex items-center gap-2"
+                      className="btn btn-secondary flex items-center gap-2"
                     >
                       <Download className="w-4 h-4" />
                       Export
@@ -1470,6 +1541,111 @@ Try it: https://andru-ai.com/demo`;
               <Link href="/founding-members" className="text-blue-400 hover:underline ml-1">
                 Learn more →
               </Link>
+            </p>
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* Email Capture Modal */}
+      {showEmailModal && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: 'rgba(0, 0, 0, 0.5)' }}
+          onClick={() => setShowEmailModal(false)}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="w-full max-w-md p-6 rounded-2xl border"
+            style={{
+              background: 'var(--glass-bg)',
+              borderColor: 'var(--glass-border)',
+              backdropFilter: 'blur(20px)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 rounded-lg" style={{
+                background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%)'
+              }}>
+                <Mail className="w-6 h-6 text-green-400" />
+              </div>
+              <h3 className="heading-3">Email Me This Analysis</h3>
+            </div>
+
+            <p className="body text-text-muted mb-6">
+              Get this ICP analysis sent to your inbox. We'll also keep you updated on new features and insights.
+            </p>
+
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="email-input" className="block text-sm font-semibold mb-2 text-text-primary">
+                  Email Address
+                </label>
+                <input
+                  id="email-input"
+                  type="email"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !isSubmittingEmail) {
+                      handleEmailCapture();
+                    }
+                  }}
+                  placeholder="you@company.com"
+                  className="w-full px-4 py-3 rounded-lg border text-text-primary placeholder-text-muted"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    borderColor: 'rgba(255, 255, 255, 0.1)'
+                  }}
+                  disabled={isSubmittingEmail}
+                  autoFocus
+                />
+              </div>
+
+              <button
+                onClick={handleEmailCapture}
+                disabled={isSubmittingEmail || !emailInput}
+                className="btn btn-primary w-full flex items-center justify-center gap-2"
+                style={{
+                  background: isSubmittingEmail || !emailInput
+                    ? 'rgba(16, 185, 129, 0.3)'
+                    : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                  boxShadow: isSubmittingEmail || !emailInput
+                    ? 'none'
+                    : '0 4px 12px rgba(16, 185, 129, 0.3)',
+                  cursor: isSubmittingEmail || !emailInput ? 'not-allowed' : 'pointer'
+                }}
+              >
+                {isSubmittingEmail ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Mail className="w-4 h-4" />
+                    Send Analysis
+                  </>
+                )}
+              </button>
+
+              <button
+                onClick={() => setShowEmailModal(false)}
+                className="btn btn-ghost w-full"
+                disabled={isSubmittingEmail}
+              >
+                Cancel
+              </button>
+            </div>
+
+            <p className="body-small text-text-muted text-center mt-6 pt-6 border-t" style={{ borderColor: 'var(--glass-border)' }}>
+              <CheckCircle2 className="w-4 h-4 inline-block mr-1 text-green-400" />
+              No spam. Just valuable insights about your buyers.
             </p>
           </motion.div>
         </motion.div>

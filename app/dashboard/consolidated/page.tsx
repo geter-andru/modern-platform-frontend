@@ -9,10 +9,17 @@ import { Skeleton } from '../../../src/shared/components/ui/Skeleton';
 import { useCommandPalette } from '../../../src/shared/components/ui/command-palette';
 import { useBehaviorTracking } from '../../../src/shared/hooks/useBehaviorTracking';
 
-// Components
-import { BusinessMilestonesCard } from './components/BusinessMilestonesCard';
-import { SeriesBReadinessScore } from './components/SeriesBReadinessScore';
+// Components - Leading Indicators
+import { RevenueExecutionCapabilityScore } from './components/RevenueExecutionCapabilityScore';
+import { CapabilityOutcomeCorrelation } from './components/CapabilityOutcomeCorrelation';
+import { CapabilityGapAnalysis } from './components/CapabilityGapAnalysis';
+
+// Components - Reframed
 import { AIInsightsPanel } from './components/AIInsightsPanel';
+import { BusinessMilestonesCard } from './components/BusinessMilestonesCard';
+
+// Components - Supporting
+import { SeriesBReadinessScore } from './components/SeriesBReadinessScore';
 import { CompetencyGauges } from './components/CompetencyGauges';
 import { PlatformStats } from './components/PlatformStats';
 import { RevenueTrendChart } from './components/RevenueTrendChart';
@@ -96,7 +103,32 @@ export default function ConsolidatedDashboard() {
           </div>
         </div>
 
-        {/* PRIORITY #1: Business Milestones */}
+        {/* PRIORITY #1: Revenue Execution Capability (LEADING INDICATORS) */}
+        <RevenueExecutionCapabilityScore
+          customerId={user?.id}
+          isLoading={isLoading}
+        />
+
+        {/* PRIORITY #2: Capability → Outcome Correlation (PROOF OF CAUSATION) */}
+        <CapabilityOutcomeCorrelation
+          customerId={user?.id}
+          isLoading={isLoading}
+        />
+
+        {/* PRIORITY #3: Capability Gap Analysis (HIGHEST ROI IMPROVEMENTS) */}
+        <CapabilityGapAnalysis
+          customerId={user?.id}
+          isLoading={isLoading}
+        />
+
+        {/* PRIORITY #4: AI-Driven Capability Building Action */}
+        <AIInsightsPanel
+          insights={insights?.data}
+          isLoading={insightsLoading}
+          customerId={user?.id}
+        />
+
+        {/* PRIORITY #5: Current Performance - Trailing Results (LAGGING VALIDATION) */}
         <BusinessMilestonesCard
           customerId={user?.id}
           isLoading={isLoading}
@@ -108,14 +140,7 @@ export default function ConsolidatedDashboard() {
           isLoading={isLoading}
         />
 
-        {/* AI-Driven Next Action */}
-        <AIInsightsPanel
-          insights={insights?.data}
-          isLoading={insightsLoading}
-          customerId={user?.id}
-        />
-
-        {/* Competency Progression + Platform Stats Grid */}
+        {/* Revenue Execution Capabilities + Platform Stats Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <CompetencyGauges
             customerId={user?.id}
