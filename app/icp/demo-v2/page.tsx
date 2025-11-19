@@ -38,10 +38,15 @@ export default function ICPDemoV2Page() {
 
   // Generated personas state (starts with demo data, replaced after generation)
   const [generatedPersonas, setGeneratedPersonas] = useState(demoData.personas);
+  const [revealedPersonas, setRevealedPersonas] = useState<any[]>([]);
 
   // Intelligence extraction state
   const [refinedDescription, setRefinedDescription] = useState<string>('');
   const [coreCapability, setCoreCapability] = useState<string>('');
+
+  // Share functionality state
+  const [showSharePreview, setShowSharePreview] = useState(false);
+  const [shareText, setShareText] = useState('');
 
   // Mobile detection for touch optimization
   const [isMobile, setIsMobile] = useState(false);
@@ -118,6 +123,65 @@ export default function ICPDemoV2Page() {
     }
   }, []);
 
+  // Option 9: Cinematic persona reveal function
+  const revealPersonasCinematically = async (personas: any[]) => {
+    // Clear any existing reveals
+    setRevealedPersonas([]);
+
+    // Dramatic pause before reveal
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    // Success announcement
+    toast.success(
+      `${personas.length} buyer personas identified`,
+      {
+        icon: '🎯',
+        duration: 4000,
+        style: {
+          background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+          color: '#fff',
+          fontWeight: 600,
+          border: 'none'
+        }
+      }
+    );
+
+    // Stagger persona reveals (RPG loot drop feeling)
+    for (let i = 0; i < personas.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      setRevealedPersonas(prev => [...prev, personas[i]]);
+
+      // Subtle animation trigger via DOM manipulation
+      setTimeout(() => {
+        const element = document.getElementById(`persona-reveal-${i}`);
+        if (element) {
+          element.style.transform = 'scale(1.02)';
+          setTimeout(() => {
+            element.style.transform = 'scale(1)';
+          }, 200);
+        }
+      }, 50);
+    }
+
+    // After all reveals, show library addition toast
+    setTimeout(() => {
+      toast(
+        `Resource generated: ${personas.length} personas added to your library`,
+        {
+          icon: '📚',
+          duration: 3000,
+          style: {
+            background: 'rgba(59, 130, 246, 0.1)',
+            border: '1px solid rgba(59, 130, 246, 0.3)',
+            color: '#fff',
+            backdropFilter: 'blur(16px)'
+          }
+        }
+      );
+    }, personas.length * 300 + 500);
+  };
+
   const handleGenerate = async () => {
     if (!productName || !productDescription) {
       toast.error('Please fill in product name and description');
@@ -191,12 +255,17 @@ export default function ICPDemoV2Page() {
       setIsGenerating(false);
       setGenerationStage('');
       setShowResults(true);
-      toast.success(`Deep buyer intelligence extracted! ${data.personas.length} personas generated.`, { id: 'generate' });
 
-      // Scroll to results
+      // Dismiss loading toast
+      toast.dismiss('generate');
+
+      // Trigger cinematic reveal (Option 9)
+      await revealPersonasCinematically(data.personas);
+
+      // Scroll to results after reveal starts
       setTimeout(() => {
         document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
+      }, 1200);
     } catch (error: any) {
       setIsGenerating(false);
       setGenerationStage('');
@@ -285,6 +354,61 @@ export default function ICPDemoV2Page() {
 
     window.open(shareUrl, '_blank', 'width=600,height=400');
     toast.success(`Opening ${platform === 'linkedin' ? 'LinkedIn' : 'X/Twitter'} share dialog...`);
+  };
+
+  // Option 10: Share Results Handler
+  const handleShareResults = async () => {
+    const extractUniqueIndustries = (personas: any[]) => {
+      const industries = personas
+        .flatMap(p => p.industries || [])
+        .filter((v, i, a) => a.indexOf(v) === i);
+      return industries.slice(0, 3);
+    };
+
+    const stats = {
+      personaCount: generatedPersonas.length,
+      productName: productName || demoData.product.productName,
+      topPersona: generatedPersonas[0]?.title || 'Decision Maker',
+      industries: extractUniqueIndustries(generatedPersonas),
+      seniority: generatedPersonas[0]?.seniority || 'C-Suite'
+    };
+
+    // Professional LinkedIn-ready share text
+    const text = `Just mapped ${stats.personaCount} buyer personas for ${stats.productName} in <45 seconds with Andru 🎯
+
+Top persona: ${stats.topPersona}
+Focus: ${stats.industries.join(', ') || 'Multiple industries'}
+
+Building systematic buyer intelligence instead of guessing.
+
+Try it: https://andru-ai.com/demo`;
+
+    try {
+      await navigator.clipboard.writeText(text);
+
+      setShareText(text);
+
+      toast.success(
+        'Shareable results copied to clipboard!',
+        {
+          icon: '📋',
+          duration: 3000,
+          style: {
+            background: 'rgba(59, 130, 246, 0.1)',
+            border: '1px solid rgba(59, 130, 246, 0.3)',
+            color: '#fff',
+            backdropFilter: 'blur(16px)'
+          }
+        }
+      );
+
+      // Show preview of what was copied
+      setShowSharePreview(true);
+      setTimeout(() => setShowSharePreview(false), 5000);
+
+    } catch (error) {
+      toast.error('Failed to copy - please select and copy manually');
+    }
   };
 
   const dataStats = [
@@ -1151,16 +1275,25 @@ export default function ICPDemoV2Page() {
                       isDemo={true}
                     />
                     {/* Contextual CTA for Personas */}
-                    <div className="mt-6 flex justify-center">
+                    <div className="mt-6 flex justify-center gap-3">
                       <button
                         onClick={() => setShowExportModal(true)}
+                        className="btn btn-secondary flex items-center gap-2"
+                      >
+                        <Download className="w-4 h-4" />
+                        Export
+                      </button>
+
+                      <button
+                        onClick={handleShareResults}
                         className="btn btn-primary flex items-center gap-2"
                         style={{
+                          background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
                           boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
                         }}
                       >
-                        <Download className="w-4 h-4" />
-                        Export Personas to CRM →
+                        <Share2 className="w-4 h-4" />
+                        Share Results
                       </button>
                     </div>
                   </>
@@ -1175,16 +1308,25 @@ export default function ICPDemoV2Page() {
                       isDemo={true}
                     />
                     {/* Contextual CTA for ICP Overview */}
-                    <div className="mt-6 flex justify-center">
+                    <div className="mt-6 flex justify-center gap-3">
                       <button
                         onClick={() => setShowExportModal(true)}
+                        className="btn btn-secondary flex items-center gap-2"
+                      >
+                        <Download className="w-4 h-4" />
+                        Export
+                      </button>
+
+                      <button
+                        onClick={handleShareResults}
                         className="btn btn-primary flex items-center gap-2"
                         style={{
+                          background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
                           boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
                         }}
                       >
-                        <Download className="w-4 h-4" />
-                        Download Full Analysis →
+                        <Share2 className="w-4 h-4" />
+                        Share Results
                       </button>
                     </div>
                   </>
@@ -1274,6 +1416,32 @@ export default function ICPDemoV2Page() {
               </Link>
             </p>
           </motion.div>
+        </motion.div>
+      )}
+
+      {/* Share Preview Modal */}
+      {showSharePreview && shareText && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+          className="fixed bottom-24 right-6 p-4 rounded-xl shadow-2xl max-w-sm border z-50"
+          style={{
+            background: 'rgba(17, 24, 39, 0.95)',
+            borderColor: 'rgba(59, 130, 246, 0.3)',
+            backdropFilter: 'blur(16px)'
+          }}
+        >
+          <p className="text-xs text-gray-400 mb-2">Copied to clipboard:</p>
+          <div className="text-sm text-white whitespace-pre-wrap bg-gray-800 p-3 rounded-lg font-mono max-h-48 overflow-y-auto">
+            {shareText}
+          </div>
+          <button
+            onClick={() => setShowSharePreview(false)}
+            className="absolute top-2 right-2 text-gray-400 hover:text-white transition-colors"
+          >
+            ✕
+          </button>
         </motion.div>
       )}
 

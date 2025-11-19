@@ -6,6 +6,7 @@ import { useAuth } from '@/app/lib/auth/auth-provider';
 import { useBehaviorTracking } from '@/src/shared/hooks/useBehaviorTracking';
 import HowToUseModal from './HowToUseModal';
 import scenarioModalData from '@/data/scenario-modal-data.json';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface Timestamp {
   time: string;
@@ -35,6 +36,12 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Gamification state
+  const [readProgress, setReadProgress] = useState(0);
+  const [hasCompletedReading, setHasCompletedReading] = useState(false);
+  const [isFirstVisit, setIsFirstVisit] = useState(false);
+  const [timeOnPage, setTimeOnPage] = useState(0);
+
   // Find modal data for this scenario
   const modalData = scenarioModalData.find((data) => data.slug === slug);
 
@@ -51,6 +58,92 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
       `${scenario.company} ICP | ${scenario.title}`
     );
   }, [slug, scenario.company, scenario.title]);
+
+  // Option 2: First visit detection
+  useEffect(() => {
+    const visitedKey = `scenario_visited_${slug}`;
+    const hasVisited = localStorage.getItem(visitedKey);
+
+    if (!hasVisited) {
+      setIsFirstVisit(true);
+      localStorage.setItem(visitedKey, 'true');
+
+      // Subtle discovery toast
+      setTimeout(() => {
+        toast('New buyer insight discovered', {
+          icon: '💡',
+          duration: 3000,
+          style: {
+            background: 'rgba(59, 130, 246, 0.1)',
+            border: '1px solid rgba(59, 130, 246, 0.3)',
+            color: '#fff',
+            backdropFilter: 'blur(16px)'
+          }
+        });
+      }, 1000);
+    }
+  }, [slug]);
+
+  // Option 1: Reading progress tracking
+  useEffect(() => {
+    const handleScroll = () => {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight - windowHeight;
+      const scrolled = window.scrollY;
+      const progress = (scrolled / documentHeight) * 100;
+      setReadProgress(Math.min(progress, 100));
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Time on page tracking
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeOnPage(prev => prev + 1000);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Reading completion detection
+  useEffect(() => {
+    if (readProgress >= 98 && !hasCompletedReading) {
+      setHasCompletedReading(true);
+
+      // Show completion toast
+      toast.success('Buyer insight captured', {
+        icon: '✓',
+        duration: 2000,
+        style: {
+          background: 'rgba(59, 130, 246, 0.1)',
+          border: '1px solid rgba(59, 130, 246, 0.3)',
+          color: '#fff',
+          backdropFilter: 'blur(16px)'
+        }
+      });
+
+      // Track completion for sales intelligence
+      trackCtaClick({
+        ctaText: 'Scenario Read Complete',
+        ctaLocation: 'scroll_completion',
+        pagePath: `/icp/${slug}`,
+      }).catch(() => {
+        // Non-fatal tracking error
+      });
+
+      // Also track via public page tracking if available
+      if (typeof window !== 'undefined' && (window as any).trackScenarioCompletion) {
+        (window as any).trackScenarioCompletion({
+          slug,
+          company: scenario.company,
+          timeSpent: Math.round(timeOnPage / 1000),
+          completionTimestamp: new Date().toISOString()
+        });
+      }
+    }
+  }, [readProgress, hasCompletedReading, slug, scenario.company, timeOnPage]);
 
   // CTA click handler
   const handleCtaClick = (ctaText: string, ctaLocation: string) => {
@@ -123,12 +216,27 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
             </a>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold mb-3" style={{ color: 'var(--color-text-primary)' }}>
-            {scenario.title}
-          </h1>
+          <div className="flex items-start gap-3 mb-3">
+            <h1 className="text-4xl md:text-5xl font-bold flex-1" style={{ color: 'var(--color-text-primary)' }}>
+              {scenario.title}
+            </h1>
+            {isFirstVisit && (
+              <span
+                className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium animate-pulse"
+                style={{
+                  background: 'rgba(59, 130, 246, 0.2)',
+                  color: '#60a5fa',
+                  border: '1px solid rgba(59, 130, 246, 0.3)',
+                  backdropFilter: 'blur(8px)'
+                }}
+              >
+                NEW INSIGHT
+              </span>
+            )}
+          </div>
 
           <p className="text-xl font-medium" style={{ color: 'var(--color-text-secondary)' }}>
-            Why The Need {scenario.company}
+            Why They Need {scenario.company}
           </p>
         </div>
 
@@ -380,6 +488,9 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
           triggeringMoment={modalData.triggeringMoment}
         />
       )}
+
+      {/* Toast notifications */}
+      <Toaster position="bottom-right" />
     </div>
   );
 }

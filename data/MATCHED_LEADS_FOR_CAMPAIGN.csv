@@ -1,0 +1,61 @@
+tier,company,founder_name,founder_title,email,scenario_slug,scenario_company,icp_url,match_reason
+2,ANAFLASH Inc,Seung-Hwan Song,Chief Executive Officer and Co-Founder,ssong@anaflash.com,modal,Modal,andru-ai.com/icp/modal,default
+2,Aampe,Kate Field,"Co-Founder, Chief Operating Officer",kate@aampe.com,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+2,Anatomy Financial,Callum King,Co-Founder,callum@anatomy.com,composio,Composio,andru-ai.com/icp/composio,api_integration
+2,Apideck,Gertjan De Wilde,"Co-Founder, Chief Executive Officer",gertjan@apideck.com,vanta,Vanta,andru-ai.com/icp/vanta,security_compliance
+2,Arcade,Caroline Clark,Chief Executive Officer and Co-Founder,caroline@arcade.software,mintlify,Mintlify,andru-ai.com/icp/mintlify,documentation
+2,BRM,Fabian Frank,Chief Technology Officer and Co-Founder,fabian@brmlabs.co,vanta,Vanta,andru-ai.com/icp/vanta,security_compliance
+2,Boon,Deepti Yenireddy,"Founder, Chief Executive Officer",deepti@getboon.ai,composio,Composio,andru-ai.com/icp/composio,api_integration
+2,Collate,Suresh Srinivas,"Co-Founder, Chief Executive Officer",suresh@getcollate.io,vanta,Vanta,andru-ai.com/icp/vanta,security_compliance
+2,Creatify AI,Xin Zhou,Co-Founder,xin@creatify.ai,composio,Composio,andru-ai.com/icp/composio,api_integration
+2,D3,Fred Hsu,"Co-Founder, Chief Executive Officer",fred@d3.inc,composio,Composio,andru-ai.com/icp/composio,api_integration
+2,DOSS.COM,Arnav Mishra,"Co-Founder, Chief Technology Officer",arnav@doss.com,posthog,PostHog,andru-ai.com/icp/posthog,data_analytics
+2,Enterpret,Arnav Sharma,"Co-Founder, Chief Technology Officer",arnav@enterpret.com,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+2,Eve,David Zeng,Co-Founder,david@eve.legal,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+2,First Resonance,Karan Talati,"Co-Founder, Chief Executive Officer",karan@firstresonance.io,composio,Composio,andru-ai.com/icp/composio,api_integration
+2,Genspark,Eric Jing,"Co-Founder, Chief Executive Officer",eric@genspark.ai,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+2,Gravity,Saleh Elhattab,"Founder, Chief Executive Officer",saleh@gravityclimate.com,modal,Modal,andru-ai.com/icp/modal,default
+2,HappyRobot,Pablo Palafox,Co-Founder,pablo.palafox@happyrobot.ai,composio,Composio,andru-ai.com/icp/composio,api_integration
+2,HuLoop Automation,Ramna Sharma,Founder,ramna.sharma@clapself.com,permitio,Permit.io,andru-ai.com/icp/permitio,security_identity
+2,"Ionate, Inc.",Ajanta Adhikari,"Founder, Chief Executive Officer, President",ajanta@ionate.io,vanta,Vanta,andru-ai.com/icp/vanta,security_compliance
+2,Leapfin,Erik Yao,"Founder, Chief Technology Officer",eyao@leapfin.com,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+2,Listen Labs,Alfred Wahlforss,Co-Founder,alfred@listenlabs.ai,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+2,Rox,Avanika Narayan,Co-Founder,avanika@rox.com,modal,Modal,andru-ai.com/icp/modal,default
+2,SGNL,Erik Gustavson,"Co-Founder, Chief Product Officer",erik@sgnl.ai,permitio,Permit.io,andru-ai.com/icp/permitio,security_identity
+2,Surglogs,Peter Zajac,Chief Executive Officer and Co-Founder,peter@surglogs.com,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+2,TrueFoundry,Anuraag Gutgutia,Co-Founder,anuraag@truefoundry.com,permitio,Permit.io,andru-ai.com/icp/permitio,security_identity
+2,TwelveLabs,Jae Lee,"Co-Founder, Chief Executive Officer",jae@twelvelabs.io,sourcegraph,Sourcegraph,andru-ai.com/icp/sourcegraph,dev_tools
+2,Unwrap,Ashwin Singhania,Co-Founder,ashwin@unwrap.ai,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+2,Vooma,Mike Carter,Founder,mike@vooma.ai,composio,Composio,andru-ai.com/icp/composio,api_integration
+2,"Warmly,",Maximus Greenwald,"Co-Founder, Chief Executive Officer",maxgreenwald@warmly.ai,helicone,Helicone,andru-ai.com/icp/helicone,ai_observability
+2,Wherobots,Peter Sheedy,Co-Founder and Chief Architect,peter@wherobots.com,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+2,XILO,Jon Corrin,"Co-Founder, Chief Executive Officer",jon@xilo.io,modal,Modal,andru-ai.com/icp/modal,default
+2,ZITADEL,Fabienne Bühler,Chief Product Officer and Co-Founder,fabienne@zitadel.com,permitio,Permit.io,andru-ai.com/icp/permitio,security_identity
+2,Zitara,Evan Murphy,"Chief Technology Officer, Co-Founder",evan@zitara.com,modal,Modal,andru-ai.com/icp/modal,infrastructure
+3,ANELLO Photonics,Avi Feshali,"Vice President of Technology, Co-Founder",avi@anellophotonics.com,composio,Composio,andru-ai.com/icp/composio,api_integration
+3,Agency,Alex Reibman,Co-Founder/CEO,alex@mercaux.com,modal,Modal,andru-ai.com/icp/modal,default
+3,Aks design co,Tuhin Srivastava,Founder,tuhin.srivastava@wellthenso.com,modal,Modal,andru-ai.com/icp/modal,default
+3,BforeAI | The PreCrime™ Company,Luigi Lenguito,Founder & CEO,luigi.lenguito@gmail.com,modal,Modal,andru-ai.com/icp/modal,default
+3,Cardless,Michael Spelfogel,Co-Founder and President,michael@cardless.com,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+3,EnCharge AI,Kailash Gopalakrishnan,Co-Founder,kailash@enchargeai.com,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+3,Fay,Sam Faycurry,"Co-Founder, Chief Executive Officer",sam@faynutrition.com,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+3,Helicone (YC W23),Justin Torre,Founder,justin@helicone.ai,helicone,Helicone,andru-ai.com/icp/helicone,direct_match
+3,LanceDB (YC W22),Chang She,CEO / Co-Founder,chang@lancedb.com,lancedb,LanceDB,andru-ai.com/icp/lancedb,direct_match
+3,Leaping AI (YC W25),Shraey Bhatia,Co-Founder & Chief AI Officer,shraey.bhatia@leapingai.com,modal,Modal,andru-ai.com/icp/modal,default
+3,Luma AI,Alex Yu,"Co-Founder, Chief Technology Officer",alex@lumalabs.ai,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+3,Modal Labs,Erik Bernhardsson,CEO,erik@modal.com,modal,Modal,andru-ai.com/icp/modal,direct_match
+3,Perplexity,Andy Konwinski,Co-Founder,andy@perplexity.ai,modal,Modal,andru-ai.com/icp/modal,default
+3,Port.io,Zohar Einy,Co-Founder & CEO,zohar@port.io,port,Port,andru-ai.com/icp/port,direct_match
+3,Qodo,Itamar Friedman,Co-Founder & CEO,maritamar@gmail.com,tabnine,Tabnine,andru-ai.com/icp/tabnine,direct_match
+3,Replo (YC S21),Noah Gilmore,"Co-Founder, CTO",noah@replo.app,replo,Replo,andru-ai.com/icp/replo,direct_match
+3,Riot,Louis Cibot,"Co-Founder, Chief Technology Officer",sara@tryriot.com,modal,Modal,andru-ai.com/icp/modal,ai_infrastructure
+3,Tinybird.co,Jorge Gomez Sancha,Co-Founder & CEO,jorge@tinybird.com,modal,Modal,andru-ai.com/icp/modal,default
+3,Topo (YC W24),Dan Elkaïm,Co-founder & CEO,dan@topo.io,topoio,Topo.io,andru-ai.com/icp/topoio,direct_match
+3,Wordware (YC S24),Filip Kozera,founder and ceo,filipk@wikipedia.org,wordware,Wordware,andru-ai.com/icp/wordware,direct_match
+3,avante,Rohan D'Souza,Co-Founder and CEO,rohanpdsouza@gmail.com,avante-ai,Avante AI,andru-ai.com/icp/avante-ai,direct_match
+4,Business Needs Inc.,Achintya Gupta,Customer Account Manager,agupta@businessneedsinc.com,modal,Modal,andru-ai.com/icp/modal,default
+4,Cisco Foundation AI,Yaron Singer,VP of AI and Engineering at Cisco Security,yaron.singer@robustintelligence.com,modal,Modal,andru-ai.com/icp/modal,default
+4,Clerk.com,Colin Sidoti,Lead Clerk,colin@clerk.com,modal,Modal,andru-ai.com/icp/modal,default
+4,Databricks,Nikita Shamgunov,Vice President,nikita.shamgunov@databricks.com,modal,Modal,andru-ai.com/icp/modal,default
+4,Daytona,Ovais Tariq,Angel Investor,ovaistariq@gmail.com,modal,Modal,andru-ai.com/icp/modal,default
+4,Keywords AI (YC W24),Andy Li,Product & Customer Success,hanheli25@gmail.com,modal,Modal,andru-ai.com/icp/modal,default

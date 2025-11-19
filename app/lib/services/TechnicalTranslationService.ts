@@ -27,28 +27,89 @@ export interface BuyerPersona {
   values: string[];                    // ["Data-driven decision making"]
   decisionCriteria?: string[];         // ["Measurable ROI", "Time to value"]
   communicationStyle?: string;         // "Direct, data-focused"
+
+  // NEW: Empathy Mapping (Pure Signal Part II enhancement)
+  empathyMap?: {
+    see: string[];                     // Observable external reality
+    hear: string[];                    // Direct feedback from board/team/customers
+    thinkAndFeel: string[];            // 3 AM fears, hidden concerns
+    sayAndDo: {
+      public: string[];                // Public statements/behavior
+      private: string[];               // Private behavior/actions
+    };
+    pains: string[];                   // Professional risks, emotional burdens
+    gains: string[];                   // Professional relief, career advancement
+  };
+  hiddenAmbitions?: string[];          // Career goals not publicly stated
+  failureConsequences?: string[];      // What happens if they don't succeed
+  careerStage?: string;                // "First-time VP Sales" | "Proven CRO"
+  successMetrics?: string[];           // What they're measured on
 }
 
 export interface TranslationInput {
   technicalMetric: string;
   improvement: string;
   industry: keyof typeof INDUSTRY_FRAMEWORKS | string;
-  targetPersonas: BuyerPersona[];      // NEW: Array of personas from ICP
-  includeInternalStakeholders?: boolean; // NEW: Generate CXO translations
+  targetPersonas: BuyerPersona[];      // Array of personas from ICP
+  includeInternalStakeholders?: boolean; // Generate CXO translations
   customerContext?: {
     name?: string;
     industry?: string;
     size?: 'SMB' | 'Mid-Market' | 'Enterprise';
     painPoint?: string;
-    currentARR?: string;               // NEW: "$2M"
-    targetARR?: string;                // NEW: "$10M"
-    timeline?: string;                 // NEW: "18 months"
+    currentARR?: string;               // "$2M"
+    targetARR?: string;                // "$10M"
+    timeline?: string;                 // "18 months"
   };
   competitorClaim?: string;
+
+  // NEW: Desert Context (Revenue Desert ICP integration)
+  desertContext?: {
+    runwayMonths: number;              // 12-18 months runway remaining
+    fundingPressure: string;           // "Series A required in 90 days"
+    boardMilestones: string[];         // ["5-10 enterprise logos", "$5M ARR"]
+    recentHires: string[];             // ["VP Enterprise Sales hired 8 months ago"]
+    observablePainSignals: string[];   // ["Losing deals at CFO stage", "Founder on 80% of calls"]
+    criticalSuccessMetrics: {
+      metric: string;                  // "Close 3-5 enterprise deals"
+      deadline: string;                // "90 days"
+      impact: string;                  // "Extends runway 6-9 months"
+    }[];
+  };
+}
+
+// NEW: Four-Layer Translation Framework (Pure Signal Part III enhancement)
+export interface FourLayerTranslation {
+  layer1_technicalCapability: string;      // SAME for all personas
+  layer2_strategicPainRisk: {
+    externalPressure: string;              // Market/board/competitive reality
+    internalDriver: string;                // Career/reputation/identity concern
+    theRisk: string;                       // What happens if not solved (failure consequences)
+  };
+  layer3_strategicOutcome: {
+    operationalChange: string;             // How day-to-day transforms
+    strategicChange: string;               // How position/capability improves
+    relationshipChange: string;            // How stakeholder perception shifts
+  };
+  layer4_roiAndRelief: {
+    theNumbers: {
+      primary: string;                     // Primary metric (defensible to their stakeholder)
+      secondary: string;                   // Supporting calculation
+      timeToValue: string;                 // When they see results
+      defensibleTo: string;                // "Board" | "Founder" | "CFO"
+    };
+    theRelief: string;                     // First-person "I stop..." statement from empathy map
+    theCareerWin: string;                  // Professional advancement aligned to hidden ambitions
+  };
 }
 
 export interface PersonaTranslation {
   persona: BuyerPersona;
+
+  // NEW: Four-layer framework integration
+  fourLayerTranslation?: FourLayerTranslation;
+
+  // Existing direct messaging (maintained for backward compatibility)
   directMessaging: {
     elevator: string;                  // What YOU say to Sarah
     email: string;                     // Email YOU send to Sarah
@@ -61,6 +122,15 @@ export interface PersonaTranslation {
 
 export interface CXOTranslation {
   stakeholder: 'CFO' | 'COO' | 'CTO';
+
+  // NEW: Four-layer framework for champion enablement
+  fourLayerForChampion?: {
+    strategicPainRisk: string;         // How champion frames the problem to CXO
+    strategicOutcome: string;          // How champion frames the transformation to CXO
+    roiStatement: string;              // Numbers champion uses with CXO
+    relationshipBenefit: string;       // How this helps champion's relationship with CXO
+  };
+
   championEnablement: {
     talkingPoints: string;             // What Sarah tells her CFO
     emailTemplate: string;             // Email Sarah forwards to CFO
@@ -325,10 +395,11 @@ class TechnicalTranslationService {
       technicalMetric,
       improvement,
       industry,
-      targetPersonas,                          // NEW: Array of personas
-      includeInternalStakeholders = true,      // NEW: Default to true
+      targetPersonas,                          // Array of personas
+      includeInternalStakeholders = true,      // Default to true
       customerContext,
       competitorClaim,
+      desertContext,                           // NEW: Desert context for urgency
     } = input;
 
     // Defensive guard: Ensure targetPersonas is a valid array
@@ -348,18 +419,19 @@ class TechnicalTranslationService {
       industryFramework as any
     );
 
-    // Level 1: Generate persona-specific translations
+    // Level 1: Generate persona-specific translations (now with desert context)
     const buyerTranslations = targetPersonas.map(persona =>
       this._generatePersonaTranslation(
         technicalMetric,
         improvement,
         persona,
         baseTranslation,
-        customerContext
+        customerContext,
+        desertContext                          // Pass desert context
       )
     );
 
-    // Level 2: Generate internal stakeholder translations (champion enablement)
+    // Level 2: Generate internal stakeholder translations (champion enablement with empathy)
     const internalTranslations = includeInternalStakeholders
       ? (['CFO', 'COO', 'CTO'] as const).map(stakeholder =>
           this._generateInternalStakeholderTranslation(
@@ -368,7 +440,8 @@ class TechnicalTranslationService {
             stakeholder,
             targetPersonas,
             baseTranslation,
-            customerContext
+            customerContext,
+            desertContext                         // Pass desert context for urgency
           )
         )
       : [];
@@ -612,13 +685,15 @@ class TechnicalTranslationService {
 
   /**
    * Generate persona-specific translation using ICP data
+   * NOW WITH FOUR-LAYER FRAMEWORK + EMPATHY MAPPING
    */
   private _generatePersonaTranslation(
     technicalMetric: string,
     improvement: string,
     persona: BuyerPersona,
     baseTranslation: BaseTranslation,
-    customerContext?: TranslationInput['customerContext']
+    customerContext?: TranslationInput['customerContext'],
+    desertContext?: TranslationInput['desertContext']
   ): PersonaTranslation {
     const customerName = customerContext?.name || 'your organization';
     const customerIndustry = customerContext?.industry || 'your industry';
@@ -630,17 +705,32 @@ class TechnicalTranslationService {
     const primaryGoal = persona.goals[0] || 'Improve business performance';
     const primaryPainPoint = persona.painPoints[0] || 'Operational inefficiencies';
 
-    return {
-      persona,
-      directMessaging: {
-        elevator: this._generatePersonaElevatorPitch(
-          persona,
+    // Generate four-layer translation if empathy map exists
+    const fourLayerTranslation = persona.empathyMap
+      ? this._generateFourLayerTranslation(
           technicalMetric,
           improvement,
-          primaryGoal,
-          primaryPainPoint,
-          customerContext
-        ),
+          persona,
+          customerContext,
+          desertContext
+        )
+      : undefined;
+
+    return {
+      persona,
+      fourLayerTranslation,
+      directMessaging: {
+        // Use four-layer framework for elevator pitch if available
+        elevator: fourLayerTranslation
+          ? this._generateEmpathyDrivenElevatorPitch(fourLayerTranslation, persona, customerContext)
+          : this._generatePersonaElevatorPitch(
+              persona,
+              technicalMetric,
+              improvement,
+              primaryGoal,
+              primaryPainPoint,
+              customerContext
+            ),
         email: this._generatePersonaEmail(
           persona,
           technicalMetric,
@@ -737,11 +827,363 @@ Best regards,
   }
 
   // ============================================================================
+  // NEW: FOUR-LAYER TRANSLATION FRAMEWORK (Pure Signal Part III Enhancement)
+  // ============================================================================
+
+  /**
+   * Generate complete four-layer translation using empathy mapping + desert context
+   */
+  private _generateFourLayerTranslation(
+    technicalMetric: string,
+    improvement: string,
+    persona: BuyerPersona,
+    customerContext?: TranslationInput['customerContext'],
+    desertContext?: TranslationInput['desertContext']
+  ): FourLayerTranslation {
+    // LAYER 1: Technical Capability (same for all personas)
+    const layer1 = `${improvement} improvement in ${technicalMetric}`;
+
+    // LAYER 2: Strategic Pain/Risk (persona + empathy + desert specific)
+    const layer2 = this._generateStrategicPainRisk(persona, desertContext, customerContext);
+
+    // LAYER 3: Strategic Outcome (transformation specific to persona)
+    const layer3 = this._generateStrategicOutcome(persona, technicalMetric, improvement, customerContext);
+
+    // LAYER 4: ROI + Emotional Relief + Career Win
+    const layer4 = this._generateROIAndRelief(persona, technicalMetric, improvement, desertContext, customerContext);
+
+    return {
+      layer1_technicalCapability: layer1,
+      layer2_strategicPainRisk: layer2,
+      layer3_strategicOutcome: layer3,
+      layer4_roiAndRelief: layer4
+    };
+  }
+
+  /**
+   * LAYER 2: Generate Strategic Pain/Risk using empathy map + desert context
+   */
+  private _generateStrategicPainRisk(
+    persona: BuyerPersona,
+    desertContext?: TranslationInput['desertContext'],
+    customerContext?: TranslationInput['customerContext']
+  ): FourLayerTranslation['layer2_strategicPainRisk'] {
+    const empathy = persona.empathyMap;
+    const primaryPain = persona.painPoints[0] || 'operational challenges';
+
+    // External Pressure: Combine what they SEE + HEAR + desert context
+    const externalPressure = empathy
+      ? `${empathy.see[0] || 'Market pressures building'}. ${empathy.hear[0] || 'Stakeholders demanding results'}${
+          desertContext?.fundingPressure ? `. ${desertContext.fundingPressure}` : ''
+        }`
+      : `${primaryPain} creating competitive disadvantage${
+          desertContext?.fundingPressure ? `. ${desertContext.fundingPressure}` : ''
+        }`;
+
+    // Internal Driver: Use empathy map THINK & FEEL + hidden ambitions
+    const internalDriver = empathy?.thinkAndFeel[0]
+      ? `${empathy.thinkAndFeel[0]}${
+          persona.hiddenAmbitions?.[0] ? `. Ambition: ${persona.hiddenAmbitions[0]}` : ''
+        }`
+      : `Career reputation at stake${persona.hiddenAmbitions?.[0] ? `: ${persona.hiddenAmbitions[0]}` : ''}`;
+
+    // The Risk: Use failure consequences
+    const theRisk = persona.failureConsequences?.[0]
+      ? persona.failureConsequences.join('; ')
+      : 'Professional setback and lost opportunity';
+
+    return {
+      externalPressure,
+      internalDriver,
+      theRisk
+    };
+  }
+
+  /**
+   * LAYER 3: Generate Strategic Outcome (transformation)
+   */
+  private _generateStrategicOutcome(
+    persona: BuyerPersona,
+    technicalMetric: string,
+    improvement: string,
+    customerContext?: TranslationInput['customerContext']
+  ): FourLayerTranslation['layer3_strategicOutcome'] {
+    const empathy = persona.empathyMap;
+    const primaryGoal = persona.goals[0] || 'Achieve business objectives';
+
+    // Operational Change: What shifts in day-to-day work
+    const operationalChange = `${improvement} in ${technicalMetric} enables ${persona.name} to ${primaryGoal.toLowerCase()} with measurable efficiency gains`;
+
+    // Strategic Change: Position/capability improvement
+    const strategicChange = empathy?.gains[0]
+      ? `${empathy.gains[0]} becomes achievable`
+      : `Strategic capability to ${primaryGoal.toLowerCase()} independently`;
+
+    // Relationship Change: How stakeholder perception shifts
+    const relationshipChange = `${
+      persona.role === 'CEO' ? 'Board' : persona.role === 'VP Sales' ? 'Founder' : 'Leadership'
+    } sees proven competence and systematic progress`;
+
+    return {
+      operationalChange,
+      strategicChange,
+      relationshipChange
+    };
+  }
+
+  /**
+   * LAYER 4: Generate ROI + Emotional Relief + Career Win
+   */
+  private _generateROIAndRelief(
+    persona: BuyerPersona,
+    technicalMetric: string,
+    improvement: string,
+    desertContext?: TranslationInput['desertContext'],
+    customerContext?: TranslationInput['customerContext']
+  ): FourLayerTranslation['layer4_roiAndRelief'] {
+    const empathy = persona.empathyMap;
+
+    // The Numbers: Persona-specific, defensible ROI
+    const theNumbers = this._generateDefensibleROI(persona, technicalMetric, improvement, desertContext, customerContext);
+
+    // The Relief: First-person statement from empathy map PAINS
+    const theRelief = empathy?.pains[0]
+      ? `I stop ${empathy.pains[0].toLowerCase().replace(/^(professional|personal|career)\s+/i, '')}${
+          empathy.thinkAndFeel[0] ? `. ${empathy.thinkAndFeel[0]}` : ''
+        }`
+      : `I stop worrying about ${persona.painPoints[0]?.toLowerCase() || 'operational challenges'} and focus on strategic growth`;
+
+    // The Career Win: Map to hidden ambitions + gains
+    const theCareerWin = persona.hiddenAmbitions?.[0]
+      ? `${persona.hiddenAmbitions[0]}${empathy?.gains[0] ? `. ${empathy.gains[0]}` : ''}`
+      : `Establish reputation as ${persona.role} who delivers measurable business transformation`;
+
+    return {
+      theNumbers,
+      theRelief,
+      theCareerWin
+    };
+  }
+
+  /**
+   * Generate defensible ROI numbers specific to persona
+   */
+  private _generateDefensibleROI(
+    persona: BuyerPersona,
+    technicalMetric: string,
+    improvement: string,
+    desertContext?: TranslationInput['desertContext'],
+    customerContext?: TranslationInput['customerContext']
+  ): FourLayerTranslation['layer4_roiAndRelief']['theNumbers'] {
+    const currentARR = customerContext?.currentARR || '$2M';
+    const targetARR = customerContext?.targetARR || '$10M';
+
+    // Role-specific ROI calculations
+    if (persona.role === 'CEO') {
+      const primaryMetric = desertContext?.criticalSuccessMetrics?.[0]
+        ? `${desertContext.criticalSuccessMetrics[0].metric} in ${desertContext.criticalSuccessMetrics[0].deadline} = ${desertContext.criticalSuccessMetrics[0].impact}`
+        : `Accelerate ${currentARR} → ${targetARR} growth by 40%`;
+
+      return {
+        primary: primaryMetric,
+        secondary: `Reduce founder sales time 70% (reclaim 25-30 hours/week)`,
+        timeToValue: desertContext?.criticalSuccessMetrics?.[0]?.deadline || '60-90 days',
+        defensibleTo: 'Board'
+      };
+    }
+
+    if (persona.role === 'VP Sales') {
+      return {
+        primary: `85% quota attainment = job security + ${currentARR} equity preservation`,
+        secondary: `60% close rate (from 25%); 40% shorter sales cycles`,
+        timeToValue: '30 days to independent deal management, 60 days to first close',
+        defensibleTo: 'Founder'
+      };
+    }
+
+    if (persona.role === 'CFO') {
+      return {
+        primary: `$800K improved working capital efficiency from accurate forecasting`,
+        secondary: `$312K annual labor savings (40 hrs/month → strategic work)`,
+        timeToValue: '45 days to first accurate 60-day forecast',
+        defensibleTo: 'Board'
+      };
+    }
+
+    // Default for other roles
+    return {
+      primary: `20-30% operational efficiency improvement within 6 months`,
+      secondary: `Measurable progress toward ${persona.goals[0] || 'business objectives'}`,
+      timeToValue: '60-90 days',
+      defensibleTo: persona.role === 'COO' || persona.role === 'CTO' ? 'CEO' : 'Board'
+    };
+  }
+
+  /**
+   * Generate empathy-driven elevator pitch from four-layer framework
+   */
+  private _generateEmpathyDrivenElevatorPitch(
+    fourLayer: FourLayerTranslation,
+    persona: BuyerPersona,
+    customerContext?: TranslationInput['customerContext']
+  ): string {
+    const customerName = customerContext?.name || 'your organization';
+
+    return `${persona.name}, ${fourLayer.layer2_strategicPainRisk.externalPressure}
+
+Our ${fourLayer.layer1_technicalCapability} delivers:
+• ${fourLayer.layer3_strategicOutcome.operationalChange}
+• ${fourLayer.layer4_roiAndRelief.theNumbers.primary}
+
+${fourLayer.layer4_roiAndRelief.theRelief}
+
+${fourLayer.layer4_roiAndRelief.theCareerWin}`;
+  }
+
+  // ============================================================================
   // NEW: CHAMPION ENABLEMENT METHODS
   // ============================================================================
 
   /**
+   * Generate four-layer framework for champion to use with CXO stakeholder
+   */
+  private _generateFourLayerForChampion(
+    stakeholder: 'CFO' | 'COO' | 'CTO',
+    technicalMetric: string,
+    improvement: string,
+    champion: BuyerPersona,
+    desertContext?: TranslationInput['desertContext'],
+    customerContext?: TranslationInput['customerContext']
+  ): CXOTranslation['fourLayerForChampion'] {
+    const customerName = customerContext?.name || 'our organization';
+    const championName = champion.name;
+
+    // Strategic Pain/Risk: How champion frames the problem to CXO
+    const strategicPainRisk = this._generateChampionPainRiskFraming(
+      stakeholder,
+      championName,
+      technicalMetric,
+      improvement,
+      desertContext,
+      customerName
+    );
+
+    // Strategic Outcome: How champion frames the transformation to CXO
+    const strategicOutcome = this._generateChampionOutcomeFraming(
+      stakeholder,
+      championName,
+      technicalMetric,
+      improvement,
+      customerName
+    );
+
+    // ROI Statement: Numbers champion uses with CXO
+    const roiStatement = this._generateChampionROIStatement(
+      stakeholder,
+      technicalMetric,
+      improvement,
+      desertContext,
+      customerContext
+    );
+
+    // Relationship Benefit: How this helps champion's relationship with CXO
+    const relationshipBenefit = champion.empathyMap?.gains[0]
+      ? `By bringing this solution to ${stakeholder}, ${championName} demonstrates strategic thinking and ${champion.empathyMap.gains[0].toLowerCase()}`
+      : `${championName} establishes credibility with ${stakeholder} as strategic partner who brings measurable solutions`;
+
+    return {
+      strategicPainRisk,
+      strategicOutcome,
+      roiStatement,
+      relationshipBenefit
+    };
+  }
+
+  /**
+   * Generate how champion frames the pain/risk to CXO
+   */
+  private _generateChampionPainRiskFraming(
+    stakeholder: 'CFO' | 'COO' | 'CTO',
+    championName: string,
+    technicalMetric: string,
+    improvement: string,
+    desertContext?: TranslationInput['desertContext'],
+    customerName?: string
+  ): string {
+    if (stakeholder === 'CFO') {
+      return `${championName} should tell the CFO: "We're currently unable to accurately forecast ${technicalMetric}, which creates financial planning risk${
+        desertContext?.fundingPressure ? ` especially given ${desertContext.fundingPressure}` : ''
+      }. This ${improvement} improvement would give us the data confidence needed for reliable forecasting and cost optimization."`;
+    }
+
+    if (stakeholder === 'COO') {
+      return `${championName} should tell the COO: "Our current ${technicalMetric} creates operational bottlenecks that prevent us from scaling${
+        desertContext?.observablePainSignals?.[0] ? `, and ${desertContext.observablePainSignals[0].toLowerCase()}` : ''
+      }. This ${improvement} improvement would eliminate the bottleneck and enable systematic growth."`;
+    }
+
+    if (stakeholder === 'CTO') {
+      return `${championName} should tell the CTO: "Our ${technicalMetric} is creating technical debt and reliability concerns. This ${improvement} improvement is a proven solution with minimal integration risk that strengthens our technical foundation."`;
+    }
+
+    return `${championName} should frame the urgency and business impact to ${stakeholder}`;
+  }
+
+  /**
+   * Generate how champion frames the outcome to CXO
+   */
+  private _generateChampionOutcomeFraming(
+    stakeholder: 'CFO' | 'COO' | 'CTO',
+    championName: string,
+    technicalMetric: string,
+    improvement: string,
+    customerName?: string
+  ): string {
+    if (stakeholder === 'CFO') {
+      return `${championName} should tell the CFO: "This gives us ${improvement} improvement in ${technicalMetric}, which translates to accurate financial forecasting, reduced operational costs, and confidence in board presentations."`;
+    }
+
+    if (stakeholder === 'COO') {
+      return `${championName} should tell the COO: "This enables us to scale operational capacity 2-3x without proportional staffing increases, directly supporting ${customerName}'s growth objectives."`;
+    }
+
+    if (stakeholder === 'CTO') {
+      return `${championName} should tell the CTO: "This strengthens our technical architecture with ${improvement} improvement in ${technicalMetric}, reducing technical debt and improving system reliability."`;
+    }
+
+    return `${championName} should emphasize the transformation to ${stakeholder}`;
+  }
+
+  /**
+   * Generate ROI statement for champion to use with CXO
+   */
+  private _generateChampionROIStatement(
+    stakeholder: 'CFO' | 'COO' | 'CTO',
+    technicalMetric: string,
+    improvement: string,
+    desertContext?: TranslationInput['desertContext'],
+    customerContext?: TranslationInput['customerContext']
+  ): string {
+    const currentARR = customerContext?.currentARR || '$2M';
+
+    if (stakeholder === 'CFO') {
+      return `"Based on our current volume, this translates to $800K+ improved working capital efficiency and $312K annual labor savings. ROI payback within 45 days."`;
+    }
+
+    if (stakeholder === 'COO') {
+      return `"We can handle 2-3x current volume without proportional staff increases, translating to 30-50% operational capacity improvement with existing resources."`;
+    }
+
+    if (stakeholder === 'CTO') {
+      return `"${improvement} in ${technicalMetric} with minimal integration risk. Proven solution reduces technical debt and improves system reliability within 30-60 days."`;
+    }
+
+    return `"Measurable ROI within 6 months with minimal implementation risk"`;
+  }
+
+  /**
    * Generate internal stakeholder translation (champion enablement)
+   * NOW WITH FOUR-LAYER FRAMEWORK FOR CHAMPION MESSAGING
    */
   private _generateInternalStakeholderTranslation(
     technicalMetric: string,
@@ -749,21 +1191,37 @@ Best regards,
     stakeholder: 'CFO' | 'COO' | 'CTO',
     champions: BuyerPersona[],
     baseTranslation: BaseTranslation,
-    customerContext?: TranslationInput['customerContext']
+    customerContext?: TranslationInput['customerContext'],
+    desertContext?: TranslationInput['desertContext']
   ): CXOTranslation {
     const primaryChampion = champions[0];
     const championName = primaryChampion?.name || 'your champion';
 
-    return {
-      stakeholder,
-      championEnablement: {
-        talkingPoints: this._generateChampionTalkingPoints(
+    // Generate four-layer framework for champion if empathy map exists
+    const fourLayerForChampion = primaryChampion?.empathyMap
+      ? this._generateFourLayerForChampion(
           stakeholder,
           technicalMetric,
           improvement,
-          championName,
+          primaryChampion,
+          desertContext,
           customerContext
-        ),
+        )
+      : undefined;
+
+    return {
+      stakeholder,
+      fourLayerForChampion,
+      championEnablement: {
+        talkingPoints: fourLayerForChampion
+          ? fourLayerForChampion.strategicPainRisk
+          : this._generateChampionTalkingPoints(
+              stakeholder,
+              technicalMetric,
+              improvement,
+              championName,
+              customerContext
+            ),
         emailTemplate: this._generateChampionEmailTemplate(
           stakeholder,
           technicalMetric,

@@ -4,3 +4,6 @@
 // Main Resource Library Components
 export { default as ResourceLibrary } from '../ResourceLibrary';
 export { default as ProductInputSection } from '../ProductInputSection';
+
+// Modals
+export { default as DependencyValidationModal } from './DependencyValidationModal';

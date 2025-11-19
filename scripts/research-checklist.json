@@ -1,0 +1,114 @@
+{
+  "research_checklist": {
+    "website_research": {
+      "required_fields": [
+        {
+          "field": "website_product_description",
+          "description": "What they sell - specific product/service details",
+          "where_to_find": "Homepage hero section, About page, Product page",
+          "quality_standard": "Must be 1-2 sentences with specific features mentioned",
+          "example": "AI code reviewer that automatically reviews PRs in GitHub with full codebase context, catching 3x more bugs"
+        },
+        {
+          "field": "website_value_prop",
+          "description": "Main headline/promise - why customers buy",
+          "where_to_find": "Homepage H1, hero headline",
+          "quality_standard": "The exact headline or primary value statement from the site",
+          "example": "Empowering your real-time edge intelligence"
+        },
+        {
+          "field": "website_target_customer",
+          "description": "Who is this for - specific buyer personas/industries",
+          "where_to_find": "Homepage 'Who is this for' section, case studies, customer logos",
+          "quality_standard": "Specific job titles or industries, not generic",
+          "example": "VP Engineering at DevTools startups, Engineering Managers at Series A companies"
+        },
+        {
+          "field": "website_key_features",
+          "description": "Top 3-5 features/capabilities mentioned",
+          "where_to_find": "Features section, product page",
+          "quality_standard": "Bullet list of specific capabilities",
+          "example": "- 2x faster builds\n- 75% cost reduction\n- One-line integration"
+        },
+        {
+          "field": "website_pricing_model",
+          "description": "How they charge - PLG vs enterprise, pricing page exists?",
+          "where_to_find": "Pricing page, footer links",
+          "quality_standard": "PLG (self-serve) or Enterprise (contact sales) or Both",
+          "example": "PLG - Public pricing at $0.15/call"
+        }
+      ]
+    },
+    "linkedin_research": {
+      "required_fields": [
+        {
+          "field": "linkedin_recent_posts",
+          "description": "Last 4-6 posts - topics, hiring mentions, pain points",
+          "where_to_find": "Profile → Activity section",
+          "quality_standard": "Summary of post themes with dates, mention hiring if present",
+          "example": "1w ago: Hiring Founding AE ($280K-$360K). 2w ago: Product launch v3. 3w ago: Series A announcement"
+        },
+        {
+          "field": "linkedin_background",
+          "description": "Previous companies, roles, expertise areas",
+          "where_to_find": "Experience section on profile",
+          "quality_standard": "List previous 2-3 relevant roles/companies",
+          "example": "Ex-Google Search Infrastructure, Ex-Faire Engineering, University of Waterloo CS"
+        },
+        {
+          "field": "linkedin_company_description",
+          "description": "How founder describes the company on their profile",
+          "where_to_find": "Current role description",
+          "quality_standard": "The exact description from their current position",
+          "example": "Building AI code review platform that catches bugs 3x faster than manual review"
+        },
+        {
+          "field": "linkedin_personality_signals",
+          "description": "Communication style, MBTI indicators from posts",
+          "where_to_find": "Post writing style, language used",
+          "quality_standard": "Note: data-driven vs visionary, metrics-focused vs relationship-focused",
+          "example": "Data-driven (posts include metrics: '$10M ARR', '100K calls/day'), action-oriented language"
+        },
+        {
+          "field": "linkedin_hiring_signals",
+          "description": "Active hiring posts, roles mentioned, urgency indicators",
+          "where_to_find": "Recent posts about hiring",
+          "quality_standard": "Specific roles and timing if mentioned",
+          "example": "Hiring Founding AE (posted 1w ago), multiple eng roles (posted 2w ago)"
+        },
+        {
+          "field": "linkedin_product_signals",
+          "description": "Product launches, version releases, feature announcements",
+          "where_to_find": "Posts about product",
+          "quality_standard": "Recent product milestones with dates",
+          "example": "v3 launch (2w ago) - catching 3x more bugs. Integration with Stripe (1mo ago)"
+        }
+      ]
+    }
+  },
+  "validation_checklist": {
+    "before_marking_complete": [
+      {
+        "check": "All website required fields filled",
+        "action": "Review each field - no empty strings allowed for required fields"
+      },
+      {
+        "check": "All LinkedIn required fields filled",
+        "action": "Review each field - minimum standard met"
+      },
+      {
+        "check": "Quality standards met",
+        "action": "Specific details present (not generic descriptions)"
+      },
+      {
+        "check": "URLs verified",
+        "action": "Website and LinkedIn URLs are valid and accessible"
+      }
+    ]
+  },
+  "completion_criteria": {
+    "website_research_complete": "All 5 website fields filled with quality standards met",
+    "linkedin_research_complete": "All 6 LinkedIn fields filled with quality standards met",
+    "company_research_complete": "Both website AND LinkedIn research complete, validation checklist passed"
+  }
+}
