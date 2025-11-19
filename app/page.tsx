@@ -386,7 +386,7 @@ export default function HomePage() {
             {/* Executive Subheadline */}
             <motion.p
               variants={fadeInUp}
-              className="text-xl sm:text-2xl max-w-4xl mx-auto mb-8 leading-relaxed"
+              className="text-xl sm:text-2xl max-w-4xl mx-auto mb-12 leading-relaxed"
               style={{
                 color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
                 fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
@@ -395,112 +395,44 @@ export default function HomePage() {
                 textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
               }}
             >
-              AI-powered ICP analysis that shows you WHO to sell to, WHAT they care about, and HOW to close them.
+              Andru tells you WHO to sell to, WHAT they care about, HOW to close them—minutes, not months.
             </motion.p>
 
-            {/* Try Demo CTA - Above the Fold */}
+            {/* Single Primary CTA */}
             <motion.div
               variants={fadeInUp}
-              className="mb-16"
+              className="mb-12"
             >
               <Link
                 href="/icp/demo-v2"
-                onClick={() => handleCtaClick('Try Free Demo', 'hero-above-fold')}
+                onClick={() => handleCtaClick('Generate My Andru ICP - 3 Minutes, Free', 'hero')}
                 className="inline-flex items-center justify-center gap-2 px-12 py-6 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
                   color: '#ffffff',
                   fontFamily: '"Inter", sans-serif',
                   fontWeight: '600',
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2), 0 8px 16px rgba(0, 0, 0, 0.1)'
+                  boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2)'
                 }}
               >
-                <Eye className="w-5 h-5" />
-                Try Free Demo — No Signup
+                <Sparkles className="w-5 h-5" />
+                Generate My Andru ICP — 3 Minutes, Free
               </Link>
             </motion.div>
 
-            {/* Executive CTA Buttons with Glass Morphism */}
-            <motion.div
-              variants={fadeInUp}
-              className="flex flex-col sm:flex-row gap-6 justify-center items-center"
-            >
-              {!loading && (
-                <>
-                  {isAuthenticated ? (
-                    <GradientButton
-                      href="/dashboard"
-                      size="xl"
-                      ariaLabel="Go to your dashboard"
-                      onClick={() => handleCtaClick('Go to Dashboard', 'hero')}
-                    >
-                      Go to Dashboard
-                    </GradientButton>
-                  ) : (
-                    <GradientButton
-                      href="/pricing"
-                      size="xl"
-                      ariaLabel="Save $6,000/year forever"
-                      onClick={() => handleCtaClick('Save $6,000/Year Forever', 'hero')}
-                    >
-                      Save $6,000/Year Forever
-                    </GradientButton>
-                  )}
-
-                  <Link
-                    href="/icp/demo-v2"
-                    onClick={() => handleCtaClick('See Live Demo', 'hero')}
-                    className="group px-12 py-6 rounded-2xl font-semibold text-lg min-w-[240px] text-center transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 flex items-center justify-center gap-2"
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      backdropFilter: 'blur(20px)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      color: '#ffffff',
-                      fontFamily: '"Inter", sans-serif',
-                      fontWeight: '600',
-                      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2), 0 8px 16px rgba(0, 0, 0, 0.1)'
-                    }}
-                  >
-                    <Eye className="w-5 h-5" />
-                    See Live Demo
-                  </Link>
-                </>
-              )}
-            </motion.div>
-
-            {/* Platform Status Badge */}
-            <motion.div variants={fadeInUp} className="mt-12">
-              <div className="inline-block px-6 py-3 rounded-full" style={{
-                background: 'rgba(59, 130, 246, 0.1)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(59, 130, 246, 0.3)',
-                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.2)'
-              }}>
-                <p className="body-small" style={{
-                  color: '#3b82f6',
-                  fontFamily: '"Inter", sans-serif',
-                  letterSpacing: '0.5px',
-                  fontWeight: 500
-                }}>
-                  🚀 Founding Member Program • 100 Spots • December 1, 2025 Launch
-                </p>
-              </div>
-
-              {/* Technical Trust Signals - Agent 4 Fix 2 */}
-              <motion.div
-                variants={fadeInUp}
-                className="flex flex-wrap items-center justify-center gap-2 text-sm mt-4"
+            {/* Trust Signals */}
+            <motion.div variants={fadeInUp} className="mt-8">
+              <div
+                className="flex flex-wrap items-center justify-center gap-3 text-sm"
                 style={{
                   color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))',
                   fontFamily: '"Inter", sans-serif'
                 }}
               >
-                <span>AI-powered ICP analysis</span>
+                <span>✓ No signup required</span>
                 <span style={{ color: 'var(--color-text-subtle, rgba(255, 255, 255, 0.4))' }}>•</span>
-                <span>Sub-3s generation</span>
-              </motion.div>
+                <span>✓ See full sample output</span>
+              </div>
             </motion.div>
           </motion.div>
         </div>
@@ -716,33 +648,41 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8" style={{
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6" style={{
               color: 'var(--color-text-primary, #ffffff)',
               fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
               fontWeight: 'var(--font-weight-bold, 700)',
               letterSpacing: 'var(--tracking-tighter, -0.02em)',
               textShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
             }}>
-              Three Layers of Buyer Intelligence
+              What You'll Get in 3 Minutes
             </h2>
-            <p className="text-xl sm:text-2xl max-w-3xl mx-auto leading-relaxed" style={{
+            <p className="text-xl sm:text-2xl max-w-3xl mx-auto mb-4 leading-relaxed" style={{
               color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
               fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
               fontWeight: 'var(--font-weight-normal, 400)',
               lineHeight: 'var(--line-height-relaxed, 1.6)',
               textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
             }}>
-              From "Who do we sell to?" to "Here's exactly how to close them."
+              More Revenue. Less Time Wasted. Zero Guesswork.
+            </p>
+            <p className="text-lg sm:text-xl max-w-2xl mx-auto" style={{
+              color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))',
+              fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+              fontWeight: 'var(--font-weight-normal, 400)',
+              lineHeight: 'var(--line-height-relaxed, 1.6)'
+            }}>
+              The Result: Close your active enterprise deals in weeks, not quarters.
             </p>
           </motion.div>
 
           {/* Grid Layout: Hero (2x2) + 3 standard cards - Agent 4 Visual Hierarchy */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 gap-8">
-            {/* Hero Feature: Product-Market Intelligence (2x2 Grid) */}
+            {/* Hero Feature: WHO to Sell To (2x2 Grid) */}
             <FeatureCard
               icon={Target}
-              title="Product-Market Intelligence: Pure Signal ICP"
-              description="Stop reverse-engineering accidents. Build your ICP from product capabilities, not historical customer data contaminated by relationship noise, timing luck, and discount-driven purchases. Know which markets are structurally positioned for Maximum Value Realization."
+              title="WHO to Sell To"
+              description="Stop reverse-engineering accidents. Build your ICP from product capabilities, not historical customer data contaminated by relationship noise, timing luck, and discount-driven purchases. Know which markets are structurally positioned for Maximum Value Realization—so you stop wasting cycles on bad-fit prospects."
               variant="featured"
               iconColor="var(--color-primary)"
               iconBgColor="rgba(59, 130, 246, 0.15)"
@@ -753,11 +693,11 @@ export default function HomePage() {
               className="md:col-span-2 md:row-span-2"
             />
 
-            {/* Standard Feature 2: Product-Market Resonance */}
+            {/* Standard Feature 2: WHAT They Care About */}
             <FeatureCard
               icon={Calculator}
-              title="Product-Market Resonance: Human Understanding"
-              description="Move from company profiles to authentic human needs. Build buyer personas and empathy maps that reveal what decision-makers see, hear, think, feel—the psychological terrain that drives every B2B purchase."
+              title="WHAT They Care About"
+              description="Move from company profiles to authentic human needs. Build buyer personas and empathy maps that reveal what decision-makers see, hear, think, feel—the psychological terrain that drives every B2B purchase. Stop pitching features they don't value."
               variant="standard"
               iconColor="rgb(52, 211, 153)"
               iconBgColor="rgba(16, 185, 129, 0.1)"
@@ -765,11 +705,11 @@ export default function HomePage() {
               animationDelay={0.2}
             />
 
-            {/* Standard Feature 3: Product-Market Clarity */}
+            {/* Standard Feature 3: HOW to Close Them */}
             <FeatureCard
               icon={BarChart3}
-              title="Product-Market Clarity: Tech to Strategic Outcomes"
-              description="Translate your technical capabilities into the strategic outcomes and ROI that CFOs approve and boards celebrate. Stop losing enterprise deals to inferior products because you can't articulate business value in their language."
+              title="HOW to Close Them"
+              description="Translate your technical capabilities into the strategic outcomes and ROI that CFOs approve and boards celebrate. Stop losing enterprise deals to inferior products because you can't articulate business value in their language—and stop losing to 'no decision.'"
               variant="standard"
               iconColor="rgb(192, 132, 252)"
               iconBgColor="rgba(139, 92, 246, 0.1)"
