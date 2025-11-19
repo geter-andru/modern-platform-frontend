@@ -6,12 +6,14 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { supabase } from './lib/supabase/client-rewrite';
 import { motion } from 'framer-motion';
-import { Eye, Target, Calculator, BarChart3, Share2, Menu, X, ChevronDown } from 'lucide-react';
+import { Eye, Target, Calculator, BarChart3, Share2, Menu, X, ChevronDown, Sparkles, ArrowRight } from 'lucide-react';
 import { GradientButton } from '../src/shared/components/ui/GradientButton';
 import { FeatureCard } from '../src/shared/components/ui/FeatureCard';
 import { FooterLayout } from '../src/shared/components/layout/FooterLayout';
 import { MotionBackground } from '../src/shared/components/ui/MotionBackground';
 import { initPublicPageTracking, trackCtaClick } from './lib/analytics/publicPageTracking';
+import BuyerPersonasWidget from '../src/features/icp-analysis/widgets/BuyerPersonasWidget';
+import demoData from '../data/demo-icp-devtool.json';
 
 export default function HomePage() {
   const router = useRouter();
@@ -499,6 +501,152 @@ export default function HomePage() {
                 <span style={{ color: 'var(--color-text-subtle, rgba(255, 255, 255, 0.4))' }}>•</span>
                 <span>Sub-3s generation</span>
               </motion.div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Demo Preview Section */}
+      <section className="py-20 relative overflow-hidden">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            {/* Section Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="flex justify-center mb-6"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full" style={{
+                background: 'rgba(59, 130, 246, 0.1)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(59, 130, 246, 0.3)',
+                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.2)'
+              }}>
+                <Sparkles className="w-4 h-4" style={{ color: '#3b82f6' }} />
+                <span className="text-sm font-semibold" style={{
+                  color: '#3b82f6',
+                  fontFamily: '"Inter", sans-serif',
+                  letterSpacing: '0.5px'
+                }}>
+                  SEE IT IN ACTION
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Heading */}
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-center"
+              style={{
+                color: 'var(--color-text-primary, #ffffff)',
+                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+              }}
+            >
+              Here&apos;s What You Get in 2 Minutes
+            </motion.h2>
+
+            {/* Subheading */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-lg sm:text-xl text-center mb-12 max-w-3xl mx-auto"
+              style={{
+                color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+                fontFamily: '"Inter", sans-serif',
+                lineHeight: '1.6'
+              }}
+            >
+              Sample ICP for <span style={{ color: '#3b82f6', fontWeight: 600 }}>DevTool Pro</span> — an AI-powered code review platform
+            </motion.p>
+
+            {/* Demo Widget Container */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="mb-8"
+              style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '24px',
+                padding: '32px',
+                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'
+              }}
+            >
+              <BuyerPersonasWidget
+                isDemo={true}
+                personas={demoData.personas.slice(0, 2)}
+                className="demo-preview"
+              />
+
+              {/* Preview Indicator */}
+              <div className="mt-6 pt-6 border-t" style={{
+                borderColor: 'rgba(255, 255, 255, 0.1)'
+              }}>
+                <p className="text-center text-sm" style={{
+                  color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))',
+                  fontFamily: '"Inter", sans-serif'
+                }}>
+                  <Eye className="inline-block w-4 h-4 mr-2" />
+                  Showing 2 of 5 detailed personas
+                </p>
+              </div>
+            </motion.div>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            >
+              <Link
+                href="/icp/demo-v2"
+                onClick={() => handleCtaClick('Generate This For My Product', 'demo-preview')}
+                className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
+                style={{
+                  background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                  color: '#ffffff',
+                  fontFamily: '"Inter", sans-serif',
+                  boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2)'
+                }}
+              >
+                <Sparkles className="w-5 h-5" />
+                Generate This For My Product (2 min)
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+
+              <Link
+                href="/pricing"
+                onClick={() => handleCtaClick('Lock In $750/Month Forever', 'demo-preview')}
+                className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  color: '#ffffff',
+                  fontFamily: '"Inter", sans-serif',
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)'
+                }}
+              >
+                Lock In $750/Month Forever
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </motion.div>
           </motion.div>
         </div>

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, ArrowRight, Sparkles, Users, Zap, DollarSign, Calendar, TrendingDown, Award, Shield, BarChart3, Calculator } from 'lucide-react';
+import { Check, ArrowRight, Sparkles, Users, Zap, DollarSign, Calendar, TrendingDown, Award, Shield, BarChart3, Calculator, Info } from 'lucide-react';
 import Link from 'next/link';
 import { GradientButton } from '../../src/shared/components/ui/GradientButton';
 import { FooterLayout } from '../../src/shared/components/layout/FooterLayout';
@@ -27,20 +27,30 @@ import { initPublicPageTracking, trackCtaClick } from '../lib/analytics/publicPa
 function ROICalculator() {
   const [dealSize, setDealSize] = useState(50000);
   const [closeRate, setCloseRate] = useState(20);
-  const [salesCycle, setSalesCycle] = useState(6);
+  const [currentRunway, setCurrentRunway] = useState(12); // Changed from salesCycle
   const [dealsPerMonth, setDealsPerMonth] = useState(5);
+  const [monthlyARR, setMonthlyARR] = useState(100000); // Added for runway calculation
 
   // Calculations
   const currentMonthlyRevenue = (dealSize * (closeRate / 100) * dealsPerMonth);
   const improvedCloseRate = Math.min(closeRate * 1.4, 100); // 40% improvement, capped at 100%
-  const reducedSalesCycle = salesCycle * 0.6; // 40% reduction
-  const increasedDealsPerMonth = dealsPerMonth * (salesCycle / reducedSalesCycle); // More deals in same time
-  const newMonthlyRevenue = (dealSize * (improvedCloseRate / 100) * increasedDealsPerMonth);
+  const newMonthlyRevenue = (dealSize * (improvedCloseRate / 100) * dealsPerMonth);
   const monthlyGain = newMonthlyRevenue - currentMonthlyRevenue;
   const annualGain = monthlyGain * 12;
   const andruCost = 9000; // $750/month * 12
   const netAnnualROI = annualGain - andruCost;
   const roiMultiple = netAnnualROI / andruCost;
+
+  // Runway calculation: (Additional Revenue × 12) / (2.25 × Monthly ARR)
+  const burnMultiple = 2.25;
+  const addedRunwayMonths = (monthlyGain * 12) / (burnMultiple * monthlyARR);
+
+  // Founding member savings
+  const standardPricing = 1250; // $1,250/month standard
+  const foundingMemberPricing = 750; // $750/month founding member
+  const monthlySavings = standardPricing - foundingMemberPricing;
+  const annualSavings = monthlySavings * 12; // $6,000/year
+  const threeYearValue = annualSavings * 3; // $18,000 over 3 years
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -66,7 +76,7 @@ function ROICalculator() {
   };
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 relative" style={{
+    <section className="py-16 px-4 sm:px-6 lg:px-8 relative" style={{
       background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%)'
     }}>
       <div className="max-w-5xl mx-auto">
@@ -166,19 +176,19 @@ function ROICalculator() {
                   <p className="text-sm mt-1" style={{ color: '#a3a3a3' }}>{closeRate}%</p>
                 </div>
 
-                {/* Sales Cycle */}
+                {/* Current Runway Remaining */}
                 <div>
                   <label className="block text-sm font-semibold mb-2" style={{ color: '#E0E0E0' }}>
-                    Average Sales Cycle (months)
+                    Current Runway Remaining (months)
                   </label>
                   <div className="flex items-center gap-3">
                     <input
                       type="range"
-                      min="1"
-                      max="12"
+                      min="6"
+                      max="24"
                       step="1"
-                      value={salesCycle}
-                      onChange={(e) => setSalesCycle(Number(e.target.value))}
+                      value={currentRunway}
+                      onChange={(e) => setCurrentRunway(Number(e.target.value))}
                       className="flex-1"
                       style={{
                         accentColor: '#3b82f6'
@@ -186,8 +196,8 @@ function ROICalculator() {
                     />
                     <input
                       type="number"
-                      value={salesCycle}
-                      onChange={(e) => setSalesCycle(Number(e.target.value))}
+                      value={currentRunway}
+                      onChange={(e) => setCurrentRunway(Number(e.target.value))}
                       className="w-32 px-3 py-2 rounded-lg text-right"
                       style={{
                         background: 'rgba(255, 255, 255, 0.05)',
@@ -196,7 +206,40 @@ function ROICalculator() {
                       }}
                     />
                   </div>
-                  <p className="text-sm mt-1" style={{ color: '#a3a3a3' }}>{salesCycle} months</p>
+                  <p className="text-sm mt-1" style={{ color: '#a3a3a3' }}>{currentRunway} months</p>
+                </div>
+
+                {/* Monthly ARR (for runway calculation) */}
+                <div>
+                  <label className="block text-sm font-semibold mb-2" style={{ color: '#E0E0E0' }}>
+                    Current Monthly ARR
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="range"
+                      min="50000"
+                      max="1000000"
+                      step="50000"
+                      value={monthlyARR}
+                      onChange={(e) => setMonthlyARR(Number(e.target.value))}
+                      className="flex-1"
+                      style={{
+                        accentColor: '#3b82f6'
+                      }}
+                    />
+                    <input
+                      type="number"
+                      value={monthlyARR}
+                      onChange={(e) => setMonthlyARR(Number(e.target.value))}
+                      className="w-32 px-3 py-2 rounded-lg text-right"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        color: '#FFFFFF'
+                      }}
+                    />
+                  </div>
+                  <p className="text-sm mt-1" style={{ color: '#a3a3a3' }}>{formatCurrency(monthlyARR)}/month</p>
                 </div>
 
                 {/* Deals Per Month */}
@@ -262,8 +305,7 @@ function ROICalculator() {
                   <p className="text-2xl font-bold" style={{ color: '#10b981' }}>{formatCurrency(newMonthlyRevenue)}</p>
                   <div className="mt-3 pt-3 border-t" style={{ borderColor: 'rgba(16, 185, 129, 0.3)' }}>
                     <p className="text-xs" style={{ color: '#a7f3d0' }}>
-                      ✓ Close rate: {closeRate}% → {improvedCloseRate.toFixed(0)}%<br />
-                      ✓ Sales cycle: {salesCycle} mo → {reducedSalesCycle.toFixed(1)} mo
+                      ✓ Close rate: {closeRate}% → {improvedCloseRate.toFixed(0)}%
                     </p>
                   </div>
                 </div>
@@ -275,6 +317,32 @@ function ROICalculator() {
                 }}>
                   <p className="text-sm mb-1" style={{ color: '#a7f3d0' }}>Additional Revenue Per Month</p>
                   <p className="text-3xl font-bold" style={{ color: '#10b981' }}>+{formatCurrency(monthlyGain)}</p>
+                </div>
+
+                {/* Added Runway Months */}
+                <div className="p-5 rounded-xl text-center" style={{
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  border: '2px solid rgba(16, 185, 129, 0.4)'
+                }}>
+                  <div className="flex items-center justify-center gap-2 mb-1">
+                    <p className="text-sm" style={{ color: '#a7f3d0' }}>Added Runway Months</p>
+                    <div className="group relative">
+                      <Info className="w-4 h-4 cursor-help" style={{ color: '#a7f3d0' }} />
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 p-3 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all" style={{
+                        background: '#1A1A1A',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)'
+                      }}>
+                        <p className="text-xs" style={{ color: '#E0E0E0', lineHeight: '1.4' }}>
+                          The average burn multiple for a Series A AI SaaS startup in 2025 is highly competitive, with sub-1.0× being elite and 1.5× to 2.0× being considered acceptable or &apos;good&apos;. While traditional SaaS startups have median burn multiples around 1.6×, AI-native companies can achieve lower ratios by growing revenue much faster, sometimes exceeding $1M ARR within their first year.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-3xl font-bold" style={{ color: '#10b981' }}>{addedRunwayMonths.toFixed(1)} months</p>
+                  <p className="text-xs mt-2" style={{ color: '#a3a3a3' }}>
+                    Based on average monthly burn multiple of {burnMultiple}×
+                  </p>
                 </div>
 
                 {/* Annual ROI */}
@@ -291,6 +359,43 @@ function ROICalculator() {
                     (After Andru's $9,000/year cost)
                   </p>
                 </div>
+
+                {/* Founding Member Bonus */}
+                <div className="p-6 rounded-xl text-center" style={{
+                  background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%)',
+                  border: '2px solid rgba(16, 185, 129, 0.5)',
+                  boxShadow: '0 0 20px rgba(16, 185, 129, 0.2)'
+                }}>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-3" style={{
+                    background: 'rgba(16, 185, 129, 0.2)',
+                    border: '1px solid rgba(16, 185, 129, 0.4)'
+                  }}>
+                    <Award className="w-4 h-4" style={{ color: '#10b981' }} />
+                    <span className="text-xs font-bold" style={{ color: '#10b981' }}>FOUNDING MEMBER BONUS</span>
+                  </div>
+                  <p className="text-sm mb-2" style={{ color: '#a7f3d0' }}>Additional Annual Savings</p>
+                  <p className="text-4xl font-bold mb-1" style={{ color: '#10b981' }}>+{formatCurrency(annualSavings)}/year</p>
+                  <p className="text-sm mb-4" style={{ color: '#a7f3d0' }}>
+                    ${monthlySavings}/month × 12 months = {formatCurrency(annualSavings)} saved annually
+                  </p>
+                  <div className="pt-4 border-t" style={{ borderColor: 'rgba(16, 185, 129, 0.3)' }}>
+                    <p className="text-lg font-bold mb-1" style={{ color: '#FFFFFF' }}>
+                      Total Annual Value: {formatCurrency(netAnnualROI + annualSavings)}
+                    </p>
+                    <p className="text-xs" style={{ color: '#a7f3d0' }}>
+                      (ROI + Founding Member Savings)
+                    </p>
+                  </div>
+                  <div className="mt-4 pt-4 border-t" style={{ borderColor: 'rgba(16, 185, 129, 0.3)' }}>
+                    <p className="text-xs font-bold mb-1" style={{ color: '#a7f3d0' }}>3-YEAR VALUE</p>
+                    <p className="text-2xl font-bold" style={{ color: '#10b981' }}>
+                      {formatCurrency(threeYearValue)} in guaranteed savings
+                    </p>
+                    <p className="text-xs mt-1" style={{ color: '#a3a3a3' }}>
+                      Lock in $750/month forever (vs. $1,250/month standard)
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -304,7 +409,7 @@ function ROICalculator() {
               You're leaving {formatCurrency(annualGain)} on the table this year
             </p>
             <p style={{ color: '#E0E0E0' }}>
-              Based on conservative 40% improvements to close rate and sales cycle that our founding members achieve
+              Based on conservative 40% improvement to close rate that our founding members achieve
             </p>
           </motion.div>
 
@@ -696,7 +801,7 @@ export default function PricingPage() {
       </section>
 
       {/* Comparison Table Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial="initial"
@@ -815,7 +920,7 @@ export default function PricingPage() {
       </section>
 
       {/* Qualification Section: You Need This If... */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial="initial"
@@ -934,7 +1039,7 @@ export default function PricingPage() {
       <ROICalculator />
 
       {/* FAQ Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial="initial"
@@ -1093,7 +1198,7 @@ export default function PricingPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial="initial"
