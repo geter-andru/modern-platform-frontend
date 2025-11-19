@@ -393,8 +393,7 @@ export default function HomePage() {
                 textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
               }}
             >
-              The AI platform that delivers Product-Market Intelligence, Resonance, and Clarity—
-              the complete framework for achieving enterprise product-market fit in 72 hours, not 6 months.
+              AI-powered ICP analysis that shows you WHO to sell to, WHAT they care about, and HOW to close them.
             </motion.p>
 
             {/* Try Demo CTA - Above the Fold */}
@@ -404,7 +403,7 @@ export default function HomePage() {
             >
               <Link
                 href="/icp/demo-v2"
-                onClick={() => handleCtaClick('See Live Demo', 'hero-above-fold')}
+                onClick={() => handleCtaClick('Try Free Demo', 'hero-above-fold')}
                 className="inline-flex items-center justify-center gap-2 px-12 py-6 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
                 style={{
                   background: 'rgba(255, 255, 255, 0.05)',
@@ -417,7 +416,7 @@ export default function HomePage() {
                 }}
               >
                 <Eye className="w-5 h-5" />
-                See Live Demo
+                Try Free Demo — No Signup
               </Link>
             </motion.div>
 
@@ -441,10 +440,10 @@ export default function HomePage() {
                     <GradientButton
                       href="/pricing"
                       size="xl"
-                      ariaLabel="Lock in founding member pricing"
-                      onClick={() => handleCtaClick('Lock In Founding Member Pricing', 'hero')}
+                      ariaLabel="Save $6,000/year forever"
+                      onClick={() => handleCtaClick('Save $6,000/Year Forever', 'hero')}
                     >
-                      Lock In Founding Member Pricing
+                      Save $6,000/Year Forever
                     </GradientButton>
                   )}
 
@@ -520,14 +519,11 @@ export default function HomePage() {
             }}>
               You Need This If...
             </h2>
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-1 gap-4 max-w-2xl mx-auto">
               {[
-                "You're spending $20K+/month on sales tools nobody uses",
-                "Your pipeline is full but deals keep stalling at 'no decision'",
-                "Your sales team can't articulate your value proposition",
-                "You're about to hire sales leadership (and they'll ask 'What's our ICP?')",
-                "Your board is asking about your GTM strategy",
-                "You're stuck at $3M ARR and burning through runway"
+                "Your pipeline is full but deals stall at 'no decision'",
+                "You're hiring sales (they'll ask 'What's our ICP?' on day 1)",
+                "You're at $2-5M ARR—growing revenue, not just features"
               ].map((item, index) => (
                 <motion.div
                   key={index}
@@ -579,7 +575,7 @@ export default function HomePage() {
               letterSpacing: 'var(--tracking-tighter, -0.02em)',
               textShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
             }}>
-              The Three-Layer Market Clarity Framework
+              Three Layers of Buyer Intelligence
             </h2>
             <p className="text-xl sm:text-2xl max-w-3xl mx-auto leading-relaxed" style={{
               color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
@@ -588,8 +584,7 @@ export default function HomePage() {
               lineHeight: 'var(--line-height-relaxed, 1.6)',
               textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
             }}>
-              Stop reverse-engineering accidents into strategy. Build the complete intelligence stack
-              that technical founders need to achieve product-market fit at enterprise scale.
+              From "Who do we sell to?" to "Here's exactly how to close them."
             </p>
           </motion.div>
 

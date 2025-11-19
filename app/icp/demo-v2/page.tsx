@@ -17,6 +17,53 @@ import '../../../src/shared/styles/component-patterns.css';
 import { BRAND_IDENTITY } from '@/app/lib/constants/brand-identity';
 import { StaggeredItem } from '../../../src/shared/utils/staggered-entrance';
 
+// Rate Limit Badge Component
+function RateLimitBadge({
+  remaining,
+  resetTime
+}: {
+  remaining: number;
+  resetTime: string;
+}) {
+  const hours = resetTime ? Math.ceil(
+    (new Date(resetTime).getTime() - Date.now()) / (1000 * 60 * 60)
+  ) : 24;
+
+  return (
+    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4"
+      style={{
+        background: remaining > 0
+          ? 'rgba(16, 185, 129, 0.1)'
+          : 'rgba(239, 68, 68, 0.1)',
+        border: remaining > 0
+          ? '1px solid rgba(16, 185, 129, 0.3)'
+          : '1px solid rgba(239, 68, 68, 0.3)'
+      }}
+    >
+      <Sparkles className="w-4 h-4" style={{
+        color: remaining > 0 ? '#10b981' : '#ef4444'
+      }} />
+      <span className="body-small" style={{
+        color: remaining > 0 ? '#10b981' : '#ef4444',
+        fontWeight: 600
+      }}>
+        {remaining > 0
+          ? `${remaining} free generation${remaining === 1 ? '' : 's'} remaining today`
+          : `Free generations reset in ${hours} hour${hours === 1 ? '' : 's'}`
+        }
+      </span>
+      {remaining === 0 && (
+        <Link
+          href="/pricing"
+          className="text-blue-400 hover:text-blue-300 underline ml-2"
+        >
+          Remove limits →
+        </Link>
+      )}
+    </div>
+  );
+}
+
 export default function ICPDemoV2Page() {
   const [activeTab, setActiveTab] = useState<'personas' | 'overview'>('personas');
   const [showExportModal, setShowExportModal] = useState(false);
@@ -47,6 +94,10 @@ export default function ICPDemoV2Page() {
   // Share functionality state
   const [showSharePreview, setShowSharePreview] = useState(false);
   const [shareText, setShareText] = useState('');
+
+  // Rate limit state
+  const [remainingGenerations, setRemainingGenerations] = useState<number>(3);
+  const [generationsResetTime, setGenerationsResetTime] = useState<string>('');
 
   // Mobile detection for touch optimization
   const [isMobile, setIsMobile] = useState(false);
@@ -662,6 +713,7 @@ Try it: https://andru-ai.com/demo`;
               backdropFilter: 'blur(20px)'
             }}>
               <div className="text-center mb-6">
+                <RateLimitBadge remaining={remainingGenerations} resetTime={generationsResetTime} />
                 <h3 className="heading-3 mb-2">Generate Your Custom ICP</h3>
                 <p className="body text-text-muted">Tell us about your product and get instant insights</p>
               </div>
@@ -717,14 +769,19 @@ Try it: https://andru-ai.com/demo`;
 
                 <button
                   onClick={handleGenerate}
-                  disabled={isGenerating}
+                  disabled={isGenerating || remainingGenerations === 0}
                   className="btn btn-primary w-full flex flex-col items-center justify-center gap-2 btn-large"
                   style={{
                     boxShadow: '0 4px 16px rgba(59, 130, 246, 0.3)',
                     minHeight: '60px'
                   }}
                 >
-                  {isGenerating ? (
+                  {remainingGenerations === 0 ? (
+                    <>
+                      <AlertCircle className="w-5 h-5" />
+                      Daily Limit Reached
+                    </>
+                  ) : isGenerating ? (
                     <>
                       <div className="flex items-center gap-2">
                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
