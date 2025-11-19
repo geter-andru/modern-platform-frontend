@@ -369,8 +369,7 @@ export default function ICPDemoV2Page() {
       personaCount: generatedPersonas.length,
       productName: productName || demoData.product.productName,
       topPersona: generatedPersonas[0]?.title || 'Decision Maker',
-      industries: extractUniqueIndustries(generatedPersonas),
-      seniority: generatedPersonas[0]?.seniority || 'C-Suite'
+      industries: extractUniqueIndustries(generatedPersonas)
     };
 
     // Professional LinkedIn-ready share text
