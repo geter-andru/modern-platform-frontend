@@ -12,6 +12,7 @@ import { FeatureCard } from '../src/shared/components/ui/FeatureCard';
 import { FooterLayout } from '../src/shared/components/layout/FooterLayout';
 import { MotionBackground } from '../src/shared/components/ui/MotionBackground';
 import { initPublicPageTracking, trackCtaClick } from './lib/analytics/publicPageTracking';
+import { ICPQuickStartForm } from '../src/features/icp-analysis/components/ICPQuickStartForm';
 import BuyerPersonasWidget from '../src/features/icp-analysis/widgets/BuyerPersonasWidget';
 import demoData from '../data/demo-icp-devtool.json';
 
@@ -447,20 +448,9 @@ export default function HomePage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              {/* Demo Context Badge */}
-              <div className="mb-4 text-center lg:text-left">
-                <span className="inline-block text-sm font-medium px-3 py-1 rounded-full" style={{
-                  background: 'rgba(59, 130, 246, 0.1)',
-                  color: '#3b82f6',
-                  border: '1px solid rgba(59, 130, 246, 0.3)'
-                }}>
-                  Sample for DevTool Pro — AI code review platform
-                </span>
-              </div>
-
-              {/* Demo Widget */}
+              {/* Quick Start Form */}
               <div
-                className="rounded-2xl p-6"
+                className="rounded-2xl p-8"
                 style={{
                   background: 'rgba(255, 255, 255, 0.03)',
                   backdropFilter: 'blur(20px)',
@@ -468,24 +458,25 @@ export default function HomePage() {
                   boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'
                 }}
               >
-                <BuyerPersonasWidget
-                  isDemo={true}
-                  personas={demoData.personas.slice(0, 2)}
-                  className="demo-preview"
-                />
-
-                {/* Preview Indicator */}
-                <div className="mt-4 pt-4 border-t" style={{
-                  borderColor: 'rgba(255, 255, 255, 0.1)'
-                }}>
-                  <p className="text-center text-xs" style={{
+                <h3
+                  className="text-xl font-semibold mb-2"
+                  style={{
+                    color: 'var(--color-text-primary, #ffffff)',
+                    fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+                  }}
+                >
+                  Get Your Free ICP Analysis
+                </h3>
+                <p
+                  className="text-sm mb-6"
+                  style={{
                     color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))',
                     fontFamily: '"Inter", sans-serif'
-                  }}>
-                    <Eye className="inline-block w-3 h-3 mr-1" />
-                    Showing 2 of 5 detailed personas
-                  </p>
-                </div>
+                  }}
+                >
+                  Tell us about your product and we'll generate detailed buyer personas in 2 minutes
+                </p>
+                <ICPQuickStartForm />
               </div>
             </motion.div>
 

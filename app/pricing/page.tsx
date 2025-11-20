@@ -1074,7 +1074,7 @@ export default function PricingPage() {
                   a: 'Yes, absolutely. You can cancel your subscription at any time with no penalties or fees. However, once you cancel, you lose your forever price lock at $750/month. If you rejoin later, you\'ll pay the standard $1,250/month rate.'
                 },
                 {
-                  q: 'How are the 100 founding member spots selected?',
+                  q: 'How are the 65 founding member spots selected?',
                   a: 'First come, first served. Once 100 people join the paid waitlist, the founding member offer closes permanently. After that, new users pay $1,250/month with no price lock option.'
                 },
                 {
@@ -1224,7 +1224,7 @@ export default function PricingPage() {
                 lineHeight: '1.7'
               }}
             >
-              Join 100 founding members saving $6,000/year. Every year. Forever.
+              Join 65 founding members saving $6,000/year. Every year. Forever.
             </motion.p>
             <motion.div variants={fadeInUp}>
               <a
@@ -1241,7 +1241,7 @@ export default function PricingPage() {
                 <ArrowRight className="w-6 h-6" />
               </a>
               <p className="mt-6 body-small" style={{ color: '#E0E0E0' }}>
-                Access unlocks December 1, 2025 • 100 spots only • Cancel anytime
+                Access unlocks December 1, 2025 • 65 spots only • Cancel anytime
               </p>
             </motion.div>
           </motion.div>

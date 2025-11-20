@@ -168,6 +168,43 @@ export default function ICPDemoV2Page() {
     fetchAssessmentData();
   }, []); // Run once on mount
 
+  // Check for quick start form data from homepage
+  useEffect(() => {
+    try {
+      const quickStartProduct = localStorage.getItem('icp_quickstart_product');
+      const quickStartDescription = localStorage.getItem('icp_quickstart_description');
+
+      if (quickStartProduct || quickStartDescription) {
+        console.log('Found quick start form data in localStorage');
+
+        // Pre-fill form fields
+        if (quickStartProduct && !productName) {
+          setProductName(quickStartProduct);
+          console.log('Pre-filled product name from quick start form');
+        }
+        if (quickStartDescription && !productDescription) {
+          setProductDescription(quickStartDescription);
+          console.log('Pre-filled product description from quick start form');
+        }
+
+        // Clear localStorage to prevent stale data
+        localStorage.removeItem('icp_quickstart_product');
+        localStorage.removeItem('icp_quickstart_description');
+        console.log('Cleared quick start form data from localStorage');
+
+        // Show success message if we pre-filled anything
+        if ((quickStartProduct && !productName) || (quickStartDescription && !productDescription)) {
+          toast.success('Ready to generate your ICP!', {
+            duration: 3000,
+            icon: '🚀'
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error checking localStorage for quick start data:', error);
+    }
+  }, []); // Run once on mount
+
   // Keyboard shortcuts for power users
   React.useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {

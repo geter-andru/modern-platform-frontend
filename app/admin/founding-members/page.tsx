@@ -283,7 +283,7 @@ export default function AdminFoundingMembersPage() {
               <span className="text-3xl font-bold text-white">{data.totalCount}</span>
             </div>
             <h3 className="text-sm font-medium text-blue-300">Total Founding Members</h3>
-            <p className="text-xs text-blue-400/60 mt-1">Out of 100 spots</p>
+            <p className="text-xs text-blue-400/60 mt-1">Out of 65 spots</p>
           </motion.div>
 
           {/* Total Revenue */}

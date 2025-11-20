@@ -680,7 +680,7 @@ export default function PMFFrameworkPage() {
               fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
               lineHeight: '1.7'
             }}>
-              Join 100 founding members getting Intelligence + Resonance + Clarity + Synergy in 72 hours, not 6 months. Beta launching December 2025 with <strong style={{ color: 'var(--color-primary)' }}>50% lifetime discount</strong>.
+              Join 65 founding members getting Intelligence + Resonance + Clarity + Synergy in 72 hours, not 6 months. Beta launching December 2025 with <strong style={{ color: 'var(--color-primary)' }}>50% lifetime discount</strong>.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <GradientButton

@@ -212,7 +212,7 @@ export default function WaitlistWelcomePage() {
                 lineHeight: 'var(--line-height-relaxed, 1.6)'
               }}
             >
-              Your payment has been processed successfully. You're officially one of our 100 founding members with exclusive lifetime benefits.
+              Your payment has been processed successfully. You're officially one of our 65 founding members with exclusive lifetime benefits.
             </motion.p>
 
             {/* User Email Confirmation */}

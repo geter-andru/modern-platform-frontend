@@ -56,7 +56,7 @@ export default function PaymentCancelPage() {
               <svg className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <circle cx="10" cy="10" r="8" />
               </svg>
-              100 founding member spots available
+              65 founding member spots available
             </li>
           </ul>
         </div>

@@ -84,7 +84,7 @@ export default function AIToolPage() {
                 "name": "How much does Andru cost?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Andru offers a free beta for 100 founding members (December 2025 - February 2025). Paid plans start at $149-297/month after beta. Full platform access will be $497/month when all 5 modules launch in July 2025."
+                  "text": "Andru offers a free beta for 65 founding members (December 2025 - February 2025). Paid plans start at $149-297/month after beta. Full platform access will be $497/month when all 5 modules launch in July 2025."
                 }
               },
               {
@@ -419,7 +419,7 @@ export default function AIToolPage() {
                   color: '#737373',
                   marginBottom: 'var(--spacing-md)'
                 }}>
-                  100 founding members
+                  65 founding members
                 </p>
                 <p style={{
                   fontSize: 'var(--font-size-sm)',
@@ -769,7 +769,7 @@ export default function AIToolPage() {
               lineHeight: '1.625',
               marginBottom: 'var(--spacing-2xl)'
             }}>
-              100 founding member spots available. Free beta access. 50% lifetime discount when we launch paid tiers.
+              65 founding member spots available. Free beta access. 50% lifetime discount when we launch paid tiers.
             </p>
 
             <Link href="/pricing" style={{

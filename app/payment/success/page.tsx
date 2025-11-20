@@ -55,7 +55,7 @@ export default function PaymentSuccessPage() {
         </h1>
 
         <p className="text-center text-gray-600 mb-6">
-          You're one of our 100 founding members. You now have full access to all platform features during the beta period.
+          You're one of our 65 founding members. You now have full access to all platform features during the beta period.
         </p>
 
         {/* Beta Details */}

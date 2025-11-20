@@ -26,6 +26,7 @@ import {
   Menu as MenuIcon,
   X as XMarkIcon,
   ShieldCheck as ShieldCheckIcon,
+  Award as AwardIcon,
 } from 'lucide-react';
 import { useAuth } from '@/app/lib/auth';
 import { BRAND_IDENTITY } from '@/app/lib/constants/brand-identity';
@@ -275,6 +276,10 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const [foundingMemberData, setFoundingMemberData] = useState<{
+    founding_member_number: number | null;
+    is_founding_member: boolean;
+  } | null>(null);
 
   // Dynamically add admin navigation item for admin users
   const dynamicNavigationItems = React.useMemo(() => {
@@ -318,6 +323,39 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
       setActiveItem(currentItem.id);
     }
   }, [pathname]);
+
+  // Fetch founding member data
+  useEffect(() => {
+    const fetchFoundingMemberData = async () => {
+      if (!user?.id) return;
+
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/admin/founding-member/${user.id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+          }
+        );
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success && result.data?.is_founding_member) {
+            setFoundingMemberData({
+              founding_member_number: result.data.founding_member_number,
+              is_founding_member: result.data.is_founding_member
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching founding member data:', error);
+      }
+    };
+
+    fetchFoundingMemberData();
+  }, [user?.id]);
 
   const handleLogout = async () => {
     try {
@@ -712,6 +750,19 @@ export function ModernSidebarLayout({ children }: ModernSidebarLayoutProps) {
                 <button className="hidden md:block p-2 text-text-secondary hover:text-text-primary transition-colors">
                   <Cog6ToothIcon className="w-5 h-5" />
                 </button>
+
+                {/* Beta User Badge */}
+                {foundingMemberData?.is_founding_member && (
+                  <Link
+                    href="/founding-members/welcome"
+                    className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl group"
+                  >
+                    <AwardIcon className="w-3.5 h-3.5 text-gray-900 group-hover:scale-110 transition-transform" />
+                    <span className="text-xs font-semibold text-gray-900">
+                      Beta User #{foundingMemberData.founding_member_number}
+                    </span>
+                  </Link>
+                )}
 
                 <div className="hidden md:flex items-center space-x-3 pl-4 border-l border-surface/20">
                   <div className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-accent rounded-full flex items-center justify-center">

@@ -770,7 +770,7 @@ function AssessmentContent() {
                       </div>
                     </div>
                     <p className="text-sm font-semibold" style={{ color: 'var(--color-accent-warning)' }}>
-                      Only 6 of 100 founding member spots remaining
+                      Only 6 of 65 founding member spots remaining
                     </p>
                   </div>
 

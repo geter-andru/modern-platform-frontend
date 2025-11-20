@@ -140,8 +140,8 @@ export const BRAND_MESSAGING = {
   // CONVERSION COPY
   // ========================================
   FOMO: {
-    FOUNDING_MEMBER_URGENCY: 'Join 100 founding members getting $149/mo locked-in pricing (launching at $297/mo in March 2025)',
-    SPOTS_LIMITED: 'Only 100 founding member spots available',
+    FOUNDING_MEMBER_URGENCY: 'Join 65 founding members getting $149/mo locked-in pricing (launching at $297/mo in March 2025)',
+    SPOTS_LIMITED: 'Only 65 founding member spots available',
     BETA_FREE: 'Free Beta • 100 Founding Member Spots • December 1, 2025',
   },
 

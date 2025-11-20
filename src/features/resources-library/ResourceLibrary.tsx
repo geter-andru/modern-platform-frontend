@@ -3,12 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { ModernCard } from '@/src/shared/components/ui/ModernCard';
 import { useSystematicScaling } from '@/src/shared/contexts/SystematicScalingContext';
-import resourceGenerationService from '@/app/lib/services/resourceGenerationService';
-import { 
-  FileText, 
-  Download, 
-  Eye, 
-  Lock, 
+import {
+  FileText,
+  Download,
+  Eye,
+  Lock,
   Star,
   TrendingUp,
   Users,
@@ -19,42 +18,79 @@ import {
   CheckCircle,
   AlertCircle,
   Clock,
-  Zap
+  Zap,
+  Layers,
+  BookOpen,
+  Sparkles
 } from 'lucide-react';
 
-interface Resource {
+// Strategic Asset from backend
+interface StrategicAsset {
   id: string;
+  assetNumber: number;
   title: string;
-  category: 'core' | 'advanced' | 'strategic';
-  type: string;
   description: string;
-  competencyRequired?: number;
-  arrRequired?: string;
-  exportFormats: string[];
-  generatedAt?: Date;
-  quality?: number;
-  icon: React.ComponentType<{ className?: string }>;
-  isLocked: boolean;
-  lockReason?: string;
+  category: string;
+  tier: 'foundation' | 'growth' | 'enterprise';
+  unlockThreshold: {
+    milestone: string;
+    progress: number;
+  };
+  estimatedGenerationTime: string;
+  consultingEquivalent: string;
+  implementationGuidesCount: number;
 }
 
-interface GeneratedResource {
-  id: string;
-  content: string;
-  quality: number;
-  generationMethod: 'template' | 'enhanced' | 'premium';
-  cost: number;
-  duration: number;
-  sources: string[];
-  confidence: number;
-  generatedAt: Date;
+// Generated Asset Response
+interface GeneratedAsset {
+  assetId: string;
+  assetNumber: number;
+  title: string;
+  description: string;
+  tier: string;
+  category: string;
+  strategicResources: Array<{
+    resourceId: string;
+    type: string;
+    content: any;
+    metadata: {
+      generatedAt: string;
+      model: string;
+      tokens: any;
+      generationTimeMs: number;
+      cost: number;
+      cumulativeDepth: number;
+    };
+  }>;
+  implementationResources: Array<{
+    resourceId: string;
+    type: string;
+    content: any;
+    metadata: {
+      generatedAt: string;
+      model: string;
+      tokens: any;
+      generationTimeMs: number;
+      cost: number;
+      cumulativeDepth: number;
+    };
+  }>;
+  metadata: {
+    generatedAt: string;
+    generationTimeMs: number;
+    userId: string;
+    totalCost: number;
+    cumulativeDepth: number;
+  };
 }
 
-interface ResourceGenerationState {
-  isGenerating: boolean;
+interface GenerationProgress {
+  stage: string;
   progress: number;
-  currentStep: string;
-  error?: string;
+  promptId?: string;
+  implId?: string;
+  asset?: GeneratedAsset;
+  final?: boolean;
 }
 
 interface ResourceLibraryProps {
@@ -63,554 +99,401 @@ interface ResourceLibraryProps {
 }
 
 const ResourceLibrary: React.FC<ResourceLibraryProps> = ({ customerId, customerData }) => {
-  const { 
-    getCompetencyLevel, 
+  const {
     trackBehavior,
-    awardPoints,
-    getScalingInsights 
+    awardPoints
   } = useSystematicScaling();
-  
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'core' | 'advanced' | 'strategic'>('all');
-  const [generationState, setGenerationState] = useState<Record<string, ResourceGenerationState>>({});
-  const [generatedResources, setGeneratedResources] = useState<Record<string, GeneratedResource>>({});
-  
-  // Load generated resources from localStorage
+
+  const [selectedTier, setSelectedTier] = useState<'all' | 'foundation' | 'growth' | 'enterprise'>('all');
+  const [catalog, setCatalog] = useState<StrategicAsset[]>([]);
+  const [generatedAssets, setGeneratedAssets] = useState<Record<string, GeneratedAsset>>({});
+  const [generationProgress, setGenerationProgress] = useState<Record<string, GenerationProgress>>({});
+  const [isGenerating, setIsGenerating] = useState<Record<string, boolean>>({});
+  const [loading, setLoading] = useState(true);
+  const [selectedAsset, setSelectedAsset] = useState<GeneratedAsset | null>(null);
+
+  // Fetch catalog on mount
   useEffect(() => {
-    const stored = localStorage.getItem(`resources_${customerId}`);
-    if (stored) {
-      try {
-        const parsedResources = JSON.parse(stored);
-        setGeneratedResources(parsedResources);
-      } catch (error) {
-        console.warn('Failed to load stored resources:', error);
-      }
-    }
-  }, [customerId]);
+    fetchCatalog();
+  }, []);
 
-  const currentARR = customerData?.currentARR || '$2M';
-  const strategicPlanningLevel = getCompetencyLevel('strategic_planning')?.level || 1;
-  const customerAnalysisLevel = getCompetencyLevel('customer_analysis')?.level || 1;
-  const financialAnalysisLevel = getCompetencyLevel('financial_analysis')?.level || 1;
-
-  // Define all available resources with systematic scaling requirements
-  const resources: Resource[] = [
-    // Core Resources - Available immediately
-    {
-      id: 'icp-analysis',
-      title: 'ICP Analysis Document',
-      category: 'core',
-      type: 'Customer Intelligence',
-      description: 'Comprehensive ideal customer profile with market segments, pain points, and buying triggers',
-      icon: Target,
-      exportFormats: ['PDF', 'Google Docs', 'Salesforce', 'HubSpot'],
-      quality: Math.min(60 + customerAnalysisLevel * 10, 100),
-      isLocked: false
-    },
-    {
-      id: 'buyer-personas',
-      title: 'Buyer Personas',
-      category: 'core',
-      type: 'Customer Intelligence',
-      description: 'Detailed profiles of decision makers, influencers, and end users with empathy maps',
-      icon: Users,
-      exportFormats: ['PDF', 'PowerPoint', 'Notion', 'Slack'],
-      quality: Math.min(60 + customerAnalysisLevel * 10, 100),
-      isLocked: false
-    },
-    {
-      id: 'empathy-maps',
-      title: 'Empathy Maps',
-      category: 'core',
-      type: 'Customer Psychology',
-      description: 'Visual representation of what customers think, feel, see, say, and do',
-      icon: Brain,
-      exportFormats: ['Miro', 'Figma', 'PDF', 'PNG'],
-      quality: Math.min(60 + customerAnalysisLevel * 10, 100),
-      isLocked: false
-    },
-    {
-      id: 'product-market-fit',
-      title: 'Product-Market Fit Assessment',
-      category: 'core',
-      type: 'Market Analysis',
-      description: 'Evaluation of product alignment with market needs and growth potential',
-      icon: TrendingUp,
-      exportFormats: ['PDF', 'Excel', 'Google Sheets', 'Airtable'],
-      quality: Math.min(60 + strategicPlanningLevel * 10, 100),
-      isLocked: false
-    },
-    
-    // Advanced Resources - Require competency level 2+
-    {
-      id: 'technical-translation',
-      title: 'Technical Translation Guide',
-      category: 'advanced',
-      type: 'Sales Enablement',
-      description: 'Convert complex technical features into business value propositions',
-      icon: FileText,
-      competencyRequired: 2,
-      exportFormats: ['Claude AI', 'ChatGPT', 'Google Docs', 'Confluence'],
-      quality: Math.min(70 + strategicPlanningLevel * 10, 100),
-      isLocked: strategicPlanningLevel < 2,
-      lockReason: 'Reach Strategic Planning Level 2 to unlock'
-    },
-    {
-      id: 'stakeholder-arsenal',
-      title: 'Stakeholder Arsenal',
-      category: 'advanced',
-      type: 'Sales Enablement',
-      description: 'Role-specific materials for CFO, CTO, CEO, and department heads',
-      icon: Briefcase,
-      competencyRequired: 2,
-      exportFormats: ['PowerPoint', 'PDF', 'Salesforce', 'Outreach'],
-      quality: Math.min(70 + strategicPlanningLevel * 10, 100),
-      isLocked: strategicPlanningLevel < 2,
-      lockReason: 'Reach Strategic Planning Level 2 to unlock'
-    },
-    {
-      id: 'competitive-intelligence',
-      title: 'Competitive Intelligence Report',
-      category: 'advanced',
-      type: 'Market Analysis',
-      description: 'Detailed competitive landscape analysis with positioning strategies',
-      icon: Target,
-      competencyRequired: 3,
-      exportFormats: ['PDF', 'Notion', 'Google Docs', 'Slack'],
-      quality: Math.min(70 + customerAnalysisLevel * 10, 100),
-      isLocked: customerAnalysisLevel < 3,
-      lockReason: 'Reach Customer Analysis Level 3 to unlock'
-    },
-    {
-      id: 'market-opportunity',
-      title: 'Market Opportunity Analysis',
-      category: 'advanced',
-      type: 'Strategic Planning',
-      description: 'TAM, SAM, SOM analysis with growth projections and entry strategies',
-      icon: TrendingUp,
-      competencyRequired: 3,
-      exportFormats: ['Excel', 'Google Sheets', 'PDF', 'PowerPoint'],
-      quality: Math.min(70 + financialAnalysisLevel * 10, 100),
-      isLocked: financialAnalysisLevel < 3,
-      lockReason: 'Reach Financial Analysis Level 3 to unlock'
-    },
-    
-    // Strategic Resources - Require $5M+ ARR or Level 4+ competency
-    {
-      id: 'executive-business-case',
-      title: 'Executive Business Case',
-      category: 'strategic',
-      type: 'Board Materials',
-      description: 'Board-ready business case with financial projections and strategic rationale',
-      icon: Briefcase,
-      arrRequired: '$5M',
-      competencyRequired: 4,
-      exportFormats: ['PowerPoint', 'PDF', 'Google Slides', 'Keynote'],
-      quality: Math.min(80 + strategicPlanningLevel * 10, 100),
-      isLocked: currentARR < '$5M' || strategicPlanningLevel < 4,
-      lockReason: currentARR < '$5M' ? 'Requires $5M+ ARR' : 'Reach Strategic Planning Level 4'
-    },
-    {
-      id: 'roi-models',
-      title: 'ROI Models & Calculators',
-      category: 'strategic',
-      type: 'Financial Tools',
-      description: 'Interactive ROI calculators with sensitivity analysis and scenarios',
-      icon: TrendingUp,
-      arrRequired: '$5M',
-      competencyRequired: 4,
-      exportFormats: ['Excel', 'Google Sheets', 'Tableau', 'Power BI'],
-      quality: Math.min(80 + financialAnalysisLevel * 10, 100),
-      isLocked: currentARR < '$5M' || financialAnalysisLevel < 4,
-      lockReason: currentARR < '$5M' ? 'Requires $5M+ ARR' : 'Reach Financial Analysis Level 4'
-    },
-    {
-      id: 'board-presentation',
-      title: 'Board Presentation Template',
-      category: 'strategic',
-      type: 'Board Materials',
-      description: 'Professional board deck template with revenue intelligence insights',
-      icon: FileText,
-      arrRequired: '$7M',
-      competencyRequired: 5,
-      exportFormats: ['PowerPoint', 'Keynote', 'Google Slides', 'PDF'],
-      quality: Math.min(90 + strategicPlanningLevel * 10, 100),
-      isLocked: currentARR < '$7M' || strategicPlanningLevel < 5,
-      lockReason: currentARR < '$7M' ? 'Requires $7M+ ARR' : 'Reach Strategic Planning Level 5'
-    },
-    {
-      id: 'series-b-readiness',
-      title: 'Series B Readiness Report',
-      category: 'strategic',
-      type: 'Fundraising',
-      description: 'Comprehensive assessment of Series B readiness with investor materials',
-      icon: Star,
-      arrRequired: '$10M',
-      competencyRequired: 6,
-      exportFormats: ['PDF', 'Notion', 'DocSend', 'Pitch'],
-      quality: 100,
-      isLocked: currentARR < '$10M' || strategicPlanningLevel < 6,
-      lockReason: currentARR < '$10M' ? 'Requires $10M+ ARR' : 'Master level required'
-    }
-  ];
-
-  const filteredResources = selectedCategory === 'all' 
-    ? resources 
-    : resources.filter(r => r.category === selectedCategory);
-
-  const handleGenerateResource = async (resource: Resource) => {
-    if (resource.isLocked) return;
-    
-    // Set initial generation state
-    setGenerationState(prev => ({
-      ...prev,
-      [resource.id]: {
-        isGenerating: true,
-        progress: 0,
-        currentStep: 'Initializing resource generation...'
-      }
-    }));
-    
+  const fetchCatalog = async () => {
     try {
-      // Track systematic scaling behavior
-      await (trackBehavior as any)({
-        eventType: 'export_action',
-        metadata: {
-          resourceId: resource.id,
-          resourceCategory: resource.category,
-          quality: resource.quality
-        },
-        scalingContext: {
-          currentARR,
-          targetARR: customerData?.targetARR || '$10M',
-          growthStage: currentARR < '$5M' ? 'early_scaling' : currentARR < '$7M' ? 'rapid_scaling' : 'mature_scaling',
-          systematicApproach: true
-        },
-        businessImpact: resource.category === 'strategic' ? 'high' : resource.category === 'advanced' ? 'medium' : 'low',
-        professionalCredibility: resource.quality || 70
-      });
+      const response = await fetch('/api/resources/catalog');
+      const data = await response.json();
 
-      // Update progress: Analyzing complexity
-      setGenerationState(prev => ({
-        ...prev,
-        [resource.id]: {
-          ...prev[resource.id],
-          progress: 20,
-          currentStep: 'Analyzing resource complexity...'
-        }
-      }));
-
-      // Call the real resource generation service
-      const generationResult = await (resourceGenerationService as any).generateResource({
-        resourceId: resource.id,
-        resourceType: resource.type,
-        customerData,
-        productContext: customerData?.productContext,
-        stakeholderContext: customerData?.stakeholderContext
-      });
-
-      // Update progress: Generation complete
-      setGenerationState(prev => ({
-        ...prev,
-        [resource.id]: {
-          ...prev[resource.id],
-          progress: 80,
-          currentStep: 'Finalizing resource...'
-        }
-      }));
-
-      // Create generated resource object
-      const generatedResource: GeneratedResource = {
-        id: resource.id,
-        content: generationResult.content,
-        quality: generationResult.quality,
-        generationMethod: generationResult.generationMethod,
-        cost: generationResult.cost,
-        duration: generationResult.duration,
-        sources: generationResult.sources,
-        confidence: generationResult.confidence,
-        generatedAt: new Date()
-      };
-
-      // Update generated resources
-      const updatedResources = {
-        ...generatedResources,
-        [resource.id]: generatedResource
-      };
-      
-      setGeneratedResources(updatedResources);
-      localStorage.setItem(`resources_${customerId}`, JSON.stringify(updatedResources));
-      
-      // Award competency points based on resource category and quality
-      const pointsMap = {
-        core: 10,
-        advanced: 20,
-        strategic: 30
-      };
-      
-      const competencyMap = {
-        'Customer Intelligence': 'customer_analysis',
-        'Sales Enablement': 'strategic_planning',
-        'Financial Tools': 'financial_analysis',
-        'Board Materials': 'strategic_planning',
-        'Market Analysis': 'customer_analysis',
-        'Strategic Planning': 'strategic_planning',
-        'Customer Psychology': 'customer_analysis',
-        'Fundraising': 'strategic_planning'
-      };
-      
-      const competencyArea = competencyMap[resource.type as keyof typeof competencyMap] || 'strategic_planning';
-      
-      // Bonus points for higher quality results
-      const qualityBonus = Math.floor(generationResult.quality / 20);
-      const totalPoints = pointsMap[resource.category] + qualityBonus;
-      
-      await (awardPoints as any)(
-        competencyArea,
-        totalPoints,
-        {
-          title: `Generated ${resource.title}`,
-          description: `Created ${resource.type} resource using ${generationResult.generationMethod} method (${generationResult.quality}% quality)`,
-          category: competencyArea,
-          impact: `Enhanced ${resource.type.toLowerCase()} capabilities with ${generationResult.sources.join(', ')} intelligence`,
-          metrics: {
-            resourceQuality: generationResult.quality,
-            generationMethod: generationResult.generationMethod,
-            cost: generationResult.cost,
-            duration: generationResult.duration,
-            confidence: generationResult.confidence
-          }
-        }
-      );
-      
-      // Complete generation
-      setGenerationState(prev => ({
-        ...prev,
-        [resource.id]: {
-          ...prev[resource.id],
-          progress: 100,
-          currentStep: 'Resource generated successfully!',
-          isGenerating: false
-        }
-      }));
-
-      // Clear generation state after delay
-      setTimeout(() => {
-        setGenerationState(prev => {
-          const newState = { ...prev };
-          delete newState[resource.id];
-          return newState;
-        });
-      }, 3000);
-
-    } catch (error: any) {
-      console.error('Resource generation failed:', error);
-      
-      setGenerationState(prev => ({
-        ...prev,
-        [resource.id]: {
-          ...prev[resource.id],
-          progress: 0,
-          currentStep: 'Generation failed',
-          isGenerating: false,
-          error: error.message || 'Unknown error occurred'
-        }
-      }));
-
-      // Clear error state after delay
-      setTimeout(() => {
-        setGenerationState(prev => {
-          const newState = { ...prev };
-          delete newState[resource.id];
-          return newState;
-        });
-      }, 5000);
+      if (data.success) {
+        setCatalog(data.data.catalog);
+      }
+    } catch (error) {
+      console.error('Failed to fetch catalog:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'core': return 'blue';
-      case 'advanced': return 'purple';
-      case 'strategic': return 'emerald';
+  // Check if asset is unlocked based on milestone progress
+  const isAssetUnlocked = (asset: StrategicAsset): boolean => {
+    // For now, unlock all foundation assets
+    if (asset.tier === 'foundation') return true;
+
+    // For now, unlock all assets (milestone system to be implemented)
+    // TODO: Implement milestone progress checking
+    return true;
+  };
+
+  // Generate single asset
+  const handleGenerateAsset = async (asset: StrategicAsset) => {
+    if (!isAssetUnlocked(asset)) return;
+
+    setIsGenerating(prev => ({ ...prev, [asset.id]: true }));
+    setGenerationProgress(prev => ({
+      ...prev,
+      [asset.id]: { stage: 'initializing', progress: 0 }
+    }));
+
+    try {
+      // Track systematic scaling behavior
+      await (trackBehavior as any)({
+        eventType: 'resource_generation',
+        metadata: {
+          assetId: asset.id,
+          assetNumber: asset.assetNumber,
+          tier: asset.tier,
+          category: asset.category
+        },
+        businessImpact: asset.tier === 'enterprise' ? 'high' : asset.tier === 'growth' ? 'medium' : 'low'
+      });
+
+      // Call backend generation endpoint with streaming
+      const response = await fetch('/api/resources/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+        },
+        body: JSON.stringify({
+          assetId: asset.id,
+          streaming: true
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Generation failed: ${response.statusText}`);
+      }
+
+      // Handle Server-Sent Events streaming
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value);
+          const lines = chunk.split('\n');
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = JSON.parse(line.slice(6));
+
+              if (data.final) {
+                // Final result received
+                setGeneratedAssets(prev => ({
+                  ...prev,
+                  [asset.id]: data.data
+                }));
+
+                // Award points
+                const pointsMap = {
+                  foundation: 25,
+                  growth: 50,
+                  enterprise: 100
+                };
+
+                await (awardPoints as any)(
+                  'strategic_planning',
+                  pointsMap[asset.tier],
+                  {
+                    title: `Generated ${asset.title}`,
+                    description: `Created strategic asset with ${data.data.metadata.cumulativeDepth}x personalization depth`,
+                    category: 'strategic_planning',
+                    impact: `Generated ${asset.implementationGuidesCount} implementation guides`,
+                    metrics: {
+                      generationTime: data.data.metadata.generationTimeMs,
+                      cost: data.data.metadata.totalCost,
+                      cumulativeDepth: data.data.metadata.cumulativeDepth
+                    }
+                  }
+                );
+              } else {
+                // Progress update
+                setGenerationProgress(prev => ({
+                  ...prev,
+                  [asset.id]: data
+                }));
+              }
+            }
+          }
+        }
+      }
+
+      setIsGenerating(prev => ({ ...prev, [asset.id]: false }));
+
+      // Clear progress after delay
+      setTimeout(() => {
+        setGenerationProgress(prev => {
+          const newProgress = { ...prev };
+          delete newProgress[asset.id];
+          return newProgress;
+        });
+      }, 2000);
+
+    } catch (error: any) {
+      console.error('Asset generation failed:', error);
+      setIsGenerating(prev => ({ ...prev, [asset.id]: false }));
+      setGenerationProgress(prev => ({
+        ...prev,
+        [asset.id]: {
+          stage: 'error',
+          progress: 0
+        }
+      }));
+    }
+  };
+
+  const getCategoryIcon = (category: string) => {
+    const iconMap: Record<string, any> = {
+      'Market & Positioning Intelligence': Target,
+      'Go-to-Market Strategy': TrendingUp,
+      'Sales & Revenue Optimization': Briefcase,
+      'Customer Success & Expansion': Users,
+      'Strategic Planning & Execution': Brain,
+      'Board & Investor Relations': Star
+    };
+    return iconMap[category] || FileText;
+  };
+
+  const getTierColor = (tier: string) => {
+    switch (tier) {
+      case 'foundation': return 'blue';
+      case 'growth': return 'purple';
+      case 'enterprise': return 'emerald';
       default: return 'slate';
     }
   };
 
-  return (
-    <div className="bg-slate-950 p-6">
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header with Systematic Scaling Status */}
-        <div className="mb-6 p-4 bg-gradient-to-r from-purple-900/20 to-blue-900/20 rounded-lg border border-purple-800/30">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-sm text-slate-300">Systematic Resource Generation Active</span>
-            </div>
-            <div className="flex items-center space-x-4 text-sm">
-              <span className="text-slate-400">Current ARR: <span className="text-white font-semibold">{currentARR}</span></span>
-              <span className="text-slate-400">→</span>
-              <span className="text-slate-400">Resource Quality: <span className="text-purple-400 font-semibold">Level {Math.max(strategicPlanningLevel, customerAnalysisLevel, financialAnalysisLevel)}</span></span>
-            </div>
-          </div>
-        </div>
+  const filteredAssets = selectedTier === 'all'
+    ? catalog
+    : catalog.filter(a => a.tier === selectedTier);
 
-        {/* Title and Description */}
+  if (loading) {
+    return (
+      <div className="bg-slate-950 p-6 min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-white mb-4">
-            AI-Generated Resources Library
+          <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-slate-400">Loading Strategic Assets Catalog...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-slate-950 p-6 min-h-screen">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* Header */}
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-2 mb-4 px-4 py-2 bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-full border border-purple-700/50">
+            <Sparkles className="w-4 h-4 text-purple-400" />
+            <span className="text-sm text-purple-300 font-medium">AI-Powered Revenue Intelligence</span>
+          </div>
+          <h1 className="text-4xl font-bold text-white mb-4">
+            38 Strategic Assets Library
           </h1>
           <p className="text-slate-300 text-lg mb-2">
-            Export-ready intelligence assets for CRM, sales automation, and stakeholder engagement
+            Personalized revenue intelligence resources with cumulative intelligence depth
           </p>
           <p className="text-slate-400 text-sm">
-            Higher competency levels unlock advanced resources with better quality
+            Each asset includes strategic framework + tactical implementation guides
           </p>
         </div>
 
-        {/* Category Filter */}
+        {/* Tier Filter */}
         <div className="flex justify-center space-x-4">
           {[
-            { id: 'all', label: 'All Resources', count: resources.length },
-            { id: 'core', label: 'Core Resources', count: resources.filter(r => r.category === 'core').length },
-            { id: 'advanced', label: 'Advanced Resources', count: resources.filter(r => r.category === 'advanced').length },
-            { id: 'strategic', label: 'Strategic Resources', count: resources.filter(r => r.category === 'strategic').length }
-          ].map((cat) => (
+            { id: 'all', label: 'All Assets', count: catalog.length },
+            { id: 'foundation', label: 'Foundation (25%)', count: catalog.filter(a => a.tier === 'foundation').length },
+            { id: 'growth', label: 'Growth (50%)', count: catalog.filter(a => a.tier === 'growth').length },
+            { id: 'enterprise', label: 'Enterprise (75-100%)', count: catalog.filter(a => a.tier === 'enterprise').length }
+          ].map((tier) => (
             <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id as any)}
+              key={tier.id}
+              onClick={() => setSelectedTier(tier.id as any)}
               className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
-                selectedCategory === cat.id
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                selectedTier === tier.id
+                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/20'
                   : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
               }`}
             >
-              {cat.label}
-              <span className="ml-2 text-sm opacity-75">({cat.count})</span>
+              {tier.label}
+              <span className="ml-2 text-sm opacity-75">({tier.count})</span>
             </button>
           ))}
         </div>
 
-        {/* Resources Grid */}
+        {/* Progress Summary */}
+        <ModernCard className="p-6 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border-purple-700/30">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-1">Your Generation Progress</h3>
+              <p className="text-sm text-slate-400">
+                Generated {Object.keys(generatedAssets).length} of {catalog.length} strategic assets
+              </p>
+            </div>
+            <div className="text-right">
+              <div className="text-3xl font-bold text-purple-400">
+                {Math.round((Object.keys(generatedAssets).length / catalog.length) * 100)}%
+              </div>
+              <p className="text-xs text-slate-400">Complete</p>
+            </div>
+          </div>
+          <div className="mt-4 h-2 bg-slate-700 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-1000"
+              style={{ width: `${(Object.keys(generatedAssets).length / catalog.length) * 100}%` }}
+            />
+          </div>
+        </ModernCard>
+
+        {/* Assets Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredResources.map((resource) => {
-            const Icon = resource.icon;
-            const color = getCategoryColor(resource.category);
-            const isGenerated = generatedResources[resource.id] !== undefined;
-            const generatedResource = generatedResources[resource.id];
-            const currentGenerationState = generationState[resource.id];
-            const isGenerating = currentGenerationState?.isGenerating || false;
-            
+          {filteredAssets.map((asset) => {
+            const Icon = getCategoryIcon(asset.category);
+            const color = getTierColor(asset.tier);
+            const isUnlocked = isAssetUnlocked(asset);
+            const isGenerated = generatedAssets[asset.id] !== undefined;
+            const generatedAsset = generatedAssets[asset.id];
+            const progress = generationProgress[asset.id];
+            const generating = isGenerating[asset.id];
+
             return (
-              <ModernCard key={resource.id} className={`p-6 ${resource.isLocked ? 'opacity-60' : ''}`}>
-                {/* Resource Header */}
+              <ModernCard
+                key={asset.id}
+                className={`p-6 transition-all duration-200 ${
+                  !isUnlocked ? 'opacity-60' : 'hover:shadow-lg hover:shadow-purple-500/10'
+                }`}
+              >
+                {/* Asset Header */}
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
-                    <div className={`p-2 rounded-lg ${color === 'purple' ? 'bg-purple-900/20 border border-purple-700/50' : color === 'blue' ? 'bg-blue-900/20 border border-blue-700/50' : color === 'emerald' ? 'bg-emerald-900/20 border border-emerald-700/50' : 'bg-slate-900/20 border border-slate-700/50'}`}>
-                      <Icon className={`w-5 h-5 ${color === 'purple' ? 'text-purple-400' : color === 'blue' ? 'text-blue-400' : color === 'emerald' ? 'text-emerald-400' : 'text-slate-400'}`} />
+                    <div className={`p-2 rounded-lg ${
+                      color === 'purple'
+                        ? 'bg-purple-900/30 border border-purple-700/50'
+                        : color === 'blue'
+                        ? 'bg-blue-900/30 border border-blue-700/50'
+                        : 'bg-emerald-900/30 border border-emerald-700/50'
+                    }`}>
+                      <Icon className={`w-5 h-5 ${
+                        color === 'purple'
+                          ? 'text-purple-400'
+                          : color === 'blue'
+                          ? 'text-blue-400'
+                          : 'text-emerald-400'
+                      }`} />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-white">{resource.title}</h3>
-                      <p className="text-xs text-slate-400">{resource.type}</p>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs text-slate-500 font-mono">#{asset.assetNumber}</span>
+                        {isGenerated && <CheckCircle className="w-4 h-4 text-green-400" />}
+                        {!isUnlocked && <Lock className="w-4 h-4 text-red-400" />}
+                      </div>
+                      <h3 className="text-lg font-semibold text-white">{asset.title}</h3>
                     </div>
                   </div>
-                  {resource.isLocked && <Lock className="w-4 h-4 text-red-400" />}
-                  {isGenerated && <CheckCircle className="w-4 h-4 text-green-400" />}
                 </div>
 
-                {/* Resource Description */}
-                <p className="text-sm text-slate-300 mb-4">{resource.description}</p>
+                {/* Asset Description */}
+                <p className="text-sm text-slate-300 mb-4 line-clamp-2">{asset.description}</p>
 
-                {/* Quality Indicator */}
-                {!resource.isLocked && (
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs text-slate-400">Quality Score</span>
-                      <span className="text-xs text-white font-semibold">{resource.quality}%</span>
-                    </div>
-                    <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all duration-1000 ${color === 'purple' ? 'bg-gradient-to-r from-purple-500 to-purple-600' : color === 'blue' ? 'bg-gradient-to-r from-blue-500 to-blue-600' : color === 'emerald' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600' : 'bg-gradient-to-r from-slate-500 to-slate-600'}`}
-                        style={{ width: `${resource.quality}%` }}
-                      />
-                    </div>
-                  </div>
-                )}
+                {/* Tier Badge */}
+                <div className="flex items-center justify-between mb-4">
+                  <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                    color === 'purple'
+                      ? 'bg-purple-900/30 text-purple-300 border border-purple-700/50'
+                      : color === 'blue'
+                      ? 'bg-blue-900/30 text-blue-300 border border-blue-700/50'
+                      : 'bg-emerald-900/30 text-emerald-300 border border-emerald-700/50'
+                  }`}>
+                    {asset.tier.toUpperCase()} TIER
+                  </span>
+                  <span className="text-xs text-slate-400">
+                    {asset.implementationGuidesCount} guides
+                  </span>
+                </div>
 
-                {/* Lock Reason or Export Formats */}
-                {resource.isLocked ? (
+                {/* Unlock Requirement or Metadata */}
+                {!isUnlocked ? (
                   <div className="p-3 bg-red-900/20 border border-red-700/50 rounded-lg mb-4">
                     <div className="flex items-center space-x-2">
                       <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
-                      <p className="text-xs text-red-300">{resource.lockReason}</p>
+                      <p className="text-xs text-red-300">
+                        Unlocks at {asset.unlockThreshold.progress}% milestone progress
+                      </p>
                     </div>
                   </div>
                 ) : (
-                  <div className="mb-4">
-                    <p className="text-xs text-slate-400 mb-2">Export formats:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {resource.exportFormats.map((format) => (
-                        <span 
-                          key={format}
-                          className="px-2 py-1 text-xs bg-slate-800 text-slate-300 rounded"
-                        >
-                          {format}
-                        </span>
-                      ))}
+                  <div className="mb-4 space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-slate-400">Generation Time:</span>
+                      <span className="text-slate-300">{asset.estimatedGenerationTime}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-slate-400">Consulting Value:</span>
+                      <span className="text-green-400 font-semibold">{asset.consultingEquivalent}</span>
                     </div>
                   </div>
                 )}
 
                 {/* Generation Progress */}
-                {isGenerating && currentGenerationState && (
+                {generating && progress && (
                   <div className="mb-4 p-3 bg-purple-900/20 border border-purple-700/50 rounded-lg">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs text-purple-300 font-medium">
-                        {currentGenerationState.currentStep}
+                        {progress.stage === 'generating_strategic' ? 'Generating strategic framework...' :
+                         progress.stage === 'generating_implementation' ? 'Generating implementation guides...' :
+                         progress.stage === 'complete' ? 'Complete!' :
+                         'Initializing...'}
                       </span>
                       <span className="text-xs text-purple-400">
-                        {currentGenerationState.progress}%
+                        {Math.round(progress.progress)}%
                       </span>
                     </div>
                     <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-                      <div 
+                      <div
                         className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-500"
-                        style={{ width: `${currentGenerationState.progress}%` }}
+                        style={{ width: `${progress.progress}%` }}
                       />
                     </div>
                   </div>
                 )}
 
-                {/* Generation Error */}
-                {currentGenerationState?.error && (
-                  <div className="mb-4 p-3 bg-red-900/20 border border-red-700/50 rounded-lg">
-                    <div className="flex items-center space-x-2">
-                      <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
-                      <p className="text-xs text-red-300">{currentGenerationState.error}</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Generated Resource Info */}
-                {isGenerated && generatedResource && (
+                {/* Generated Asset Info */}
+                {isGenerated && generatedAsset && (
                   <div className="mb-4 p-3 bg-green-900/20 border border-green-700/50 rounded-lg">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs text-green-300 font-medium">
-                        Generated via {generatedResource.generationMethod}
+                        {generatedAsset.metadata.cumulativeDepth}x Personalization Depth
                       </span>
-                      <div className="flex items-center space-x-2">
-                        {generatedResource.generationMethod === 'premium' && <Star className="w-3 h-3 text-yellow-400" />}
-                        {generatedResource.generationMethod === 'enhanced' && <Zap className="w-3 h-3 text-purple-400" />}
-                        {generatedResource.generationMethod === 'template' && <Clock className="w-3 h-3 text-blue-400" />}
-                        <span className="text-xs text-green-400">
-                          {generatedResource.quality}% quality
-                        </span>
+                      <Sparkles className="w-4 h-4 text-green-400" />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="text-xs text-green-400">
+                        Strategic: {generatedAsset.strategicResources.length} • Implementation: {generatedAsset.implementationResources.length}
                       </div>
-                    </div>
-                    <div className="text-xs text-green-400 mb-1">
-                      Sources: {generatedResource.sources.join(', ')}
-                    </div>
-                    <div className="text-xs text-slate-400">
-                      Cost: ${generatedResource.cost.toFixed(2)} • Duration: {generatedResource.duration}ms • Confidence: {Math.round(generatedResource.confidence * 100)}%
+                      <div className="text-xs text-slate-400">
+                        Generated in {(generatedAsset.metadata.generationTimeMs / 1000).toFixed(1)}s
+                      </div>
                     </div>
                   </div>
                 )}
@@ -618,17 +501,23 @@ const ResourceLibrary: React.FC<ResourceLibraryProps> = ({ customerId, customerD
                 {/* Action Buttons */}
                 <div className="flex space-x-2">
                   <button
-                    onClick={() => handleGenerateResource(resource)}
-                    disabled={resource.isLocked || isGenerating}
+                    onClick={() => handleGenerateAsset(asset)}
+                    disabled={!isUnlocked || generating}
                     className={`flex-1 px-4 py-2 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center space-x-2 ${
-                      resource.isLocked
+                      !isUnlocked
                         ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                        : generating
+                        ? 'bg-purple-900/30 border border-purple-700/50 text-purple-400'
                         : isGenerated
                         ? 'bg-green-900/20 border border-green-700/50 text-green-400 hover:bg-green-900/30'
-                        : `bg-gradient-to-r from-${color}-600 to-${color}-700 text-white hover:from-${color}-700 hover:to-${color}-800`
+                        : `bg-gradient-to-r ${
+                            color === 'purple' ? 'from-purple-600 to-purple-700' :
+                            color === 'blue' ? 'from-blue-600 to-blue-700' :
+                            'from-emerald-600 to-emerald-700'
+                          } text-white hover:opacity-90`
                     }`}
                   >
-                    {isGenerating ? (
+                    {generating ? (
                       <>
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                         <span>Generating...</span>
@@ -645,8 +534,11 @@ const ResourceLibrary: React.FC<ResourceLibraryProps> = ({ customerId, customerD
                       </>
                     )}
                   </button>
-                  {isGenerated && !resource.isLocked && (
-                    <button className="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 transition-all duration-200">
+                  {isGenerated && (
+                    <button
+                      onClick={() => setSelectedAsset(generatedAsset)}
+                      className="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 transition-all duration-200"
+                    >
                       <Eye className="w-4 h-4" />
                     </button>
                   )}
@@ -656,49 +548,62 @@ const ResourceLibrary: React.FC<ResourceLibraryProps> = ({ customerId, customerD
           })}
         </div>
 
-        {/* Bottom Progress Summary */}
-        <ModernCard className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-2">Your Resource Generation Progress</h3>
-              <p className="text-sm text-slate-400">
-                Generated {Object.keys(generatedResources).length} of {resources.length} available resources
-              </p>
-              {Object.keys(generatedResources).length > 0 && (
-                <div className="mt-2 text-xs text-slate-400">
-                  Generation methods used: {
-                    Array.from(new Set(Object.values(generatedResources).map(r => r.generationMethod)))
-                      .map(method => {
-                        const count = Object.values(generatedResources).filter(r => r.generationMethod === method).length;
-                        return `${method} (${count})`;
-                      })
-                      .join(', ')
-                  }
+        {/* Asset Detail Modal */}
+        {selectedAsset && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6">
+            <ModernCard className="max-w-4xl w-full max-h-[90vh] overflow-y-auto p-8">
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-2">{selectedAsset.title}</h2>
+                  <p className="text-sm text-slate-400">{selectedAsset.description}</p>
                 </div>
-              )}
-            </div>
-            <div className="text-right">
-              <div className="text-2xl font-bold text-purple-400">
-                {Math.round((Object.keys(generatedResources).length / resources.length) * 100)}%
+                <button
+                  onClick={() => setSelectedAsset(null)}
+                  className="text-slate-400 hover:text-white"
+                >
+                  ✕
+                </button>
               </div>
-              <p className="text-xs text-slate-400">Complete</p>
-              {Object.keys(generatedResources).length > 0 && (
-                <div className="text-xs text-slate-500 mt-1">
-                  Avg Quality: {Math.round(
-                    Object.values(generatedResources).reduce((sum, r) => sum + r.quality, 0) / 
-                    Object.values(generatedResources).length
-                  )}%
+
+              {/* Strategic Resources */}
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
+                  <Layers className="w-5 h-5 text-purple-400" />
+                  <span>Strategic Framework</span>
+                </h3>
+                {selectedAsset.strategicResources.map((resource, idx) => (
+                  <div key={idx} className="mb-4 p-4 bg-slate-800/50 rounded-lg">
+                    <div className="text-sm text-slate-300 whitespace-pre-wrap">
+                      {typeof resource.content === 'object'
+                        ? JSON.stringify(resource.content, null, 2)
+                        : resource.content}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Implementation Resources */}
+              {selectedAsset.implementationResources.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
+                    <BookOpen className="w-5 h-5 text-blue-400" />
+                    <span>Implementation Guides</span>
+                  </h3>
+                  {selectedAsset.implementationResources.map((resource, idx) => (
+                    <div key={idx} className="mb-4 p-4 bg-slate-800/50 rounded-lg">
+                      <h4 className="text-sm font-semibold text-white mb-2">{resource.resourceId}</h4>
+                      <div className="text-sm text-slate-300 whitespace-pre-wrap">
+                        {typeof resource.content === 'object'
+                          ? JSON.stringify(resource.content, null, 2)
+                          : resource.content}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
-            </div>
+            </ModernCard>
           </div>
-          <div className="mt-4 h-2 bg-slate-700 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-1000"
-              style={{ width: `${(Object.keys(generatedResources).length / resources.length) * 100}%` }}
-            />
-          </div>
-        </ModernCard>
+        )}
       </div>
     </div>
   );
