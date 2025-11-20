@@ -574,12 +574,19 @@ This profile is generated from your assessment responses and represents customer
         return { success: true, productDetails: undefined }; // No assessment found
       }
 
+      // TypeScript needs help with the type after null check
+      const assessment = data as {
+        product_name: string | null;
+        product_description: string | null;
+        business_model: string | null;
+      };
+
       return {
         success: true,
         productDetails: {
-          productName: data.product_name || undefined,
-          productDescription: data.product_description || undefined,
-          businessModel: data.business_model || undefined
+          productName: assessment.product_name || undefined,
+          productDescription: assessment.product_description || undefined,
+          businessModel: assessment.business_model || undefined
         }
       };
     } catch (error) {
