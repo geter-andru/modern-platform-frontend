@@ -66,9 +66,9 @@ export class AssessmentMappingService {
       },
       {
         name: 'Sales Process',
-        score: 50, // Initialize at 50% - to be built through platform
+        score: 25, // Initialize at 25% - to be built through platform
         previousScore: 0,
-        baselineScore: 50,
+        baselineScore: 25,
         incrementalGain: 0,
         monthOverMonthChange: 0,
         trend: 'flat',
@@ -80,9 +80,9 @@ export class AssessmentMappingService {
       },
       {
         name: 'Market Intelligence',
-        score: 50, // Initialize at 50% - to be built through platform
+        score: 25, // Initialize at 25% - to be built through platform
         previousScore: 0,
-        baselineScore: 50,
+        baselineScore: 25,
         incrementalGain: 0,
         monthOverMonthChange: 0,
         trend: 'flat',
