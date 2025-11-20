@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Download, Users, BarChart3, TrendingUp, AlertCircle, CheckCircle2, Zap, Target, DollarSign, TrendingDown, ChevronRight, ChevronLeft, Share2, Lightbulb, MessageSquare, Mail } from 'lucide-react';
 import Link from 'next/link';
@@ -16,6 +16,8 @@ import demoData from '../../../data/demo-icp-devtool.json';
 import '../../../src/shared/styles/component-patterns.css';
 import { BRAND_IDENTITY } from '@/app/lib/constants/brand-identity';
 import { StaggeredItem } from '../../../src/shared/utils/staggered-entrance';
+import { supabase } from '@/app/lib/supabase/client';
+import supabaseDataService from '@/app/lib/services/supabaseDataService';
 
 // Rate Limit Badge Component
 function RateLimitBadge({
@@ -112,6 +114,59 @@ export default function ICPDemoV2Page() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Fetch and pre-fill assessment data if available
+  useEffect(() => {
+    async function fetchAssessmentData() {
+      try {
+        // Get current user
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+          console.log('No user logged in, skipping assessment pre-fill');
+          return;
+        }
+
+        console.log('Fetching assessment data for user:', user.id);
+
+        // Fetch latest assessment
+        const result = await supabaseDataService.getLatestAssessmentForUser(user.id);
+
+        if (result.success && result.productDetails) {
+          const { productName, productDescription, businessModel } = result.productDetails;
+
+          // Pre-fill form if data exists
+          if (productName) {
+            setProductName(productName);
+            console.log('Pre-filled product name from assessment');
+          }
+          if (productDescription) {
+            setProductDescription(productDescription);
+            console.log('Pre-filled product description from assessment');
+          }
+          // Note: businessModel in assessment is text (e.g., "B2B Subscription")
+          // targetBuyer field in ICP is free-form text, so we can use business model as context
+          if (businessModel && !targetBuyer) {
+            // Optionally set as hint, or leave empty for user to specify their target buyer
+            console.log('Assessment business model available:', businessModel);
+          }
+
+          if (productName || productDescription) {
+            toast.success('Pre-filled with your assessment data!', {
+              duration: 4000,
+              icon: '✨'
+            });
+          }
+        } else if (result.error) {
+          console.error('Error fetching assessment data:', result.error);
+        }
+      } catch (error) {
+        console.error('Exception fetching assessment data:', error);
+      }
+    }
+
+    fetchAssessmentData();
+  }, []); // Run once on mount
 
   // Keyboard shortcuts for power users
   React.useEffect(() => {

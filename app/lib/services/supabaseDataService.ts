@@ -529,13 +529,66 @@ This profile is generated from your assessment responses and represents customer
   extractPainPoints(assessmentData: AssessmentData): string {
     const responses = assessmentData.responses || {};
     const challenges = responses.challenges || responses.painPoints;
-    
+
     if (Array.isArray(challenges)) {
       return challenges.join(', ');
     } else if (challenges) {
       return challenges;
     }
     return "Scaling challenges, Process inefficiencies, Resource constraints";
+  },
+
+  /**
+   * Fetch the most recent completed assessment for the current user
+   * Returns product details if available for pre-filling ICP form
+   */
+  async getLatestAssessmentForUser(userId: string): Promise<{
+    success: boolean;
+    productDetails?: {
+      productName?: string;
+      productDescription?: string;
+      businessModel?: string;
+    };
+    error?: string;
+  }> {
+    try {
+      if (!userId) {
+        return { success: false, error: 'User ID is required' };
+      }
+
+      const { data, error } = await supabase
+        .from('assessment_sessions')
+        .select('product_name, product_description, business_model, completed_at')
+        .eq('user_id', userId)
+        .in('status', ['completed_with_user', 'linked'])
+        .order('completed_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error fetching assessment:', error);
+        return { success: false, error: error.message };
+      }
+
+      if (!data) {
+        return { success: true, productDetails: undefined }; // No assessment found
+      }
+
+      return {
+        success: true,
+        productDetails: {
+          productName: data.product_name || undefined,
+          productDescription: data.product_description || undefined,
+          businessModel: data.business_model || undefined
+        }
+      };
+    } catch (error) {
+      console.error('Exception fetching assessment:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
+    }
   }
 };
 
