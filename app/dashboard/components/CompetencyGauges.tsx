@@ -57,8 +57,8 @@ export function CompetencyGauges({ customerId, isLoading }: CompetencyGaugesProp
 
   return (
     <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6">
-      <h3 className="text-lg font-semibold text-white mb-1">Revenue Execution Capabilities</h3>
-      <p className="text-sm text-white/60 mb-6">Systematic behaviors driving financial outcomes</p>
+      <h3 className="text-lg font-semibold text-white mb-1">My core selling skills</h3>
+      <p className="text-sm text-white/60 mb-6">Each one impacts my revenue</p>
 
       <div className="space-y-6">
         {competencies.map((comp, index) => {

@@ -159,8 +159,8 @@ export function CapabilityGapAnalysis({ customerId, isLoading }: CapabilityGapAn
           <Target className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h2 className="text-xl font-semibold text-white">Capability Gap Analysis</h2>
-          <p className="text-sm text-white/60">Highest-ROI improvements prioritized by revenue impact</p>
+          <h2 className="text-xl font-semibold text-white">Where should I focus first?</h2>
+          <p className="text-sm text-white/60">Ranked by revenue impact—fix these to grow faster</p>
         </div>
       </div>
 

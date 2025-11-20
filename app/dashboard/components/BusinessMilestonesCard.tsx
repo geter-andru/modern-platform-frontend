@@ -114,14 +114,14 @@ export function BusinessMilestonesCard({ customerId, isLoading }: BusinessMilest
             <TrendingUp className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-white">Current Performance (Trailing Results)</h2>
-            <p className="text-sm text-white/60">Financial outcomes driven by capability development</p>
+            <h2 className="text-xl font-semibold text-white">How I'm performing right now</h2>
+            <p className="text-sm text-white/60">These results come from my execution capability</p>
           </div>
         </div>
         <div className="flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-4 py-2">
           <span className="text-yellow-400">⚠️</span>
           <p className="text-sm text-yellow-200/90">
-            These are outcomes of your execution capability - Focus on capability development, outcomes follow
+            These are outcomes of my execution capability - Focus on capability development, outcomes follow
           </p>
         </div>
       </div>

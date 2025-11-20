@@ -153,8 +153,8 @@ export function RevenueExecutionCapabilityScore({ customerId, isLoading }: Reven
           <Target className="w-6 h-6 text-white" />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-white">Revenue Execution Capability</h2>
-          <p className="text-sm text-white/70">Systematic behaviors that predict financial outcomes</p>
+          <h2 className="text-2xl font-bold text-white">How strong is my revenue execution?</h2>
+          <p className="text-sm text-white/70">This score predicts my Q2 2025 performance</p>
         </div>
       </div>
 
@@ -179,7 +179,7 @@ export function RevenueExecutionCapabilityScore({ customerId, isLoading }: Reven
       {/* Predicted Outcomes Panel */}
       <div className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8">
         <h3 className="text-sm font-semibold text-white/70 mb-4 uppercase tracking-wide">
-          Capability → Predicted Outcomes
+          What this means for my business
         </h3>
         <div className="text-white/90 mb-4">
           <span className="font-bold">{overallScore}% execution capability</span> predicts:
@@ -209,7 +209,7 @@ export function RevenueExecutionCapabilityScore({ customerId, isLoading }: Reven
       {/* Component Breakdown */}
       <div className="mb-6">
         <h3 className="text-sm font-semibold text-white/70 mb-4 uppercase tracking-wide">
-          Component Breakdown
+          The four skills that drive revenue
         </h3>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
           {capabilities.map((capability, index) => {

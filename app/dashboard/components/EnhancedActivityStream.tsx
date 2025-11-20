@@ -40,8 +40,8 @@ export function EnhancedActivityStream({ customerId, isLoading }: { customerId?:
     <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-white">Capability Development Activity</h3>
-          <p className="text-xs text-white/50 mt-1">Systematic behaviors building revenue execution infrastructure</p>
+          <h3 className="text-lg font-semibold text-white">What I've been building</h3>
+          <p className="text-xs text-white/50 mt-1">Actions that improve my capability scores</p>
         </div>
         <select className="bg-white/10 border border-white/20 rounded px-2 py-1 text-sm text-white">
           <option>Last 7 days</option>

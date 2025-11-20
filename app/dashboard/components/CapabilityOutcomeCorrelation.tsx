@@ -118,8 +118,8 @@ export function CapabilityOutcomeCorrelation({ customerId, isLoading }: Capabili
             <BarChart3 className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-white">Capability → Outcome Correlation</h2>
-            <p className="text-sm text-white/60">Historical data proves systematic capability predicts performance</p>
+            <h2 className="text-xl font-semibold text-white">Why these capabilities matter</h2>
+            <p className="text-sm text-white/60">Companies with higher scores close more deals—here's the proof</p>
           </div>
         </div>
       </div>
