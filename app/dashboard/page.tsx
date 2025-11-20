@@ -1,92 +1,39 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-
-// Force dynamic rendering (no static generation) for authenticated pages
-export const dynamic = 'force-dynamic';
+import { useRouter } from 'next/navigation';
 import { useRequireAuth, useRequirePayment } from '@/app/lib/auth';
 import { ModernSidebarLayout } from '../../src/shared/components/layout/ModernSidebarLayout';
-import { ProgressOverview } from '../../src/shared/components/dashboard/ProgressOverview';
-import { MilestonesCard } from '../../src/shared/components/dashboard/MilestonesCard';
-import { QuickActions } from '../../src/shared/components/dashboard/QuickActions';
-import { RecentActivity } from '../../src/shared/components/dashboard/RecentActivity';
-import { InsightsPanel } from '../../src/shared/components/dashboard/InsightsPanel';
-import { EnterpriseDashboard } from '../../src/shared/components/dashboard/EnterpriseDashboard';
 import { useCustomer, useProgress, useMilestones, useProgressInsights } from '@/app/lib/hooks/useAPI';
-import { Skeleton, SkeletonCard } from '../../src/shared/components/ui/Skeleton';
+import { Skeleton } from '../../src/shared/components/ui/Skeleton';
 import { useCommandPalette } from '../../src/shared/components/ui/command-palette';
 import { useBehaviorTracking } from '../../src/shared/hooks/useBehaviorTracking';
-import { AuthLoadingScreen } from '../../src/shared/components/auth/AuthLoadingScreen';
-import { authService } from '@/app/lib/auth/auth-service';
 
-// Insight type definition (matches InsightsPanel component)
-interface Insight {
-  id: string;
-  type: 'opportunity' | 'warning' | 'achievement' | 'tip';
-  title: string;
-  description: string;
-  priority: 'high' | 'medium' | 'low';
-  actionable: boolean;
-}
+// Components - Leading Indicators
+import { RevenueExecutionCapabilityScore } from './components/RevenueExecutionCapabilityScore';
+import { CapabilityOutcomeCorrelation } from './components/CapabilityOutcomeCorrelation';
+import { CapabilityGapAnalysis } from './components/CapabilityGapAnalysis';
 
-// Helper function to transform backend insights into component format
-function transformInsightsToArray(backendInsights: any): Insight[] | undefined {
-  if (!backendInsights?.insights) return undefined;
+// Components - Reframed
+import { AIInsightsPanel } from './components/AIInsightsPanel';
+import { BusinessMilestonesCard } from './components/BusinessMilestonesCard';
 
-  const { nextSteps, recommendations, strengths } = backendInsights.insights;
-  const transformedInsights: Insight[] = [];
+// Components - Supporting
+import { SeriesBReadinessScore } from './components/SeriesBReadinessScore';
+import { CompetencyGauges } from './components/CompetencyGauges';
+import { PlatformStats } from './components/PlatformStats';
+import { RevenueTrendChart } from './components/RevenueTrendChart';
+import { ActiveMilestonesCard } from './components/ActiveMilestonesCard';
+import { QuickActionsCard } from './components/QuickActionsCard';
+import { EnhancedActivityStream } from './components/EnhancedActivityStream';
 
-  // Add next steps as opportunities
-  if (nextSteps && Array.isArray(nextSteps)) {
-    nextSteps.forEach((step: string, index: number) => {
-      transformedInsights.push({
-        id: `next-step-${index}`,
-        type: 'opportunity' as const,
-        title: 'Next Step',
-        description: step,
-        priority: 'high' as const,
-        actionable: true,
-      });
-    });
-  }
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
 
-  // Add recommendations as tips
-  if (recommendations && Array.isArray(recommendations)) {
-    recommendations.forEach((rec: string, index: number) => {
-      transformedInsights.push({
-        id: `recommendation-${index}`,
-        type: 'tip' as const,
-        title: 'Recommendation',
-        description: rec,
-        priority: 'medium' as const,
-        actionable: true,
-      });
-    });
-  }
-
-  // Add strengths as achievements
-  if (strengths && Array.isArray(strengths)) {
-    strengths.forEach((strength: string, index: number) => {
-      transformedInsights.push({
-        id: `strength-${index}`,
-        type: 'achievement' as const,
-        title: 'Strength',
-        description: strength,
-        priority: 'low' as const,
-        actionable: false,
-      });
-    });
-  }
-
-  return transformedInsights.length > 0 ? transformedInsights : undefined;
-}
-
-export default function DashboardPage() {
+export default function ConsolidatedDashboard() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { user, loading } = useRequireAuth(); // Auto-redirects if not authenticated
-  const { hasPaid, loading: paymentLoading } = useRequirePayment(); // Verifies payment before access
+  const { user, loading } = useRequireAuth();
+  const { hasPaid, loading: paymentLoading } = useRequirePayment();
   const { openPalette } = useCommandPalette();
 
   const { data: customer, isLoading: customerLoading } = useCustomer(user?.id);
@@ -94,94 +41,26 @@ export default function DashboardPage() {
   const { data: milestones, isLoading: milestonesLoading } = useMilestones(user?.id);
   const { data: insights, isLoading: insightsLoading } = useProgressInsights(user?.id);
 
-  // OAuth loading state - show sophisticated loading screen after OAuth callback
-  const [showAuthLoading, setShowAuthLoading] = useState(false);
-  const [sessionSyncComplete, setSessionSyncComplete] = useState(false);
-
-  // Track page view for user flow analytics (auto-tracks navigation on mount/unmount)
+  // Track page view
   useBehaviorTracking({
     customerId: user?.id || '',
   });
 
-  // 🔄 SESSION SYNCHRONIZATION: Detect OAuth callback and show loading screen
-  useEffect(() => {
-    const authLoading = searchParams.get('auth_loading');
-
-    if (authLoading === 'true' && !sessionSyncComplete) {
-      console.log('🔄 [Dashboard] OAuth callback detected - showing auth loading screen');
-      setShowAuthLoading(true);
-
-      // Force session refresh to ensure admin status is correctly set
-      const syncSession = async () => {
-        console.log('🔄 [Dashboard] Forcing session refresh...');
-        try {
-          const session = await authService.getServerSession();
-          const currentUser = authService.getCurrentUser();
-          console.log('✅ [Dashboard] Session synced:', {
-            userId: currentUser?.id,
-            email: currentUser?.email,
-            isAdmin: currentUser?.isAdmin,
-            sessionValid: !!session
-          });
-        } catch (error) {
-          console.error('❌ [Dashboard] Session sync error:', error);
-        }
-      };
-
-      // Start session sync immediately
-      syncSession();
-    }
-  }, [searchParams, sessionSyncComplete]);
-
-  // Handle auth loading completion
-  const handleAuthLoadingComplete = () => {
-    console.log('✅ [Dashboard] Auth loading complete - session synchronized');
-    setShowAuthLoading(false);
-    setSessionSyncComplete(true);
-
-    // Clean up auth_loading parameter from URL
-    const newUrl = new URL(window.location.href);
-    newUrl.searchParams.delete('auth_loading');
-    router.replace(newUrl.pathname + newUrl.search);
-  };
-
-  // Clean up OAuth callback parameters from URL (code, next, etc.)
-  useEffect(() => {
-    const code = searchParams.get('code');
-    const next = searchParams.get('next');
-
-    // If OAuth parameters are present, clean the URL
-    if (code || next) {
-      console.log('🧹 Cleaning OAuth parameters from dashboard URL');
-      router.replace('/dashboard');
-    }
-  }, [searchParams, router]);
-
-  // Show loading state while checking auth AND payment
+  // Loading state
   if (loading || paymentLoading) {
     return (
       <ModernSidebarLayout>
         <div className="space-y-6">
-          {/* Header skeleton */}
           <div className="flex justify-between items-center">
             <div className="space-y-3">
               <Skeleton variant="text" width="60%" height="h-8" animation="shimmer" />
               <Skeleton variant="text" width="40%" height="h-4" animation="shimmer" />
             </div>
-            <Skeleton variant="text" width="120px" height="h-4" animation="shimmer" />
           </div>
-          
-          {/* Metrics grid skeleton */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map((i) => (
-              <SkeletonCard key={i} animation="shimmer" />
+              <Skeleton key={i} variant="rectangular" height="h-32" animation="shimmer" />
             ))}
-          </div>
-          
-          {/* Content skeleton */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <SkeletonCard animation="shimmer" />
-            <SkeletonCard animation="shimmer" />
           </div>
         </div>
       </ModernSidebarLayout>
@@ -189,16 +68,6 @@ export default function DashboardPage() {
   }
 
   const isLoading = customerLoading || progressLoading || milestonesLoading || insightsLoading;
-
-  // Show sophisticated auth loading screen during OAuth session sync
-  if (showAuthLoading) {
-    return (
-      <AuthLoadingScreen
-        duration={4500} // 4.5 seconds for session sync
-        onComplete={handleAuthLoadingComplete}
-      />
-    );
-  }
 
   return (
     <ModernSidebarLayout>
@@ -210,7 +79,7 @@ export default function DashboardPage() {
               Welcome back{customer?.data?.customerName ? `, ${customer.data.customerName}` : ''}!
             </h1>
             <p className="body text-text-muted mt-1">
-              Here's your revenue intelligence overview
+              Series B Readiness Dashboard
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -234,44 +103,78 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Progress Overview */}
-        <ProgressOverview
-          progress={undefined}
+        {/* PRIORITY #1: Revenue Execution Capability (LEADING INDICATORS) */}
+        <RevenueExecutionCapabilityScore
+          customerId={user?.id}
           isLoading={isLoading}
         />
 
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - 2 cols */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Milestones */}
-            {user?.id && (
-              <MilestonesCard
-                milestones={milestones?.data?.milestones}
-                isLoading={milestonesLoading}
-                customerId={user.id}
-              />
-            )}
+        {/* PRIORITY #2: Capability → Outcome Correlation (PROOF OF CAUSATION) */}
+        <CapabilityOutcomeCorrelation
+          customerId={user?.id}
+          isLoading={isLoading}
+        />
 
-            {/* Recent Activity */}
-            <RecentActivity
-              activities={[]}
-              isLoading={progressLoading}
-            />
-          </div>
+        {/* PRIORITY #3: Capability Gap Analysis (HIGHEST ROI IMPROVEMENTS) */}
+        <CapabilityGapAnalysis
+          customerId={user?.id}
+          isLoading={isLoading}
+        />
 
-          {/* Right Column - 1 col */}
-          <div className="space-y-6">
-            {/* Quick Actions */}
-            {user?.id && <QuickActions customerId={user.id} />}
+        {/* PRIORITY #4: AI-Driven Capability Building Action */}
+        <AIInsightsPanel
+          insights={insights?.data}
+          isLoading={insightsLoading}
+          customerId={user?.id}
+        />
 
-            {/* Insights */}
-            <InsightsPanel
-              insights={transformInsightsToArray(insights?.data) || []}
-              isLoading={insightsLoading}
-            />
-          </div>
+        {/* PRIORITY #5: Current Performance - Trailing Results (LAGGING VALIDATION) */}
+        <BusinessMilestonesCard
+          customerId={user?.id}
+          isLoading={isLoading}
+        />
+
+        {/* Series B Readiness Score */}
+        <SeriesBReadinessScore
+          customerId={user?.id}
+          isLoading={isLoading}
+        />
+
+        {/* Revenue Execution Capabilities + Platform Stats Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <CompetencyGauges
+            customerId={user?.id}
+            isLoading={isLoading}
+          />
+          <PlatformStats
+            customerId={user?.id}
+            isLoading={isLoading}
+          />
         </div>
+
+        {/* Revenue Trajectory Chart */}
+        <RevenueTrendChart
+          customerId={user?.id}
+          isLoading={isLoading}
+        />
+
+        {/* Milestones + Quick Actions Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ActiveMilestonesCard
+            milestones={milestones?.data?.milestones}
+            isLoading={milestonesLoading}
+            customerId={user?.id || ''}
+          />
+          <QuickActionsCard
+            customerId={user?.id || ''}
+          />
+        </div>
+
+        {/* Enhanced Activity Stream */}
+        <EnhancedActivityStream
+          customerId={user?.id}
+          isLoading={isLoading}
+        />
       </div>
     </ModernSidebarLayout>
   );
