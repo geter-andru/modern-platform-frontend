@@ -1,7 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { AlertCircle, TrendingUp, Target } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { AlertCircle, TrendingUp, Target, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface CapabilityGap {
   capability: string;
@@ -26,6 +27,18 @@ interface CapabilityGapAnalysisProps {
 }
 
 export function CapabilityGapAnalysis({ customerId, isLoading }: CapabilityGapAnalysisProps) {
+  const [expandedGaps, setExpandedGaps] = useState<Set<string>>(new Set());
+
+  const toggleGap = (capability: string) => {
+    const newExpanded = new Set(expandedGaps);
+    if (newExpanded.has(capability)) {
+      newExpanded.delete(capability);
+    } else {
+      newExpanded.add(capability);
+    }
+    setExpandedGaps(newExpanded);
+  };
+
   // TODO: Fetch from API
   const gaps: CapabilityGap[] = [
     {
@@ -176,102 +189,131 @@ export function CapabilityGapAnalysis({ customerId, isLoading }: CapabilityGapAn
         </div>
       </div>
 
-      {/* Gap Cards */}
-      <div className="space-y-4">
-        {sortedGaps.map((gap, index) => (
-          <motion.div
-            key={gap.capability}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
-            className={`border rounded-lg p-5 ${getStatusColor(gap.status)}`}
-          >
-            {/* Header Row */}
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-start gap-3 flex-1">
-                {getStatusIcon(gap.status)}
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-lg font-semibold text-white">{gap.capability}</h3>
-                    {getStatusBadge(gap.status)}
-                  </div>
-                  <div className="text-sm text-white/70">
-                    Priority {gap.priority} • {gap.timeToClose} to close gap
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* Gap Cards - Collapsible */}
+      <div className="space-y-3">
+        {sortedGaps.map((gap, index) => {
+          const isExpanded = expandedGaps.has(gap.capability);
 
-            {/* Score Comparison */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <div>
-                <div className="text-xs text-white/50 mb-1">Your Score</div>
-                <div className="text-2xl font-bold text-white">{gap.yourScore}%</div>
-              </div>
-              <div>
-                <div className="text-xs text-white/50 mb-1">Benchmark (Series A)</div>
-                <div className="text-2xl font-bold text-yellow-400">{gap.benchmark}%</div>
-              </div>
-              <div>
-                <div className="text-xs text-white/50 mb-1">Gap to Close</div>
-                <div className="text-2xl font-bold text-red-400">{gap.gap} points</div>
-                <div className="w-full bg-white/10 rounded-full h-2 mt-2">
-                  <div
-                    className="bg-gradient-to-r from-red-500 to-orange-500 h-2 rounded-full"
-                    style={{ width: `${(gap.gap / gap.benchmark) * 100}%` }}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Revenue Impact */}
-            <div className="bg-white/5 border border-white/10 rounded-lg p-4 mb-4">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="w-4 h-4 text-green-400" />
-                <span className="text-sm font-semibold text-white/70 uppercase tracking-wide">
-                  Predicted Revenue Impact
-                </span>
-              </div>
-              <div className="text-white">
-                Closing this gap predicts:{' '}
-                <span className="font-bold text-green-400">{gap.revenueImpact.metric}</span>
-                {gap.revenueImpact.value && (
-                  <>
-                    {' '}({gap.revenueImpact.value})
-                  </>
-                )}
-              </div>
-              <div className="text-xs text-white/50 mt-1">Timeframe: {gap.revenueImpact.timeframe}</div>
-            </div>
-
-            {/* Root Cause */}
-            <div className="mb-4">
-              <div className="text-xs font-semibold text-white/50 mb-2 uppercase tracking-wide">
-                Root Cause Analysis
-              </div>
-              <div className="text-sm text-white/80 bg-white/5 rounded-lg p-3">
-                {gap.rootCause}
-              </div>
-            </div>
-
-            {/* Action Steps */}
-            <div>
-              <div className="text-xs font-semibold text-white/50 mb-2 uppercase tracking-wide">
-                Recommended Actions
-              </div>
-              <div className="space-y-2">
-                {gap.actionSteps.map((step, stepIndex) => (
-                  <div key={stepIndex} className="flex items-start gap-2">
-                    <div className="mt-1 w-5 h-5 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center flex-shrink-0">
-                      <span className="text-xs font-semibold text-blue-300">{stepIndex + 1}</span>
+          return (
+            <motion.div
+              key={gap.capability}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              className={`border rounded-lg overflow-hidden ${getStatusColor(gap.status)}`}
+            >
+              {/* Collapsed Header - Always Visible */}
+              <button
+                onClick={() => toggleGap(gap.capability)}
+                className="w-full p-4 flex items-center justify-between hover:bg-white/5 transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-3 flex-1">
+                  {getStatusIcon(gap.status)}
+                  <div className="flex-1 text-left">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-base font-semibold text-white">{gap.capability}</h3>
+                      {getStatusBadge(gap.status)}
                     </div>
-                    <div className="text-sm text-white/80">{step}</div>
+                    <div className="text-sm text-white/60">
+                      Your score: <span className="font-semibold text-white">{gap.yourScore}%</span> •
+                      Benchmark: <span className="font-semibold text-yellow-400">{gap.benchmark}%</span> •
+                      Gap: <span className="font-semibold text-red-400">{gap.gap} points</span>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        ))}
+                  {isExpanded ? (
+                    <ChevronUp className="w-5 h-5 text-white/60 flex-shrink-0" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 text-white/60 flex-shrink-0" />
+                  )}
+                </div>
+              </button>
+
+              {/* Expanded Content */}
+              <AnimatePresence>
+                {isExpanded && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-4 pb-4 pt-2 border-t border-white/10">
+                      {/* Score Comparison */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                          <div className="text-xs text-white/50 mb-1">Your Score</div>
+                          <div className="text-2xl font-bold text-white">{gap.yourScore}%</div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-white/50 mb-1">Benchmark (Series A)</div>
+                          <div className="text-2xl font-bold text-yellow-400">{gap.benchmark}%</div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-white/50 mb-1">Gap to Close</div>
+                          <div className="text-2xl font-bold text-red-400">{gap.gap} points</div>
+                          <div className="w-full bg-white/10 rounded-full h-2 mt-2">
+                            <div
+                              className="bg-gradient-to-r from-red-500 to-orange-500 h-2 rounded-full"
+                              style={{ width: `${(gap.gap / gap.benchmark) * 100}%` }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Revenue Impact */}
+                      <div className="bg-white/5 border border-white/10 rounded-lg p-4 mb-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <TrendingUp className="w-4 h-4 text-green-400" />
+                          <span className="text-sm font-semibold text-white/70 uppercase tracking-wide">
+                            Predicted Revenue Impact
+                          </span>
+                        </div>
+                        <div className="text-white">
+                          Closing this gap predicts:{' '}
+                          <span className="font-bold text-green-400">{gap.revenueImpact.metric}</span>
+                          {gap.revenueImpact.value && (
+                            <>
+                              {' '}({gap.revenueImpact.value})
+                            </>
+                          )}
+                        </div>
+                        <div className="text-xs text-white/50 mt-1">Timeframe: {gap.revenueImpact.timeframe}</div>
+                      </div>
+
+                      {/* Root Cause */}
+                      <div className="mb-4">
+                        <div className="text-xs font-semibold text-white/50 mb-2 uppercase tracking-wide">
+                          Root Cause Analysis
+                        </div>
+                        <div className="text-sm text-white/80 bg-white/5 rounded-lg p-3">
+                          {gap.rootCause}
+                        </div>
+                      </div>
+
+                      {/* Action Steps */}
+                      <div>
+                        <div className="text-xs font-semibold text-white/50 mb-2 uppercase tracking-wide">
+                          Recommended Actions ({gap.timeToClose} to close)
+                        </div>
+                        <div className="space-y-2">
+                          {gap.actionSteps.map((step, stepIndex) => (
+                            <div key={stepIndex} className="flex items-start gap-2">
+                              <div className="mt-1 w-5 h-5 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center flex-shrink-0">
+                                <span className="text-xs font-semibold text-blue-300">{stepIndex + 1}</span>
+                              </div>
+                              <div className="text-sm text-white/80">{step}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
       </div>
 
       {/* Bottom CTA */}

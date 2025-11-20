@@ -179,6 +179,30 @@ export default function ICPDemoV2Page() {
     }
   }, []);
 
+  // Helper: Calculate confidence for a single persona
+  const calculatePersonaConfidence = (persona: any) => {
+    const hasGoals = persona.goals && persona.goals.length > 0;
+    const hasPainPoints = persona.painPoints && persona.painPoints.length > 0;
+    const hasObjections = persona.objections && persona.objections.length > 0;
+    const hasDemographics = persona.demographics && Object.keys(persona.demographics).length > 0;
+    const hasPsychographics = persona.psychographics && Object.keys(persona.psychographics).length > 0;
+
+    const dataPoints = [hasGoals, hasPainPoints, hasObjections, hasDemographics, hasPsychographics];
+    const collectedPoints = dataPoints.filter(Boolean).length;
+    return Math.round((collectedPoints / dataPoints.length) * 100);
+  };
+
+  // Helper: Calculate quality summary for all personas
+  const calculateQualitySummary = (personas: any[]) => {
+    const confidenceScores = personas.map(calculatePersonaConfidence);
+    const highConfidence = confidenceScores.filter(score => score >= 80).length;
+    const mediumConfidence = confidenceScores.filter(score => score >= 60 && score < 80).length;
+    const lowConfidence = confidenceScores.filter(score => score < 60).length;
+    const avgConfidence = Math.round(confidenceScores.reduce((sum, score) => sum + score, 0) / confidenceScores.length);
+
+    return { highConfidence, mediumConfidence, lowConfidence, avgConfidence, total: personas.length };
+  };
+
   // Option 9: Cinematic persona reveal function
   const revealPersonasCinematically = async (personas: any[]) => {
     // Clear any existing reveals
@@ -202,9 +226,9 @@ export default function ICPDemoV2Page() {
       }
     );
 
-    // Stagger persona reveals (RPG loot drop feeling)
+    // Stagger persona reveals (RPG loot drop feeling) - ENHANCED FROM 300ms to 400ms
     for (let i = 0; i < personas.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise(resolve => setTimeout(resolve, 400));
 
       setRevealedPersonas(prev => [...prev, personas[i]]);
 
@@ -1397,6 +1421,66 @@ Try it: https://andru-ai.com/demo`;
               >
                 {activeTab === 'personas' && (
                   <>
+                    {/* Quality Summary Banner */}
+                    {(() => {
+                      const quality = calculateQualitySummary(generatedPersonas);
+                      return (
+                        <div className="mb-6 p-4 rounded-xl border" style={{
+                          background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%)',
+                          borderColor: 'rgba(16, 185, 129, 0.2)'
+                        }}>
+                          <div className="flex items-center justify-between gap-4 flex-wrap">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 rounded-lg" style={{
+                                background: 'rgba(16, 185, 129, 0.1)'
+                              }}>
+                                <CheckCircle2 className="w-5 h-5 text-green-400" />
+                              </div>
+                              <div>
+                                <h3 className="text-sm font-semibold text-text-primary">
+                                  Analysis Quality Score: {quality.avgConfidence}%
+                                </h3>
+                                <p className="text-xs text-text-muted">
+                                  {quality.highConfidence} of {quality.total} personas have high confidence
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Confidence Indicators */}
+                            <div className="flex items-center gap-2">
+                              {quality.highConfidence > 0 && (
+                                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full" style={{
+                                  background: 'rgba(16, 185, 129, 0.1)',
+                                  border: '1px solid rgba(16, 185, 129, 0.3)'
+                                }}>
+                                  <div className="w-2 h-2 rounded-full bg-green-400" />
+                                  <span className="text-xs font-medium text-green-400">{quality.highConfidence} High</span>
+                                </div>
+                              )}
+                              {quality.mediumConfidence > 0 && (
+                                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full" style={{
+                                  background: 'rgba(251, 191, 36, 0.1)',
+                                  border: '1px solid rgba(251, 191, 36, 0.3)'
+                                }}>
+                                  <div className="w-2 h-2 rounded-full bg-yellow-400" />
+                                  <span className="text-xs font-medium text-yellow-400">{quality.mediumConfidence} Medium</span>
+                                </div>
+                              )}
+                              {quality.lowConfidence > 0 && (
+                                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full" style={{
+                                  background: 'rgba(239, 68, 68, 0.1)',
+                                  border: '1px solid rgba(239, 68, 68, 0.3)'
+                                }}>
+                                  <div className="w-2 h-2 rounded-full bg-red-400" />
+                                  <span className="text-xs font-medium text-red-400">{quality.lowConfidence} Low</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
                     <BuyerPersonasWidget
                       personas={generatedPersonas}
                       isDemo={true}

@@ -322,119 +322,174 @@ export default function HomePage() {
       {/* Animated Background */}
       <MotionBackground />
 
-      {/* Hero Section */}
+      {/* Dual-Panel Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-24 sm:pb-32 w-full">
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-24 sm:pb-32">
-          <motion.div
-            className="text-center"
-            initial="initial"
-            animate="animate"
-            variants={staggerChildren}
-          >
-            {/* Logo/Brand with Glass Effect */}
-            <motion.div variants={fadeInUp} className="mb-12">
-              <div className="inline-block px-8 py-4 rounded-2xl glass" style={{
-                background: 'var(--glass-background, rgba(255, 255, 255, 0.03))',
-                backdropFilter: 'var(--glass-backdrop, blur(16px))',
-                border: '1px solid var(--glass-border, rgba(255, 255, 255, 0.08))',
-                boxShadow: 'var(--shadow-lg, 0 10px 25px rgba(0, 0, 0, 0.4))'
-              }}>
-                <h2 className="text-2xl font-bold tracking-wide" style={{
+          {/* Desktop: Side-by-side | Mobile: Stacked */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center">
+
+            {/* LEFT PANEL - Messaging (40% on desktop) */}
+            <motion.div
+              className="lg:col-span-2"
+              initial="initial"
+              animate="animate"
+              variants={staggerChildren}
+            >
+              {/* Logo/Brand with Glass Effect */}
+              <motion.div variants={fadeInUp} className="mb-8">
+                <div className="inline-block px-6 py-3 rounded-xl glass" style={{
+                  background: 'var(--glass-background, rgba(255, 255, 255, 0.03))',
+                  backdropFilter: 'var(--glass-backdrop, blur(16px))',
+                  border: '1px solid var(--glass-border, rgba(255, 255, 255, 0.08))',
+                  boxShadow: 'var(--shadow-lg, 0 10px 25px rgba(0, 0, 0, 0.4))'
+                }}>
+                  <h2 className="text-xl font-bold tracking-wide" style={{
+                    color: 'var(--color-text-primary, #ffffff)',
+                    fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                    fontWeight: 'var(--font-weight-semibold, 600)',
+                    letterSpacing: 'var(--tracking-wide, 0.5px)',
+                    textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                  }}>
+                    Andru Revenue Intelligence
+                  </h2>
+                </div>
+              </motion.div>
+
+              {/* Executive-Level Headline */}
+              <motion.h1
+                variants={fadeInUp}
+                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight"
+                style={{
                   color: 'var(--color-text-primary, #ffffff)',
                   fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                  fontWeight: 'var(--font-weight-semibold, 600)',
-                  letterSpacing: 'var(--tracking-wide, 0.5px)',
-                  textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-                }}>
-                  Andru Revenue Intelligence
-                </h2>
-              </div>
+                  fontWeight: 'var(--font-weight-bold, 700)',
+                  letterSpacing: 'var(--tracking-tighter, -0.02em)',
+                  textShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
+                }}
+              >
+                90% of Startups Fail for Lack of Market Need?
+              </motion.h1>
+
+              <motion.h2
+                variants={fadeInUp}
+                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight"
+                style={{
+                  background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                  fontWeight: 'var(--font-weight-bold, 700)',
+                  letterSpacing: 'var(--tracking-tighter, -0.02em)',
+                }}
+              >
+                No. They Fail for Lack of Market Clarity.
+              </motion.h2>
+
+              {/* Executive Subheadline */}
+              <motion.p
+                variants={fadeInUp}
+                className="text-lg sm:text-xl mb-8 leading-relaxed"
+                style={{
+                  color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
+                  fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                  fontWeight: 'var(--font-weight-normal, 400)',
+                  lineHeight: 'var(--line-height-relaxed, 1.6)',
+                  textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+                }}
+              >
+                Andru tells you WHO to sell to, WHAT they care about, HOW to close them—minutes, not months.
+              </motion.p>
+
+              {/* Single Primary CTA */}
+              <motion.div
+                variants={fadeInUp}
+                className="mb-6"
+              >
+                <Link
+                  href="/icp/demo-v2"
+                  onClick={() => handleCtaClick('Generate My Andru ICP - 3 Minutes, Free', 'hero')}
+                  className="inline-flex items-center justify-center gap-2 px-10 py-5 rounded-xl font-semibold text-base transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 w-full sm:w-auto"
+                  style={{
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                    color: '#ffffff',
+                    fontFamily: '"Inter", sans-serif',
+                    fontWeight: '600',
+                    boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2)'
+                  }}
+                >
+                  <Sparkles className="w-5 h-5" />
+                  Generate My Andru ICP — 3 Minutes, Free
+                </Link>
+              </motion.div>
+
+              {/* Trust Signals */}
+              <motion.div variants={fadeInUp}>
+                <div
+                  className="flex flex-wrap items-center gap-3 text-sm"
+                  style={{
+                    color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))',
+                    fontFamily: '"Inter", sans-serif'
+                  }}
+                >
+                  <span>✓ No signup required</span>
+                  <span style={{ color: 'var(--color-text-subtle, rgba(255, 255, 255, 0.4))' }}>•</span>
+                  <span>✓ See full sample output</span>
+                </div>
+              </motion.div>
             </motion.div>
 
-            {/* Executive-Level Headline */}
-            <motion.h1
-              variants={fadeInUp}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
-              style={{
-                color: 'var(--color-text-primary, #ffffff)',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                fontWeight: 'var(--font-weight-bold, 700)',
-                letterSpacing: 'var(--tracking-tighter, -0.02em)',
-                textShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
-              }}
-            >
-              90% of Startups Fail for Lack of Market Need?
-            </motion.h1>
-
-            <motion.h2
-              variants={fadeInUp}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
-              style={{
-                background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                fontWeight: 'var(--font-weight-bold, 700)',
-                letterSpacing: 'var(--tracking-tighter, -0.02em)',
-              }}
-            >
-              No. They Fail for Lack of Market Clarity.
-            </motion.h2>
-
-            {/* Executive Subheadline */}
-            <motion.p
-              variants={fadeInUp}
-              className="text-xl sm:text-2xl max-w-4xl mx-auto mb-12 leading-relaxed"
-              style={{
-                color: 'var(--color-text-secondary, rgba(255, 255, 255, 0.8))',
-                fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                fontWeight: 'var(--font-weight-normal, 400)',
-                lineHeight: 'var(--line-height-relaxed, 1.6)',
-                textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
-              }}
-            >
-              Andru tells you WHO to sell to, WHAT they care about, HOW to close them—minutes, not months.
-            </motion.p>
-
-            {/* Single Primary CTA */}
+            {/* RIGHT PANEL - Live Demo Preview (60% on desktop) */}
             <motion.div
-              variants={fadeInUp}
-              className="mb-12"
+              className="lg:col-span-3"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <Link
-                href="/icp/demo-v2"
-                onClick={() => handleCtaClick('Generate My Andru ICP - 3 Minutes, Free', 'hero')}
-                className="inline-flex items-center justify-center gap-2 px-12 py-6 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
-                style={{
-                  background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-                  color: '#ffffff',
-                  fontFamily: '"Inter", sans-serif',
-                  fontWeight: '600',
-                  boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2)'
-                }}
-              >
-                <Sparkles className="w-5 h-5" />
-                Generate My Andru ICP — 3 Minutes, Free
-              </Link>
-            </motion.div>
+              {/* Demo Context Badge */}
+              <div className="mb-4 text-center lg:text-left">
+                <span className="inline-block text-sm font-medium px-3 py-1 rounded-full" style={{
+                  background: 'rgba(59, 130, 246, 0.1)',
+                  color: '#3b82f6',
+                  border: '1px solid rgba(59, 130, 246, 0.3)'
+                }}>
+                  Sample for DevTool Pro — AI code review platform
+                </span>
+              </div>
 
-            {/* Trust Signals */}
-            <motion.div variants={fadeInUp} className="mt-8">
+              {/* Demo Widget */}
               <div
-                className="flex flex-wrap items-center justify-center gap-3 text-sm"
+                className="rounded-2xl p-6"
                 style={{
-                  color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))',
-                  fontFamily: '"Inter", sans-serif'
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'
                 }}
               >
-                <span>✓ No signup required</span>
-                <span style={{ color: 'var(--color-text-subtle, rgba(255, 255, 255, 0.4))' }}>•</span>
-                <span>✓ See full sample output</span>
+                <BuyerPersonasWidget
+                  isDemo={true}
+                  personas={demoData.personas.slice(0, 2)}
+                  className="demo-preview"
+                />
+
+                {/* Preview Indicator */}
+                <div className="mt-4 pt-4 border-t" style={{
+                  borderColor: 'rgba(255, 255, 255, 0.1)'
+                }}>
+                  <p className="text-center text-xs" style={{
+                    color: 'var(--color-text-muted, rgba(255, 255, 255, 0.6))',
+                    fontFamily: '"Inter", sans-serif'
+                  }}>
+                    <Eye className="inline-block w-3 h-3 mr-1" />
+                    Showing 2 of 5 detailed personas
+                  </p>
+                </div>
               </div>
             </motion.div>
-          </motion.div>
+
+          </div>
         </div>
       </section>
 
