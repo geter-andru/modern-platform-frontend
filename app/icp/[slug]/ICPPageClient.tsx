@@ -448,7 +448,7 @@ export default function ICPPageClient({ scenario }: ICPPageClientProps) {
                 See My Buyer Intelligence Score
               </a>
               <a
-                href="/icp/demo-v2"
+                href="/icp/demo"
                 onClick={() => handleCtaClick('Demo Andru', 'footer')}
                 className="inline-block font-bold px-8 py-4 rounded-lg hover:-translate-y-0.5 hover:shadow-lg transition-all w-full sm:w-auto"
                 style={{

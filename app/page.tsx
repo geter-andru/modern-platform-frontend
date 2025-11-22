@@ -390,7 +390,7 @@ export default function HomePage() {
                 className="mb-6"
               >
                 <Link
-                  href="/icp/demo-v2"
+                  href="/icp/demo"
                   onClick={() => handleCtaClick('Generate My Andru ICP - 3 Minutes, Free', 'hero')}
                   className="inline-flex items-center justify-center gap-2 px-10 py-5 rounded-xl font-semibold text-base transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 w-full sm:w-auto"
                   style={{
@@ -570,7 +570,7 @@ export default function HomePage() {
               className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             >
               <Link
-                href="/icp/demo-v2"
+                href="/icp/demo"
                 onClick={() => handleCtaClick('Generate This For My Product', 'demo-preview')}
                 className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
                 style={{
@@ -711,7 +711,7 @@ export default function HomePage() {
               iconBgColor="rgba(59, 130, 246, 0.15)"
               iconBorderColor="rgba(59, 130, 246, 0.3)"
               animationDelay={0.1}
-              href="/icp/demo-v2"
+              href="/icp/demo"
               ctaText="Try Demo"
               className="lg:row-span-3"
             />

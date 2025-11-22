@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ChevronDown, Menu, X, Download, ArrowLeft, Share2, Sparkles } from 'lucide-react';
+import { ChevronDown, Menu, X, Download, ArrowLeft, Share2, Sparkles, FileText, Target } from 'lucide-react';
 import BuyerPersonasWidget from '../../../../src/features/icp-analysis/widgets/BuyerPersonasWidget';
 import { MotionBackground } from '../../../../src/shared/components/ui/MotionBackground';
 import { FooterLayout } from '../../../../src/shared/components/layout/FooterLayout';
@@ -13,6 +13,136 @@ import { exportICPToPDF } from '@/app/lib/utils/pdf-export';
 import { exportToMarkdown, exportToCSV } from '@/app/lib/utils/data-export';
 import toast, { Toaster } from 'react-hot-toast';
 import demoData from '../../../../data/demo-icp-devtool.json';
+import { Copy, Twitter, Linkedin, Mail, X as CloseIcon, Link as LinkIcon, Check } from 'lucide-react';
+
+// Social Sharing Modal Component
+function ShareModal({
+  isOpen,
+  onClose,
+  productName,
+  personaCount
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  productName: string;
+  personaCount: number;
+}) {
+  const [copied, setCopied] = useState(false);
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const shareText = `Just discovered ${personaCount} ideal buyer personas for ${productName} using @AndruAI! Find your ICPs in 2 minutes:`;
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const shareOptions = [
+    {
+      name: 'Twitter / X',
+      icon: Twitter,
+      color: 'bg-[#1DA1F2]/20 hover:bg-[#1DA1F2]/30 text-[#1DA1F2]',
+      onClick: () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank')
+    },
+    {
+      name: 'LinkedIn',
+      icon: Linkedin,
+      color: 'bg-[#0A66C2]/20 hover:bg-[#0A66C2]/30 text-[#0A66C2]',
+      onClick: () => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, '_blank')
+    },
+    {
+      name: 'Email',
+      icon: Mail,
+      color: 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400',
+      onClick: () => window.open(`mailto:?subject=${encodeURIComponent(`Check out my ICP for ${productName}`)}&body=${encodeURIComponent(`${shareText}\n\n${shareUrl}`)}`, '_blank')
+    }
+  ];
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* Modal */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        className="relative w-full max-w-md rounded-2xl p-6"
+        style={{
+          background: 'linear-gradient(135deg, rgba(30, 30, 40, 0.95) 0%, rgba(20, 20, 30, 0.98) 100%)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+        }}
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/10 transition-colors"
+        >
+          <CloseIcon className="w-5 h-5 text-gray-400" />
+        </button>
+
+        {/* Header */}
+        <div className="text-center mb-6">
+          <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+            <Share2 className="w-7 h-7 text-white" />
+          </div>
+          <h3 className="text-xl font-bold text-white mb-2">Share Your ICP</h3>
+          <p className="text-sm text-gray-400">
+            Share your buyer personas with your team or on social media
+          </p>
+        </div>
+
+        {/* Share options */}
+        <div className="space-y-3 mb-6">
+          {shareOptions.map((option) => (
+            <button
+              key={option.name}
+              onClick={option.onClick}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${option.color}`}
+            >
+              <option.icon className="w-5 h-5" />
+              <span className="font-medium">Share on {option.name}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Copy link */}
+        <div className="pt-4 border-t border-white/10">
+          <p className="text-xs text-gray-400 mb-2">Or copy link</p>
+          <div className="flex gap-2">
+            <div className="flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 truncate">
+              {shareUrl}
+            </div>
+            <button
+              onClick={handleCopyLink}
+              className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
+                copied
+                  ? 'bg-emerald-500 text-white'
+                  : 'bg-blue-500 hover:bg-blue-600 text-white'
+              }`}
+            >
+              {copied ? (
+                <span className="flex items-center gap-1"><Check className="w-4 h-4" /> Copied</span>
+              ) : (
+                <span className="flex items-center gap-1"><Copy className="w-4 h-4" /> Copy</span>
+              )}
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
 
 // Session storage keys
 const SESSION_KEYS = {
@@ -29,6 +159,79 @@ function slugToDisplayName(slug: string): string {
     .join(' ');
 }
 
+// Journey Indicator Component for showing progress through the demo flow
+function JourneyIndicator({ currentStep }: { currentStep: 1 | 2 | 3 }) {
+  const steps = [
+    { number: 1, label: 'Describe Product', icon: FileText },
+    { number: 2, label: 'AI Analysis', icon: Sparkles },
+    { number: 3, label: 'Your Personas', icon: Target }
+  ];
+
+  return (
+    <div className="flex items-center justify-center gap-2 mb-8">
+      {steps.map((step, index) => {
+        const isCompleted = step.number < currentStep;
+        const isCurrent = step.number === currentStep;
+
+        return (
+          <React.Fragment key={step.number}>
+            {/* Step Circle */}
+            <motion.div
+              className="flex items-center gap-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <div
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 ${
+                  isCompleted
+                    ? 'bg-emerald-500 text-white'
+                    : isCurrent
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg shadow-blue-500/30'
+                    : 'bg-gray-700 text-gray-400'
+                }`}
+              >
+                {isCompleted ? (
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 500 }}
+                  >
+                    ✓
+                  </motion.span>
+                ) : (
+                  <step.icon className="w-4 h-4" />
+                )}
+              </div>
+              <span
+                className={`text-sm font-medium hidden sm:inline ${
+                  isCurrent ? 'text-white' : isCompleted ? 'text-emerald-400' : 'text-gray-500'
+                }`}
+              >
+                {step.label}
+              </span>
+            </motion.div>
+
+            {/* Connector Line */}
+            {index < steps.length - 1 && (
+              <div className="w-8 sm:w-12 h-0.5 relative overflow-hidden rounded-full">
+                <div className="absolute inset-0 bg-gray-700" />
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: isCompleted ? 1 : 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  style={{ transformOrigin: 'left' }}
+                />
+              </div>
+            )}
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function PeopleWhoNeedPage() {
   const router = useRouter();
   const params = useParams();
@@ -39,6 +242,7 @@ export default function PeopleWhoNeedPage() {
   const [productInfo, setProductInfo] = useState<{ name: string; description: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   // Load personas from session storage on mount
   useEffect(() => {
@@ -59,11 +263,11 @@ export default function PeopleWhoNeedPage() {
         } else {
           // No session data - redirect back to form
           console.log('No personas in session storage, redirecting to form');
-          router.push('/icp/demo-v2');
+          router.push('/icp/demo');
         }
       } catch (error) {
         console.error('Error loading session data:', error);
-        router.push('/icp/demo-v2');
+        router.push('/icp/demo');
       }
     };
 
@@ -210,7 +414,7 @@ export default function PeopleWhoNeedPage() {
                     >
                       <div className="py-2">
                         <Link
-                          href="/icp/demo-v2"
+                          href="/icp/demo"
                           className="block px-4 py-2 text-sm transition-colors hover:bg-white/5"
                           style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                           onClick={() => setProductDropdownOpen(false)}
@@ -299,7 +503,7 @@ export default function PeopleWhoNeedPage() {
                 Free Assessment
               </a>
               <Link
-                href="/icp/demo-v2"
+                href="/icp/demo"
                 className="block py-2 text-sm font-medium"
                 style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                 onClick={() => setMobileMenuOpen(false)}
@@ -342,6 +546,9 @@ export default function PeopleWhoNeedPage() {
       {/* Main Content */}
       <main className="relative z-10 pt-24 pb-16 px-4">
         <div className="max-w-6xl mx-auto">
+          {/* Journey Indicator - Step 3: Your Personas (completed) */}
+          <JourneyIndicator currentStep={3} />
+
           {/* Back Link & Title */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -350,7 +557,7 @@ export default function PeopleWhoNeedPage() {
             className="mb-8"
           >
             <Link
-              href="/icp/demo-v2"
+              href="/icp/demo"
               className="inline-flex items-center gap-2 text-sm mb-6 transition-colors hover:text-blue-400"
               style={{ color: 'rgba(255, 255, 255, 0.6)' }}
             >
@@ -371,21 +578,37 @@ export default function PeopleWhoNeedPage() {
                 </p>
               </div>
 
-              {/* Export Button */}
-              <div className="relative">
+              {/* Action Buttons */}
+              <div className="flex items-center gap-3">
+                {/* Share Button */}
                 <button
-                  onClick={() => setShowExportMenu(!showExportMenu)}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm transition-all"
+                  onClick={() => setShowShareModal(true)}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all hover:scale-105"
                   style={{
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%)',
+                    border: '1px solid rgba(139, 92, 246, 0.3)',
                     color: '#ffffff'
                   }}
                 >
-                  <Download className="w-4 h-4" />
-                  Export
-                  <ChevronDown className={`w-4 h-4 transition-transform ${showExportMenu ? 'rotate-180' : ''}`} />
+                  <Share2 className="w-4 h-4" />
+                  Share
                 </button>
+
+                {/* Export Button */}
+                <div className="relative">
+                  <button
+                    onClick={() => setShowExportMenu(!showExportMenu)}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm transition-all"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      color: '#ffffff'
+                    }}
+                  >
+                    <Download className="w-4 h-4" />
+                    Export
+                    <ChevronDown className={`w-4 h-4 transition-transform ${showExportMenu ? 'rotate-180' : ''}`} />
+                  </button>
 
                 {showExportMenu && (
                   <>
@@ -428,9 +651,18 @@ export default function PeopleWhoNeedPage() {
                     </div>
                   </>
                 )}
+                </div>
               </div>
             </div>
           </motion.div>
+
+          {/* Share Modal */}
+          <ShareModal
+            isOpen={showShareModal}
+            onClose={() => setShowShareModal(false)}
+            productName={productInfo?.name || slugToDisplayName(slug)}
+            personaCount={personas.length}
+          />
 
           {/* Buyer Personas Widget */}
           <motion.div

@@ -56,7 +56,7 @@ export default function EnterpriseSalesFrameworksPage() {
             className="flex flex-col sm:flex-row gap-4 justify-center mt-10"
           >
             <Link
-              href="/icp/demo-v2"
+              href="/icp/demo"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1"
               style={{
                 background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
@@ -338,7 +338,7 @@ export default function EnterpriseSalesFrameworksPage() {
             </p>
 
             <Link
-              href="/icp/demo-v2"
+              href="/icp/demo"
               className="inline-flex items-center justify-center gap-2 px-10 py-5 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1"
               style={{
                 background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',

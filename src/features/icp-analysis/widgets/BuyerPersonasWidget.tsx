@@ -17,7 +17,10 @@ import {
   TrendingUp,
   MessageSquare,
   Info,
-  ChevronDown
+  ChevronDown,
+  Briefcase,
+  Wrench,
+  Star
 } from 'lucide-react'
 import { usePersonasCache } from '@/app/lib/hooks/cache'
 
@@ -383,9 +386,26 @@ export default function BuyerPersonasWidget({
             <h3 className="text-lg font-semibold text-white truncate">
               {persona.title}
             </h3>
-            <p className="text-sm text-gray-500 truncate">
+            {/* Category Badge with color coding */}
+            <span
+              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+                persona.role?.toLowerCase().includes('economic')
+                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                  : persona.role?.toLowerCase().includes('technical')
+                  ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
+                  : persona.role?.toLowerCase().includes('champion')
+                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                  : 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+              }`}
+            >
+              {persona.role?.toLowerCase().includes('economic') && <Briefcase className="w-3 h-3" />}
+              {persona.role?.toLowerCase().includes('technical') && <Wrench className="w-3 h-3" />}
+              {persona.role?.toLowerCase().includes('champion') && <Star className="w-3 h-3" />}
+              {!persona.role?.toLowerCase().includes('economic') &&
+               !persona.role?.toLowerCase().includes('technical') &&
+               !persona.role?.toLowerCase().includes('champion') && <User className="w-3 h-3" />}
               {persona.role}
-            </p>
+            </span>
           </div>
         </div>
 
@@ -603,8 +623,8 @@ export default function BuyerPersonasWidget({
                   <div>
                     <div className="mb-4">
                       <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                        <Target className="w-5 h-5 text-blue-400" />
-                        💼 Economic Buyers ({economicBuyers.length})
+                        <Briefcase className="w-5 h-5 text-emerald-400" />
+                        Economic Buyers ({economicBuyers.length})
                       </h3>
                       <p className="text-sm text-gray-500 mt-1">
                         C-level executives with budget authority and final purchasing decisions
@@ -621,8 +641,8 @@ export default function BuyerPersonasWidget({
                   <div>
                     <div className="mb-4">
                       <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                        <Brain className="w-5 h-5 text-purple-400" />
-                        🔧 Technical Buyers ({technicalBuyers.length})
+                        <Wrench className="w-5 h-5 text-purple-400" />
+                        Technical Buyers ({technicalBuyers.length})
                       </h3>
                       <p className="text-sm text-gray-500 mt-1">
                         VPs and directors who evaluate technical fit, integration, and quality standards

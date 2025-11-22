@@ -109,7 +109,7 @@ export default function ComingSoonPage() {
             </Link>
 
             <Link
-              href="/icp/demo-v2"
+              href="/icp/demo"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-1"
               style={{
                 background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',

@@ -57,7 +57,7 @@ function info(message) {
 const REQUIRED_FIELDS = ['company', 'slug', 'title', 'persona', 'scenario', 'worstCase', 'timestamps'];
 const TIMESTAMP_FIELDS = ['time', 'narrative'];
 const SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/; // kebab-case only
-const RESERVED_SLUGS = ['demo-v2', 'overview', 'demo', 'test'];
+const RESERVED_SLUGS = ['overview', 'demo', 'demo-old', 'test'];
 
 function validateJSON(filePath) {
   try {

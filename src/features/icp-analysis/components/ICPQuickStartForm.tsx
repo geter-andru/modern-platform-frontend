@@ -32,7 +32,7 @@ export function ICPQuickStartForm({
       // Store in localStorage and redirect to full ICP page
       localStorage.setItem('icp_quickstart_product', productName);
       localStorage.setItem('icp_quickstart_description', productDescription);
-      router.push('/icp/demo-v2');
+      router.push('/icp/demo');
     }
   };
 
