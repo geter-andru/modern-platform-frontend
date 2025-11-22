@@ -106,14 +106,14 @@ export default function HomePage() {
                 Free Assessment
               </a>
 
-              {/* Why Andru Dropdown */}
+              {/* Product Dropdown */}
               <div className="relative">
                 <button
                   onClick={() => setWhyAndruOpen(!whyAndruOpen)}
                   className="flex items-center gap-1 text-sm font-medium transition-colors hover:text-blue-400"
                   style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                 >
-                  Why Andru
+                  Product
                   <ChevronDown className={`w-4 h-4 transition-transform ${whyAndruOpen ? 'rotate-180' : ''}`} />
                 </button>
 
@@ -127,7 +127,7 @@ export default function HomePage() {
 
                     {/* Dropdown Menu */}
                     <div
-                      className="absolute top-full left-0 mt-2 w-56 rounded-lg z-20"
+                      className="absolute top-full left-0 mt-2 w-64 rounded-lg z-20"
                       style={{
                         background: 'rgba(0, 0, 0, 0.9)',
                         backdropFilter: 'blur(20px)',
@@ -137,44 +137,36 @@ export default function HomePage() {
                     >
                       <div className="py-2">
                         <Link
-                          href="/compare/and-clay"
+                          href="/coming-soon"
                           className="block px-4 py-2 text-sm transition-colors hover:bg-white/5"
                           style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                           onClick={() => setWhyAndruOpen(false)}
                         >
-                          Andru & Clay
+                          Your Andru ICP
                         </Link>
                         <Link
-                          href="/compare/and-gong"
+                          href="/enterprise-sales-frameworks"
                           className="block px-4 py-2 text-sm transition-colors hover:bg-white/5"
                           style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                           onClick={() => setWhyAndruOpen(false)}
                         >
-                          Andru & Gong
+                          Enterprise Sales Frameworks
                         </Link>
                         <Link
-                          href="/compare/and-hubspot"
+                          href="/investor-readiness-dashboard"
                           className="block px-4 py-2 text-sm transition-colors hover:bg-white/5"
                           style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                           onClick={() => setWhyAndruOpen(false)}
                         >
-                          Andru & HubSpot
+                          Investor Readiness Dashboard
                         </Link>
                         <Link
-                          href="/compare/and-salesforce"
+                          href="/coming-soon"
                           className="block px-4 py-2 text-sm transition-colors hover:bg-white/5"
                           style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                           onClick={() => setWhyAndruOpen(false)}
                         >
-                          Andru & Salesforce
-                        </Link>
-                        <Link
-                          href="/compare/and-zoominfo"
-                          className="block px-4 py-2 text-sm transition-colors hover:bg-white/5"
-                          style={{ color: 'rgba(255, 255, 255, 0.8)' }}
-                          onClick={() => setWhyAndruOpen(false)}
-                        >
-                          Andru & ZoomInfo
+                          Product Roadmap
                         </Link>
                       </div>
                     </div>
@@ -196,16 +188,18 @@ export default function HomePage() {
               >
                 Pricing
               </Link>
-              <Link
-                href="/login"
-                className="px-6 py-2 rounded-lg font-semibold text-sm transition-all"
+              <a
+                href="https://andru-ai.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2 rounded-lg font-semibold text-sm transition-all whitespace-nowrap"
                 style={{
                   background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
                   color: '#ffffff'
                 }}
               >
-                Login
-              </Link>
+                Get My Revenue Readiness Score
+              </a>
             </div>
 
             {/* Mobile Menu Button */}
@@ -232,57 +226,49 @@ export default function HomePage() {
                 Free Assessment
               </a>
 
-              {/* Why Andru - Mobile */}
+              {/* Product - Mobile */}
               <div>
                 <button
                   onClick={() => setWhyAndruOpen(!whyAndruOpen)}
                   className="flex items-center justify-between w-full py-2 text-sm font-medium"
                   style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                 >
-                  Why Andru
+                  Product
                   <ChevronDown className={`w-4 h-4 transition-transform ${whyAndruOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {whyAndruOpen && (
                   <div className="pl-4 mt-2 space-y-2">
                     <Link
-                      href="/compare/and-clay"
+                      href="/coming-soon"
                       className="block py-2 text-sm"
                       style={{ color: 'rgba(255, 255, 255, 0.6)' }}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Andru & Clay
+                      Your Andru ICP
                     </Link>
                     <Link
-                      href="/compare/and-gong"
+                      href="/enterprise-sales-frameworks"
                       className="block py-2 text-sm"
                       style={{ color: 'rgba(255, 255, 255, 0.6)' }}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Andru & Gong
+                      Enterprise Sales Frameworks
                     </Link>
                     <Link
-                      href="/compare/and-hubspot"
+                      href="/investor-readiness-dashboard"
                       className="block py-2 text-sm"
                       style={{ color: 'rgba(255, 255, 255, 0.6)' }}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Andru & HubSpot
+                      Investor Readiness Dashboard
                     </Link>
                     <Link
-                      href="/compare/and-salesforce"
+                      href="/coming-soon"
                       className="block py-2 text-sm"
                       style={{ color: 'rgba(255, 255, 255, 0.6)' }}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Andru & Salesforce
-                    </Link>
-                    <Link
-                      href="/compare/and-zoominfo"
-                      className="block py-2 text-sm"
-                      style={{ color: 'rgba(255, 255, 255, 0.6)' }}
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Andru & ZoomInfo
+                      Product Roadmap
                     </Link>
                   </div>
                 )}
@@ -304,8 +290,10 @@ export default function HomePage() {
               >
                 Pricing
               </Link>
-              <Link
-                href="/login"
+              <a
+                href="https://andru-ai.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="block px-6 py-2 rounded-lg font-semibold text-sm text-center"
                 style={{
                   background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
@@ -313,8 +301,8 @@ export default function HomePage() {
                 }}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Login
-              </Link>
+                Get My Revenue Readiness Score
+              </a>
             </div>
           )}
         </nav>
@@ -337,24 +325,17 @@ export default function HomePage() {
               animate="animate"
               variants={staggerChildren}
             >
-              {/* Logo/Brand with Glass Effect */}
+              {/* Logo/Brand */}
               <motion.div variants={fadeInUp} className="mb-8">
-                <div className="inline-block px-6 py-3 rounded-xl glass" style={{
-                  background: 'var(--glass-background, rgba(255, 255, 255, 0.03))',
-                  backdropFilter: 'var(--glass-backdrop, blur(16px))',
-                  border: '1px solid var(--glass-border, rgba(255, 255, 255, 0.08))',
-                  boxShadow: 'var(--shadow-lg, 0 10px 25px rgba(0, 0, 0, 0.4))'
+                <h2 className="text-xl font-bold tracking-wide" style={{
+                  color: 'var(--color-text-primary, #ffffff)',
+                  fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
+                  fontWeight: 'var(--font-weight-semibold, 600)',
+                  letterSpacing: 'var(--tracking-wide, 0.5px)',
+                  textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
                 }}>
-                  <h2 className="text-xl font-bold tracking-wide" style={{
-                    color: 'var(--color-text-primary, #ffffff)',
-                    fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
-                    fontWeight: 'var(--font-weight-semibold, 600)',
-                    letterSpacing: 'var(--tracking-wide, 0.5px)',
-                    textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-                  }}>
-                    Andru Revenue Intelligence
-                  </h2>
-                </div>
+                  Andru Revenue Intelligence
+                </h2>
               </motion.div>
 
               {/* Executive-Level Headline */}
@@ -474,7 +455,7 @@ export default function HomePage() {
                     fontFamily: '"Inter", sans-serif'
                   }}
                 >
-                  Tell us about your product and we'll generate detailed buyer personas in 2 minutes
+                  Tell us about your product. Andru will tell you who desperately needs it in 3 minutes.
                 </p>
                 <ICPQuickStartForm />
               </div>
@@ -501,12 +482,7 @@ export default function HomePage() {
               transition={{ duration: 0.5 }}
               className="flex justify-center mb-6"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full" style={{
-                background: 'rgba(59, 130, 246, 0.1)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(59, 130, 246, 0.3)',
-                boxShadow: '0 8px 32px rgba(59, 130, 246, 0.2)'
-              }}>
+              <div className="inline-flex items-center gap-2">
                 <Sparkles className="w-4 h-4" style={{ color: '#3b82f6' }} />
                 <span className="text-sm font-semibold" style={{
                   color: '#3b82f6',
@@ -530,7 +506,7 @@ export default function HomePage() {
                 fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
               }}
             >
-              Here&apos;s What You Get in 2 Minutes
+              Here&apos;s What You Get in 3 Minutes
             </motion.h2>
 
             {/* Subheading */}
@@ -605,13 +581,13 @@ export default function HomePage() {
                 }}
               >
                 <Sparkles className="w-5 h-5" />
-                Generate This For My Product (2 min)
+                Generate This For My Product (3 min)
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
 
               <Link
-                href="/pricing"
-                onClick={() => handleCtaClick('Lock In $750/Month Forever', 'demo-preview')}
+                href="/founding-members"
+                onClick={() => handleCtaClick('Sign Up for Waitlist', 'demo-preview')}
                 className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
                 style={{
                   background: 'rgba(255, 255, 255, 0.05)',
@@ -622,7 +598,7 @@ export default function HomePage() {
                   boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)'
                 }}
               >
-                Lock In $750/Month Forever
+                Sign Up for Waitlist
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
@@ -647,9 +623,10 @@ export default function HomePage() {
             </h2>
             <div className="grid md:grid-cols-1 gap-4 max-w-2xl mx-auto">
               {[
-                "Your pipeline is full but deals stall at 'no decision'",
-                "You're hiring sales (they'll ask 'What's our ICP?' on day 1)",
-                "You're at $2-5M ARR—growing revenue, not just features"
+                "You need to grow pipeline without the stall",
+                "You want to find and close 6-7 figure deals consistently",
+                "You're hiring & scaling a high-performing sales team",
+                "You want to 3-5x growth with a clear path to reach it"
               ].map((item, index) => (
                 <motion.div
                   key={index}
@@ -722,9 +699,9 @@ export default function HomePage() {
             </p>
           </motion.div>
 
-          {/* Grid Layout: Hero (2x2) + 3 standard cards - Agent 4 Visual Hierarchy */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 gap-8">
-            {/* Hero Feature: WHO to Sell To (2x2 Grid) */}
+          {/* Grid Layout: Hero (left) + 3 standard cards (right column stacked) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Hero Feature: WHO to Sell To (Left side) */}
             <FeatureCard
               icon={Target}
               title="WHO to Sell To"
@@ -736,7 +713,7 @@ export default function HomePage() {
               animationDelay={0.1}
               href="/icp/demo-v2"
               ctaText="Try Demo"
-              className="md:col-span-2 md:row-span-2"
+              className="lg:row-span-3"
             />
 
             {/* Standard Feature 2: WHAT They Care About */}
@@ -766,8 +743,8 @@ export default function HomePage() {
             {/* Standard Feature 4: AI-Powered Velocity */}
             <FeatureCard
               icon={Share2}
-              title="AI-Powered Velocity: 72 Hours, Not 6 Months"
-              description="What takes consultants 6 months and $90K to deliver, Andru generates in 72 hours. Then refines continuously as your market evolves. Export to PDF, CSV, or AI prompt templates for extended research."
+              title="AI-Powered Velocity: Minutes, Not Months"
+              description="What takes consultants 6 months and $90K to deliver, Andru generates in minutes. Then refines continuously as your market evolves. Export to PDF, CSV, or AI prompt templates for extended research."
               variant="standard"
               iconColor="rgb(34, 211, 238)"
               iconBgColor="rgba(6, 182, 212, 0.1)"
@@ -779,7 +756,50 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <FooterLayout variant="standard" theme="dark" />
+      <FooterLayout
+        variant="standard"
+        theme="dark"
+        sections={[
+          {
+            title: 'Company',
+            links: [
+              { label: 'About Us', href: '/about' },
+              { label: 'Contact', href: 'mailto:geter@andru-ai.com' }
+            ]
+          },
+          {
+            title: 'Why Andru',
+            links: [
+              { label: 'Andru & Clay', href: '/compare/and-clay' },
+              { label: 'Andru & Gong', href: '/compare/and-gong' },
+              { label: 'Andru & HubSpot', href: '/compare/and-hubspot' },
+              { label: 'Andru & Salesforce', href: '/compare/and-salesforce' },
+              { label: 'Andru & ZoomInfo', href: '/compare/and-zoominfo' }
+            ]
+          },
+          {
+            title: 'Product',
+            links: [
+              { label: 'Your Andru ICP', href: '/coming-soon' },
+              { label: 'Enterprise Sales Frameworks', href: '/enterprise-sales-frameworks' },
+              { label: 'Investor Readiness Dashboard', href: '/investor-readiness-dashboard' },
+              { label: 'Product Roadmap', href: '/coming-soon' }
+            ]
+          },
+          {
+            title: 'Resources',
+            links: [
+              { label: 'Documentation (Coming Soon)', href: '#' },
+              { label: 'API Reference (Coming Soon)', href: '#' },
+              { label: 'Help Me Close An Urgent Deal!', href: 'https://calendly.com/humusnshore/urgent-assistance', external: true }
+            ]
+          }
+        ]}
+        legalLinks={[
+          { label: 'Terms of Use', href: '/terms' },
+          { label: 'Privacy Policy', href: '/privacy' }
+        ]}
+      />
     </div>
   );
 }

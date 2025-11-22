@@ -72,8 +72,8 @@ export interface PersonaForPDF {
     followUp?: string;
   };
 
-  // Objections - can be top-level or nested
-  objections?: string[];
+  // Objections - can be top-level or nested, supports both string[] and object[] formats
+  objections?: (string | { objection: string; response: string })[];
 
   // Information sources
   informationSources?: string[];
@@ -409,7 +409,7 @@ export async function generateICPPDF(
       doc.setFontSize(11);
       doc.setTextColor(...orangeColor); // Orange
       doc.setFont('helvetica', 'bold');
-      doc.text('Common Objections', margin, yPosition);
+      doc.text('Common Objections & Responses', margin, yPosition);
       yPosition += 5;
 
       doc.setFontSize(10);
@@ -417,10 +417,33 @@ export async function generateICPPDF(
       doc.setFont('helvetica', 'normal');
 
       objections.slice(0, 3).forEach(objection => {
-        checkPageBreak(5);
-        const wrappedObjection = doc.splitTextToSize(`• ${objection}`, pageWidth - 2 * margin - 10);
-        doc.text(wrappedObjection, margin + 5, yPosition);
-        yPosition += wrappedObjection.length * 5;
+        checkPageBreak(15);
+        // Handle both string format and object format {objection, response}
+        if (typeof objection === 'object' && 'objection' in objection) {
+          // New format with objection and response
+          const objText = objection.objection;
+          const respText = objection.response;
+
+          // Objection in bold/orange
+          doc.setFont('helvetica', 'bold');
+          doc.setTextColor(...orangeColor);
+          const wrappedObj = doc.splitTextToSize(`Q: ${objText}`, pageWidth - 2 * margin - 10);
+          doc.text(wrappedObj, margin + 5, yPosition);
+          yPosition += wrappedObj.length * 5;
+
+          // Response in normal/dark gray
+          doc.setFont('helvetica', 'normal');
+          doc.setTextColor(60, 60, 60);
+          const wrappedResp = doc.splitTextToSize(`A: ${respText}`, pageWidth - 2 * margin - 15);
+          doc.text(wrappedResp, margin + 10, yPosition);
+          yPosition += wrappedResp.length * 5 + 3;
+        } else {
+          // Old string format
+          doc.setTextColor(0, 0, 0);
+          const wrappedObjection = doc.splitTextToSize(`• ${objection}`, pageWidth - 2 * margin - 10);
+          doc.text(wrappedObjection, margin + 5, yPosition);
+          yPosition += wrappedObjection.length * 5;
+        }
       });
       yPosition += 3;
     }

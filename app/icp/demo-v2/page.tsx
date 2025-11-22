@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Sparkles, Download, Users, BarChart3, TrendingUp, AlertCircle, CheckCircle2, Zap, Target, DollarSign, TrendingDown, ChevronRight, ChevronLeft, Share2, Lightbulb, MessageSquare, Mail } from 'lucide-react';
 import Link from 'next/link';
 import BuyerPersonasWidget from '../../../src/features/icp-analysis/widgets/BuyerPersonasWidget';
@@ -18,6 +19,170 @@ import { BRAND_IDENTITY } from '@/app/lib/constants/brand-identity';
 import { StaggeredItem } from '../../../src/shared/utils/staggered-entrance';
 import { supabase } from '@/app/lib/supabase/client';
 import supabaseDataService from '@/app/lib/services/supabaseDataService';
+
+// Session storage keys
+const SESSION_KEYS = {
+  PERSONAS: 'andru_generated_personas',
+  FORM_DATA: 'andru_icp_form_data',
+  PRODUCT_INFO: 'andru_product_info'
+};
+
+// Helper to convert product name to URL-friendly slug
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/[\s_-]+/g, '-') // Replace spaces and underscores with hyphens
+    .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+}
+
+// Witty loading messages that resonate with technical founders
+const LOADING_MESSAGES = [
+  "Finding the CFO who will actually understand your technical moat...",
+  "Identifying buyers who won't make you explain microservices for the 47th time...",
+  "Locating decision-makers who get why 'it just works' took 18 months to build...",
+  "Mapping the people tired of your competitor's broken promises...",
+  "Finding champions who'll fight for your budget in rooms you're not in...",
+  "Identifying the engineer who'll tell their VP 'we need this yesterday'...",
+  "Discovering who loses sleep over the problem you've already solved...",
+  "Locating the VP who's one more production outage away from approving anything...",
+  "Identifying who signs the check vs. who derails the deal in procurement...",
+  "Finding the technical evaluator who won't ask for a 47-point security questionnaire... just kidding, they all do...",
+  "Crafting objection responses so good your sales team might actually use them...",
+  "Building the pitch that finally translates 'distributed consensus algorithm' into CFO language...",
+  "Almost done making 'we're technically superior' actually mean something to buyers..."
+];
+
+// Full-page loading screen component
+function FullPageLoadingScreen({
+  isVisible,
+  progress,
+  currentMessage
+}: {
+  isVisible: boolean;
+  progress: number;
+  currentMessage: string;
+}) {
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4 }}
+          className="fixed inset-0 z-[9999] flex items-center justify-center"
+          style={{
+            background: 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0f172a 100%)'
+          }}
+        >
+          <div className="text-center max-w-lg px-8">
+            {/* Animated icon */}
+            <motion.div
+              animate={{
+                scale: [1, 1.1, 1],
+                rotate: [0, 2, -2, 0]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="text-6xl mb-8 inline-block"
+              style={{
+                filter: 'drop-shadow(0 0 20px rgba(59, 130, 246, 0.5))'
+              }}
+            >
+              🎯
+            </motion.div>
+
+            {/* Title */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-3xl md:text-4xl font-bold mb-4"
+              style={{
+                color: '#ffffff',
+                letterSpacing: '-0.025em'
+              }}
+            >
+              Finding Your People
+            </motion.h1>
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-lg mb-10"
+              style={{ color: 'rgba(255, 255, 255, 0.6)' }}
+            >
+              The ones who desperately need what you've built
+            </motion.p>
+
+            {/* Progress bar */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="w-72 h-1.5 mx-auto mb-6 rounded-full overflow-hidden"
+              style={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.3)'
+              }}
+            >
+              <motion.div
+                className="h-full rounded-full relative overflow-hidden"
+                style={{
+                  background: 'linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%)',
+                  width: `${progress}%`
+                }}
+                initial={{ width: '0%' }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+              >
+                {/* Shimmer effect */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%)',
+                    animation: 'shimmer 2s ease-in-out infinite'
+                  }}
+                />
+              </motion.div>
+            </motion.div>
+
+            {/* Status message */}
+            <motion.p
+              key={currentMessage}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="text-sm font-medium min-h-[48px]"
+              style={{
+                color: 'rgba(255, 255, 255, 0.5)',
+                fontFamily: 'monospace'
+              }}
+            >
+              {currentMessage}
+            </motion.p>
+          </div>
+
+          {/* Add shimmer keyframes via style tag */}
+          <style jsx>{`
+            @keyframes shimmer {
+              0% { transform: translateX(-100%); }
+              100% { transform: translateX(100%); }
+            }
+          `}</style>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
 // Rate Limit Badge Component
 function RateLimitBadge({
@@ -67,6 +232,7 @@ function RateLimitBadge({
 }
 
 export default function ICPDemoV2Page() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'personas' | 'overview'>('personas');
   const [showExportModal, setShowExportModal] = useState(false);
   const [hoveredStat, setHoveredStat] = useState<string | null>(null);
@@ -79,6 +245,12 @@ export default function ICPDemoV2Page() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const statsScrollRef = React.useRef<HTMLDivElement>(null);
+
+  // Full-page loading screen state
+  const [showFullPageLoading, setShowFullPageLoading] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingMessage, setLoadingMessage] = useState(LOADING_MESSAGES[0]);
+  const loadingMessageIndexRef = React.useRef(0);
 
   // Form state
   const [productName, setProductName] = useState('');
@@ -204,6 +376,31 @@ export default function ICPDemoV2Page() {
       console.error('Error checking localStorage for quick start data:', error);
     }
   }, []); // Run once on mount
+
+  // Check for session storage form data (from back navigation)
+  useEffect(() => {
+    try {
+      const storedFormData = sessionStorage.getItem(SESSION_KEYS.FORM_DATA);
+      if (storedFormData) {
+        const { productName: storedName, productDescription: storedDesc, targetBuyer: storedTarget } = JSON.parse(storedFormData);
+
+        // Only pre-fill if current fields are empty (don't override other sources)
+        if (storedName && !productName) {
+          setProductName(storedName);
+        }
+        if (storedDesc && !productDescription) {
+          setProductDescription(storedDesc);
+        }
+        if (storedTarget && !targetBuyer) {
+          setTargetBuyer(storedTarget);
+        }
+
+        console.log('Pre-filled form from session storage (back navigation)');
+      }
+    } catch (error) {
+      console.error('Error loading session form data:', error);
+    }
+  }, []);
 
   // Keyboard shortcuts for power users
   React.useEffect(() => {
@@ -360,26 +557,33 @@ export default function ICPDemoV2Page() {
       return;
     }
 
-    setIsGenerating(true);
+    // Save form data to session storage (for back navigation)
+    sessionStorage.setItem(SESSION_KEYS.FORM_DATA, JSON.stringify({
+      productName,
+      productDescription,
+      targetBuyer
+    }));
+
+    // Show full-page loading screen
+    setShowFullPageLoading(true);
+    setLoadingProgress(0);
+    loadingMessageIndexRef.current = 0;
+    setLoadingMessage(LOADING_MESSAGES[0]);
+
+    // Start rotating through witty messages
+    const messageInterval = setInterval(() => {
+      loadingMessageIndexRef.current = (loadingMessageIndexRef.current + 1) % LOADING_MESSAGES.length;
+      setLoadingMessage(LOADING_MESSAGES[loadingMessageIndexRef.current]);
+    }, 2500);
 
     try {
-      // Simulated live preview - Stage 1
-      setGenerationStage('Analyzing product description...');
-      toast.loading('Analyzing product description...', { id: 'generate' });
+      // Progress: 10% - Starting
+      setLoadingProgress(10);
+      await new Promise(resolve => setTimeout(resolve, 400));
 
-      // Simulate progress (30% - analyzing)
-      await new Promise(resolve => setTimeout(resolve, 800));
-
-      // Simulated live preview - Stage 2
-      setGenerationStage('Extracting core capability...');
-      toast.loading('Extracting core capability...', { id: 'generate' });
-
-      // Simulate progress (50% - extracting)
-      await new Promise(resolve => setTimeout(resolve, 600));
-
-      // Simulated live preview - Stage 3
-      setGenerationStage('Identifying buyer personas...');
-      toast.loading('Identifying buyer personas...', { id: 'generate' });
+      // Progress: 25% - Analyzing
+      setLoadingProgress(25);
+      await new Promise(resolve => setTimeout(resolve, 300));
 
       // Call backend API
       const response = await fetch('/api/demo/generate-icp', {
@@ -394,13 +598,16 @@ export default function ICPDemoV2Page() {
         })
       });
 
+      // Progress: 60% - API returned
+      setLoadingProgress(60);
+
       const data = await response.json();
 
       // Handle rate limiting
       if (response.status === 429) {
-        setIsGenerating(false);
-        setGenerationStage('');
-        toast.error('Demo limit reached (3 per 24 hours). Sign up for unlimited generations!', { id: 'generate' });
+        clearInterval(messageInterval);
+        setShowFullPageLoading(false);
+        toast.error('Demo limit reached (3 per 24 hours). Sign up for unlimited generations!');
         return;
       }
 
@@ -409,45 +616,39 @@ export default function ICPDemoV2Page() {
         throw new Error(data.error || 'Generation failed');
       }
 
-      // Simulated live preview - Stage 4
-      setGenerationStage('Generating objection responses...');
-      toast.loading('Generating objection responses...', { id: 'generate' });
+      // Progress: 85% - Processing results
+      setLoadingProgress(85);
+      await new Promise(resolve => setTimeout(resolve, 400));
 
-      // Simulate progress (90% - finalizing)
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Progress: 95% - Saving
+      setLoadingProgress(95);
 
-      // Store intelligence extraction results
-      setRefinedDescription(data.refinedProductDescription || '');
-      setCoreCapability(data.coreCapability || '');
+      // Save generated personas to session storage
+      sessionStorage.setItem(SESSION_KEYS.PERSONAS, JSON.stringify(data.personas));
+      sessionStorage.setItem(SESSION_KEYS.PRODUCT_INFO, JSON.stringify({
+        name: productName,
+        description: productDescription
+      }));
 
-      // Store generated personas
-      setGeneratedPersonas(data.personas);
+      // Progress: 100% - Complete!
+      setLoadingProgress(100);
+      setLoadingMessage("Found them! Redirecting to your results...");
 
-      // Success!
-      setIsGenerating(false);
-      setGenerationStage('');
-      setShowResults(true);
+      // Brief pause to show completion
+      await new Promise(resolve => setTimeout(resolve, 800));
 
-      // Dismiss loading toast
-      toast.dismiss('generate');
+      // Clear interval and redirect
+      clearInterval(messageInterval);
 
-      // Trigger cinematic reveal (Option 9)
-      await revealPersonasCinematically(data.personas);
+      // Navigate to results page with dynamic slug
+      const productSlug = slugify(productName);
+      router.push(`/icp/demo-v2/${productSlug}`);
 
-      // Scroll to results after reveal starts
-      setTimeout(() => {
-        document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth' });
-      }, 1200);
     } catch (error: any) {
-      setIsGenerating(false);
-      setGenerationStage('');
-      toast.error(error.message || 'Generation failed. Please try again in a moment.', { id: 'generate' });
-
-      // Log error for debugging
+      clearInterval(messageInterval);
+      setShowFullPageLoading(false);
+      toast.error(error.message || 'Generation failed. Please try again in a moment.');
       console.error('ICP generation error:', error);
-
-      // Optional: Send to error tracking service
-      // trackError('icp-generation-failed', { productName, error });
     }
   };
 
@@ -746,13 +947,21 @@ Try it: https://andru-ai.com/demo`;
   ];
 
   return (
-    <div className="min-h-screen" style={{
-      background: 'transparent',
-      color: 'var(--color-text-primary, #ffffff)',
-      fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
-    }}>
-      <MotionBackground />
-      <Toaster position="top-right" />
+    <>
+      {/* Full-page loading screen */}
+      <FullPageLoadingScreen
+        isVisible={showFullPageLoading}
+        progress={loadingProgress}
+        currentMessage={loadingMessage}
+      />
+
+      <div className="min-h-screen" style={{
+        background: 'transparent',
+        color: 'var(--color-text-primary, #ffffff)',
+        fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)'
+      }}>
+        <MotionBackground />
+        <Toaster position="top-right" />
 
       {/* Minimal Top Navigation */}
       <nav className="border-b" style={{
@@ -1902,6 +2111,7 @@ Try it: https://andru-ai.com/demo`;
           display: none;
         }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 }

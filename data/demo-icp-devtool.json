@@ -37,7 +37,9 @@
       "id": "persona-1",
       "name": "Alex Chen",
       "title": "VP of Engineering",
-      "role": "Primary Decision Maker - Economic Buyer",
+      "role": "Economic Buyer",
+      "narrative": "VP of Engineering at Series B SaaS companies who need to ship faster without sacrificing quality but are anxious that manual code reviews are becoming bottlenecks and traditional static analysis tools are no longer catching critical bugs before they reach production.",
+      "whyThisPersona": "This persona controls engineering budget and is directly accountable for code quality and shipping velocity. They have the authority to invest in tools that demonstrably improve developer productivity and reduce production incidents, making them the ideal economic buyer with both urgency and budget authority.",
       "demographics": {
         "ageRange": "35-45",
         "experience": "10-15 years in engineering leadership",
@@ -79,11 +81,14 @@
         "communicationStyle": "Direct, data-driven, values efficiency - prefers metrics over marketing speak"
       },
       "objections": [
-        "Does it slow down our CI/CD pipeline? (Current build time: 8 minutes)",
-        "Will developers actually adopt it or ignore warnings?",
-        "How does it compare to our current tools (SonarQube, ESLint)?",
-        "What's the learning curve for my team?",
-        "Can we customize rules for our specific codebase?"
+        {
+          "objection": "Does it slow down our CI/CD pipeline? Our current build time is 8 minutes and we can't afford more latency.",
+          "response": "Our analysis runs in parallel with your existing pipeline, adding less than 45 seconds. Most customers see net time savings because they catch bugs earlier - fixing a bug in CI is 10x faster than fixing it in production. You'll actually ship faster."
+        },
+        {
+          "objection": "How do we justify the ROI when we already have SonarQube and ESLint?",
+          "response": "Those tools catch syntax and style issues. Our ML model catches logic bugs, race conditions, and security vulnerabilities that rule-based tools miss. Customers typically see 60% fewer production incidents - that's $200K+ in avoided engineering time and customer impact annually."
+        }
       ],
       "informationSources": [
         "Engineering blogs (GitHub Engineering, Uber Engineering)",
@@ -115,6 +120,8 @@
       "name": "Dr. Sarah Williams",
       "title": "CTO & Co-Founder",
       "role": "Strategic Influencer - Technical Validator",
+      "narrative": "CTO & Co-Founder at hypergrowth startups who need to build engineering cultures that attract top 1% talent but are anxious that accumulated tech debt and inconsistent code quality across teams are damaging their reputation and preventing them from scaling for IPO readiness.",
+      "whyThisPersona": "This persona has final say on all technical infrastructure spending and views code quality as a strategic competitive moat. They think in 3-5 year horizons about technical decisions, making them critical for enterprise-level adoption. Their blessing transforms deals from tactical purchases into strategic partnerships.",
       "demographics": {
         "ageRange": "40-55",
         "experience": "15-20 years in engineering + 5+ years in executive leadership",
@@ -156,11 +163,18 @@
         "communicationStyle": "Systems thinker - wants to understand architecture, scalability, security, long-term roadmap"
       },
       "objections": [
-        "Is this a point solution or does it fit our broader technical strategy?",
-        "What happens if you get acquired or shut down? (vendor risk)",
-        "Can we self-host for security/compliance reasons?",
-        "How does this integrate with our existing observability stack?",
-        "What's your security posture? (SOC 2, penetration testing results)"
+        {
+          "objection": "Is this a point solution or does it fit our broader technical strategy?",
+          "response": "We're designed as a platform, not a point solution. Our API-first architecture integrates with your existing CI/CD, observability stack, and SDLC tools. Customers like Stripe and Figma embed us as core infrastructure that scales with their engineering org."
+        },
+        {
+          "objection": "What happens if you get acquired or shut down? (vendor risk)",
+          "response": "We're well-funded through Series B with 3+ years runway and 140% net revenue retention. We also offer data portability guarantees in our enterprise contracts, and our self-hosted option means your code analysis never depends solely on our cloud availability."
+        },
+        {
+          "objection": "What's your security posture? (SOC 2, penetration testing results)",
+          "response": "We're SOC 2 Type II certified, undergo annual penetration testing by NCC Group, and can provide detailed security questionnaire responses. We also offer a self-hosted option for teams with strict compliance requirements—your code never leaves your infrastructure."
+        }
       ],
       "informationSources": [
         "Academic research papers",
@@ -192,6 +206,8 @@
       "name": "Jordan Martinez",
       "title": "Senior Software Engineer",
       "role": "End User - Champion/Blocker",
+      "narrative": "Senior Software Engineer at fast-growing startups who need to ship 2-3 major features per quarter with zero critical bugs but are frustrated that PRs sit in review queues for days, reviewers nitpick style instead of catching real bugs, and bugs still slip through causing 2am pages.",
+      "whyThisPersona": "This persona is the daily user whose adoption determines tool success or failure. They have no budget authority but can kill deals by refusing to use the tool. Their authentic enthusiasm becomes word-of-mouth that spreads to other engineering teams, making them essential for organic growth and reducing churn.",
       "demographics": {
         "ageRange": "28-38",
         "experience": "5-10 years professional development experience",
@@ -233,11 +249,18 @@
         "communicationStyle": "Show, don't tell - wants to see tool in action, not sit through sales pitches"
       },
       "objections": [
-        "Just another tool that generates noise I'll have to ignore",
-        "Will it slow down my workflow? (Already using 12 tools)",
-        "How do I know it's catching real bugs vs. false positives?",
-        "Can I customize it to match my coding style?",
-        "Will management use this to micromanage my productivity?"
+        {
+          "objection": "Just another tool that generates noise I'll have to ignore",
+          "response": "Our false positive rate is under 5%—compare that to 30-40% with typical static analysis tools. We only flag issues that would cause real production bugs. Most engineers tell us they actually read our feedback because it's consistently valuable, not noise."
+        },
+        {
+          "objection": "Will it slow down my workflow? (Already using 12 tools)",
+          "response": "We integrate directly into your existing workflow—VS Code extension, GitHub checks, CLI. No new tabs, no context switching. Analysis runs in the background and surfaces issues inline where you're already working. Most devs say it actually speeds them up by catching bugs before review."
+        },
+        {
+          "objection": "Will management use this to micromanage my productivity?",
+          "response": "We don't track individual productivity metrics or report 'bugs per developer.' Our reports focus on codebase-level trends and team-wide quality improvements. We built this for engineers, not for surveillance—your manager sees aggregate data, not a leaderboard of who makes the most mistakes."
+        }
       ],
       "informationSources": [
         "Hacker News",
@@ -269,6 +292,8 @@
       "name": "Maya Patel",
       "title": "VP of Product",
       "role": "Stakeholder - Quality Advocate",
+      "narrative": "VP of Product at Series B SaaS companies who need to launch 5 major features per quarter without quality regressions but are frustrated that buggy releases are damaging user trust, hurting NPS scores, and causing customer churn that threatens their revenue targets.",
+      "whyThisPersona": "This persona bridges engineering and business outcomes, advocating for quality tools that improve velocity AND user experience. They influence VP Engineering budget decisions and can accelerate deals by connecting code quality to business metrics that executives care about—NPS, churn, and revenue.",
       "demographics": {
         "ageRange": "32-42",
         "experience": "8-12 years in product management",
@@ -310,10 +335,18 @@
         "communicationStyle": "Outcome-oriented - wants to see metrics on velocity, quality, and customer impact"
       },
       "objections": [
-        "Will this slow down feature development?",
-        "How does this help us ship faster AND better?",
-        "What's the impact on customer satisfaction metrics?",
-        "Do we really need another tool? (Context: trying to simplify stack)"
+        {
+          "objection": "Will this slow down feature development?",
+          "response": "Actually the opposite. Teams using DevTool Pro ship 30% more features because they spend less time on bug fixes and hotpatches. Code review cycles drop from days to hours. Your roadmap commitments become more predictable because you're not constantly firefighting."
+        },
+        {
+          "objection": "What's the impact on customer satisfaction metrics?",
+          "response": "Our customers see 60% fewer customer-reported bugs on average, which directly improves NPS. One Series B customer improved their NPS from 42 to 61 within two quarters of deployment. Less bugs = happier users = better retention."
+        },
+        {
+          "objection": "Do we really need another tool? (Context: trying to simplify stack)",
+          "response": "We replace 3-4 tools, not add to them. Teams typically sunset SonarQube, CodeClimate, and custom linting setups after deploying us. One integration, one dashboard, and it catches what those combined tools were missing."
+        }
       ],
       "informationSources": [
         "Product management communities (Lenny's Newsletter, Product School)",
@@ -344,6 +377,8 @@
       "name": "Marcus Johnson",
       "title": "Director of Sales Engineering",
       "role": "Economic Buyer - ROI Validator",
+      "narrative": "Director of Sales Engineering at enterprise software companies who need to increase close rates and shorten POC cycles but are frustrated that product bugs discovered during POCs are killing deals and making it impossible to demonstrate technical superiority over competitors.",
+      "whyThisPersona": "This persona sees code quality as a revenue problem, not just an engineering problem. They control SE budget and can fast-track purchases that help active deals. Their unique perspective connects technical improvements to closed-won revenue, providing ROI stories that justify investment to the CFO.",
       "demographics": {
         "ageRange": "38-50",
         "experience": "12-18 years in technical sales and engineering",
@@ -385,10 +420,18 @@
         "communicationStyle": "Business value focused - wants to see revenue impact and win rate improvements"
       },
       "objections": [
-        "How does this help us close more deals?",
-        "Can we use this as a competitive differentiator?",
-        "Will this prevent embarrassing bugs during customer POCs?",
-        "What's the ROI for the sales organization?"
+        {
+          "objection": "How does this help us close more deals?",
+          "response": "POC success rate is directly correlated with code quality. Our customers see 40% improvement in technical win rates because prospects encounter zero critical bugs during evaluation. Clean POCs build trust that closes deals—one customer attributed $2.3M in new ARR to improved POC experiences."
+        },
+        {
+          "objection": "Can we use this as a competitive differentiator?",
+          "response": "Absolutely. You can show prospects real-time code quality dashboards during POCs—'Here's how we ensure the reliability you're evaluating.' Competitors can't match this transparency. Several customers use our certification badges in RFP responses as proof of engineering discipline."
+        },
+        {
+          "objection": "What's the ROI for the sales organization?",
+          "response": "POC duration drops 50% because you're not debugging during demos. Close rates improve 15+ points. SE team capacity increases because they're not on firefighting calls. One customer calculated $800K in additional pipeline capacity from time savings alone."
+        }
       ],
       "informationSources": [
         "Sales enablement platforms",

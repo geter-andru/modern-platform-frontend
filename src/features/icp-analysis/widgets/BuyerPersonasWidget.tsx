@@ -16,12 +16,19 @@ import {
   CheckCircle,
   TrendingUp,
   MessageSquare,
-  Info
+  Info,
+  ChevronDown
 } from 'lucide-react'
 import { usePersonasCache } from '@/app/lib/hooks/cache'
 
 // Use the types from the cache hook
 import type { BuyerPersona as CacheBuyerPersona } from '@/app/lib/hooks/cache'
+
+// Objection can be either a string (old format) or an object with Q&A (new format)
+interface ObjectionWithResponse {
+  objection: string
+  response: string
+}
 
 // Local interface that matches the component's expected structure
 interface BuyerPersona {
@@ -29,6 +36,8 @@ interface BuyerPersona {
   name: string
   title: string
   role: string
+  narrative?: string  // Always visible description
+  whyThisPersona?: string  // Accordion dropdown content
   demographics: {
     ageRange: string
     experience: string
@@ -53,7 +62,7 @@ interface BuyerPersona {
     preferredChannels: string[]
     communicationStyle: string
   }
-  objections: string[]
+  objections: (string | ObjectionWithResponse)[]  // Supports both old and new formats
   informationSources: string[]
 }
 
@@ -63,6 +72,7 @@ interface BuyerPersonasWidgetProps {
   userId?: string
   personas?: any[] // Direct personas data for demo mode
   isDemo?: boolean // Flag to indicate demo mode
+  simplified?: boolean // Flag for simplified view (no category headers, horizontal layout)
 }
 
 export default function BuyerPersonasWidget({
@@ -70,7 +80,8 @@ export default function BuyerPersonasWidget({
   className = '',
   userId,
   personas: directPersonas,
-  isDemo = false
+  isDemo = false,
+  simplified = false
 }: BuyerPersonasWidgetProps) {
   // Use cache hook instead of manual state management (only if not in demo mode)
   const {
@@ -239,39 +250,41 @@ export default function BuyerPersonasWidget({
     id: persona.id || `persona-${index + 1}`,
     name: persona.name,
     title: persona.title,
-    role: persona.title, // Use title as role for now
+    role: persona.role || persona.title, // Use role if available, otherwise title
+    narrative: persona.narrative || '', // Pass through narrative for display
+    whyThisPersona: persona.whyThisPersona || '', // Pass through whyThisPersona for accordion
     demographics: {
-      ageRange: persona.demographics.age || '30-50',
-      experience: '5-15 years', // Default value
-      education: 'Bachelor\'s degree', // Default value
-      location: persona.demographics.location || 'Major metropolitan areas'
+      ageRange: persona.demographics?.age || persona.demographics?.ageRange || '30-50',
+      experience: persona.demographics?.experience || '5-15 years',
+      education: persona.demographics?.education || 'Bachelor\'s degree',
+      location: persona.demographics?.location || 'Major metropolitan areas'
     },
     psychographics: {
-      values: Array.isArray(persona.psychographics.values)
+      values: Array.isArray(persona.psychographics?.values)
         ? persona.psychographics.values.join(', ')
-        : (persona.psychographics.values || persona.psychographics.goals?.join(', ') || 'Professional growth and efficiency'),
-      motivations: Array.isArray(persona.psychographics.motivations)
+        : (persona.psychographics?.values || persona.psychographics?.goals?.join(', ') || 'Professional growth and efficiency'),
+      motivations: Array.isArray(persona.psychographics?.motivations)
         ? persona.psychographics.motivations.join(', ')
-        : (persona.psychographics.motivations || 'Achieving business objectives'),
-      fears: Array.isArray(persona.psychographics.fears)
+        : (persona.psychographics?.motivations || 'Achieving business objectives'),
+      fears: Array.isArray(persona.psychographics?.fears)
         ? persona.psychographics.fears.join(', ')
-        : (persona.psychographics.fears || persona.psychographics.challenges?.join(', ') || 'Making wrong decisions')
+        : (persona.psychographics?.fears || persona.psychographics?.challenges?.join(', ') || 'Making wrong decisions')
     },
-    goals: persona.goals || persona.psychographics.goals || ['Improve efficiency', 'Drive growth', 'Reduce costs'],
-    painPoints: persona.painPoints || persona.psychographics.challenges || ['Current limitations', 'Process inefficiencies', 'Resource constraints'],
+    goals: persona.goals || persona.psychographics?.goals || ['Improve efficiency', 'Drive growth', 'Reduce costs'],
+    painPoints: persona.painPoints || persona.psychographics?.challenges || ['Current limitations', 'Process inefficiencies', 'Resource constraints'],
     buyingBehavior: {
-      decisionProcess: persona.behavior?.decisionMakingProcess || 'Data-driven evaluation'
+      decisionProcess: persona.buyingBehavior?.decisionProcess || persona.behavior?.decisionMakingProcess || 'Data-driven evaluation'
     },
     decisionInfluence: {
-      timeline: '3-6 months', // Default value
-      budgetAuthority: 'Medium' // Default value
+      timeline: persona.decisionInfluence?.timeline || '3-6 months',
+      budgetAuthority: persona.decisionInfluence?.budgetAuthority || 'Medium'
     },
     communicationPreferences: {
-      preferredChannels: persona.behavior?.preferredChannels || ['Email', 'LinkedIn', 'Phone calls'],
-      communicationStyle: 'Professional and data-driven' // Default value
+      preferredChannels: persona.communicationPreferences?.preferredChannels || persona.behavior?.preferredChannels || ['Email', 'LinkedIn', 'Phone calls'],
+      communicationStyle: persona.communicationPreferences?.communicationStyle || 'Professional and data-driven'
     },
-    objections: persona.behavior?.objections || ['Cost concerns', 'Implementation complexity', 'Change management'],
-    informationSources: ['Industry publications', 'Peer networks', 'Online research'] // Default value
+    objections: persona.objections || persona.behavior?.objections || ['Cost concerns', 'Implementation complexity', 'Change management'],
+    informationSources: persona.informationSources || ['Industry publications', 'Peer networks', 'Online research']
   }))
 
   // Personas are automatically loaded by the cache hook
@@ -319,28 +332,34 @@ export default function BuyerPersonasWidget({
     }
   }
 
+  // Track which accordion sections are open per persona
+  const [openAccordions, setOpenAccordions] = useState<Record<string, { whyThisPersona: boolean; objections: boolean }>>({});
+
+  const toggleAccordion = (personaId: string, section: 'whyThisPersona' | 'objections') => {
+    setOpenAccordions(prev => ({
+      ...prev,
+      [personaId]: {
+        ...prev[personaId],
+        [section]: !prev[personaId]?.[section]
+      }
+    }));
+  };
+
   // Render a persona card (reusable for all categories)
   const renderPersonaCard = (persona: BuyerPersona, index: number) => {
-    const isExpanded = expandedPersona === persona.id;
     const IconComponent = getPersonaIcon(persona.role);
+    const accordionState = openAccordions[persona.id] || { whyThisPersona: false, objections: false };
 
-    // Calculate confidence based on data completeness
-    const hasGoals = persona.goals && persona.goals.length > 0;
-    const hasPainPoints = persona.painPoints && persona.painPoints.length > 0;
-    const hasObjections = persona.objections && persona.objections.length > 0;
-    const hasDemographics = persona.demographics && Object.keys(persona.demographics).length > 0;
-    const hasPsychographics = persona.psychographics && Object.keys(persona.psychographics).length > 0;
-
-    const dataPoints = [hasGoals, hasPainPoints, hasObjections, hasDemographics, hasPsychographics];
-    const collectedPoints = dataPoints.filter(Boolean).length;
-    const confidence = Math.round((collectedPoints / dataPoints.length) * 100);
+    // Get narrative and whyThisPersona from persona
+    const narrative = persona.narrative || '';
+    const whyThisPersona = persona.whyThisPersona || '';
 
     return (
       <div
         key={persona.id}
         className="bg-gray-800 rounded-lg overflow-hidden flex-shrink-0"
         style={{
-          width: '400px',
+          width: '420px',
           border: '1px solid rgba(255, 255, 255, 0.05)',
           transition: 'all 250ms cubic-bezier(0.4, 0, 0.2, 1)'
         }}
@@ -355,74 +374,99 @@ export default function BuyerPersonasWidget({
           e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
         }}
       >
-        <button
-          onClick={() => togglePersona(persona.id)}
-          className="w-full px-6 py-4 flex items-center justify-between transition-colors"
-        >
-          <div className="flex items-center gap-4 flex-1 min-w-0">
-            <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center flex-shrink-0">
-              <IconComponent className="w-6 h-6 text-blue-500" />
-            </div>
-            <div className="text-left flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-lg font-semibold text-white truncate">
-                  {persona.title}
-                </h3>
-                <ConfidenceBadge level={getConfidenceLevel(confidence)} score={confidence} size="sm" />
-              </div>
-              <p className="text-sm text-gray-500 truncate">
-                {persona.role}
-              </p>
-            </div>
+        {/* Header with title and role */}
+        <div className="px-6 py-4 flex items-center gap-4">
+          <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <IconComponent className="w-6 h-6 text-blue-500" />
           </div>
-          <div className="flex items-center gap-3 flex-shrink-0 ml-2">
-            {isExpanded ? (
-              <EyeOff className="w-4 h-4 text-gray-500" />
-            ) : (
-              <Eye className="w-4 h-4 text-gray-500" />
-            )}
+          <div className="text-left flex-1 min-w-0">
+            <h3 className="text-lg font-semibold text-white truncate">
+              {persona.title}
+            </h3>
+            <p className="text-sm text-gray-500 truncate">
+              {persona.role}
+            </p>
           </div>
-        </button>
+        </div>
 
-        {isExpanded && (
-          <div className="border-t border-blue-800/30">
-            <div className="px-6 pb-6">
-              <div className="pt-6 space-y-6">
-                <div className="grid grid-cols-1 gap-4">
-                  <div className="bg-black rounded-lg p-4">
-                    <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                      <Target className="w-4 h-4 text-green-400" />
-                      Key Goals
-                    </h4>
-                    <ul className="space-y-2">
-                      {persona.goals.slice(0, 3).map((goal, goalIndex) => (
-                        <li key={goalIndex} className="text-sm text-white flex items-start gap-2">
-                          <CheckCircle className="w-3 h-3 text-green-400 mt-1 flex-shrink-0" />
-                          {goal}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+        {/* Narrative - always visible */}
+        <div className="px-6 pb-4">
+          <p className="text-sm text-gray-300 leading-relaxed italic">
+            &ldquo;{narrative || `${persona.title} who needs to achieve their goals but faces significant challenges in their current approach.`}&rdquo;
+          </p>
+        </div>
 
-                  <div className="bg-black rounded-lg p-4">
-                    <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                      <AlertTriangle className="w-4 h-4 text-red-400" />
-                      Pain Points
-                    </h4>
-                    <ul className="space-y-2">
-                      {persona.painPoints.slice(0, 3).map((painPoint, painIndex) => (
-                        <li key={painIndex} className="text-sm text-white flex items-start gap-2">
-                          <AlertTriangle className="w-3 h-3 text-red-400 mt-1 flex-shrink-0" />
-                          {painPoint}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+        {/* Accordion sections */}
+        <div className="border-t border-blue-800/30">
+          {/* Why This Persona Accordion */}
+          {whyThisPersona && (
+            <div className="border-b border-blue-800/30">
+              <button
+                onClick={() => toggleAccordion(persona.id, 'whyThisPersona')}
+                className="w-full px-6 py-3 flex items-center justify-between hover:bg-gray-700/50 transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <Target className="w-4 h-4 text-blue-400" />
+                  <span className="text-sm font-medium text-white">Why This Persona</span>
                 </div>
-              </div>
+                <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${accordionState.whyThisPersona ? 'rotate-180' : ''}`} />
+              </button>
+              {accordionState.whyThisPersona && (
+                <div className="px-6 pb-4">
+                  <p className="text-sm text-gray-300 leading-relaxed">
+                    {whyThisPersona}
+                  </p>
+                </div>
+              )}
             </div>
-          </div>
-        )}
+          )}
+
+          {/* Objections & Responses Accordion */}
+          {persona.objections && persona.objections.length > 0 && (
+            <div>
+              <button
+                onClick={() => toggleAccordion(persona.id, 'objections')}
+                className="w-full px-6 py-3 flex items-center justify-between hover:bg-gray-700/50 transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4 text-orange-400" />
+                  <span className="text-sm font-medium text-white">Objections & Responses</span>
+                </div>
+                <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${accordionState.objections ? 'rotate-180' : ''}`} />
+              </button>
+              {accordionState.objections && (
+                <div className="px-6 pb-4 space-y-4">
+                  {persona.objections.map((objection, objIndex) => {
+                    // Check if objection is in new format with objection/response fields
+                    if (typeof objection === 'object' && 'objection' in objection) {
+                      const obj = objection as ObjectionWithResponse;
+                      return (
+                        <div key={objIndex} className="space-y-2">
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-400 mt-0.5 flex-shrink-0 text-sm">Q:</span>
+                            <p className="text-sm text-white">{obj.objection}</p>
+                          </div>
+                          <div className="flex items-start gap-2 ml-4">
+                            <span className="text-green-400 mt-0.5 flex-shrink-0 text-sm">A:</span>
+                            <p className="text-sm text-gray-300">{obj.response}</p>
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      // Old format - just a string
+                      return (
+                        <div key={objIndex} className="flex items-start gap-2">
+                          <span className="text-orange-400 mt-0.5">•</span>
+                          <p className="text-sm text-white">{objection as string}</p>
+                        </div>
+                      );
+                    }
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     );
   }
@@ -546,73 +590,82 @@ export default function BuyerPersonasWidget({
         )}
 
         {personas && personas.length > 0 && (
-          <div className="space-y-10">
-            {/* Economic Buyers Section */}
-            {economicBuyers.length > 0 && (
-              <div>
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                    <Target className="w-5 h-5 text-blue-400" />
-                    💼 Economic Buyers ({economicBuyers.length})
-                  </h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    C-level executives with budget authority and final purchasing decisions
-                  </p>
-                </div>
-                <div className="flex items-start gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
-                  {economicBuyers.map((persona, index) => renderPersonaCard(persona, index))}
-                </div>
+          <>
+            {/* Simplified mode: All personas in a single horizontal row, no category headers */}
+            {simplified ? (
+              <div className="flex items-start gap-6 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+                {transformedPersonas.map((persona, index) => renderPersonaCard(persona, index))}
               </div>
-            )}
+            ) : (
+              <div className="space-y-10">
+                {/* Economic Buyers Section */}
+                {economicBuyers.length > 0 && (
+                  <div>
+                    <div className="mb-4">
+                      <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                        <Target className="w-5 h-5 text-blue-400" />
+                        💼 Economic Buyers ({economicBuyers.length})
+                      </h3>
+                      <p className="text-sm text-gray-500 mt-1">
+                        C-level executives with budget authority and final purchasing decisions
+                      </p>
+                    </div>
+                    <div className="flex items-start gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+                      {economicBuyers.map((persona, index) => renderPersonaCard(persona, index))}
+                    </div>
+                  </div>
+                )}
 
-            {/* Technical Buyers Section */}
-            {technicalBuyers.length > 0 && (
-              <div>
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                    <Brain className="w-5 h-5 text-purple-400" />
-                    🔧 Technical Buyers ({technicalBuyers.length})
-                  </h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    VPs and directors who evaluate technical fit, integration, and quality standards
-                  </p>
-                </div>
-                <div className="flex items-start gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
-                  {technicalBuyers.map((persona, index) => renderPersonaCard(persona, index))}
-                </div>
-              </div>
-            )}
+                {/* Technical Buyers Section */}
+                {technicalBuyers.length > 0 && (
+                  <div>
+                    <div className="mb-4">
+                      <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                        <Brain className="w-5 h-5 text-purple-400" />
+                        🔧 Technical Buyers ({technicalBuyers.length})
+                      </h3>
+                      <p className="text-sm text-gray-500 mt-1">
+                        VPs and directors who evaluate technical fit, integration, and quality standards
+                      </p>
+                    </div>
+                    <div className="flex items-start gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+                      {technicalBuyers.map((persona, index) => renderPersonaCard(persona, index))}
+                    </div>
+                  </div>
+                )}
 
-            {/* End Users Section */}
-            {endUsers.length > 0 && (
-              <div>
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                    <User className="w-5 h-5 text-green-400" />
-                    👥 End Users ({endUsers.length})
-                  </h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Daily users who become champions or blockers based on product experience
-                  </p>
-                </div>
-                <div className="flex items-start gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
-                  {endUsers.map((persona, index) => renderPersonaCard(persona, index))}
-                </div>
-              </div>
-            )}
+                {/* End Users Section */}
+                {endUsers.length > 0 && (
+                  <div>
+                    <div className="mb-4">
+                      <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                        <User className="w-5 h-5 text-green-400" />
+                        👥 End Users ({endUsers.length})
+                      </h3>
+                      <p className="text-sm text-gray-500 mt-1">
+                        Daily users who become champions or blockers based on product experience
+                      </p>
+                    </div>
+                    <div className="flex items-start gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+                      {endUsers.map((persona, index) => renderPersonaCard(persona, index))}
+                    </div>
+                  </div>
+                )}
 
-            {/* Fallback: If no personas fit categories, show all */}
-            {economicBuyers.length === 0 && technicalBuyers.length === 0 && endUsers.length === 0 && (
-              <div>
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-white">All Buyer Personas</h3>
-                </div>
-                <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
-                  {transformedPersonas.map((persona, index) => renderPersonaCard(persona, index))}
-                </div>
+                {/* Fallback: If no personas fit categories, show all */}
+                {economicBuyers.length === 0 && technicalBuyers.length === 0 && endUsers.length === 0 && (
+                  <div>
+                    <div className="mb-4">
+                      <h3 className="text-lg font-semibold text-white">All Buyer Personas</h3>
+                    </div>
+                    <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+                      {transformedPersonas.map((persona, index) => renderPersonaCard(persona, index))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
-          </div>
+          </>
         )}
 
         {/* OLD CODE - keeping for reference if categorization fails */}
