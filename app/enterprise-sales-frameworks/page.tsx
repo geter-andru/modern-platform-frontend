@@ -56,7 +56,7 @@ export default function EnterpriseSalesFrameworksPage() {
             className="flex flex-col sm:flex-row gap-4 justify-center mt-10"
           >
             <Link
-              href="/icp/demo"
+              href="/pricing"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1"
               style={{
                 background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
@@ -65,7 +65,7 @@ export default function EnterpriseSalesFrameworksPage() {
               }}
             >
               <Sparkles className="w-5 h-5" />
-              Generate Your Enterprise Sales Toolkit
+              Get Your Enterprise Sales Toolkit - $497/month
               <ArrowRight className="w-5 h-5" />
             </Link>
           </motion.div>
@@ -77,7 +77,7 @@ export default function EnterpriseSalesFrameworksPage() {
             className="mt-6 text-sm"
             style={{ color: 'rgba(255, 255, 255, 0.5)' }}
           >
-            77 AI-generated resources that translate your technical product into enterprise-closing sales materials.
+            38 AI-generated resources that translate your technical product into enterprise-closing sales materials. Built specifically for technical founders who are brilliant at building but struggling to sell.
           </motion.p>
         </div>
       </section>
@@ -175,7 +175,7 @@ export default function EnterpriseSalesFrameworksPage() {
                 <ul className="space-y-3">
                   {[
                     "Each resource builds on ALL previous resources",
-                    "Resource #77 knows everything from resources #1-76",
+                    "Resource #38 knows everything from resources #1-37",
                     "Your sales methodology gets smarter with every resource",
                     "Impossible to replicate without our architecture"
                   ].map((item, index) => (
@@ -214,7 +214,7 @@ export default function EnterpriseSalesFrameworksPage() {
                   icon: Users,
                   title: "Scale Sales Without Founder Involvement",
                   before: "You're in every enterprise sales call because your team can't articulate technical value.",
-                  after: "Your sales team has 77 resources that systematically translate technical superiority to business impact."
+                  after: "Your sales team has 38 resources that systematically translate technical superiority to business impact."
                 },
                 {
                   icon: BarChart3,
@@ -269,24 +269,24 @@ export default function EnterpriseSalesFrameworksPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-center">All 77 Resources, Organized By What You Need When</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-center">All 38 Resources, Organized By What You Need When</h2>
 
             <div className="space-y-8 mt-12">
               {[
                 {
-                  title: "Tier 1: Core Foundation (5 Resources)",
+                  title: "Tier 1: Foundation (14 Resources)",
                   description: "Define who buys, why they buy, and how to talk to them",
                   items: ["ICP Analysis", "Target Buyer Personas", "Empathy Maps", "Refined Product Description", "Value Messaging"]
                 },
                 {
-                  title: "Tier 2: Buyer Intelligence (8 Resources)",
-                  description: "Reveal when to reach out, what they fear, and what makes them buy",
-                  items: ["Compelling Events", "Buyer Persona Rating", "Cost of Inaction Calculator", "Negative Personas", "Discovery Questions"]
+                  title: "Tier 2: Growth (14 Resources)",
+                  description: "Scale your sales process with advanced frameworks",
+                  items: ["Compelling Events", "Buyer Journey Map", "Economic Buyer Guide", "Discovery Questions", "Sales Deck"]
                 },
                 {
-                  title: "Tiers 3-8: Complete Sales Arsenal (64 Resources)",
-                  description: "Everything you need to close enterprise deals without founder involvement",
-                  items: ["Sales Decks", "Email Templates", "Call Scripts", "Objection Handlers", "ROI Calculators", "Battlecards"]
+                  title: "Tier 3: Enterprise (10 Resources)",
+                  description: "Everything you need to close $5M+ ARR deals",
+                  items: ["ROI Calculator", "Business Case Template", "Battlecards", "Pricing Justification", "Success Stories"]
                 }
               ].map((tier, index) => (
                 <div
@@ -338,7 +338,7 @@ export default function EnterpriseSalesFrameworksPage() {
             </p>
 
             <Link
-              href="/icp/demo"
+              href="/pricing"
               className="inline-flex items-center justify-center gap-2 px-10 py-5 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1"
               style={{
                 background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
@@ -347,12 +347,12 @@ export default function EnterpriseSalesFrameworksPage() {
               }}
             >
               <Sparkles className="w-5 h-5" />
-              Generate Your Enterprise Sales Toolkit
+              Get Your Enterprise Sales Toolkit - $497/month
               <ArrowRight className="w-5 h-5" />
             </Link>
 
             <p className="mt-6 text-sm" style={{ color: 'rgba(255, 255, 255, 0.5)' }}>
-              77 resources. 30 minutes. Immediate use. No credit card required.
+              38 resources. Cumulative intelligence. $497/month early access → $750/month forever.
             </p>
           </motion.div>
         </div>

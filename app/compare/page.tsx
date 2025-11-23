@@ -27,10 +27,10 @@ export default function AIToolPage() {
             "applicationCategory": "BusinessApplication",
             "offers": {
               "@type": "Offer",
-              "price": "0",
+              "price": "497",
               "priceCurrency": "USD",
               "availability": "https://schema.org/InStock",
-              "description": "Free beta launching December 1, 2025. Paid plans from $149/month"
+              "description": "Founding members pay $497/month during early access, then $750/month forever (vs $1,250 standard)"
             },
             "description": "AI-powered Revenue Intelligence Operating System that helps technical founders identify their ideal customer profile (ICP), translate technical features into business value, and build sales foundations.",
             "operatingSystem": "Web",
@@ -84,7 +84,7 @@ export default function AIToolPage() {
                 "name": "How much does Andru cost?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Andru offers a free beta for 65 founding members (December 2025 - February 2025). Paid plans start at $149-297/month after beta. Full platform access will be $497/month when all 5 modules launch in July 2025."
+                  "text": "Founding members pay $497/month during early access (starting December 1, 2025), then $750/month forever. Standard pricing after launch will be $1,250/month. This saves founding members $6,000/year, every year, forever."
                 }
               },
               {
@@ -92,7 +92,7 @@ export default function AIToolPage() {
                 "name": "When does Andru launch?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Andru's beta launches December 1, 2025. The free beta runs for 60-90 days, followed by paid launch in March 2025."
+                  "text": "Andru launches December 1, 2025 for founding members. Early access begins immediately upon joining the paid waitlist at $497/month."
                 }
               },
               {
@@ -394,44 +394,6 @@ export default function AIToolPage() {
             }}>
               <div style={{
                 padding: 'var(--spacing-lg)',
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: 'var(--border-radius-md)'
-              }}>
-                <h3 style={{
-                  fontSize: 'var(--font-size-lg)',
-                  fontWeight: '600',
-                  color: '#22c55e',
-                  marginBottom: 'var(--spacing-sm)'
-                }}>
-                  Beta Launch
-                </h3>
-                <p style={{
-                  fontSize: 'var(--font-size-3xl)',
-                  fontWeight: '700',
-                  color: '#ffffff',
-                  marginBottom: 'var(--spacing-xs)'
-                }}>
-                  FREE
-                </p>
-                <p style={{
-                  fontSize: 'var(--font-size-sm)',
-                  color: '#737373',
-                  marginBottom: 'var(--spacing-md)'
-                }}>
-                  65 founding members
-                </p>
-                <p style={{
-                  fontSize: 'var(--font-size-sm)',
-                  color: '#a3a3a3',
-                  lineHeight: '1.625'
-                }}>
-                  Dec 2025 - Feb 2025
-                </p>
-              </div>
-
-              <div style={{
-                padding: 'var(--spacing-lg)',
                 background: 'rgba(59, 130, 246, 0.08)',
                 border: '1px solid rgba(59, 130, 246, 0.3)',
                 borderRadius: 'var(--border-radius-md)',
@@ -448,53 +410,15 @@ export default function AIToolPage() {
                   fontSize: 'var(--font-size-xs)',
                   fontWeight: '600'
                 }}>
-                  POPULAR
+                  FOUNDING MEMBER
                 </div>
                 <h3 style={{
                   fontSize: 'var(--font-size-lg)',
                   fontWeight: '600',
-                  color: '#3b82f6',
+                  color: '#22c55e',
                   marginBottom: 'var(--spacing-sm)'
                 }}>
-                  Paid Launch
-                </h3>
-                <p style={{
-                  fontSize: 'var(--font-size-3xl)',
-                  fontWeight: '700',
-                  color: '#ffffff',
-                  marginBottom: 'var(--spacing-xs)'
-                }}>
-                  $149-297
-                </p>
-                <p style={{
-                  fontSize: 'var(--font-size-sm)',
-                  color: '#737373',
-                  marginBottom: 'var(--spacing-md)'
-                }}>
-                  per month
-                </p>
-                <p style={{
-                  fontSize: 'var(--font-size-sm)',
-                  color: '#a3a3a3',
-                  lineHeight: '1.625'
-                }}>
-                  Starts March 2025
-                </p>
-              </div>
-
-              <div style={{
-                padding: 'var(--spacing-lg)',
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: 'var(--border-radius-md)'
-              }}>
-                <h3 style={{
-                  fontSize: 'var(--font-size-lg)',
-                  fontWeight: '600',
-                  color: '#8b5cf6',
-                  marginBottom: 'var(--spacing-sm)'
-                }}>
-                  Full Platform
+                  Early Access
                 </h3>
                 <p style={{
                   fontSize: 'var(--font-size-3xl)',
@@ -516,7 +440,83 @@ export default function AIToolPage() {
                   color: '#a3a3a3',
                   lineHeight: '1.625'
                 }}>
-                  All 5 modules (July 2025+)
+                  Then $750/mo forever
+                </p>
+              </div>
+
+              <div style={{
+                padding: 'var(--spacing-lg)',
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: 'var(--border-radius-md)'
+              }}>
+                <h3 style={{
+                  fontSize: 'var(--font-size-lg)',
+                  fontWeight: '600',
+                  color: '#3b82f6',
+                  marginBottom: 'var(--spacing-sm)'
+                }}>
+                  Forever Price Lock
+                </h3>
+                <p style={{
+                  fontSize: 'var(--font-size-3xl)',
+                  fontWeight: '700',
+                  color: '#ffffff',
+                  marginBottom: 'var(--spacing-xs)'
+                }}>
+                  $750
+                </p>
+                <p style={{
+                  fontSize: 'var(--font-size-sm)',
+                  color: '#737373',
+                  marginBottom: 'var(--spacing-md)'
+                }}>
+                  per month
+                </p>
+                <p style={{
+                  fontSize: 'var(--font-size-sm)',
+                  color: '#a3a3a3',
+                  lineHeight: '1.625'
+                }}>
+                  Locked in forever
+                </p>
+              </div>
+
+              <div style={{
+                padding: 'var(--spacing-lg)',
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: 'var(--border-radius-md)'
+              }}>
+                <h3 style={{
+                  fontSize: 'var(--font-size-lg)',
+                  fontWeight: '600',
+                  color: '#8b5cf6',
+                  marginBottom: 'var(--spacing-sm)'
+                }}>
+                  Standard Price
+                </h3>
+                <p style={{
+                  fontSize: 'var(--font-size-3xl)',
+                  fontWeight: '700',
+                  color: '#ffffff',
+                  marginBottom: 'var(--spacing-xs)'
+                }}>
+                  $1,250
+                </p>
+                <p style={{
+                  fontSize: 'var(--font-size-sm)',
+                  color: '#737373',
+                  marginBottom: 'var(--spacing-md)'
+                }}>
+                  per month
+                </p>
+                <p style={{
+                  fontSize: 'var(--font-size-sm)',
+                  color: '#a3a3a3',
+                  lineHeight: '1.625'
+                }}>
+                  After launch (non-founders)
                 </p>
               </div>
             </div>
@@ -769,7 +769,7 @@ export default function AIToolPage() {
               lineHeight: '1.625',
               marginBottom: 'var(--spacing-2xl)'
             }}>
-              65 founding member spots available. Free beta access. 50% lifetime discount when we launch paid tiers.
+              65 founding member spots available. Pay $497/month during early access, then $750/month forever. Save $6,000/year vs. standard pricing.
             </p>
 
             <Link href="/pricing" style={{
@@ -810,7 +810,7 @@ export default function AIToolPage() {
               Built by Brandon Geter in 90 days using Claude & Cursor
             </p>
             <p style={{ marginTop: 'var(--spacing-sm)' }}>
-              Last Updated: November 1, 2025 | Beta Launch: December 1, 2025
+              Last Updated: November 22, 2025 | Launch: December 1, 2025
             </p>
           </footer>
         </div>

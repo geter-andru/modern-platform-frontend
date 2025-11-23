@@ -295,7 +295,7 @@ export default function AboutPage() {
               fontFamily: 'var(--font-family-primary, "Red Hat Display", sans-serif)',
               lineHeight: '1.7'
             }}>
-              We're launching in <strong style={{ color: 'var(--color-primary)' }}>December 2025</strong> with 65 founding members. Get free access during the 60-90 day beta period, plus a <strong style={{ color: 'var(--color-primary)' }}>50% lifetime discount</strong> when we go paid in March 2025.
+              We're launching <strong style={{ color: 'var(--color-primary)' }}>December 1, 2025</strong> with 65 founding member spots. Pay <strong style={{ color: 'var(--color-primary)' }}>$497/month</strong> during early access, then <strong style={{ color: 'var(--color-primary)' }}>$750/month forever</strong> (vs $1,250 standard). Save $6,000/year, every year.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <GradientButton
@@ -305,7 +305,7 @@ export default function AboutPage() {
                 size="lg"
                 ariaLabel="Apply for founding member access"
               >
-                Apply for Beta Access
+                Join Founding Members - $497/month
               </GradientButton>
               <Link
                 href="/pricing"

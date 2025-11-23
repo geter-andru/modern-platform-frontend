@@ -54,7 +54,7 @@ export default function FoundingMembersPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [spotsRemaining, setSpotsRemaining] = useState<number>(100);
+  const [spotsRemaining, setSpotsRemaining] = useState<number>(65);
   const [formStarted, setFormStarted] = useState(false);
 
   // Fetch spots remaining on mount
@@ -195,19 +195,19 @@ export default function FoundingMembersPage() {
     if (spotsRemaining > 50) {
       return (
         <span className="badge badge-success body-small px-4 py-2">
-          {spotsRemaining} of 100 Spots Remaining
+          {spotsRemaining} of 65 Spots Remaining
         </span>
       );
     } else if (spotsRemaining > 20) {
       return (
         <span className="badge badge-warning body-small px-4 py-2">
-          {spotsRemaining} of 100 Spots Remaining
+          {spotsRemaining} of 65 Spots Remaining
         </span>
       );
     } else if (spotsRemaining > 0) {
       return (
         <span className="badge badge-error body-small px-4 py-2">
-          Only {spotsRemaining} of 100 Spots Remaining!
+          Only {spotsRemaining} of 65 Spots Remaining!
         </span>
       );
     } else {
@@ -301,10 +301,10 @@ export default function FoundingMembersPage() {
             </div>
 
             <h1 className="heading-1 mb-4">
-              Apply to Join 100 Founding Members
+              Apply to Join 65 Founding Members
             </h1>
             <p className="body-large text-text-muted max-w-2xl mx-auto mb-6">
-              Help us build the best ICP tool for technical founders—and lock in 50% lifetime discount
+              Help us build the best ICP tool for technical founders—and lock in $750/month forever (vs $1,250 standard)
             </p>
 
             {getSpotsRemainingBadge()}
@@ -328,12 +328,12 @@ export default function FoundingMembersPage() {
               <h2 className="heading-3 mb-6 text-center">What You Get as a Founding Member</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {[
-                  'Full access to ICP tool during beta (Dec 2025 - Feb 2025)',
-                  'All export formats (PDF, Markdown, CSV)',
-                  'Direct Slack channel with founders',
-                  'Weekly feedback sessions',
-                  'Lock in $149/month lifetime pricing (vs $297 for new users)',
-                  'No credit card required'
+                  '2 hours of 1:1 founder strategy sessions ($1,000+ value)',
+                  'Immediate ICP Analysis Package delivery',
+                  'Early access to each tool as it rolls out',
+                  'Private Slack community access',
+                  'Forever price lock at $750/month (vs $1,250 standard)',
+                  'Priority support and feature requests'
                 ].map((benefit, index) => (
                   <motion.div
                     key={index}
